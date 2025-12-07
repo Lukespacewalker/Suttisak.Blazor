@@ -1,0 +1,45 @@
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div style="display:flex;flex-direction:row;gap:0.5rem;align-items:center;">
+	<AuthorizeView>
+		<Authorized>
+			<FluentProfileMenu Initials="@_initial"
+							   FullName="@_username"
+							   PopoverStyle="min-width: 330px;"
+							   OnFooterLinkClick='() => NavigationManager.NavigateTo("Account/Manage")'
+							   HeaderButton="@Helper.TryGetCustomStringThenFallbackToResource(LogoutText, ProfileMenu_razor.Logout)" 
+							   OnHeaderButtonClick='() => NavigationManager.NavigateTo("Account/Logout?ReturnUrl=/", forceLoad:true)'>
+				<StartTemplate>
+					<FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+						<FluentLabel Typo="Typography.Subject">@_username</FluentLabel>
+					</FluentStack>
+				</StartTemplate>
+			</FluentProfileMenu>
+		</Authorized>
+		<NotAuthorized>
+			<FluentNavLink Href="Account/Login">@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavLink>
+		</NotAuthorized>
+	</AuthorizeView>
+</div>
+@code {
+
+	private string? _username;
+	private string _initial = string.Empty;
+
+	[Parameter] public string? LoginText { get; set; }
+	[Parameter] public string? LogoutText { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		if (authState.User.Identity?.IsAuthenticated ?? false)
+		{
+			_username = authState.User.Identity.Name;
+
+			_initial = _username?[0..2] ?? string.Empty;
+		}
+
+		await base.OnInitializedAsync();
+	}
+}

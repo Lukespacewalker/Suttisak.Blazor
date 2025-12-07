@@ -1,0 +1,38 @@
+﻿.button.stealth {
+    display: flex;
+    outline: none;
+    background: none;
+    border: none;
+    padding: 0.25rem;
+}
+
+    .button.stealth:hover {
+        background: color-mix(in lch, var(--neutral-fill-inverse-hover) 20%,transparent);
+    }
+
+    .button.stealth:active {
+        background: color-mix(in lch, var(--neutral-fill-inverse-active) 20%,transparent);
+    }
+
+.button.circle {
+    border-radius: 50%;
+}
+
+
+a.action:hover, a.button:hover {
+    background: var(--accent-fill-hover);
+}
+
+a.action, a.button {
+    color: var(--foreground-on-accent-rest);
+    display: inline-block;
+    background: var(--accent-base-color);
+    border-radius: 4px;
+    padding: 0.5em 1em;
+    font-weight: bold;
+    gap: 0.5em;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+}

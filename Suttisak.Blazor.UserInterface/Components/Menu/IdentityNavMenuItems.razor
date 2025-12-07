@@ -1,0 +1,10 @@
+@using Microsoft.AspNetCore.Components.Routing
+<FluentNavGroup Icon="@(new Icons.Regular.Size20.PersonCircle())" Title="@IdentityNavMenuItems_razor.Account">
+	<FluentNavLink Icon="@(new Icons.Regular.Size24.PersonAccounts())" Href="Account/Manage" Match="NavLinkMatch.All">@IdentityNavMenuItems_razor.Profile</FluentNavLink>
+	<FluentNavLink Icon="@(new Icons.Regular.Size20.Mail())" Href="Account/Manage/Email">@IdentityNavMenuItems_razor.Email</FluentNavLink>
+	<FluentNavLink Icon="@(new Icons.Regular.Size20.Password())" Href="Account/Manage/ChangePassword">@IdentityNavMenuItems_razor.Password</FluentNavLink>
+	<FluentNavLink Icon="@(new Icons.Regular.Size20.GlobeSurface())" Href="Account/Manage/ExternalLogins">@IdentityNavMenuItems_razor.ExternalLogins</FluentNavLink>
+	<FluentNavLink Icon="@(new Icons.Regular.Size20.KeyMultiple())" Href="Account/Manage/TwoFactorAuthentication">@IdentityNavMenuItems_razor._2FA</FluentNavLink>
+	<FluentNavLink Icon="@(new Icons.Regular.Size20.PersonPasskey())" Href="Account/Manage/Passkeys">@IdentityNavMenuItems_razor.Passkeys</FluentNavLink>
+	<FluentNavLink Icon="@(new Icons.Regular.Size20.DatabasePerson())" Href="Account/Manage/PersonalData">@IdentityNavMenuItems_razor.PersonalData</FluentNavLink>
+</FluentNavGroup>

@@ -1,0 +1,9 @@
+﻿.root ::deep .content {
+    background: url(/assets/backgrounds/gradient.svg);
+    display: flex;
+    justify-content: center;
+}
+
+body[data-theme="dark"] .root ::deep .content {
+    background: url(/assets/backgrounds/gradient-dark.svg)
+}
