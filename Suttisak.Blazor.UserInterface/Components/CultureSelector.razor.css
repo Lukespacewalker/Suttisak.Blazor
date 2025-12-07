@@ -1,0 +1,17 @@
+﻿::deep fluent-select::part(control) {
+    background: transparent;
+    padding: 0.25rem;
+}
+
+::deep fluent-select::part(listbox) {
+    width:50px;
+}
+
+
+    ::deep fluent-select::part(control):hover {
+        background: color-mix(in lch, var(--neutral-fill-inverse-hover) 20%,transparent);
+    }
+
+    ::deep fluent-select::part(control):active {
+        background: color-mix(in lch, var(--neutral-fill-inverse-active) 20%,transparent);
+    }

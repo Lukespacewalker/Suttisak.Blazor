@@ -1,0 +1,8 @@
+﻿::deep .header-gutters {
+    margin: 0.5rem 1.5rem !important;
+}
+
+::deep header.header {
+    position: fixed;
+    width: 100%;
+}

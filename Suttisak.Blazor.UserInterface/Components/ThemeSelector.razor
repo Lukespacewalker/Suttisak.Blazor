@@ -1,0 +1,63 @@
+﻿@inject IThemeService ThemeService
+@using Suttisak.BlazorUI.Interfaces.Theme
+
+@implements IDisposable
+<FluentDesignTheme @bind-Mode="@ThemeService.ThemeConfiguration" StorageName="theme" OnLuminanceChanged="Callback" />
+<button class="button stealth circle" style="height:34px;width:34px;align-items:center;justify-content:center;" @onclick="CycleTheme">
+	<FluentIcon Value="CurrentThemeIcon" />
+</button>
+
+@code {
+	[Parameter] public Appearance Appearance { get; set; } = Appearance.Neutral;
+
+    protected override void OnInitialized()
+    {
+        ThemeService.ThemeConfigurationChanged += ThemeConfigurationServiceThemeConfigurationChanged;
+        base.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+        ThemeService.ThemeConfigurationChanged -= ThemeConfigurationServiceThemeConfigurationChanged;
+    }
+
+    public void ThemeConfigurationServiceThemeConfigurationChanged(object? sender, DesignThemeModes mode)
+    {
+        StateHasChanged();
+    }
+
+    private void Callback(LuminanceChangedEventArgs obj)
+    {
+        ThemeService.CurrentThemeMode = obj.IsDark ? ThemeMode.Dark : ThemeMode.Light;
+    }
+
+    private Icon CurrentThemeIcon
+    {
+        get
+        {
+            return ThemeService.ThemeConfiguration switch
+            {
+                DesignThemeModes.System => new Icons.Regular.Size20.DarkTheme(),
+                DesignThemeModes.Light => new Icons.Regular.Size20.WeatherSunny(),
+                DesignThemeModes.Dark => new Icons.Regular.Size20.WeatherMoon(),
+                _ => new Icons.Regular.Size20.DarkTheme(),
+            };
+        }
+    }
+
+    private void CycleTheme()
+    {
+        switch (ThemeService.ThemeConfiguration)
+        {
+            case DesignThemeModes.System:
+                ThemeService.ThemeConfiguration = DesignThemeModes.Light;
+                break;
+            case DesignThemeModes.Light:
+                ThemeService.ThemeConfiguration = DesignThemeModes.Dark;
+                break;
+            case DesignThemeModes.Dark:
+                ThemeService.ThemeConfiguration = DesignThemeModes.System;
+                break;
+        }
+    }
+}

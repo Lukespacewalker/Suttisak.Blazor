@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Title>Suttisak's Blazor UI Components</Title>
+		<Copyright>Suttisak Denduangchai</Copyright>
+		<Description>A collection of useful components for Blazor</Description>
+		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.BlazorUI</RepositoryUrl>
+		<AssemblyVersion>0.1.20</AssemblyVersion>
+		<FileVersion>$(AssemblyVersion)</FileVersion>
+		<Version>$(AssemblyVersion)</Version>
+		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.13.2" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include=".github\workflows\ci.yaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Layout\Client\" />
+		<Folder Include="Layout\Server\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Region\Identity\ConfirmEmailChange.razor.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ConfirmEmailChange.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Region\Identity\Login.razor.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Login.razor.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Region\Identity\ConfirmEmail.razor.resx">
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Region\Identity\ConfirmEmailChange.razor.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ConfirmEmailChange.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Region\Identity\Login.razor.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Login.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+
+</Project>

@@ -1,0 +1,8 @@
+﻿.pill {
+    color: var(--foreground-on-accent-rest);
+    display: inline-block;
+    background: var(--accent-base-color);
+    border-radius: 2em;
+    padding: 0.5em 1em;
+    font-weight: bold;
+}

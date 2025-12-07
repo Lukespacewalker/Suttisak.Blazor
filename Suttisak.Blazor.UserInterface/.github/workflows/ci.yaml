@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  package-and-publish-lib:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Generate NuGet package
+        run: |
+          dotnet pack \
+          --configuration Release \
+          -o packages
+
+      - name: Publish NuGet package
+        run: dotnet nuget push packages/*.nupkg --api-key ${{ secrets.PUSH_NUGET }} --source https://nuget.pkg.github.com/LukeSpacewalker/index.json

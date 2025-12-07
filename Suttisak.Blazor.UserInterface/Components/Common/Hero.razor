@@ -1,0 +1,39 @@
+<section class="hero @(NoBackground is false ? "background" : "")">
+	<div style="position:relative;">
+		@if (!string.IsNullOrEmpty(Title))
+		{
+			<h1>
+				@Title
+			</h1>
+		}
+		@if (!string.IsNullOrEmpty(Subtitle))
+		{
+			<h2>
+				@Subtitle
+			</h2>
+		}
+		@ChildContent
+	</div>
+    @if (!string.IsNullOrEmpty(AssetPath))
+    {
+        <img style="height:300px;position:relative;" src="@AssetPath" />
+
+    }
+</section>
+
+@code
+{
+	[Parameter] public bool NoBackground { get; set; } = false;
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string? Subtitle { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public string? AssetPath { get; set; }
+
+
+}

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj" />
+  <Project Path="Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.csproj" />
+</Solution>
