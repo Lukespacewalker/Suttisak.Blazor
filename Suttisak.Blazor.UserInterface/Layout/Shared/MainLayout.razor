@@ -21,7 +21,8 @@
 				             Width="100%" HorizontalGap="0" VerticalGap="0">
 					<SectionOutlet SectionId="NavigationSection" />
 					<div class="content">
-						@Body 
+						<SectionOutlet SectionId="MessageBarSection" />
+						@Body
 					</div>
 				</FluentStack>
 			</FluentBodyContent>
@@ -32,6 +33,7 @@
 @code {
 	public static object HeaderSection = new();
 	public static object NavigationSection = new();
+	public static object MessageBarSection = new();
 
 	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 }
