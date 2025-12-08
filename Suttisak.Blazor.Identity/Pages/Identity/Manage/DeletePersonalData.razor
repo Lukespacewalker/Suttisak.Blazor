@@ -6,17 +6,23 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<DeletePersonalData<TUser>> Logger
 
-<PageTitle>Delete Personal Data</PageTitle>
+<PageTitle>@Manage.DeletePersonalData</PageTitle>
+
+<FluentBreadcrumb>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">@Manage.Profile</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.PersonalData">@Manage.DeletePersonalData</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.DeletePersonalData</FluentLabel>
 
 <StatusMessage Message="@_message" />
-
-<h3>Delete Personal Data</h3>
 
 <FluentGrid>
     <FluentGridItem sm="6">
         <div class="alert alert-warning" role="alert">
             <p>
-                <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+                <strong>@DeletePersonalData_razor.WarningMessage</strong>
             </p>
         </div>
         <EditForm Model="Input" FormName="delete-user" OnValidSubmit="OnValidSubmitAsync" method="post">
@@ -24,10 +30,10 @@
             <FluentValidationSummary class="text-danger" role="alert" />
             @if (_requirePassword)
             {
-                <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="Please enter your password." Label="Password" Style="width: 100%" />
+                <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
                 <FluentValidationMessage For="() => Input.Password" class="text-danger" />
             }
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Delete data and close my account</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
@@ -53,14 +59,14 @@
     {
         if (_requirePassword && !await UserManager.CheckPasswordAsync(_user, Input.Password))
         {
-            _message = "Error: Incorrect password.";
+            _message = DeletePersonalData_razor.IncorrectPasswordError;
             return;
         }
 
         var result = await UserManager.DeleteAsync(_user);
         if (!result.Succeeded)
         {
-            throw new InvalidOperationException("Unexpected error occurred deleting user.");
+            throw new InvalidOperationException(DeletePersonalData_razor.UnexpectedErrorDeletingUser);
         }
 
         await SignInManager.SignOutAsync();
