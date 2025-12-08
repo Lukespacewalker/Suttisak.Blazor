@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Suttisak.BlazorUI.Components.Menu {
+namespace Suttisak.Blazor.UserInterface.Components.Menu {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class IdentityNavMenuItems_razor {
+    public class IdentityNavMenuItems_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Suttisak.BlazorUI.Components.Menu {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.BlazorUI.Components.Menu.IdentityNavMenuItems.razor", typeof(IdentityNavMenuItems_razor).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.UserInterface.Components.Menu.IdentityNavMenuItems.razor", typeof(IdentityNavMenuItems_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Two-factor authentication.
         /// </summary>
-        internal static string _2FA {
+        public static string _2FA {
             get {
                 return ResourceManager.GetString("2FA", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Account.
         /// </summary>
-        internal static string Account {
+        public static string Account {
             get {
                 return ResourceManager.GetString("Account", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
-        internal static string Email {
+        public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to External logins.
         /// </summary>
-        internal static string ExternalLogins {
+        public static string ExternalLogins {
             get {
                 return ResourceManager.GetString("ExternalLogins", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Manage.
         /// </summary>
-        internal static string Manage {
+        public static string Manage {
             get {
                 return ResourceManager.GetString("Manage", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Passkeys.
         /// </summary>
-        internal static string Passkeys {
+        public static string Passkeys {
             get {
                 return ResourceManager.GetString("Passkeys", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
-        internal static string Password {
+        public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Personal data.
         /// </summary>
-        internal static string PersonalData {
+        public static string PersonalData {
             get {
                 return ResourceManager.GetString("PersonalData", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Suttisak.BlazorUI.Components.Menu {
         /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
-        internal static string Profile {
+        public static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
             }

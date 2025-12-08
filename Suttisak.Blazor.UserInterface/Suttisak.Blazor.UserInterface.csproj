@@ -4,10 +4,10 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Title>Suttisak's Blazor UI Components</Title>
+		<Title>Suttisak's Blazor User Interface Components</Title>
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful components for Blazor</Description>
-		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.BlazorUI</RepositoryUrl>
+		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
 		<AssemblyVersion>0.1.20</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
@@ -26,9 +26,6 @@
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.13.2" />
 	</ItemGroup>
-	<ItemGroup>
-		<None Include=".github\workflows\ci.yaml" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Layout\Client\" />
@@ -36,29 +33,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Region\Identity\ConfirmEmailChange.razor.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ConfirmEmailChange.razor.resx</DependentUpon>
+		<Compile Update="Components\Menu\IdentityNavMenuItems.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>IdentityNavMenuItems.razor.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Region\Identity\Login.razor.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Login.razor.resx</DependentUpon>
+		<Compile Update="Components\ProfileMenu.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ProfileMenu.razor.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="Region\Identity\ConfirmEmail.razor.resx">
-			<Generator></Generator>
+		<EmbeddedResource Update="Components\Menu\IdentityNavMenuItems.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>IdentityNavMenuItems.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Region\Identity\ConfirmEmailChange.razor.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>ConfirmEmailChange.razor.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Region\Identity\Login.razor.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Login.razor.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Components\ProfileMenu.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ProfileMenu.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 

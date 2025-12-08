@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Suttisak.BlazorUI.Services
+namespace Suttisak.Blazor.UserInterface.Services
 {
     public class BlazorUIOptions
     {

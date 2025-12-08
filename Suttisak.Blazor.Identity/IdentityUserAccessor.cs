@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
-namespace Suttisak.BlazorUI.Services;
+namespace Suttisak.Blazor.Identity;
 
 public sealed class IdentityUserAccessor<TUser>(UserManager<TUser> userManager, IdentityRedirectManager redirectManager) where TUser: class
 {

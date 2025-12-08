@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Suttisak.BlazorUI.Helper;
+﻿namespace Suttisak.Blazor.UserInterface.Helper;
 
 public static class Helper
 {

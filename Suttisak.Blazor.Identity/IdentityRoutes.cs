@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Suttisak.BlazorUI;
-
-public class AppRoutes
+﻿namespace Suttisak.Blazor.Identity;
+public static class IdentityRoutes
 {
-    public class Account
+    public static class Account
     {
         public const string Root = "/Account";
         public const string Profile = $"{Root}/Manage";

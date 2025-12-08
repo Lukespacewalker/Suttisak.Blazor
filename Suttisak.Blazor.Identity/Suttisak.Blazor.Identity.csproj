@@ -1,19 +1,64 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<Title>Suttisak's Blazor Identity Templates</Title>
+		<Copyright>Suttisak Denduangchai</Copyright>
+		<Description>A collection of useful templates for AspNetCore Identity</Description>
+		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
+		<AssemblyVersion>0.1.20</AssemblyVersion>
+		<FileVersion>$(AssemblyVersion)</FileVersion>
+		<Version>$(AssemblyVersion)</Version>
+		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.13.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Suttisak.Blazor.UserInterface\Suttisak.Blazor.UserInterface.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Region\Identity\ConfirmEmail.razor.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ConfirmEmail.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Region\Identity\ConfirmEmailChange.razor.Designer.cs">
+			<DependentUpon>ConfirmEmailChange.razor.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="Region\Identity\Login.razor.Designer.cs">
+			<DependentUpon>Login.razor.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Region\Identity\ConfirmEmail.razor.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ConfirmEmail.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Region\Identity\ConfirmEmailChange.razor.resx">
+			<LastGenOutput>ConfirmEmailChange.razor.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Region\Identity\Login.razor.resx">
+			<LastGenOutput>Login.razor.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>
