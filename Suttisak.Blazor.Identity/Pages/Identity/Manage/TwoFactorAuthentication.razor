@@ -96,7 +96,7 @@ else
         _recoveryCodesLeft = await UserManager.CountRecoveryCodesAsync(user);
     }
 
-    private async Task OnSubmitForgetBrowserAsync()
+    protected virtual async Task OnSubmitForgetBrowserAsync()
     {
         await SignInManager.ForgetTwoFactorClientAsync();
 

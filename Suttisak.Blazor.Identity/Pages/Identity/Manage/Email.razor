@@ -1,6 +1,5 @@
 ﻿@using System.Text
 @using System.Text.Encodings.Web
-@using Microsoft.AspNetCore.WebUtilities
 @typeparam TUser where TUser : class
 
 @inject UserManager<TUser> UserManager
@@ -55,7 +54,7 @@
     private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm(FormName = "change-email")]
-    private InputModel Input { get; set; } = new();
+    protected virtual InputModel Input { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,7 +64,7 @@
         Input.NewEmail ??= _email;
     }
 
-    private async Task OnValidSubmitAsync()
+    protected virtual async Task OnValidSubmitAsync()
     {
         if (Input.NewEmail is null || Input.NewEmail == _email)
         {
@@ -85,7 +84,7 @@
         _message = Email_razor.ConfirmationLinkSentMessage;
     }
 
-    private async Task OnSendEmailVerificationAsync()
+    protected virtual async Task OnSendEmailVerificationAsync()
     {
         if (_email is null)
         {
@@ -104,7 +103,7 @@
         _message = Email_razor.VerificationEmailSentMessage;
     }
 
-    private sealed class InputModel
+    protected class InputModel
     {
         [Required]
         [EmailAddress]

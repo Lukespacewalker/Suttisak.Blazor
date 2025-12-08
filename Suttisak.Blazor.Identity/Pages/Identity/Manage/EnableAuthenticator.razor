@@ -78,7 +78,7 @@ else
     private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    protected virtual InputModel Input { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,7 +87,7 @@ else
         await LoadSharedKeyAndQrCodeUriAsync(_user);
     }
 
-    private async Task OnValidSubmitAsync()
+    protected virtual async Task OnValidSubmitAsync()
     {
         // Strip spaces and hyphens
         var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
@@ -117,7 +117,7 @@ else
         }
     }
 
-    private async ValueTask LoadSharedKeyAndQrCodeUriAsync(TUser user)
+    protected virtual async ValueTask LoadSharedKeyAndQrCodeUriAsync(TUser user)
     {
         // Load the authenticator key & QR code URI to display on the form
         var unformattedKey = await UserManager.GetAuthenticatorKeyAsync(user);
@@ -133,7 +133,7 @@ else
         _authenticatorUri = GenerateQrCodeUri(email!, unformattedKey!);
     }
 
-    private string FormatKey(string unformattedKey)
+    protected virtual string FormatKey(string unformattedKey)
     {
         var result = new StringBuilder();
         int currentPosition = 0;
@@ -150,7 +150,7 @@ else
         return result.ToString().ToLowerInvariant();
     }
 
-    private string GenerateQrCodeUri(string email, string unformattedKey)
+    protected virtual string GenerateQrCodeUri(string email, string unformattedKey)
     {
         return string.Format(
             CultureInfo.InvariantCulture,
@@ -160,7 +160,7 @@ else
             unformattedKey);
     }
 
-    private sealed class InputModel
+    protected sealed class InputModel
     {
         [Required]
         [StringLength(7, ErrorMessageResourceName = nameof(EnableAuthenticator_razor.CodeLengthError), ErrorMessageResourceType = typeof(EnableAuthenticator_razor), MinimumLength = 6)]

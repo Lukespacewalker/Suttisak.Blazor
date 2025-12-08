@@ -38,7 +38,7 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
 
-    private async Task OnSubmitAsync()
+    protected virtual async Task OnSubmitAsync()
     {
         var user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         await UserManager.SetTwoFactorEnabledAsync(user, false);
