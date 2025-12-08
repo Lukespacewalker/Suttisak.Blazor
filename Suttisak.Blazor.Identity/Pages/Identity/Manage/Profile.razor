@@ -5,13 +5,15 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Profile</PageTitle>
+<PageTitle>@Manage.Profile</PageTitle>
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">Profile</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">@Manage.Profile</FluentBreadcrumbItem>
 </FluentBreadcrumb>
-<FluentLabel Typo="Typography.PageTitle">Profile</FluentLabel>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.Profile</FluentLabel>
+
 <StatusMessage />
 
 <FluentGrid>
@@ -19,10 +21,10 @@
         <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Value="@_username" Placeholder="Please choose your username." Disabled Label="Username" Appearance=FluentInputAppearance.Filled Style="width: 100%" />
-            <FluentTextField Name="Input.PhoneNumber" @bind-Value="Input.PhoneNumber" Placeholder="Please enter your phone number." Label="Phone number" Style="width: 100%" />
+            <FluentTextField Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled Label="@Profile_razor.UsernameLabel" Appearance=FluentInputAppearance.Filled Style="width: 100%" />
+            <FluentTextField Name="Input.PhoneNumber" @bind-Value="Input.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
             <FluentValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Save</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@Profile_razor.SaveButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
@@ -54,18 +56,18 @@
             var setPhoneResult = await UserManager.SetPhoneNumberAsync(_user, Input.PhoneNumber);
             if (!setPhoneResult.Succeeded)
             {
-                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to set phone number.", HttpContext);
+                RedirectManager.RedirectToCurrentPageWithStatus(Profile_razor.ErrorSetPhoneNumber, HttpContext);
             }
         }
 
         await SignInManager.RefreshSignInAsync(_user);
-        RedirectManager.RedirectToCurrentPageWithStatus("Your profile has been updated", HttpContext);
+        RedirectManager.RedirectToCurrentPageWithStatus(Profile_razor.ProfileUpdated, HttpContext);
     }
 
     private sealed class InputModel
     {
         [Phone]
-        [Display(Name = "Phone number")]
+        [Display(Name = nameof(Profile_razor.PhoneNumberLabel), ResourceType = typeof(Profile_razor))]
         public string? PhoneNumber { get; set; }
     }
 }

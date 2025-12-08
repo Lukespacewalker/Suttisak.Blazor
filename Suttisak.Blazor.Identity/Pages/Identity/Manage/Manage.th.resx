@@ -135,4 +135,31 @@
   <data name="ResetAuthenticator" xml:space="preserve">
     <value>รีเซ็ตคีย์ยืนยันตัวตน</value>
   </data>
+  <data name="DisableTwoFactorAuthentication" xml:space="preserve">
+    <value>ปิดใช้งานการยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>จัดการอีเมล</value>
+  </data>
+  <data name="EnableAuthenticator" xml:space="preserve">
+    <value>กำหนดค่าแอปยืนยันตัวตน</value>
+  </data>
+  <data name="ExternalLogins" xml:space="preserve">
+    <value>จัดการการเข้าสู่ระบบภายนอกของคุณ</value>
+  </data>
+  <data name="GenerateRecoveryCodes" xml:space="preserve">
+    <value>สร้างรหัสกู้คืนการยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
+  </data>
+  <data name="Passkeys" xml:space="preserve">
+    <value>พาสคีย์</value>
+  </data>
+  <data name="RenamePasskey" xml:space="preserve">
+    <value>เปลี่ยนชื่อพาสคีย์</value>
+  </data>
+  <data name="SetPassword" xml:space="preserve">
+    <value>ตั้งรหัสผ่าน</value>
+  </data>
+  <data name="TwoFactorAuthentication" xml:space="preserve">
+    <value>การยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
+  </data>
 </root>

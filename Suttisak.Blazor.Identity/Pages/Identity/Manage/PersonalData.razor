@@ -1,12 +1,10 @@
 ﻿@typeparam TUser where TUser : class
-@using Microsoft.Extensions.Localization
 @inject IdentityUserAccessor<TUser> UserAccessor
 
 <PageTitle>@Manage.PersonalData</PageTitle>
 
 <FluentBreadcrumb>
     <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">@Manage.Profile</FluentBreadcrumbItem>
     <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.PersonalData">@Manage.PersonalData</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 

@@ -4,12 +4,15 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject ILogger<GenerateRecoveryCodes<TUser>> Logger
 
-<PageTitle>Generate two-factor authentication (2FA) recovery codes</PageTitle>
+<PageTitle>@Manage.GenerateRecoveryCodes</PageTitle>
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">Profile</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage.TwoFactorAuthentication</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes">@Manage.GenerateRecoveryCodes</FluentBreadcrumbItem>
 </FluentBreadcrumb>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.GenerateRecoveryCodes</FluentLabel>
 
 @if (_recoveryCodes is not null)
 {
@@ -17,24 +20,22 @@
 }
 else
 {
-    <FluentLabel Typo="Typography.PageTitle">Generate two-factor authentication (2FA) recovery codes</FluentLabel>
     <div class="alert alert-warning" role="alert">
         <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
-            <strong>Put these codes in a safe place.</strong>
+            <strong>@GenerateRecoveryCodes_razor.WarningTitle</strong>
         </p>
         <p>
-            If you lose your device and don't have the recovery codes you will lose access to your account.
+            @GenerateRecoveryCodes_razor.WarningContent1
         </p>
         <p>
-            Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
-            used in an authenticator app you should <a href="Account/Manage/ResetAuthenticator">reset your authenticator keys.</a>
+            @GenerateRecoveryCodes_razor.WarningContent2 <a href="@IdentityRoutes.Account.Manage.ResetAuthenticator">@GenerateRecoveryCodes_razor.ResetAuthenticatorLink</a>
         </p>
     </div>
     <div>
         <form @formname="generate-recovery-codes" @onsubmit="OnSubmitAsync" method="post">
             <AntiforgeryToken />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Generate Recovery Codes</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">@GenerateRecoveryCodes_razor.GenerateButton</FluentButton>
         </form>
     </div>
 }
@@ -54,7 +55,7 @@ else
         var isTwoFactorEnabled = await UserManager.GetTwoFactorEnabledAsync(_user);
         if (!isTwoFactorEnabled)
         {
-            throw new InvalidOperationException("Cannot generate recovery codes for user because they do not have 2FA enabled.");
+            throw new InvalidOperationException(GenerateRecoveryCodes_razor.ErrorNotEnabled);
         }
     }
 
@@ -62,7 +63,7 @@ else
     {
         var userId = await UserManager.GetUserIdAsync(_user);
         _recoveryCodes = await UserManager.GenerateNewTwoFactorRecoveryCodesAsync(_user, 10);
-        _message = "You have generated new recovery codes.";
+        _message = GenerateRecoveryCodes_razor.SuccessMessage;
 
         Logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes.", userId);
     }

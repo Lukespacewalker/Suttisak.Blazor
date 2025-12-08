@@ -126,13 +126,40 @@
   <data name="DeletePersonalData" xml:space="preserve">
     <value>Delete Personal Data</value>
   </data>
+  <data name="DisableTwoFactorAuthentication" xml:space="preserve">
+    <value>Disable two-factor authentication (2FA)</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Manage email</value>
+  </data>
+  <data name="EnableAuthenticator" xml:space="preserve">
+    <value>Configure authenticator app</value>
+  </data>
+  <data name="ExternalLogins" xml:space="preserve">
+    <value>Manage your external logins</value>
+  </data>
+  <data name="GenerateRecoveryCodes" xml:space="preserve">
+    <value>Generate two-factor authentication (2FA) recovery codes</value>
+  </data>
+  <data name="TwoFactorAuthentication" xml:space="preserve">
+    <value>Two-factor authentication (2FA)</value>
+  </data>
+  <data name="Passkeys" xml:space="preserve">
+    <value>Passkeys</value>
+  </data>
   <data name="PersonalData" xml:space="preserve">
     <value>Personal Data</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="RenamePasskey" xml:space="preserve">
+    <value>Rename a passkey</value>
+  </data>
   <data name="ResetAuthenticator" xml:space="preserve">
     <value>Reset Authenticator Key</value>
+  </data>
+  <data name="SetPassword" xml:space="preserve">
+    <value>Set password</value>
   </data>
 </root>

@@ -10,7 +10,15 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<EnableAuthenticator<TUser>> Logger
 
-<PageTitle>Configure authenticator app</PageTitle>
+<PageTitle>@Manage.EnableAuthenticator</PageTitle>
+
+<FluentBreadcrumb>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage.TwoFactorAuthentication</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.EnableAuthenticator">@Manage.EnableAuthenticator</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.EnableAuthenticator</FluentLabel>
 
 @if (_recoveryCodes is not null)
 {
@@ -19,38 +27,36 @@
 else
 {
    <StatusMessage Message="@_message" />
-    <h3>Configure authenticator app</h3>
     <FluentGrid>
         <FluentGridItem xs="12" sm="6">
-            <p>To use an authenticator app go through the following steps:</p>
+            <p>@EnableAuthenticator_razor.StepsTitle</p>
             <ol class="list">
                 <li>
                     <p>
-                        Download a two-factor authenticator app like Microsoft Authenticator for
-                        <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
-                        <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> or
-                        Google Authenticator for
-                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> and
-                        <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
+                        @EnableAuthenticator_razor.Step1
+                        <a href="https://go.microsoft.com/fwlink/?Linkid=825072">@EnableAuthenticator_razor.Android</a> and
+                        <a href="https://go.microsoft.com/fwlink/?Linkid=825073">@EnableAuthenticator_razor.iOS</a>
+                        @EnableAuthenticator_razor.OrGoogleAuthenticator
+                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">@EnableAuthenticator_razor.Android</a> and
+                        <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">@EnableAuthenticator_razor.iOS</a>.
                     </p>
                 </li>
                 <li>
-                    <p>Scan the QR Code or enter this key <kbd>@_sharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
-                    <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div>
+                    <p>@EnableAuthenticator_razor.Step2Part1 <kbd>@_sharedKey</kbd> @EnableAuthenticator_razor.Step2Part2</p>
+                    <div class="alert alert-info">@EnableAuthenticator_razor.LearnHowTo <a href="https://go.microsoft.com/fwlink/?Linkid=852423">@EnableAuthenticator_razor.EnableQRCodeGeneration</a>.</div>
                     <div></div>
                     <div data-url="@_authenticatorUri"></div>
                 </li>
                 <li>
                     <p>
-                        Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
-                        with a unique code. Enter the code in the confirmation box below.
+                        @EnableAuthenticator_razor.Step3
                     </p>
 
                     <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
-                        <FluentTextField Name="Input.Code" @bind-Value="Input.Code" AutoComplete="off" Placeholder="Please enter the code." Style="width: 100%;" />
+                        <FluentTextField Name="Input.Code" @bind-Value="Input.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
                         <FluentValidationMessage For="() => Input.Code" class="text-danger" />
-                        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Verify</FluentButton>
+                        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</FluentButton>
                         <ValidationSummary class="text-danger" role="alert" />
                     </EditForm>
                 </li>
@@ -91,7 +97,7 @@ else
 
         if (!is2FaTokenValid)
         {
-            _message = "Error: Verification code is invalid.";
+            _message = EnableAuthenticator_razor.ErrorInvalidCode;
             return;
         }
 
@@ -99,7 +105,7 @@ else
         var userId = await UserManager.GetUserIdAsync(_user);
         Logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
 
-        _message = "Your authenticator app has been verified.";
+        _message = EnableAuthenticator_razor.SuccessMessage;
 
         if (await UserManager.CountRecoveryCodesAsync(_user) == 0)
         {
@@ -107,7 +113,7 @@ else
         }
         else
         {
-            RedirectManager.RedirectToWithStatus("Account/Manage/TwoFactorAuthentication", _message, HttpContext);
+            RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.TwoFactorAuthentication, _message, HttpContext);
         }
     }
 
@@ -157,9 +163,9 @@ else
     private sealed class InputModel
     {
         [Required]
-        [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(7, ErrorMessageResourceName = nameof(EnableAuthenticator_razor.CodeLengthError), ErrorMessageResourceType = typeof(EnableAuthenticator_razor), MinimumLength = 6)]
         [DataType(DataType.Text)]
-        [Display(Name = "Verification Code")]
+        [Display(Name = nameof(EnableAuthenticator_razor.VerificationCodeLabel), ResourceType = typeof(EnableAuthenticator_razor))]
         public string Code { get; set; } = "";
     }
 }
