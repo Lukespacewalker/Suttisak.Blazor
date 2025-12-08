@@ -59,7 +59,7 @@ else
         }
     }
 
-    private async Task OnSubmitAsync()
+    protected virtual async Task OnSubmitAsync()
     {
         var userId = await UserManager.GetUserIdAsync(_user);
         _recoveryCodes = await UserManager.GenerateNewTwoFactorRecoveryCodesAsync(_user, 10);

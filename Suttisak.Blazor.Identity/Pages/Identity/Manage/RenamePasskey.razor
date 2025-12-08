@@ -43,7 +43,7 @@
 	public string? Id { get; set; }
 
 	[SupplyParameterFromForm]
-	private InputModel Input { get; set; } = null!;
+    protected virtual InputModel Input { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -75,7 +75,7 @@
 		}
 	}
 
-	private async Task Rename()
+	protected virtual async Task Rename()
 	{
 		_passkey!.Name = Input.Name;
 		var result = await UserManager.AddOrUpdatePasskeyAsync(_user!, _passkey);
@@ -88,7 +88,7 @@
 		RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.SuccessUpdate, HttpContext);
 	}
 
-	private sealed class InputModel
+	protected class InputModel
 	{
 		[Required]
 		[StringLength(200, ErrorMessageResourceType = typeof(RenamePasskey_razor), ErrorMessageResourceName = nameof(RenamePasskey_razor.ErrorNameLength))]

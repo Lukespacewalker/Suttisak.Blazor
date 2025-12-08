@@ -50,7 +50,7 @@
         }
     }
 
-    private async Task OnSubmitAsync()
+    protected virtual async Task OnSubmitAsync()
     {
         var disable2FaResult = await UserManager.SetTwoFactorEnabledAsync(_user, false);
         if (!disable2FaResult.Succeeded)
