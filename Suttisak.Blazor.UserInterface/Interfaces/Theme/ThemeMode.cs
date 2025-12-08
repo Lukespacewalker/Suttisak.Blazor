@@ -1,4 +1,4 @@
-﻿namespace Suttisak.BlazorUI.Interfaces.Theme;
+﻿namespace Suttisak.Blazor.UserInterface.Interfaces.Theme;
 
 public enum ThemeMode
 {

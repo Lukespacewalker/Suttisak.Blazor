@@ -1,7 +1,7 @@
 ﻿@typeparam TUser where TUser : class
 
 @using System.Buffers.Text
-@using Suttisak.BlazorUI.Region.Identity
+@using Suttisak.Blazor.UserInterface.Region.Identity
 
 @inject UserManager<TUser> UserManager
 @inject SignInManager<TUser> SignInManager
@@ -10,8 +10,8 @@
 <PageTitle>Passkeys</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@AppRoutes.Account.Root">Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@AppRoutes.Account.Passkeys">Passkeys</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Passkeys">Passkeys</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 <FluentLabel Typo="Typography.PageTitle">Passkeys</FluentLabel>
 

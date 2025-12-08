@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Suttisak.BlazorUI.Region.Identity;
+namespace Suttisak.Blazor.UserInterface.Region.Identity;
 
 public sealed class InputModel
 {

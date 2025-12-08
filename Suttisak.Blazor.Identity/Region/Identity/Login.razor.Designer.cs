@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Suttisak.BlazorUI.Region.Identity {
+namespace Suttisak.Blazor.Identity.Region.Identity {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Suttisak.BlazorUI.Region.Identity {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ConfirmEmail_razor {
+    public class Login_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ConfirmEmail_razor() {
+        internal Login_razor() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Suttisak.BlazorUI.Region.Identity {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.BlazorUI.Region.Identity.ConfirmEmail.razor", typeof(ConfirmEmail_razor).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Region.Identity.Login.razor", typeof(Login_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,47 @@ namespace Suttisak.BlazorUI.Region.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm email.
+        ///   Looks up a localized string similar to Login.
         /// </summary>
-        public static string ConfirmEmail {
+        public static string Login {
             get {
-                return ResourceManager.GetString("ConfirmEmail", resourceCulture);
+                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error confirming your email..
+        ///   Looks up a localized string similar to Login with Passkey.
         /// </summary>
-        public static string ErrorConfirmingYourEmail {
+        public static string Passkey {
             get {
-                return ResourceManager.GetString("ErrorConfirmingYourEmail", resourceCulture);
+                return ResourceManager.GetString("Passkey", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error loading user with Id {0}.
+        ///   Looks up a localized string similar to Password.
         /// </summary>
-        public static string ErrorLoadingUserWithId {
+        public static string Password {
             get {
-                return ResourceManager.GetString("ErrorLoadingUserWithId", resourceCulture);
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thank you for confirming your email..
+        ///   Looks up a localized string similar to Remember me.
         /// </summary>
-        public static string ThankYoyforConfirmingYourEmail {
+        public static string RememberMe {
             get {
-                return ResourceManager.GetString("ThankYoyforConfirmingYourEmail", resourceCulture);
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
     }

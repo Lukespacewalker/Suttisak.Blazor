@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Suttisak.BlazorUI.Services;
+namespace Suttisak.Blazor.Identity;
 
 public sealed class IdentityRedirectManager<TUser>(NavigationManager navigationManager) : IdentityRedirectManager(navigationManager) where TUser : class
 {

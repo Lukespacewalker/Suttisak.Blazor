@@ -1,11 +1,9 @@
-@using Suttisak.BlazorUI.Components.Identity
-
 <section>
-    <h1>@ConfirmEmail_razor.ConfirmEmail</h1>
+    <h1>@ConfirmEmailChange_razor.ConfirmEmailChange</h1>
     <StatusMessage Message="@StatusMessage" />
 </section>
 
-@code{
+@code {
     [Parameter]
     public string? StatusMessage { get; set; }
 }

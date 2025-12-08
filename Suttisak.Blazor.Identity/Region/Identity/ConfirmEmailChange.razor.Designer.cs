@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Suttisak.Blazor.UserInterface.Region.Identity {
+namespace Suttisak.Blazor.Identity.Region.Identity {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Suttisak.Blazor.UserInterface.Region.Identity {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Login_razor {
+    public class ConfirmEmailChange_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Login_razor() {
+        internal ConfirmEmailChange_razor() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Suttisak.Blazor.UserInterface.Region.Identity {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.UserInterface.Region.Identity.Login.razor", typeof(Login_razor).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Region.Identity.ConfirmEmailChange.razor", typeof(ConfirmEmailChange_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,56 @@ namespace Suttisak.Blazor.UserInterface.Region.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to Confirm email change.
         /// </summary>
-        public static string Login {
+        public static string ConfirmEmailChange {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("ConfirmEmailChange", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login with Passkey.
+        ///   Looks up a localized string similar to Error changing email..
         /// </summary>
-        public static string Passkey {
+        public static string ErrorChangingEmail {
             get {
-                return ResourceManager.GetString("Passkey", resourceCulture);
+                return ResourceManager.GetString("ErrorChangingEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
+        ///   Looks up a localized string similar to Error changing user name.
         /// </summary>
-        public static string Password {
+        public static string ErrorChangingUserName {
             get {
-                return ResourceManager.GetString("Password", resourceCulture);
+                return ResourceManager.GetString("ErrorChangingUserName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remember me.
+        ///   Looks up a localized string similar to Error: Invalid email change confirmation link.
         /// </summary>
-        public static string RememberMe {
+        public static string InvalidEmailChangeConfirmationLink {
             get {
-                return ResourceManager.GetString("RememberMe", resourceCulture);
+                return ResourceManager.GetString("InvalidEmailChangeConfirmationLink", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username.
+        ///   Looks up a localized string similar to Thank you for confirming your email change..
         /// </summary>
-        public static string Username {
+        public static string ThankYouForConfirmingEmailChange {
             get {
-                return ResourceManager.GetString("Username", resourceCulture);
+                return ResourceManager.GetString("ThankYouForConfirmingEmailChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find user with Id {0}.
+        /// </summary>
+        public static string UnableToFindUser {
+            get {
+                return ResourceManager.GetString("UnableToFindUser", resourceCulture);
             }
         }
     }

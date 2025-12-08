@@ -1,6 +1,6 @@
 ﻿@inject IThemeService ThemeService
-@using Suttisak.BlazorUI.Interfaces.Theme
 
+@using Suttisak.Blazor.UserInterface.Interfaces.Theme
 @implements IDisposable
 <FluentDesignTheme @bind-Mode="@ThemeService.ThemeConfiguration" StorageName="theme" OnLuminanceChanged="Callback" />
 <button class="button stealth circle" style="height:34px;width:34px;align-items:center;justify-content:center;" @onclick="CycleTheme">
