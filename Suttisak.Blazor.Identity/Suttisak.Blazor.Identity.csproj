@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.20</AssemblyVersion>
+		<AssemblyVersion>0.1.21</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -29,6 +29,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Pages\Identity\Manage\ChangePassword.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ChangePassword.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\Manage\DeletePersonalData.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>DeletePersonalData.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\Manage\Manage.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Manage.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Region\Identity\ConfirmEmail.razor.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -47,6 +62,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="Pages\Identity\Manage\ChangePassword.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ChangePassword.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\Manage\DeletePersonalData.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>DeletePersonalData.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\Manage\Manage.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Manage.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Region\Identity\ConfirmEmail.razor.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>ConfirmEmail.razor.Designer.cs</LastGenOutput>
