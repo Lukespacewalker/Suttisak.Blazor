@@ -7,7 +7,11 @@ public static class IdentityRoutes
     public static class Account
     {
         public const string Root = "/Account";
+
+
         public const string Profile = $"{Root}/Manage";
+        public const string Logout = $"{Root}/Logout";
+        public const string Login = $"{Root}/Login";
 
         public static class Manage
         {
@@ -29,9 +33,6 @@ public static class IdentityRoutes
             public const string EnableAuthenticator = $"{Root}/EnableAuthenticator";
             public const string DisableTwoFactorAuthentication = $"{Root}/DisableTwoFactorAuthentication";
             public const string GenerateRecoveryCodes = $"{Root}/GenerateRecoveryCodes";
-
-            
-            
         }
     }
 
