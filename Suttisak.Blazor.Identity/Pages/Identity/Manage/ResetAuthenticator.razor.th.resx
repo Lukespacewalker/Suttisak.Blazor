@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,22 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Account" xml:space="preserve">
-    <value>บัญชี</value>
+  <data name="ConfirmationMessage" xml:space="preserve">
+    <value>คีย์แอปยืนยันตัวตนของคุณถูกรีเซ็ตแล้ว คุณจะต้องกำหนดค่าแอปยืนยันตัวตนของคุณโดยใช้คีย์ใหม่</value>
   </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>เปลี่ยนรหัสผ่าน</value>
-  </data>
-  <data name="DeletePersonalData" xml:space="preserve">
-    <value>ลบข้อมูลส่วนตัว</value>
-  </data>
-  <data name="PersonalData" xml:space="preserve">
-    <value>ข้อมูลส่วนตัว</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>โปรไฟล์</value>
-  </data>
-  <data name="ResetAuthenticator" xml:space="preserve">
+  <data name="SubmitButton" xml:space="preserve">
     <value>รีเซ็ตคีย์ยืนยันตัวตน</value>
+  </data>
+  <data name="WarningBody" xml:space="preserve">
+    <value>กระบวนการนี้จะปิดใช้งาน 2FA จนกว่าคุณจะยืนยันแอปยืนยันตัวตนของคุณ หากคุณไม่กำหนดค่าแอปยืนยันตัวตนให้เสร็จสิ้น คุณอาจสูญเสียการเข้าถึงบัญชีของคุณ</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>หากคุณรีเซ็ตคีย์ยืนยันตัวตน แอปยืนยันตัวตนของคุณจะไม่ทำงานจนกว่าคุณจะกำหนดค่าใหม่</value>
   </data>
 </root>

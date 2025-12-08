@@ -126,7 +126,13 @@
   <data name="DeletePersonalData" xml:space="preserve">
     <value>Delete Personal Data</value>
   </data>
+  <data name="PersonalData" xml:space="preserve">
+    <value>Personal Data</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="ResetAuthenticator" xml:space="preserve">
+    <value>Reset Authenticator Key</value>
   </data>
 </root>

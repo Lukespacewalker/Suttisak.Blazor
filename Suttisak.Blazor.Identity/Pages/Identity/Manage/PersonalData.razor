@@ -1,32 +1,34 @@
 ﻿@typeparam TUser where TUser : class
+@using Microsoft.Extensions.Localization
 @inject IdentityUserAccessor<TUser> UserAccessor
 
-<PageTitle>Personal Data</PageTitle>
+<PageTitle>@Manage.PersonalData</PageTitle>
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">Profile</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.PersonalData">Personal Data</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">@Manage.Profile</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.PersonalData">@Manage.PersonalData</FluentBreadcrumbItem>
 </FluentBreadcrumb>
-<FluentLabel Typo="Typography.PageTitle">Personal Data</FluentLabel>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.PersonalData</FluentLabel>
 
 <StatusMessage />
 
 <FluentGrid>
     <FluentGridItem xs="12" sm="6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
+        <p>@PersonalData_razor.Description</p>
         <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+            <strong>@PersonalData_razor.Warning</strong>
         </p>
-        <form action="Account/Manage/DownloadPersonalData" method="post">
+        <form action="@IdentityRoutes.Api.DownloadPersonalData" method="post">
             <AntiforgeryToken />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width:20%;">Download</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width:20%;">@PersonalData_razor.DownloadButton</FluentButton>
         </form>
         
         <hr />
         
         <p>
-            <FluentAnchor Href="Account/Manage/DeletePersonalData" Style="width:20%;">Delete</FluentAnchor>
+            <FluentAnchor Href="@IdentityRoutes.Account.Manage.DeletePersonalData" Style="width:20%;">@PersonalData_razor.DeleteLink</FluentAnchor>
         </p>
     </FluentGridItem>
 </FluentGrid>
