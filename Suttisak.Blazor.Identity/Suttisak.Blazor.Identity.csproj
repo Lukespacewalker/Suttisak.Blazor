@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.22</AssemblyVersion>
+		<AssemblyVersion>0.1.23</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -44,6 +44,16 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Manage.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Pages\Identity\Manage\PersonalData.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>PersonalData.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\Manage\ResetAuthenticator.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ResetAuthenticator.razor.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Region\Identity\ConfirmEmail.razor.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -73,6 +83,14 @@
 		<EmbeddedResource Update="Pages\Identity\Manage\Manage.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>Manage.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\Manage\PersonalData.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>PersonalData.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\Manage\ResetAuthenticator.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ResetAuthenticator.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Region\Identity\ConfirmEmail.razor.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

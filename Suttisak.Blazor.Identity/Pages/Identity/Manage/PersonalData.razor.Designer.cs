@@ -22,14 +22,14 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Manage {
+    public class PersonalData_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Manage() {
+        internal PersonalData_razor() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Manage.Manage", typeof(Manage).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Manage.PersonalData.razor", typeof(PersonalData_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,38 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
-        public static string Account {
+        public static string DeleteLink {
             get {
-                return ResourceManager.GetString("Account", resourceCulture);
+                return ResourceManager.GetString("DeleteLink", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change password.
+        ///   Looks up a localized string similar to Your account contains personal data that you have given us. This page allows you to download or delete that data..
         /// </summary>
-        public static string ChangePassword {
+        public static string Description {
             get {
-                return ResourceManager.GetString("ChangePassword", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Personal Data.
+        ///   Looks up a localized string similar to Download.
         /// </summary>
-        public static string DeletePersonalData {
+        public static string DownloadButton {
             get {
-                return ResourceManager.GetString("DeletePersonalData", resourceCulture);
+                return ResourceManager.GetString("DownloadButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Personal Data.
+        ///   Looks up a localized string similar to Deleting this data will permanently remove your account, and this cannot be recovered..
         /// </summary>
-        public static string PersonalData {
+        public static string Warning {
             get {
-                return ResourceManager.GetString("PersonalData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile.
-        /// </summary>
-        public static string Profile {
-            get {
-                return ResourceManager.GetString("Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset Authenticator Key.
-        /// </summary>
-        public static string ResetAuthenticator {
-            get {
-                return ResourceManager.GetString("ResetAuthenticator", resourceCulture);
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

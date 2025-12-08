@@ -6,24 +6,31 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ResetAuthenticator<TUser>> Logger
 
-<PageTitle>Reset authenticator key</PageTitle>
+<PageTitle>@Manage.ResetAuthenticator</PageTitle>
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">@Manage.Profile</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.ResetAuthenticator">@Manage.ResetAuthenticator</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.ResetAuthenticator</FluentLabel>
 
 <StatusMessage />
-<h3>Reset authenticator key</h3>
+
 <div class="alert alert-warning" role="alert">
     <p>
         <span class="glyphicon glyphicon-warning-sign"></span>
-        <strong>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</strong>
+        <strong>@ResetAuthenticator_razor.WarningTitle</strong>
     </p>
     <p>
-        This process disables 2FA until you verify your authenticator app.
-        If you do not complete your authenticator app configuration you may lose access to your account.
+        @ResetAuthenticator_razor.WarningBody
     </p>
 </div>
 <div>
     <form @formname="reset-authenticator" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken />
-        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Reset authenticator key</FluentButton>
+        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">@ResetAuthenticator_razor.SubmitButton</FluentButton>
     </form>
 </div>
 
@@ -43,7 +50,7 @@
 
         RedirectManager.RedirectToWithStatus(
             "Account/Manage/EnableAuthenticator",
-            "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.",
+            ResetAuthenticator_razor.ConfirmationMessage,
             HttpContext);
     }
 }

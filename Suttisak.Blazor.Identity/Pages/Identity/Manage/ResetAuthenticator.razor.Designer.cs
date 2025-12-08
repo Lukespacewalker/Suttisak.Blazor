@@ -22,14 +22,14 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Manage {
+    public class ResetAuthenticator_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Manage() {
+        internal ResetAuthenticator_razor() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Manage.Manage", typeof(Manage).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Manage.ResetAuthenticator.razor", typeof(ResetAuthenticator_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,38 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account.
+        ///   Looks up a localized string similar to Your authenticator app key has been reset, you will need to configure your authenticator app using the new key..
         /// </summary>
-        public static string Account {
+        public static string ConfirmationMessage {
             get {
-                return ResourceManager.GetString("Account", resourceCulture);
+                return ResourceManager.GetString("ConfirmationMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change password.
+        ///   Looks up a localized string similar to Reset authenticator key.
         /// </summary>
-        public static string ChangePassword {
+        public static string SubmitButton {
             get {
-                return ResourceManager.GetString("ChangePassword", resourceCulture);
+                return ResourceManager.GetString("SubmitButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Personal Data.
+        ///   Looks up a localized string similar to This process disables 2FA until you verify your authenticator app. If you do not complete your authenticator app configuration you may lose access to your account..
         /// </summary>
-        public static string DeletePersonalData {
+        public static string WarningBody {
             get {
-                return ResourceManager.GetString("DeletePersonalData", resourceCulture);
+                return ResourceManager.GetString("WarningBody", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Personal Data.
+        ///   Looks up a localized string similar to If you reset your authenticator key your authenticator app will not work until you reconfigure it..
         /// </summary>
-        public static string PersonalData {
+        public static string WarningTitle {
             get {
-                return ResourceManager.GetString("PersonalData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile.
-        /// </summary>
-        public static string Profile {
-            get {
-                return ResourceManager.GetString("Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset Authenticator Key.
-        /// </summary>
-        public static string ResetAuthenticator {
-            get {
-                return ResourceManager.GetString("ResetAuthenticator", resourceCulture);
+                return ResourceManager.GetString("WarningTitle", resourceCulture);
             }
         }
     }
