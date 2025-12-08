@@ -22,14 +22,14 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Manage {
+    public class SetPassword_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Manage() {
+        internal SetPassword_razor() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Manage.Manage", typeof(Manage).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Manage.SetPassword.razor", typeof(SetPassword_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,137 +61,101 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account.
+        ///   Looks up a localized string similar to Confirm new password.
         /// </summary>
-        public static string Account {
+        public static string ConfirmPasswordDisplayName {
             get {
-                return ResourceManager.GetString("Account", resourceCulture);
+                return ResourceManager.GetString("ConfirmPasswordDisplayName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change password.
+        ///   Looks up a localized string similar to Confirm password.
         /// </summary>
-        public static string ChangePassword {
+        public static string ConfirmPasswordLabel {
             get {
-                return ResourceManager.GetString("ChangePassword", resourceCulture);
+                return ResourceManager.GetString("ConfirmPasswordLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Personal Data.
+        ///   Looks up a localized string similar to Please confirm your new password..
         /// </summary>
-        public static string DeletePersonalData {
+        public static string ConfirmPasswordPlaceholder {
             get {
-                return ResourceManager.GetString("DeletePersonalData", resourceCulture);
+                return ResourceManager.GetString("ConfirmPasswordPlaceholder", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable two-factor authentication (2FA).
+        ///   Looks up a localized string similar to The {0} must be at least {2} and at max {1} characters long..
         /// </summary>
-        public static string DisableTwoFactorAuthentication {
+        public static string ErrorPasswordLength {
             get {
-                return ResourceManager.GetString("DisableTwoFactorAuthentication", resourceCulture);
+                return ResourceManager.GetString("ErrorPasswordLength", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage email.
+        ///   Looks up a localized string similar to The new password and confirmation password do not match..
         /// </summary>
-        public static string Email {
+        public static string ErrorPasswordMismatch {
             get {
-                return ResourceManager.GetString("Email", resourceCulture);
+                return ResourceManager.GetString("ErrorPasswordMismatch", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configure authenticator app.
+        ///   Looks up a localized string similar to New password.
         /// </summary>
-        public static string EnableAuthenticator {
+        public static string NewPasswordDisplayName {
             get {
-                return ResourceManager.GetString("EnableAuthenticator", resourceCulture);
+                return ResourceManager.GetString("NewPasswordDisplayName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manage your external logins.
+        ///   Looks up a localized string similar to New password.
         /// </summary>
-        public static string ExternalLogins {
+        public static string NewPasswordLabel {
             get {
-                return ResourceManager.GetString("ExternalLogins", resourceCulture);
+                return ResourceManager.GetString("NewPasswordLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generate two-factor authentication (2FA) recovery codes.
+        ///   Looks up a localized string similar to Please enter your new password..
         /// </summary>
-        public static string GenerateRecoveryCodes {
+        public static string NewPasswordPlaceholder {
             get {
-                return ResourceManager.GetString("GenerateRecoveryCodes", resourceCulture);
+                return ResourceManager.GetString("NewPasswordPlaceholder", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passkeys.
+        ///   Looks up a localized string similar to You do not have a local username/password for this site. Add a local account so you can log in without an external login..
         /// </summary>
-        public static string Passkeys {
+        public static string NoLocalAccountMessage {
             get {
-                return ResourceManager.GetString("Passkeys", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Personal Data.
-        /// </summary>
-        public static string PersonalData {
-            get {
-                return ResourceManager.GetString("PersonalData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile.
-        /// </summary>
-        public static string Profile {
-            get {
-                return ResourceManager.GetString("Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rename a passkey.
-        /// </summary>
-        public static string RenamePasskey {
-            get {
-                return ResourceManager.GetString("RenamePasskey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset Authenticator Key.
-        /// </summary>
-        public static string ResetAuthenticator {
-            get {
-                return ResourceManager.GetString("ResetAuthenticator", resourceCulture);
+                return ResourceManager.GetString("NoLocalAccountMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Set password.
         /// </summary>
-        public static string SetPassword {
+        public static string SetPasswordButton {
             get {
-                return ResourceManager.GetString("SetPassword", resourceCulture);
+                return ResourceManager.GetString("SetPasswordButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Two-factor authentication (2FA).
+        ///   Looks up a localized string similar to Your password has been set..
         /// </summary>
-        public static string TwoFactorAuthentication {
+        public static string SuccessMessage {
             get {
-                return ResourceManager.GetString("TwoFactorAuthentication", resourceCulture);
+                return ResourceManager.GetString("SuccessMessage", resourceCulture);
             }
         }
     }

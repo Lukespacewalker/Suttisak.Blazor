@@ -5,29 +5,31 @@
 @inject UserManager<TUser> UserManager
 @inject IdentityRedirectManager<TUser> RedirectManager
 
-<PageTitle>Rename a passkey</PageTitle>
-@RendererInfo.Name
+<PageTitle>@Manage.RenamePasskey</PageTitle>
+
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">Passkeys</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem>Rename a passkey</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">@Manage.Passkeys</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.RenamePasskeyTemplate">@Manage.RenamePasskey</FluentBreadcrumbItem>
+
 </FluentBreadcrumb>
-<FluentLabel Typo="Typography.PageTitle">Rename a passkey</FluentLabel>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.RenamePasskey</FluentLabel>
 
 <EditForm Model="Input" OnValidSubmit="Rename" FormName="rename-passkey" method="post">
 	<DataAnnotationsValidator />
 	@if (_passkey?.Name is { } name)
 	{
-		<h4>Enter a new name for your "@name" passkey</h4>
+		<h4>@string.Format(RenamePasskey_razor.EnterNewName, name)</h4>
 	}
 	else
 	{
-		<h4>Enter a name for your passkey</h4>
+		<h4>@RenamePasskey_razor.EnterName</h4>
 	}
 	<ValidationSummary class="text-danger" role="alert" />
-	<FluentTextField Label="Passkey name" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="My passkey" />
+	<FluentTextField Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
 	<ValidationMessage For="() => Input.Name" class="text-danger" />
-	<FluentButton Type="ButtonType.Submit">Continue</FluentButton>
+	<FluentButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</FluentButton>
 </EditForm>
 
 @code {
@@ -61,14 +63,14 @@
 		}
 		catch (FormatException)
 		{
-			RedirectManager.RedirectToWithStatus("Account/Manage/Passkeys", "Error: The specified passkey ID had an invalid format.", HttpContext);
+			RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorInvalidFormat, HttpContext);
 			return;
 		}
 
 		_passkey = await UserManager.GetPasskeyAsync(_user, credentialId);
 		if (_passkey is null)
 		{
-			RedirectManager.RedirectToWithStatus("Account/Manage/Passkeys", "Error: The specified passkey could not be found.", HttpContext);
+			RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorNotFound, HttpContext);
 			return;
 		}
 	}
@@ -79,17 +81,17 @@
 		var result = await UserManager.AddOrUpdatePasskeyAsync(_user!, _passkey);
 		if (!result.Succeeded)
 		{
-			RedirectManager.RedirectToWithStatus("Account/Manage/Passkeys", "Error: The passkey could not be updated.", HttpContext);
+			RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorUpdateFailed, HttpContext);
 			return;
 		}
 
-		RedirectManager.RedirectToWithStatus("Account/Manage/Passkeys", "Passkey updated successfully.", HttpContext);
+		RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.SuccessUpdate, HttpContext);
 	}
 
 	private sealed class InputModel
 	{
 		[Required]
-		[StringLength(200, ErrorMessage = "Passkey names must be no longer than {1} characters.")]
+		[StringLength(200, ErrorMessageResourceType = typeof(RenamePasskey_razor), ErrorMessageResourceName = nameof(RenamePasskey_razor.ErrorNameLength))]
 		public string Name { get; set; } = "";
 	}
 }

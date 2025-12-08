@@ -8,12 +8,19 @@
 @inject IUserStore<TUser> UserStore
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Manage your external logins</PageTitle>
+<PageTitle>@Manage.ExternalLogins</PageTitle>
+
+<FluentBreadcrumb>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.ExternalLogins">@Manage.ExternalLogins</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.ExternalLogins</FluentLabel>
 
 <StatusMessage />
 @if (_currentLogins?.Count > 0)
 {
-    <h3>Registered Logins</h3>
+    <h3>@ExternalLogins_razor.RegisteredLogins</h3>
     <table class="table">
         <tbody>
             @foreach (var login in _currentLogins)
@@ -28,7 +35,7 @@
                                 <div>
                                     <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider" />
                                     <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey" />
-                                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Title="@($"Remove this {login.ProviderDisplayName} login from your account")">Remove</FluentButton>
+                                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</FluentButton>
                                 </div>
                             </form>
                         }
@@ -44,7 +51,7 @@
 }
 @if (_otherLogins?.Count > 0)
 {
-    <h4>Add another service to log in.</h4>
+    <h4>@ExternalLogins_razor.AddAnotherService</h4>
     <hr />
     <form class="form-horizontal" action="Account/Manage/LinkExternalLogin" method="post">
         <AntiforgeryToken />
@@ -52,7 +59,7 @@
             <p>
                 @foreach (var provider in _otherLogins)
                 {
-                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Name="Provider" Value="@provider.Name" Title="@($"Log in using your {provider.DisplayName} account")">
+                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
                         @provider.DisplayName
                     </FluentButton>
                 }
@@ -108,11 +115,11 @@
         var result = await UserManager.RemoveLoginAsync(_user, LoginProvider!, ProviderKey!);
         if (!result.Succeeded)
         {
-            RedirectManager.RedirectToCurrentPageWithStatus("Error: The external login was not removed.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorRemoveLogin, HttpContext);
         }
 
         await SignInManager.RefreshSignInAsync(_user);
-        RedirectManager.RedirectToCurrentPageWithStatus("The external login was removed.", HttpContext);
+        RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.LoginRemoved, HttpContext);
     }
 
     private async Task OnGetLinkLoginCallbackAsync()
@@ -121,18 +128,18 @@
         var info = await SignInManager.GetExternalLoginInfoAsync(userId);
         if (info is null)
         {
-            RedirectManager.RedirectToCurrentPageWithStatus("Error: Could not load external login info.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorLoadLoginInfo, HttpContext);
         }
 
         var result = await UserManager.AddLoginAsync(_user, info);
         if (!result.Succeeded)
         {
-            RedirectManager.RedirectToCurrentPageWithStatus("Error: The external login was not added. External logins can only be associated with one account.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorAddLogin, HttpContext);
         }
 
         // Clear the existing external cookie to ensure a clean login process
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-        RedirectManager.RedirectToCurrentPageWithStatus("The external login was added.", HttpContext);
+        RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.LoginAdded, HttpContext);
     }
 }

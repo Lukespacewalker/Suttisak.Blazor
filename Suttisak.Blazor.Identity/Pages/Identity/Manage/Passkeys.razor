@@ -6,13 +6,14 @@
 @inject SignInManager<TUser> SignInManager
 @inject IdentityRedirectManager<TUser> RedirectManager
 
-<PageTitle>Passkeys</PageTitle>
+<PageTitle>@Manage.Passkeys</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">Passkeys</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">@Manage.Passkeys</FluentBreadcrumbItem>
 </FluentBreadcrumb>
-<FluentLabel Typo="Typography.PageTitle">Passkeys</FluentLabel>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.Passkeys</FluentLabel>
 
 <StatusMessage />
 
@@ -22,10 +23,10 @@
 		<thead>
 			<tr>
 				<td>
-					Name
+					@Passkeys_razor.NameHeader
 				</td>
 				<td>
-					Action
+					@Passkeys_razor.ActionHeader
 				</td>
 			</tr>
 		</thead>
@@ -33,7 +34,7 @@
 			@foreach (var passkey in _currentPasskeys)
 			{
 				<tr>
-					<td>@(passkey.Name ?? "Unnamed passkey")</td>
+					<td>@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)</td>
 					<td>
 						@{
 							var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
@@ -41,13 +42,13 @@
 						<form @formname="@($"update-passkey-{credentialId}-1")" @onsubmit="UpdatePasskey" method="post">
 							<AntiforgeryToken />
 							<input type="hidden" name="CredentialId" value="@credentialId" />
-							<FluentButton Type="ButtonType.Submit" Name="action" Value="rename" Title="Rename this passkey">Rename</FluentButton>
+							<FluentButton Type="ButtonType.Submit" Name="action" Value="rename" Title="@Passkeys_razor.RenameTitle">@Passkeys_razor.RenameButton</FluentButton>
 						</form>
 						
 						<form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
 							<AntiforgeryToken />
 							<input type="hidden" name="CredentialId" value="@credentialId" />
-							<FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="Remove this passkey from your account">Delete</FluentButton>
+							<FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle">@Passkeys_razor.DeleteButton</FluentButton>
 						</form>
 					</td>
 				</tr>
@@ -57,18 +58,18 @@
 }
 else
 {
-	<p>No passkeys are registered.</p>
+	<p>@Passkeys_razor.NoPasskeys</p>
 }
 
 <form @formname="add-passkey" @onsubmit="AddPasskey" method="post">
 	<AntiforgeryToken />
 	@if (_currentPasskeys is { Count: >= MaxPasskeyCount })
 	{
-		<p class="text-danger">You have reached the maximum number of allowed passkeys. Please delete one before adding a new one.</p>
+		<p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
 	}
 	else
 	{
-		<PasskeySubmit Operation="PasskeyOperation.Create" Name="Input" class="btn btn-primary">Add a new passkey</PasskeySubmit>
+		<PasskeySubmit Operation="PasskeyOperation.Create" Name="Input" class="btn btn-primary">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
 	}
 
 </form>
@@ -120,33 +121,33 @@ else
 
 		if (string.IsNullOrEmpty(Input.CredentialJson))
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus("Error: The browser did not provide a passkey.", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorNoPasskey, HttpContext);
 			return;
 		}
 
 		if (_currentPasskeys!.Count >= MaxPasskeyCount)
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus($"Error: You have reached the maximum number of allowed passkeys.", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorMaxPasskeys, HttpContext);
 			return;
 		}
 
 		var attestationResult = await SignInManager.PerformPasskeyAttestationAsync(Input.CredentialJson);
 		if (!attestationResult.Succeeded)
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus($"Error: Could not add the passkey: {attestationResult.Failure.Message}", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorAddPasskeyFailed, attestationResult.Failure.Message), HttpContext);
 			return;
 		}
 
 		var addPasskeyResult = await UserManager.AddOrUpdatePasskeyAsync(_user, attestationResult.Passkey);
 		if (!addPasskeyResult.Succeeded)
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus("Error: The passkey could not be added to your account.", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorAddPasskeyToAccount, HttpContext);
 			return;
 		}
 
 		// Immediately prompt the user to enter a name for the credential
 		var credentialIdBase64Url = Base64Url.EncodeToString(attestationResult.Passkey.CredentialId);
-		RedirectManager.RedirectTo($"Account/Manage/RenamePasskey/{credentialIdBase64Url}");
+		RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(credentialIdBase64Url));
 	}
 
 	private async Task UpdatePasskey()
@@ -154,13 +155,13 @@ else
 		switch (Action)
 		{
 			case "rename":
-				RedirectManager.RedirectTo($"Account/Manage/RenamePasskey/{CredentialId}");
+				RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(CredentialId));
 				break;
 			case "delete":
 				await DeletePasskey();
 				break;
 			default:
-				RedirectManager.RedirectToCurrentPageWithStatus($"Error: Unknown action '{Action}'.", HttpContext);
+				RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorUnknownAction, Action), HttpContext);
 				break;
 		}
 	}
@@ -180,17 +181,17 @@ else
 		}
 		catch (FormatException)
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus("Error: The specified passkey ID had an invalid format.", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorInvalidPasskeyId, HttpContext);
 			return;
 		}
 
 		var result = await UserManager.RemovePasskeyAsync(_user, credentialId);
 		if (!result.Succeeded)
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus("Error: The passkey could not be deleted.", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorDeletePasskey, HttpContext);
 			return;
 		}
 
-		RedirectManager.RedirectToCurrentPageWithStatus("Passkey deleted successfully.", HttpContext);
+		RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.PasskeyDeleted, HttpContext);
 	}
 }

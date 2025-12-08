@@ -9,14 +9,14 @@
 @inject IEmailSender<TUser> EmailSender
 @inject NavigationManager NavigationManager
 
-<PageTitle>Manage email</PageTitle>
+<PageTitle>@Manage.Email</PageTitle>
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">Profile</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Email">Manage email</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Email">@Manage.Email</FluentBreadcrumbItem>
 </FluentBreadcrumb>
-<FluentLabel Typo="Typography.PageTitle">Manage email</FluentLabel>
+
+<FluentLabel Typo="Typography.PageTitle">@Manage.Email</FluentLabel>
 
 <StatusMessage Message="@_message"/>
 <FluentGrid>
@@ -29,18 +29,18 @@
             <FluentValidationSummary class="text-danger" role="alert" />
             @if (_isEmailConfirmed)
             {
-                <FluentTextField Value="@_email" Placeholder="Please enter your email." Disabled Label="Email" Appearance=FluentInputAppearance.Filled Style="width: 100%">
+                <FluentTextField Value="@_email" Placeholder="@Email_razor.EmailPlaceholder" Disabled Label="@Email_razor.EmailLabel" Appearance=FluentInputAppearance.Filled Style="width: 100%">
                     <span slot="end">✓</span>
                 </FluentTextField>
             }
             else
             {
-                <FluentTextField value="@_email" Placeholder="Please enter your email." Disabled Label="Email" Appearance=FluentInputAppearance.Filled Style="width: 100%" />
-                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Form="send-verification-form" Style="width: 100%">Send verification email</FluentButton>
+                <FluentTextField value="@_email" Placeholder="@Email_razor.EmailPlaceholder" Disabled Label="@Email_razor.EmailLabel" Appearance=FluentInputAppearance.Filled Style="width: 100%" />
+                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</FluentButton>
             }
-            <FluentTextField Name="Input.NewEmail" @bind-Value="Input.NewEmail" AutoComplete="email" Required="true" Placeholder="Please enter new email." Label="New email" Style="width: 100%" />
+            <FluentTextField Name="Input.NewEmail" @bind-Value="Input.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
             <FluentValidationMessage For="() => Input.NewEmail" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Change email</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@Email_razor.ChangeEmailButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
@@ -69,7 +69,7 @@
     {
         if (Input.NewEmail is null || Input.NewEmail == _email)
         {
-            _message = "Your email is unchanged.";
+            _message = Email_razor.EmailUnchangedMessage;
             return;
         }
 
@@ -82,7 +82,7 @@
 
         await EmailSender.SendConfirmationLinkAsync(_user, Input.NewEmail, HtmlEncoder.Default.Encode(callbackUrl));
 
-        _message = "Confirmation link to change email sent. Please check your email.";
+        _message = Email_razor.ConfirmationLinkSentMessage;
     }
 
     private async Task OnSendEmailVerificationAsync()
@@ -101,14 +101,14 @@
 
         await EmailSender.SendConfirmationLinkAsync(_user, _email, HtmlEncoder.Default.Encode(callbackUrl));
 
-        _message = "Verification email sent. Please check your email.";
+        _message = Email_razor.VerificationEmailSentMessage;
     }
 
     private sealed class InputModel
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "New email")]
+        [Display(Name = nameof(Email_razor.NewEmailLabel), ResourceType = typeof(Email_razor))]
         public string? NewEmail { get; set; }
     }
 }
