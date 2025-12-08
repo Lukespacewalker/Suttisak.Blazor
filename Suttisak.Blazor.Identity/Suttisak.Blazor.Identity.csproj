@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.24</AssemblyVersion>
+		<AssemblyVersion>0.1.25</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -29,6 +29,61 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Pages\Identity\AccessDenied.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>AccessDenied.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ConfirmEmail.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ConfirmEmail.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ConfirmEmailChange.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ConfirmEmailChange.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ExternalLogin.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ExternalLogin.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ForgotPassword.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ForgotPassword.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ForgotPasswordConfirmation.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ForgotPasswordConfirmation.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\InvalidPasswordReset.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>InvalidPasswordReset.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\InvalidUser.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>InvalidUser.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\Lockout.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Lockout.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\LoginWith2fa.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>LoginWith2fa.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\LoginWithRecoveryCode.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>LoginWithRecoveryCode.razor.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Pages\Identity\Manage\ChangePassword.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
@@ -104,6 +159,26 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>TwoFactorAuthentication.razor.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Pages\Identity\RegisterConfirmation.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>RegisterConfirmation.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ResendEmailConfirmation.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ResendEmailConfirmation.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ResetPassword.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ResetPassword.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\ResetPasswordConfirmation.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ResetPasswordConfirmation.razor.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Region\Identity\ConfirmEmail.razor.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -122,6 +197,50 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="Pages\Identity\AccessDenied.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>AccessDenied.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ConfirmEmail.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ConfirmEmail.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ConfirmEmailChange.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ConfirmEmailChange.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ExternalLogin.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ExternalLogin.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ForgotPassword.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ForgotPassword.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ForgotPasswordConfirmation.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ForgotPasswordConfirmation.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\InvalidPasswordReset.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>InvalidPasswordReset.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\InvalidUser.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>InvalidUser.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\Lockout.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Lockout.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\LoginWith2fa.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>LoginWith2fa.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\LoginWithRecoveryCode.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>LoginWithRecoveryCode.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\Manage\ChangePassword.razor.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ChangePassword.razor.Designer.cs</LastGenOutput>
@@ -181,6 +300,22 @@
 		<EmbeddedResource Update="Pages\Identity\Manage\TwoFactorAuthentication.razor.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>TwoFactorAuthentication.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\RegisterConfirmation.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>RegisterConfirmation.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ResendEmailConfirmation.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ResendEmailConfirmation.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ResetPassword.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ResetPassword.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\ResetPasswordConfirmation.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ResetPasswordConfirmation.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Region\Identity\ConfirmEmail.razor.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
