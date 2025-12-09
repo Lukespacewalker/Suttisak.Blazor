@@ -8,8 +8,6 @@
 </button>
 
 @code {
-	[Parameter] public Appearance Appearance { get; set; } = Appearance.Neutral;
-
     protected override void OnInitialized()
     {
         ThemeService.ThemeConfigurationChanged += ThemeConfigurationServiceThemeConfigurationChanged;
@@ -28,7 +26,7 @@
 
     private void Callback(LuminanceChangedEventArgs obj)
     {
-        ThemeService.CurrentThemeMode = obj.IsDark ? ThemeMode.Dark : ThemeMode.Light;
+        ThemeService.CurrentThemeMode =  obj.IsDark ? ThemeMode.Dark : ThemeMode.Light;
     }
 
     private Icon CurrentThemeIcon

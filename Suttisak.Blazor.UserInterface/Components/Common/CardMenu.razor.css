@@ -1,0 +1,18 @@
+﻿.card-menu:hover {
+    background: var(--neutral-fill-layer-hover);
+    cursor: pointer;
+}
+
+.card-menu {
+    background: var(--neutral-fill-layer-rest);
+    display: flex;
+    flex-direction: row;
+    border-radius: calc(var(--layer-corner-radius) * 1px);
+    padding: calc(var(--design-unit) * 4px) !important;
+    align-items: center;
+    gap: calc(var(--design-unit) * 4px);
+}
+
+    .card-menu .subtitle {
+        color: var(--neutral-foreground-hint);
+    }
