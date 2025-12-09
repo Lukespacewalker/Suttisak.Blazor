@@ -1,0 +1,6 @@
+﻿@media (max-width: 600px) {
+    .root main-stack {
+        flex-direction: column !important;
+        row-gap: 0 !important;
+    }
+}

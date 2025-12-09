@@ -5,7 +5,7 @@
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-	<div class="root" style="background:none;position:relative">
+	<div class="root" style="position:relative">
 		<FluentLayout>
 			<FluentHeader>
 				<img src="@GlobalDesign.Value.LogoAssetPath" 
@@ -16,7 +16,7 @@
 				               @rendermode="HeaderRenderMode" />
 			</FluentHeader>
 			<FluentBodyContent>
-				<FluentStack Class="main" 
+				<FluentStack Class="main-stack" 
 				             Orientation="Orientation.Horizontal" 
 				             Width="100%" HorizontalGap="0" VerticalGap="0">
 					<SectionOutlet SectionId="NavigationSection" />
