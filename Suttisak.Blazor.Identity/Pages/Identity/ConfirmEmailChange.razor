@@ -6,9 +6,9 @@
 @inject SignInManager<TUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Confirm email change</PageTitle>
+<PageTitle>@ConfirmEmailChange_razor.ConfirmEmailChange</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">Confirm email change</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@ConfirmEmailChange_razor.ConfirmEmailChange</FluentLabel>
 
 <StatusMessage Message="@_message" />
 
@@ -32,13 +32,13 @@
         if (UserId is null || Email is null || Code is null)
         {
             RedirectManager.RedirectToWithStatus(
-                "Account/Login", "Error: Invalid email change confirmation link.", HttpContext);
+                "Account/Login", ConfirmEmailChange_razor.ErrorInvalidLink, HttpContext);
         }
 
         var user = await UserManager.FindByIdAsync(UserId);
         if (user is null)
         {
-            _message = "Unable to find user with Id '{userId}'";
+            _message = string.Format(ConfirmEmailChange_razor.ErrorUserNotFound, UserId);
             return;
         }
 
@@ -46,7 +46,7 @@
         var result = await UserManager.ChangeEmailAsync(user, Email, code);
         if (!result.Succeeded)
         {
-            _message = "Error changing email.";
+            _message = ConfirmEmailChange_razor.ErrorChangingEmail;
             return;
         }
 
@@ -55,11 +55,11 @@
         var setUserNameResult = await UserManager.SetUserNameAsync(user, Email);
         if (!setUserNameResult.Succeeded)
         {
-            _message = "Error changing user name.";
+            _message = ConfirmEmailChange_razor.ErrorChangingUserName;
             return;
         }
 
         await SignInManager.RefreshSignInAsync(user);
-        _message = "Thank you for confirming your email change.";
+        _message = ConfirmEmailChange_razor.ThankYouForConfirming;
     }
 }

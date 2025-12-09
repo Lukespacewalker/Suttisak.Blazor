@@ -7,12 +7,12 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<LoginWith2fa<TUser>> Logger
 
-<PageTitle>Two-factor authentication</PageTitle>
+<PageTitle>@LoginWith2fa_razor.PageTitle</PageTitle>
 
-<h1>Two-factor authentication</h1>
+<h1>@LoginWith2fa_razor.Header</h1>
 <hr />
 <StatusMessage Message="@_message" />
-<p>Your login is protected with an authenticator app. Enter your authenticator code below.</p>
+<p>@LoginWith2fa_razor.InfoMessage</p>
 <FluentGrid>
     <FluentGridItem xs="8" sm="4">
         <EditForm Model="Input" FormName="login-with-2fa" OnValidSubmit="OnValidSubmitAsync" method="post">
@@ -20,16 +20,16 @@
             <input type="hidden" name="RememberMe" value="@RememberMe" />
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.TwoFactorCode" @bind-Value="Input.TwoFactorCode" class="form-control" AutoComplete="off" Label="Authenticator code" Style="width: 100%;" />
+            <FluentTextField Name="Input.TwoFactorCode" @bind-Value="Input.TwoFactorCode" class="form-control" AutoComplete="off" Label="@LoginWith2fa_razor.AuthenticatorCodeLabel" Style="width: 100%;" />
             <FluentValidationMessage For="() => Input.TwoFactorCode" class="text-danger" />
-            <FluentCheckbox Name="Input.RememberMachine" @bind-Value="Input.RememberMachine" Label="Remember this machine" Style="width: 100%;" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Log in</FluentButton>
+            <FluentCheckbox Name="Input.RememberMachine" @bind-Value="Input.RememberMachine" Label="@LoginWith2fa_razor.RememberMachineLabel" Style="width: 100%;" />
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@LoginWith2fa_razor.LoginButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
 <p>
-    Don't have access to your authenticator device? You can
-    <a href="Account/LoginWithRecoveryCode?ReturnUrl=@ReturnUrl">log in with a recovery code</a>.
+    @LoginWith2fa_razor.NoAccessText
+    <a href="Account/LoginWithRecoveryCode?ReturnUrl=@ReturnUrl">@LoginWith2fa_razor.RecoveryCodeLink</a>.
 </p>
 
 @code {
@@ -71,14 +71,14 @@
         else
         {
             Logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", userId);
-            _message = "Error: Invalid authenticator code.";
+            _message = LoginWith2fa_razor.ErrorInvalidCode;
         }
     }
 
     private sealed class InputModel
     {
         [Required]
-        [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(7, ErrorMessageResourceType = typeof(LoginWith2fa_razor), ErrorMessageResourceName = nameof(LoginWith2fa_razor.ValidationMessage), MinimumLength = 6)]
         [DataType(DataType.Text)]
         [Display(Name = "Authenticator code")]
         public string? TwoFactorCode { get; set; }

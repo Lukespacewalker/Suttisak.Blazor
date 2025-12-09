@@ -98,4 +98,34 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="AuthenticatorCodeLabel" xml:space="preserve">
+		<value>รหัสยืนยันตัวตน</value>
+	</data>
+	<data name="ErrorInvalidCode" xml:space="preserve">
+		<value>ข้อผิดพลาด: รหัสยืนยันตัวตนไม่ถูกต้อง</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>การยืนยันตัวตนแบบสองปัจจัย</value>
+	</data>
+	<data name="InfoMessage" xml:space="preserve">
+		<value>การเข้าสู่ระบบของคุณได้รับการปกป้องด้วยแอปยืนยันตัวตน ป้อนรหัสยืนยันตัวตนของคุณด้านล่าง</value>
+	</data>
+	<data name="LoginButton" xml:space="preserve">
+		<value>เข้าสู่ระบบ</value>
+	</data>
+	<data name="NoAccessText" xml:space="preserve">
+		<value>ไม่สามารถเข้าถึงอุปกรณ์ยืนยันตัวตนของคุณใช่หรือไม่? คุณสามารถ</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>การยืนยันตัวตนแบบสองปัจจัย</value>
+	</data>
+	<data name="RecoveryCodeLink" xml:space="preserve">
+		<value>เข้าสู่ระบบด้วยรหัสกู้คืน</value>
+	</data>
+	<data name="RememberMachineLabel" xml:space="preserve">
+		<value>จดจำเครื่องนี้</value>
+	</data>
+	<data name="ValidationMessage" xml:space="preserve">
+		<value>{0} ต้องมีความยาวอย่างน้อย {2} และสูงสุด {1} ตัวอักษร</value>
+	</data>
 </root>

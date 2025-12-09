@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
 		Microsoft ResX Schema
@@ -98,13 +98,13 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="Header" xml:space="preserve">
-		<value>ยืนยันการลืมรหัสผ่าน</value>
+	<data name="Title" xml:space="preserve">
+		<value>Recovery codes</value>
 	</data>
-	<data name="Message" xml:space="preserve">
-		<value>โปรดตรวจสอบอีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน</value>
+	<data name="WarningDescription" xml:space="preserve">
+		<value>If you lose your device and don't have the recovery codes you will lose access to your account.</value>
 	</data>
-	<data name="PageTitle" xml:space="preserve">
-		<value>ยืนยันการลืมรหัสผ่าน</value>
+	<data name="WarningTitle" xml:space="preserve">
+		<value>Put these codes in a safe place.</value>
 	</data>
 </root>

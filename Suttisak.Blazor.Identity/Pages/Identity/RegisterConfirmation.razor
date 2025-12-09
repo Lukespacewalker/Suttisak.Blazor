@@ -7,22 +7,21 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Register confirmation</PageTitle>
+<PageTitle>@RegisterConfirmation_razor.PageTitle</PageTitle>
 
-<h1>Register confirmation</h1>
+<h1>@RegisterConfirmation_razor.Header</h1>
 
 <StatusMessage Message="@_statusMessage" />
 
 @if (_emailConfirmationLink is not null)
 {
     <p>
-        This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-        Normally this would be emailed: <a href="@_emailConfirmationLink">Click here to confirm your account</a>
+        @((MarkupString)string.Format(RegisterConfirmation_razor.NoOpEmailSenderMessage, _emailConfirmationLink))
     </p>
 }
 else
 {
-    <p role="alert">Please check your email to confirm your account.</p>
+    <p role="alert">@RegisterConfirmation_razor.Message</p>
 }
 
 @code {
@@ -51,7 +50,7 @@ else
         if (user is null)
         {
             HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            _statusMessage = "Error finding user for unspecified email";
+            _statusMessage = RegisterConfirmation_razor.ErrorMessage;
         }
         else if (EnableNoOpEmailSender)
         {

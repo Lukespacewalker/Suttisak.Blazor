@@ -59,5 +59,32 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password reset.
+        /// </summary>
+        internal static string Header {
+            get {
+                return ResourceManager.GetString("Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password reset link is invalid..
+        /// </summary>
+        internal static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password reset.
+        /// </summary>
+        internal static string PageTitle {
+            get {
+                return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
     }
 }

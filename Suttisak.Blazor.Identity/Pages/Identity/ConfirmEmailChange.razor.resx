@@ -98,4 +98,22 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="ConfirmEmailChange" xml:space="preserve">
+		<value>Confirm email change</value>
+	</data>
+	<data name="ErrorChangingEmail" xml:space="preserve">
+		<value>Error changing email.</value>
+	</data>
+	<data name="ErrorChangingUserName" xml:space="preserve">
+		<value>Error changing user name.</value>
+	</data>
+	<data name="ErrorInvalidLink" xml:space="preserve">
+		<value>Error: Invalid email change confirmation link.</value>
+	</data>
+	<data name="ErrorUserNotFound" xml:space="preserve">
+		<value>Unable to find user with Id '{0}'</value>
+	</data>
+	<data name="ThankYouForConfirming" xml:space="preserve">
+		<value>Thank you for confirming your email change.</value>
+	</data>
 </root>

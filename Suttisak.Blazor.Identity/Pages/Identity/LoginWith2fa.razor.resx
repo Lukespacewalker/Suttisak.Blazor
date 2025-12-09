@@ -98,4 +98,34 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="AuthenticatorCodeLabel" xml:space="preserve">
+		<value>Authenticator code</value>
+	</data>
+	<data name="ErrorInvalidCode" xml:space="preserve">
+		<value>Error: Invalid authenticator code.</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>Two-factor authentication</value>
+	</data>
+	<data name="InfoMessage" xml:space="preserve">
+		<value>Your login is protected with an authenticator app. Enter your authenticator code below.</value>
+	</data>
+	<data name="LoginButton" xml:space="preserve">
+		<value>Log in</value>
+	</data>
+	<data name="NoAccessText" xml:space="preserve">
+		<value>Don't have access to your authenticator device? You can</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>Two-factor authentication</value>
+	</data>
+	<data name="RecoveryCodeLink" xml:space="preserve">
+		<value>log in with a recovery code</value>
+	</data>
+	<data name="RememberMachineLabel" xml:space="preserve">
+		<value>Remember this machine</value>
+	</data>
+	<data name="ValidationMessage" xml:space="preserve">
+		<value>The {0} must be at least {2} and at max {1} characters long.</value>
+	</data>
 </root>

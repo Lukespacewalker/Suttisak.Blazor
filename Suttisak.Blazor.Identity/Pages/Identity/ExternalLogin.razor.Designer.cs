@@ -59,5 +59,104 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Associate your {0} account..
+        /// </summary>
+        internal static string AssociateAccount {
+            get {
+                return ResourceManager.GetString("AssociateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You&apos;ve successfully authenticated with &lt;strong&gt;{0}&lt;/strong&gt;. Please enter an email address for this site below and click the Register button to finish logging in..
+        /// </summary>
+        internal static string AuthenticatedMessage {
+            get {
+                return ResourceManager.GetString("AuthenticatedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        internal static string EmailLabel {
+            get {
+                return ResourceManager.GetString("EmailLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your email..
+        /// </summary>
+        internal static string EmailPlaceholder {
+            get {
+                return ResourceManager.GetString("EmailPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error from external provider: {0}.
+        /// </summary>
+        internal static string ErrorExternalProvider {
+            get {
+                return ResourceManager.GetString("ErrorExternalProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading external login information..
+        /// </summary>
+        internal static string ErrorLoadingExternalLoginInfo {
+            get {
+                return ResourceManager.GetString("ErrorLoadingExternalLoginInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading external login information during confirmation..
+        /// </summary>
+        internal static string ErrorLoadingExternalLoginInfoConfirmation {
+            get {
+                return ResourceManager.GetString("ErrorLoadingExternalLoginInfoConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: {0}.
+        /// </summary>
+        internal static string ErrorMessage {
+            get {
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        internal static string Header {
+            get {
+                return ResourceManager.GetString("Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        internal static string PageTitle {
+            get {
+                return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        internal static string RegisterButton {
+            get {
+                return ResourceManager.GetString("RegisterButton", resourceCulture);
+            }
+        }
     }
 }
