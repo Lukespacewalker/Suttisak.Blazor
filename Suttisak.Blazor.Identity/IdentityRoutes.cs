@@ -8,13 +8,24 @@ public static class IdentityRoutes
     {
         public const string Root = "/Account";
 
+        public const string ConfirmEmail = $"{Root}/ConfirmEmail";
+        public const string ConfirmEmailChange = $"{Root}/ConfirmEmailChange";
+        public const string ForgotPassword = $"{Root}/ForgotPassword";
+        public const string ForgotPasswordConfirmation = $"{Root}/ForgotPasswordConfirmation";
+        public const string InvalidPasswordReset = $"{Root}/InvalidPasswordReset";
+        public const string InvalidUser = $"{Root}/InvalidUser";
+
+        public const string ResetPassword = $"{Root}/ResetPassword";
+        public const string ResetPasswordConfirmation = $"{Root}/ResetPasswordConfirmation";
+
+        public const string RegisterConfirmation = $"{Root}/RegisterConfirmation";
+        public const string ResendEmailConfirmation = $"{Root}/ResendEmailConfirmation";
 
         public const string Logout = $"{Root}/Logout";
         public const string Login = $"{Root}/Login";
         public const string LoginWith2fa = $"{Root}/LoginWith2fa";
         public const string LoginWithRecoveryCode = $"{Root}/LoginWithRecoveryCode";
         public const string Register = $"{Root}/Register";
-        public const string RegisterConfirmation = $"{Root}/RegisterConfirmation";
         public const string ExternalLogin = $"{Root}/ExternalLogin";
         public const string Lockout = $"{Root}/Lockout";
 
