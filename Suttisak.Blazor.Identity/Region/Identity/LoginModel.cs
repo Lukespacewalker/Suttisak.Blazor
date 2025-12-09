@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Suttisak.Blazor.UserInterface.Region.Identity;
+namespace Suttisak.Blazor.Identity.Region.Identity;
 
-public sealed class InputModel
+public class InputModel
 {
     [Required]
     public string Username { get; set; } = "";

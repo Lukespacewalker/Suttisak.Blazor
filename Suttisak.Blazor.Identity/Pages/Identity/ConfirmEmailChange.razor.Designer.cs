@@ -59,5 +59,59 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm email change.
+        /// </summary>
+        internal static string ConfirmEmailChange {
+            get {
+                return ResourceManager.GetString("ConfirmEmailChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error changing email..
+        /// </summary>
+        internal static string ErrorChangingEmail {
+            get {
+                return ResourceManager.GetString("ErrorChangingEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error changing user name..
+        /// </summary>
+        internal static string ErrorChangingUserName {
+            get {
+                return ResourceManager.GetString("ErrorChangingUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Invalid email change confirmation link..
+        /// </summary>
+        internal static string ErrorInvalidLink {
+            get {
+                return ResourceManager.GetString("ErrorInvalidLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find user with Id &apos;{0}&apos;.
+        /// </summary>
+        internal static string ErrorUserNotFound {
+            get {
+                return ResourceManager.GetString("ErrorUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you for confirming your email change..
+        /// </summary>
+        internal static string ThankYouForConfirming {
+            get {
+                return ResourceManager.GetString("ThankYouForConfirming", resourceCulture);
+            }
+        }
     }
 }

@@ -59,5 +59,23 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access denied.
+        /// </summary>
+        internal static string AccessDenied {
+            get {
+                return ResourceManager.GetString("AccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have access to this resource..
+        /// </summary>
+        internal static string NoAccessMessage {
+            get {
+                return ResourceManager.GetString("NoAccessMessage", resourceCulture);
+            }
+        }
     }
 }

@@ -59,5 +59,51 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error finding user for unspecified email.
+        /// </summary>
+        internal static string ErrorMessage {
+            get {
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register confirmation.
+        /// </summary>
+        internal static string Header {
+            get {
+                return ResourceManager.GetString("Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check your email to confirm your account..
+        /// </summary>
+        internal static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This app does not currently have a real email sender registered, see &lt;a href=&quot;https://aka.ms/aspaccountconf&quot;&gt;these docs&lt;/a&gt; for how to configure a real email sender.
+        ///        Normally this would be emailed: &lt;a href=&quot;{0}&quot;&gt;Click here to confirm your account&lt;/a&gt;.
+        /// </summary>
+        internal static string NoOpEmailSenderMessage {
+            get {
+                return ResourceManager.GetString("NoOpEmailSenderMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register confirmation.
+        /// </summary>
+        internal static string PageTitle {
+            get {
+                return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
     }
 }

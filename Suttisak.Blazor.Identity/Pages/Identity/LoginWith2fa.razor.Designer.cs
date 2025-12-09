@@ -59,5 +59,95 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticator code.
+        /// </summary>
+        internal static string AuthenticatorCodeLabel {
+            get {
+                return ResourceManager.GetString("AuthenticatorCodeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Invalid authenticator code..
+        /// </summary>
+        internal static string ErrorInvalidCode {
+            get {
+                return ResourceManager.GetString("ErrorInvalidCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two-factor authentication.
+        /// </summary>
+        internal static string Header {
+            get {
+                return ResourceManager.GetString("Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your login is protected with an authenticator app. Enter your authenticator code below..
+        /// </summary>
+        internal static string InfoMessage {
+            get {
+                return ResourceManager.GetString("InfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        internal static string LoginButton {
+            get {
+                return ResourceManager.GetString("LoginButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have access to your authenticator device? You can.
+        /// </summary>
+        internal static string NoAccessText {
+            get {
+                return ResourceManager.GetString("NoAccessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two-factor authentication.
+        /// </summary>
+        internal static string PageTitle {
+            get {
+                return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to log in with a recovery code.
+        /// </summary>
+        internal static string RecoveryCodeLink {
+            get {
+                return ResourceManager.GetString("RecoveryCodeLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember this machine.
+        /// </summary>
+        internal static string RememberMachineLabel {
+            get {
+                return ResourceManager.GetString("RememberMachineLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} must be at least {2} and at max {1} characters long..
+        /// </summary>
+        internal static string ValidationMessage {
+            get {
+                return ResourceManager.GetString("ValidationMessage", resourceCulture);
+            }
+        }
     }
 }

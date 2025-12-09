@@ -59,5 +59,41 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm email.
+        /// </summary>
+        internal static string ConfirmEmail {
+            get {
+                return ResourceManager.GetString("ConfirmEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error confirming your email..
+        /// </summary>
+        internal static string ErrorConfirmingEmail {
+            get {
+                return ResourceManager.GetString("ErrorConfirmingEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading user with ID {0}.
+        /// </summary>
+        internal static string ErrorLoadingUser {
+            get {
+                return ResourceManager.GetString("ErrorLoadingUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you for confirming your email..
+        /// </summary>
+        internal static string ThankYouForConfirming {
+            get {
+                return ResourceManager.GetString("ThankYouForConfirming", resourceCulture);
+            }
+        }
     }
 }

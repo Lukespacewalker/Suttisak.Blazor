@@ -7,23 +7,22 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<LoginWithRecoveryCode<TUser>> Logger
 
-<PageTitle>Recovery code verification</PageTitle>
+<PageTitle>@LoginWithRecoveryCode_razor.PageTitle</PageTitle>
 
-<h1>Recovery code verification</h1>
+<h1>@LoginWithRecoveryCode_razor.Header</h1>
 <hr />
 <StatusMessage Message="@_message" />
 <p>
-    You have requested to log in with a recovery code. This login will not be remembered until you provide
-    an authenticator app code at log in or disable 2FA and log in again.
+    @LoginWithRecoveryCode_razor.InfoMessage
 </p>
 <FluentGrid>
     <FluentGridItem xs="8" sm="4">
         <EditForm Model="Input" FormName="login-with-recovery-code" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.RecoveryCode" @bind-Value="Input.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="Recovery code" Label="Recovery code" Style="width: 100%;" />
+            <FluentTextField Name="Input.RecoveryCode" @bind-Value="Input.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
             <FluentValidationMessage For="() => Input.RecoveryCode" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Log in</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
@@ -65,7 +64,7 @@
         else
         {
             Logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", userId);
-            _message = "Error: Invalid recovery code entered.";
+            _message = LoginWithRecoveryCode_razor.ErrorInvalidCode;
         }
     }
 

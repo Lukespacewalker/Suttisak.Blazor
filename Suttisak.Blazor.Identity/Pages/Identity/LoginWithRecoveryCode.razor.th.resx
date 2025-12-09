@@ -98,4 +98,25 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="ErrorInvalidCode" xml:space="preserve">
+		<value>ข้อผิดพลาด: รหัสกู้คืนไม่ถูกต้อง</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>การยืนยันรหัสกู้คืน</value>
+	</data>
+	<data name="InfoMessage" xml:space="preserve">
+		<value>คุณได้ร้องขอให้เข้าสู่ระบบด้วยรหัสกู้คืน การเข้าสู่ระบบนี้จะไม่ถูกจดจำจนกว่าคุณจะระบุรหัสแอปยืนยันตัวตนเมื่อเข้าสู่ระบบ หรือปิดการใช้งาน 2FA และเข้าสู่ระบบอีกครั้ง</value>
+	</data>
+	<data name="LoginButton" xml:space="preserve">
+		<value>เข้าสู่ระบบ</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>การยืนยันรหัสกู้คืน</value>
+	</data>
+	<data name="RecoveryCodeLabel" xml:space="preserve">
+		<value>รหัสกู้คืน</value>
+	</data>
+	<data name="RecoveryCodePlaceholder" xml:space="preserve">
+		<value>รหัสกู้คืน</value>
+	</data>
 </root>

@@ -6,9 +6,9 @@
 @inject UserManager<TUser> UserManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Confirm email</PageTitle>
+<PageTitle>@ConfirmEmail_razor.ConfirmEmail</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">Confirm email</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@ConfirmEmail_razor.ConfirmEmail</FluentLabel>
 <StatusMessage Message="@_statusMessage" />
 
 @code {
@@ -34,13 +34,13 @@
         if (user is null)
         {
             HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            _statusMessage = $"Error loading user with ID {UserId}";
+            _statusMessage = string.Format(ConfirmEmail_razor.ErrorLoadingUser, UserId);
         }
         else
         {
             var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code));
             var result = await UserManager.ConfirmEmailAsync(user, code);
-            _statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            _statusMessage = result.Succeeded ? ConfirmEmail_razor.ThankYouForConfirming : ConfirmEmail_razor.ErrorConfirmingEmail;
         }
     }
 }

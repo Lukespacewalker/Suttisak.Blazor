@@ -1,0 +1,103 @@
+﻿@typeparam TUser where TUser : class
+
+@using Microsoft.AspNetCore.Authentication
+@using Suttisak.Blazor.Identity.Region.Identity
+
+
+@inject SignInManager<TUser> SignInManager
+@inject ILogger<Login<TUser>> Logger
+@inject IdentityRedirectManager RedirectManager
+
+<PageTitle>@Login_razor.Login</PageTitle>
+
+
+<Suttisak.Blazor.Identity.Region.Identity.Login Input="@Input"
+												StatusMessage="@_statusMessage"
+												EditContext="@_editContext"
+												UserNamePlaceholder="@UserNamePlaceholder"
+												PasswordPlaceholder="@PasswordPlaceholder"
+												OnValidSubmit="LoginUser">
+	<PasskeySubmitFragment>
+		<PasskeySubmit Operation="PasskeyOperation.Request" Name="Input.Passkey" EmailName="Input.Username">
+			@Login_razor.Passkey
+		</PasskeySubmit>
+	</PasskeySubmitFragment>
+</Suttisak.Blazor.Identity.Region.Identity.Login>
+
+@code {
+	private string? _statusMessage;
+	private EditContext _editContext = null!;
+
+	[CascadingParameter]
+	private HttpContext HttpContext { get; set; } = null!;
+
+	[SupplyParameterFromForm]
+	protected virtual InputModel Input { get; set; } = new();
+
+	[SupplyParameterFromQuery]
+	private string? ReturnUrl { get; set; }
+
+	protected virtual string RedirectUrl { get; set; } = "/";
+	protected virtual string UserNamePlaceholder { get; set; } = "";
+	protected virtual string PasswordPlaceholder { get; set; } = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		Input ??= new();
+
+		_editContext = new EditContext(Input);
+
+		if (HttpMethods.IsGet(HttpContext.Request.Method))
+		{
+			// Clear the existing external cookie to ensure a clean login process
+			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+		}
+	}
+
+	public async Task LoginUser()
+	{
+		if (!string.IsNullOrEmpty(Input.Passkey?.Error))
+		{
+			_statusMessage = $"Error: {Input.Passkey.Error}";
+			return;
+		}
+
+		SignInResult result;
+		if (!string.IsNullOrEmpty(Input.Passkey?.CredentialJson))
+		{
+			// When performing passkey sign-in, don't perform form validation.
+			result = await SignInManager.PasskeySignInAsync(Input.Passkey.CredentialJson);
+		}
+		else
+		{
+			// If doing a password sign-in, validate the form.
+			if (!_editContext.Validate())
+			{
+				return;
+			}
+
+			result = await SignInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+		}
+
+		if (result.Succeeded)
+		{
+			Logger.LogInformation("User logged in.");
+			RedirectManager.RedirectTo(string.IsNullOrWhiteSpace(ReturnUrl) ? RedirectUrl : ReturnUrl);
+		}
+		else if (result.RequiresTwoFactor)
+		{
+			RedirectManager.RedirectTo(
+				IdentityRoutes.Account.LoginWith2fa,
+				new Dictionary<string, object?> { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+		}
+		else if (result.IsLockedOut)
+		{
+			Logger.LogWarning("User account locked out.");
+			RedirectManager.RedirectTo(IdentityRoutes.Account.Lockout);
+		}
+		else
+		{
+			_statusMessage = "Error: Invalid login attempt.";
+		}
+	}
+}

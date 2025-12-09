@@ -13,17 +13,15 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ExternalLogin<TUser>> Logger
 
-<PageTitle>Register</PageTitle>
+<PageTitle>@ExternalLogin_razor.PageTitle</PageTitle>
 
 <StatusMessage Message="@_message" />
-<FluentLabel Typo="Typography.PageTitle">Register</FluentLabel>
-<FluentLabel Typo="Typography.PaneHeader">Associate your @ProviderDisplayName account.</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@ExternalLogin_razor.Header</FluentLabel>
+<FluentLabel Typo="Typography.PaneHeader">@string.Format(ExternalLogin_razor.AssociateAccount, ProviderDisplayName)</FluentLabel>
 <hr />
 
 <div  class="alert alert-info">
-    You've successfully authenticated with <strong>@ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
+    @((MarkupString)string.Format(ExternalLogin_razor.AuthenticatedMessage, ProviderDisplayName))
 </div>
 
 <FluentGrid>
@@ -31,9 +29,9 @@
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" FormName="confirmation" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Placeholder="Please enter your email." Label="Email" Style="width: 100%;"/>
+            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Placeholder="@ExternalLogin_razor.EmailPlaceholder" Label="@ExternalLogin_razor.EmailLabel" Style="width: 100%;"/>
             <FluentValidationMessage For="() => Input.Email" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Register</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@ExternalLogin_razor.RegisterButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
@@ -65,13 +63,13 @@
     {
         if (RemoteError is not null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", $"Error from external provider: {RemoteError}", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", string.Format(ExternalLogin_razor.ErrorExternalProvider, RemoteError), HttpContext);
         }
 
         var info = await SignInManager.GetExternalLoginInfoAsync();
         if (info is null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information.", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", ExternalLogin_razor.ErrorLoadingExternalLoginInfo, HttpContext);
         }
 
         _externalLoginInfo = info;
@@ -94,7 +92,7 @@
     {
         if (_externalLoginInfo is null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information.", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", ExternalLogin_razor.ErrorLoadingExternalLoginInfo, HttpContext);
         }
 
         // Sign in the user with this external login provider if the user already has a login.
@@ -128,7 +126,7 @@
     {
         if (_externalLoginInfo is null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information during confirmation.", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", ExternalLogin_razor.ErrorLoadingExternalLoginInfoConfirmation, HttpContext);
         }
 
         var emailStore = GetEmailStore();
@@ -165,7 +163,7 @@
             }
         }
 
-        _message = $"Error: {string.Join(",", result.Errors.Select(error => error.Description))}";
+        _message = string.Format(ExternalLogin_razor.ErrorMessage, string.Join(",", result.Errors.Select(error => error.Description)));
     }
 
     private TUser CreateUser()

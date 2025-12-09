@@ -9,9 +9,18 @@ public static class IdentityRoutes
         public const string Root = "/Account";
 
 
-        public const string Profile = $"{Root}/Manage";
         public const string Logout = $"{Root}/Logout";
         public const string Login = $"{Root}/Login";
+        public const string LoginWith2fa = $"{Root}/LoginWith2fa";
+        public const string LoginWithRecoveryCode = $"{Root}/LoginWithRecoveryCode";
+        public const string Register = $"{Root}/Register";
+        public const string RegisterConfirmation = $"{Root}/RegisterConfirmation";
+        public const string ExternalLogin = $"{Root}/ExternalLogin";
+        public const string Lockout = $"{Root}/Lockout";
+
+
+        public const string Profile = $"{Root}/Manage";
+
 
         public static class Manage
         {
@@ -39,5 +48,7 @@ public static class IdentityRoutes
     public static class Api
     {
         public const string DownloadPersonalData = "Account/Manage/DownloadPersonalData";
+        // Account/PerformExternalLogin
+        public const string PerformExternalLogin = "Account/PerformExternalLogin";
     }
 }

@@ -98,4 +98,37 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="AssociateAccount" xml:space="preserve">
+		<value>เชื่อมต่อบัญชี {0} ของคุณ</value>
+	</data>
+	<data name="AuthenticatedMessage" xml:space="preserve">
+		<value>คุณได้ยืนยันตัวตนกับ &lt;strong&gt;{0}&lt;/strong&gt; สำเร็จแล้ว โปรดระบุที่อยู่อีเมลสำหรับเว็บไซต์นี้ด้านล่าง และคลิกปุ่มลงทะเบียนเพื่อเสร็จสิ้นการเข้าสู่ระบบ</value>
+	</data>
+	<data name="EmailLabel" xml:space="preserve">
+		<value>อีเมล</value>
+	</data>
+	<data name="EmailPlaceholder" xml:space="preserve">
+		<value>โปรดระบุอีเมลของคุณ</value>
+	</data>
+	<data name="ErrorExternalProvider" xml:space="preserve">
+		<value>ข้อผิดพลาดจากผู้ให้บริการภายนอก: {0}</value>
+	</data>
+	<data name="ErrorLoadingExternalLoginInfo" xml:space="preserve">
+		<value>เกิดข้อผิดพลาดในการโหลดข้อมูลการเข้าสู่ระบบภายนอก</value>
+	</data>
+	<data name="ErrorLoadingExternalLoginInfoConfirmation" xml:space="preserve">
+		<value>เกิดข้อผิดพลาดในการโหลดข้อมูลการเข้าสู่ระบบภายนอกระหว่างการยืนยัน</value>
+	</data>
+	<data name="ErrorMessage" xml:space="preserve">
+		<value>ข้อผิดพลาด: {0}</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>ลงทะเบียน</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>ลงทะเบียน</value>
+	</data>
+	<data name="RegisterButton" xml:space="preserve">
+		<value>ลงทะเบียน</value>
+	</data>
 </root>

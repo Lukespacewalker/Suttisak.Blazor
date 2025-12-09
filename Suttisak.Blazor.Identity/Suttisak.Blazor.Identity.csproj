@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.25</AssemblyVersion>
+		<AssemblyVersion>0.1.26</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -29,6 +29,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Components\Identity\ExternalLoginPicker.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ExternalLoginPicker.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Components\Identity\ShowRecoveryCodes.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ShowRecoveryCodes.razor.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Pages\Identity\AccessDenied.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
@@ -73,6 +83,11 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Lockout.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Identity\Login.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Login.razor.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Pages\Identity\LoginWith2fa.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
@@ -197,6 +212,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="Components\Identity\ExternalLoginPicker.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ExternalLoginPicker.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Components\Identity\ShowRecoveryCodes.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ShowRecoveryCodes.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\AccessDenied.razor.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>AccessDenied.razor.Designer.cs</LastGenOutput>
@@ -232,6 +255,10 @@
 		<EmbeddedResource Update="Pages\Identity\Lockout.razor.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>Lockout.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Pages\Identity\Login.razor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Login.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\LoginWith2fa.razor.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>

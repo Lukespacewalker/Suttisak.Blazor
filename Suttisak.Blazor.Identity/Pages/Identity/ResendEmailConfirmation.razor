@@ -9,10 +9,10 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Resend email confirmation</PageTitle>
+<PageTitle>@ResendEmailConfirmation_razor.PageTitle</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">Resend email confirmation</FluentLabel>
-<FluentLabel Typo="Typography.PaneHeader">Enter your email.</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@ResendEmailConfirmation_razor.Header</FluentLabel>
+<FluentLabel Typo="Typography.PaneHeader">@ResendEmailConfirmation_razor.EnterEmail</FluentLabel>
 <hr />
 <StatusMessage Message="@_message" />
 <FluentGrid>
@@ -20,9 +20,9 @@
         <EditForm Model="Input" FormName="resend-email-confirmation" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" class="form-control" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%;" />
+            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" class="form-control" Required="true" Placeholder="@ResendEmailConfirmation_razor.EmailPlaceholder" Label="@ResendEmailConfirmation_razor.EmailLabel" Style="width: 100%;" />
             <FluentValidationMessage For="() => Input.Email" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Resend</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@ResendEmailConfirmation_razor.ResendButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
@@ -38,7 +38,7 @@
         var user = await UserManager.FindByEmailAsync(Input.Email!);
         if (user is null)
         {
-            _message = "Verification email sent. Please check your email.";
+            _message = ResendEmailConfirmation_razor.VerificationEmailSent;
             return;
         }
 
@@ -50,7 +50,7 @@
             new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
         await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-        _message = "Verification email sent. Please check your email.";
+        _message = ResendEmailConfirmation_razor.VerificationEmailSent;
     }
 
     private sealed class InputModel

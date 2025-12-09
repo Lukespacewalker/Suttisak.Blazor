@@ -98,4 +98,20 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="ErrorMessage" xml:space="preserve">
+		<value>Error finding user for unspecified email</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>Register confirmation</value>
+	</data>
+	<data name="Message" xml:space="preserve">
+		<value>Please check your email to confirm your account.</value>
+	</data>
+	<data name="NoOpEmailSenderMessage" xml:space="preserve">
+		<value>This app does not currently have a real email sender registered, see &lt;a href="https://aka.ms/aspaccountconf"&gt;these docs&lt;/a&gt; for how to configure a real email sender.
+        Normally this would be emailed: &lt;a href="{0}"&gt;Click here to confirm your account&lt;/a&gt;</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>Register confirmation</value>
+	</data>
 </root>

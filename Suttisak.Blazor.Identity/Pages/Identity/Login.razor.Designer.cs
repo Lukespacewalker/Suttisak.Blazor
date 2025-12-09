@@ -22,24 +22,24 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LoginWithRecoveryCode_razor {
+    public class Login_razor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LoginWithRecoveryCode_razor() {
+        internal Login_razor() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.LoginWithRecoveryCode.razor", typeof(LoginWithRecoveryCode_razor).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Pages.Identity.Login.razor", typeof(Login_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,65 +61,20 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Invalid recovery code entered..
+        ///   Looks up a localized string similar to Login.
         /// </summary>
-        internal static string ErrorInvalidCode {
+        public static string Login {
             get {
-                return ResourceManager.GetString("ErrorInvalidCode", resourceCulture);
+                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recovery code verification.
+        ///   Looks up a localized string similar to Passkey.
         /// </summary>
-        internal static string Header {
+        public static string Passkey {
             get {
-                return ResourceManager.GetString("Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You have requested to log in with a recovery code. This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again..
-        /// </summary>
-        internal static string InfoMessage {
-            get {
-                return ResourceManager.GetString("InfoMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log in.
-        /// </summary>
-        internal static string LoginButton {
-            get {
-                return ResourceManager.GetString("LoginButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recovery code verification.
-        /// </summary>
-        internal static string PageTitle {
-            get {
-                return ResourceManager.GetString("PageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recovery code.
-        /// </summary>
-        internal static string RecoveryCodeLabel {
-            get {
-                return ResourceManager.GetString("RecoveryCodeLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recovery code.
-        /// </summary>
-        internal static string RecoveryCodePlaceholder {
-            get {
-                return ResourceManager.GetString("RecoveryCodePlaceholder", resourceCulture);
+                return ResourceManager.GetString("Passkey", resourceCulture);
             }
         }
     }

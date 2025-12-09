@@ -98,4 +98,25 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="EmailLabel" xml:space="preserve">
+		<value>อีเมล</value>
+	</data>
+	<data name="EmailPlaceholder" xml:space="preserve">
+		<value>name@example.com</value>
+	</data>
+	<data name="EnterEmail" xml:space="preserve">
+		<value>ระบุอีเมลของคุณ</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>ส่งอีเมลยืนยันอีกครั้ง</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>ส่งอีเมลยืนยันอีกครั้ง</value>
+	</data>
+	<data name="ResendButton" xml:space="preserve">
+		<value>ส่งอีกครั้ง</value>
+	</data>
+	<data name="VerificationEmailSent" xml:space="preserve">
+		<value>ส่งอีเมลยืนยันแล้ว โปรดตรวจสอบอีเมลของคุณ</value>
+	</data>
 </root>

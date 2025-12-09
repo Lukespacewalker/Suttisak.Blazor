@@ -98,4 +98,19 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="ErrorMessage" xml:space="preserve">
+		<value>เกิดข้อผิดพลาดในการค้นหาผู้ใช้สำหรับอีเมลที่ไม่ได้ระบุ</value>
+	</data>
+	<data name="Header" xml:space="preserve">
+		<value>ยืนยันการลงทะเบียน</value>
+	</data>
+	<data name="Message" xml:space="preserve">
+		<value>โปรดตรวจสอบอีเมลของคุณเพื่อยืนยันบัญชีของคุณ</value>
+	</data>
+	<data name="NoOpEmailSenderMessage" xml:space="preserve">
+		<value>แอปนี้ยังไม่ได้ลงทะเบียนผู้ส่งอีเมลจริง ดู &lt;a href="https://aka.ms/aspaccountconf"&gt;เอกสารเหล่านี้&lt;/a&gt; สำหรับวิธีการกำหนดค่าผู้ส่งอีเมลจริง โดยปกติแล้วสิ่งนี้จะถูกส่งทางอีเมล: &lt;a href="{0}"&gt;คลิกที่นี่เพื่อยืนยันบัญชีของคุณ&lt;/a&gt;</value>
+	</data>
+	<data name="PageTitle" xml:space="preserve">
+		<value>ยืนยันการลงทะเบียน</value>
+	</data>
 </root>
