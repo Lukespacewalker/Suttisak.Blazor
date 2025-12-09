@@ -58,7 +58,7 @@
 	{
 		if (!string.IsNullOrEmpty(Input.Passkey?.Error))
 		{
-			_statusMessage = $"Error: {Input.Passkey.Error}";
+			_statusMessage = $"{Login_razor.Error}: {Input.Passkey.Error}";
 			return;
 		}
 
@@ -97,7 +97,7 @@
 		}
 		else
 		{
-			_statusMessage = "Error: Invalid login attempt.";
+			_statusMessage = $"{Login_razor.Error}: {Login_razor.InvalidLoginAttempt}";
 		}
 	}
 }
