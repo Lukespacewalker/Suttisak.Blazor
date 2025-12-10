@@ -1,0 +1,39 @@
+@inherits FluentCard
+@inject NavigationManager NavigationManager
+
+<FluentCard Class="card-menu" @onclick="OnClick">
+    @if (Icon is not null)
+    {
+        <FluentIcon Value="@(new Icons.Regular.Size20.Person())" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Accent" />
+    }
+    <div style="flex:1 1 auto;">
+        @if (Title is not null)
+        {
+            <FluentLabel Typo="Typography.Subject">@Title</FluentLabel>
+        }
+        @if(Subtitle is not null)
+        {
+            <p class="subtitle">@((MarkupString)Subtitle)</p>
+        }
+        @ChildContent
+    </div>
+    <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Neutral" />
+</FluentCard>
+@code {
+
+    [Parameter] public string? Url { get; set; }
+
+    [Parameter] public Icon? Icon { get; set; }
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Subtitle { get; set; }
+
+
+    private void OnClick()
+    {
+        if (!string.IsNullOrEmpty(Url))
+        {
+            NavigationManager.NavigateTo(Url);
+        }
+    }
+}
