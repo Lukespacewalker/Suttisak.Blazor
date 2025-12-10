@@ -1,9 +1,9 @@
-﻿.card-menu:hover {
+﻿fluent-card:hover {
     background: var(--neutral-fill-layer-hover);
     cursor: pointer;
 }
 
-.card-menu {
+fluent-card {
     background: var(--neutral-fill-layer-rest);
     display: flex;
     flex-direction: row;
@@ -13,6 +13,6 @@
     gap: calc(var(--design-unit) * 4px);
 }
 
-    .card-menu .subtitle {
+    fluent-card .subtitle {
         color: var(--neutral-foreground-hint);
     }
