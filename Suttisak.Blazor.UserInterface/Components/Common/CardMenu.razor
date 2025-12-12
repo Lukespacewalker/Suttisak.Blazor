@@ -1,25 +1,59 @@
 @inherits FluentCard
 @inject NavigationManager NavigationManager
 
-<FluentCard Class="card-menu" @onclick="OnClick">
-    @if (Icon is not null)
-    {
-        <FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Accent" />
-    }
-    <div style="flex:1 1 auto;">
-        @if (Title is not null)
-        {
-            <FluentLabel Typo="Typography.Subject">@Title</FluentLabel>
-        }
-        @if(Subtitle is not null)
-        {
-            <p class="subtitle">@((MarkupString)Subtitle)</p>
-        }
-        @ChildContent
-    </div>
-    <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Neutral" />
-</FluentCard>
+@if (MinimalStyle)
+{
+	<div @ref=Element
+	     id="@Id"
+		 class="@ClassValue card-menu"
+	     style="@StyleValue"
+	     @attributes="AdditionalAttributes">
+		@if (Icon is not null)
+		{
+			<FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Accent" />
+		}
+		<div style="flex:1 1 auto;">
+			@if (Title is not null)
+			{
+				<FluentLabel Typo="Typography.Subject">@Title</FluentLabel>
+			}
+			@if(Subtitle is not null)
+			{
+				<p class="subtitle">@((MarkupString)Subtitle)</p>
+			}
+			@ChildContent
+		</div>
+		<FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Neutral" />
+	</div>
+}
+else
+{
+	<fluent-card @ref=Element
+	             id="@Id"
+				 class="@ClassValue card-menu"
+	             style="@StyleValue"
+	             @attributes="AdditionalAttributes">
+		@if (Icon is not null)
+		{
+			<FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Accent" />
+		}
+		<div style="flex:1 1 auto;">
+			@if (Title is not null)
+			{
+				<FluentLabel Typo="Typography.Subject">@Title</FluentLabel>
+			}
+			@if(Subtitle is not null)
+			{
+				<p class="subtitle">@((MarkupString)Subtitle)</p>
+			}
+			@ChildContent
+		</div>
+		<FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Neutral" />
+	</fluent-card>
+}
 @code {
+
+	[Parameter] public RenderFragment? ChildContent { get; set; }
 
     [Parameter] public string? Url { get; set; }
 
