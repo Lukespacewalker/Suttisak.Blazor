@@ -5,7 +5,7 @@
     <h1>@Login_razor.Login</h1>
     <FluentCard>
         <StatusMessage Message="@StatusMessage" />
-        <EditForm EditContext="EditContext" method="post" OnValidSubmit="@OnValidSubmit" FormName="login">
+        <EditForm EditContext="EditContext" method="post" OnSubmit="@OnSubmit" FormName="login">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
             <FluentStack Orientation="Orientation.Vertical">
@@ -48,5 +48,5 @@
 	public RenderFragment? PasskeySubmitFragment { get; set; }
 
     [Parameter]
-	public EventCallback<EditContext> OnValidSubmit { get; set; }
+	public EventCallback<EditContext> OnSubmit { get; set; }
 }
