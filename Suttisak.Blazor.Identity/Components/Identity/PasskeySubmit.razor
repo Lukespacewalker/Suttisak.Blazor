@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @inject IAntiforgery Antiforgery
 
-<FluentButton Type="ButtonType.Submit" Name="__passkeySubmit" @attributes="AdditionalAttributes">@ChildContent</FluentButton>
+<FluentButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())" Type="ButtonType.Submit" Name="__passkeySubmit" @attributes="AdditionalAttributes">@ChildContent</FluentButton>
 <passkey-submit
     operation="@Operation"
     name="@Name"
