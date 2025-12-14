@@ -13,7 +13,7 @@
 			<input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
 			@foreach (var provider in _externalLogins)
 			{
-				<FluentButton Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
+				<FluentButton IconStart="@_providerIcons.GetValueOrDefault(provider.Name)" Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
 				<text>&nbsp;</text>
 			}
 		</div>
@@ -23,7 +23,7 @@
 @code {
 	private AuthenticationScheme[] _externalLogins = [];
 
-	private Dictionary<string, Icon> _providerIcons = new()
+	private readonly Dictionary<string, Icon> _providerIcons = new()
 	{
 		{"Microsoft", Icon.FromImageUrl("./images/icons/icons8-microsoft-50.png")},
 		{"Google", Icon.FromImageUrl("./images/icons/icons8-google-45.png")},
