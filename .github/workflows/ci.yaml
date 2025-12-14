@@ -20,7 +20,8 @@ jobs:
         run: |
           dotnet pack \
           --configuration Release \
-          -o packages
+          -o packages \
+          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
 
       - name: Publish NuGet package
         run: dotnet nuget push packages/*.nupkg --api-key ${{ secrets.PUSH_NUGET }} --source https://nuget.pkg.github.com/LukeSpacewalker/index.json --skip-duplicate
