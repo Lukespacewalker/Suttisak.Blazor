@@ -14,14 +14,14 @@
 	<h1 style="align-self:center">@UsernamePasswordLogin_razor.Login</h1>
 	<StatusMessage Message="@_statusMessage" />
 	<UsernamePasswordLogin FormName=@LoginWithUsernameFormName
-						   UsernamePasswordInput="@LoginWithUsernameUsernamePasswordInput"
+						   UsernamePasswordInput="@LoginWithUsernamePasswordInput"
 						   UserNamePlaceholder="@UserNamePlaceholder"
 						   PasswordPlaceholder="@PasswordPlaceholder"
 						   OnValidSubmit="LoginWithUsernamePassword" />
-	<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
-	<h3 style="align-self:center">
+	<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 6px) 0 calc(var(--design-unit) * 4px) 0;" />
+	<h5 style="align-self:center">
 		@UsernamePasswordLogin_razor.Alternative
-	</h3>
+	</h5>
 	<div style="display:flex; gap: calc(var(--design-unit) * 2px); margin: calc(var(--design-unit) * 2px) 0;">
 		<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request" OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
 			@Login_razor.Passkey
@@ -41,7 +41,7 @@
 	private HttpContext HttpContext { get; set; } = null!;
 
 	[SupplyParameterFromForm(FormName = LoginWithUsernameFormName)]
-	protected virtual UsernamePasswordInputModel LoginWithUsernameUsernamePasswordInput { get; set; } = new();
+	protected virtual UsernamePasswordInputModel LoginWithUsernamePasswordInput { get; set; } = new();
 
 	[SupplyParameterFromForm(FormName = LoginWithPasskeyFormName)]
 	protected virtual PasskeyOutputModel LoginWithPasskeyOutput { get; set; } = new();
@@ -81,7 +81,7 @@
 
 	public async Task LoginWithUsernamePassword()
 	{
-		var result = await SignInManager.PasswordSignInAsync(LoginWithUsernameUsernamePasswordInput.Username, LoginWithUsernameUsernamePasswordInput.Password, LoginWithUsernameUsernamePasswordInput.RememberMe, lockoutOnFailure: false);
+		var result = await SignInManager.PasswordSignInAsync(LoginWithUsernamePasswordInput.Username, LoginWithUsernamePasswordInput.Password, LoginWithUsernamePasswordInput.RememberMe, lockoutOnFailure: false);
 		HandleResult(result);
 	}
 
@@ -102,7 +102,7 @@
 		{
 			RedirectManager.RedirectTo(
 				IdentityRoutes.Account.LoginWith2fa,
-				new Dictionary<string, object?> { ["returnUrl"] = ReturnUrl, ["rememberMe"] = LoginWithUsernameUsernamePasswordInput.RememberMe });
+				new Dictionary<string, object?> { ["returnUrl"] = ReturnUrl, ["rememberMe"] = LoginWithUsernamePasswordInput.RememberMe });
 		}
 		else if (result.IsLockedOut)
 		{
