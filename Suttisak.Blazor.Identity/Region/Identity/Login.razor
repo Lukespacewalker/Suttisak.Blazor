@@ -17,8 +17,12 @@
 						  Style="width: 100%">
 				@Login_razor.Login
 			</FluentButton>
-			<hr />
-			@PasskeySubmitFragment
+			<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest);" />
+			<div style="display:flex; gap: calc(var(--design-unit) * 4px);">
+				@PasskeySubmitFragment
+				<FluentDivider Orientation="Orientation.Vertical" />
+				<ExternalLoginPicker/>
+			</div>
 		</FluentStack>
 	</EditForm>
 </section>
