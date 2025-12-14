@@ -1,15 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 
 <section>
-	<h1>@Login_razor.Login</h1>
+	<h1 style="align-self:center">@Login_razor.Login</h1>
 	<StatusMessage Message="@StatusMessage" />
 	<EditForm EditContext="EditContext" method="post" OnSubmit="@OnSubmit" FormName="login">
 		<DataAnnotationsValidator />
 		<FluentValidationSummary class="text-danger" role="alert" />
 		<FluentStack Orientation="Orientation.Vertical">
-			<FluentTextField Name="Input.Username" @bind-Value="Input.Username" AutoComplete="username" Required="true" Placeholder="@UserNamePlaceholder" Label="@Login_razor.Username" Style="width: 100%" />
+			<FluentTextField Name="Input.Username" @bind-Value="Input.Username" AutoComplete="username" Placeholder="@UserNamePlaceholder" Label="@Login_razor.Username" Style="width: 100%" />
 			<FluentValidationMessage For="() => Input.Username" class="text-danger" />
-			<FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="current-password" Required="true" Placeholder="@PasswordPlaceholder" Label="@Login_razor.Password" Style="width: 100%" />
+			<FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="current-password" Placeholder="@PasswordPlaceholder" Label="@Login_razor.Password" Style="width: 100%" />
 			<FluentValidationMessage For="() => Input.Password" class="text-danger" />
 			<FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="@Login_razor.RememberMe" />
 			<FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" IconStart="@(new Icons.Filled.Size20.Key())"
@@ -18,12 +18,15 @@
 			</FluentButton>
 			@if (PasskeySubmitFragment is not null || ExternalLoginPickerFragment is not null)
 			{
-				<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest);" />
-				<div style="display:flex; gap: calc(var(--design-unit) * 4px);">
+				<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
+				<div style="align-self:center">
+					@Login_razor.Alternative
+				</div>
+				<div style="display:flex; gap: calc(var(--design-unit) * 2px);">
 					@PasskeySubmitFragment
 					@if (PasskeySubmitFragment is not null && ExternalLoginPickerFragment is not null)
 					{
-						<FluentDivider Orientation="Orientation.Vertical" />
+						<FluentDivider Orientation="Orientation.Vertical" Style="height: 32px;border-color: var(--neutral-stroke-rest);" />
 					}
 					@ExternalLoginPickerFragment
 				</div>
