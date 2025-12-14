@@ -23,13 +23,19 @@
 @code {
 	private AuthenticationScheme[] _externalLogins = [];
 
-	private readonly Dictionary<string, Icon> _providerIcons = new()
+	private Dictionary<string, Icon> _providerIcons = null!;
+	 
+	protected override void OnInitialized()
 	{
-		{"Microsoft", Icon.FromImageUrl("./images/icons/icons8-microsoft-50.png")},
-		{"Google", Icon.FromImageUrl("./images/icons/icons8-google-45.png")},
-		{"Facebook", Icon.FromImageUrl("./images/icons/icons8-facebook-48.png")},
-		{"X", Icon.FromImageUrl("./images/icons/icons8-x-48.png")}
-	};
+		base.OnInitialized();
+		_providerIcons = new()
+		{
+			{"Microsoft", Icon.FromImageUrl(Assets["./images/icons/icons8-microsoft-50.png"])},
+			{"Google", Icon.FromImageUrl(Assets["./images/icons/icons8-google-45.png"])},
+			{"Facebook", Icon.FromImageUrl(Assets["./images/icons/icons8-facebook-48.png"])},
+			{"X", Icon.FromImageUrl(Assets["./images/icons/icons8-x-48.png"])}
+		};
+	}
 
 	[SupplyParameterFromQuery]
 	private string? ReturnUrl { get; set; }
