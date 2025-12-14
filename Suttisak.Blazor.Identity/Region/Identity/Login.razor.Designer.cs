@@ -61,6 +61,15 @@ namespace Suttisak.Blazor.Identity.Region.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alternatively, login with.
+        /// </summary>
+        public static string Alternative {
+            get {
+                return ResourceManager.GetString("Alternative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {

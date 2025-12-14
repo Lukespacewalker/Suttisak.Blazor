@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<TUser> SignInManager
-@inject IdentityRedirectManager RedirectManager
 
 @if (_externalLogins.Length > 0)
 {
@@ -14,7 +13,7 @@
 			<input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
 			@foreach (var provider in _externalLogins)
 			{
-				<FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
+				<FluentButton Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
 				<text>&nbsp;</text>
 			}
 		</div>
@@ -23,6 +22,14 @@
 
 @code {
 	private AuthenticationScheme[] _externalLogins = [];
+
+	private Dictionary<string, Icon> _providerIcons = new()
+	{
+		{"Microsoft", Icon.FromImageUrl("./images/icons/icons8-microsoft-50.png")},
+		{"Google", Icon.FromImageUrl("./images/icons/icons8-google-45.png")},
+		{"Facebook", Icon.FromImageUrl("./images/icons/icons8-facebook-48.png")},
+		{"X", Icon.FromImageUrl("./images/icons/icons8-x-48.png")}
+	};
 
 	[SupplyParameterFromQuery]
 	private string? ReturnUrl { get; set; }
