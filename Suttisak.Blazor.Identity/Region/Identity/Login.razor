@@ -13,23 +13,22 @@
 			<FluentValidationMessage For="() => Input.Password" class="text-danger" />
 			<FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="@Login_razor.RememberMe" />
 			<FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" IconStart="@(new Icons.Filled.Size20.Key())"
-			              Style="width: 100%">
+						  Style="width: 100%">
 				@Login_razor.Login
 			</FluentButton>
 		</FluentStack>
-	</EditForm>
-	@if (PasskeySubmitFragment is not null || ExternalLoginPickerFragment is not null)
-	{
-		<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
-		<div style="align-self:center">
-			@Login_razor.Alternative
-		</div>
-		<div style="display:flex; gap: calc(var(--design-unit) * 2px);">
+		@if (PasskeySubmitFragment is not null || ExternalLoginPickerFragment is not null)
+		{
+			<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
+			<div style="align-self:center">
+				@Login_razor.Alternative
+			</div>
 			@PasskeySubmitFragment
-			@if (PasskeySubmitFragment is not null && ExternalLoginPickerFragment is not null)
-			{
-				<FluentDivider Orientation="Orientation.Vertical" Style="height: 32px;border-color: var(--neutral-stroke-rest);" />
-			}
+		}
+	</EditForm>
+	@if (ExternalLoginPickerFragment is not null)
+	{
+		<div style="display:flex; gap: calc(var(--design-unit) * 2px); margin: calc(var(--design-unit) * 2px) 0;">
 			@ExternalLoginPickerFragment
 		</div>
 	}
