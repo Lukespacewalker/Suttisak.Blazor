@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 
-
 <section>
 	<h1>@Login_razor.Login</h1>
 	<StatusMessage Message="@StatusMessage" />
@@ -14,15 +13,21 @@
 			<FluentValidationMessage For="() => Input.Password" class="text-danger" />
 			<FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="@Login_razor.RememberMe" />
 			<FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" IconStart="@(new Icons.Filled.Size20.Key())"
-						  Style="width: 100%">
+			              Style="width: 100%">
 				@Login_razor.Login
 			</FluentButton>
-			<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest);" />
-			<div style="display:flex; gap: calc(var(--design-unit) * 4px);">
-				@PasskeySubmitFragment
-				<FluentDivider Orientation="Orientation.Vertical" />
-				<ExternalLoginPicker/>
-			</div>
+			@if (PasskeySubmitFragment is not null || ExternalLoginPickerFragment is not null)
+			{
+				<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest);" />
+				<div style="display:flex; gap: calc(var(--design-unit) * 4px);">
+					@PasskeySubmitFragment
+					@if (PasskeySubmitFragment is not null && ExternalLoginPickerFragment is not null)
+					{
+						<FluentDivider Orientation="Orientation.Vertical" />
+					}
+					@ExternalLoginPickerFragment
+				</div>
+			}
 		</FluentStack>
 	</EditForm>
 </section>
@@ -48,6 +53,9 @@
 
 	[Parameter]
 	public RenderFragment? PasskeySubmitFragment { get; set; }
+
+	[Parameter]
+	public RenderFragment? ExternalLoginPickerFragment { get; set; }
 
 	[Parameter]
 	public EventCallback<EditContext> OnSubmit { get; set; }
