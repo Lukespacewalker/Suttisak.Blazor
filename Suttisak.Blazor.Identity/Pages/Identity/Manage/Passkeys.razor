@@ -68,11 +68,13 @@ else
 }
 else
 {
-	<PasskeySubmit FormName="add-passkey" Operation="PasskeyOperation.Create" OutputParameterName="Input">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
+	<PasskeySubmit OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
 }
 
 @code {
 	private const int MaxPasskeyCount = 100;
+
+	private const string AddPasskeyFormName = "add-passkey";
 
 	private TUser? _user;
 	private IList<UserPasskeyInfo>? _currentPasskeys;
@@ -86,7 +88,7 @@ else
 	[SupplyParameterFromForm]
 	private string? CredentialId { get; set; }
 
-	[SupplyParameterFromForm(FormName = "add-passkey")]
+	[SupplyParameterFromForm(FormName = AddPasskeyFormName)]
 	private PasskeyOutputModel Output { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
