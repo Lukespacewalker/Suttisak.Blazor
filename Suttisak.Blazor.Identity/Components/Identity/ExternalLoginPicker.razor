@@ -8,29 +8,27 @@
 
 @if (_externalLogins.Length > 0)
 {
-    <form class="form-horizontal" action="@IdentityRoutes.Api.PerformExternalLogin" method="post">
-        <div>
-            <AntiforgeryToken />
-            <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
-            <p>
-                @foreach (var provider in _externalLogins)
-                {
-                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
-                    <text>&nbsp;</text>
-                }
-            </p>
-        </div>
-    </form>
+	<form class="form-horizontal" action="@IdentityRoutes.Api.PerformExternalLogin" method="post">
+		<div>
+			<AntiforgeryToken />
+			<input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
+			@foreach (var provider in _externalLogins)
+			{
+				<FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
+				<text>&nbsp;</text>
+			}
+		</div>
+	</form>
 }
 
 @code {
-    private AuthenticationScheme[] _externalLogins = [];
+	private AuthenticationScheme[] _externalLogins = [];
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+	[SupplyParameterFromQuery]
+	private string? ReturnUrl { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        _externalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		_externalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
+	}
 }
