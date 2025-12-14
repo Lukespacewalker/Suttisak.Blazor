@@ -1,41 +1,50 @@
 ﻿@using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Http
 @inject IAntiforgery Antiforgery
 
-<FluentButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())" Type="ButtonType.Submit" Name="__passkeySubmit" @attributes="AdditionalAttributes">@ChildContent</FluentButton>
-<passkey-submit
-    operation="@Operation"
-    name="@Name"
-    email-name="@EmailName"
-    request-token-name="@_tokens?.HeaderName"
-    request-token-value="@_tokens?.RequestToken">
-</passkey-submit>
-
+<form @formname="add-passkey" @onsubmit="OnSubmit" method="post">
+	<AntiforgeryToken />
+	<FluentButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())" Type="ButtonType.Submit" Name="__passkeySubmit" @attributes="AdditionalAttributes">@ChildContent</FluentButton>
+	<passkey-submit operation="@Operation"
+					name="@OutputParameterName"
+					email-name="@EmailName"
+					request-token-name="@_tokens?.HeaderName"
+					request-token-value="@_tokens?.RequestToken">
+	</passkey-submit>
+</form>
 @code {
-    private AntiforgeryTokenSet? _tokens;
+	private AntiforgeryTokenSet? _tokens;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = null!;
+	[Parameter]
+	public EventCallback OnSubmit { get; set; }
 
-    [Parameter]
-    [EditorRequired]
-    public PasskeyOperation Operation { get; set; }
+	[CascadingParameter]
+	private HttpContext HttpContext { get; set; } = null!;
 
-    [Parameter]
-    [EditorRequired]
-    public string Name { get; set; } = null!;
+	[Parameter, EditorRequired]
+	public PasskeyOperation Operation { get; set; }
 
-    [Parameter]
-    public string? EmailName { get; set; }
+	/// <summary>
+	/// The name of the output parameter for the passkey data. This will supply the data to a parameter with this name that is decorated with [SupplyParameterFromForm(FormName= {FormName})] on the receiving page by submitting the form.
+	/// </summary>
+	[Parameter, EditorRequired]
+	public string OutputParameterName { get; set; } = null!;
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+	[Parameter, EditorRequired]
+	public string FormName { get; set; } = null!;
 
-    [Parameter(CaptureUnmatchedValues = true)]
-    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+	[Parameter]
+	public string? EmailName { get; set; }
 
-    protected override void OnInitialized()
-    {
-        _tokens = Antiforgery?.GetTokens(HttpContext);
-    }
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+	protected override void OnInitialized()
+	{
+		_tokens = Antiforgery?.GetTokens(HttpContext);
+	}
 }

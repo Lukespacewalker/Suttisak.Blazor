@@ -14,6 +14,6 @@ public sealed class IdentityUserAccessor<TUser>(UserManager<TUser> userManager, 
             redirectManager.RedirectToWithStatus("Account/InvalidUser", $"Error: Unable to load user with ID '{userManager.GetUserId(context.User)}'.", context);
         }
 
-        return user;
+        return user!;
     }
 }

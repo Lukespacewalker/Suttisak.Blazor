@@ -131,7 +131,7 @@
             RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorLoadLoginInfo, HttpContext);
         }
 
-        var result = await UserManager.AddLoginAsync(_user, info);
+        var result = await UserManager.AddLoginAsync(_user, info!);
         if (!result.Succeeded)
         {
             RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorAddLogin, HttpContext);
