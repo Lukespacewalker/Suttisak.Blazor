@@ -13,7 +13,10 @@
 			<input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
 			@foreach (var provider in _externalLogins)
 			{
-				<FluentButton IconStart="@_providerIcons.GetValueOrDefault(provider.Name)" Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">@provider.DisplayName</FluentButton>
+				<FluentButton Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
+					<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?"/>
+					@provider.DisplayName
+				</FluentButton>
 				<text>&nbsp;</text>
 			}
 		</div>

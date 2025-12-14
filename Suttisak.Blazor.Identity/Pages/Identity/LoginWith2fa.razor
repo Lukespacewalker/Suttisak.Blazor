@@ -34,7 +34,7 @@
 
 @code {
     private string? _message;
-    private TUser _user = default!;
+    private TUser _user = null!;
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();

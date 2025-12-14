@@ -2,7 +2,7 @@
 
 namespace Suttisak.Blazor.Identity.Region.Identity;
 
-public class InputModel
+public class UsernamePasswordInputModel
 {
     [Required]
     public string Username { get; set; } = "";
@@ -14,10 +14,9 @@ public class InputModel
     [Display(Name = "Remember me?")]
     public bool RememberMe { get; set; }
 
-    public PasskeyInputModel? Passkey { get; set; }
 }
 
-public class PasskeyInputModel
+public class PasskeyOutputModel
 {
     public string? CredentialJson { get; set; }
     public string? Error { get; set; }
