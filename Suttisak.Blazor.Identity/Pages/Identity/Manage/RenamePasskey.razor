@@ -40,7 +40,7 @@
 	private HttpContext HttpContext { get; set; } = null!;
 
 	[Parameter]
-	public string? Id { get; set; }
+	public string? CredentialId { get; set; }
 
 	[SupplyParameterFromForm]
     protected virtual InputModel Input { get; set; } = null!;
@@ -59,7 +59,7 @@
 		byte[] credentialId;
 		try
 		{
-			credentialId = Base64Url.DecodeFromChars(Id);
+			credentialId = Base64Url.DecodeFromChars(CredentialId);
 		}
 		catch (FormatException)
 		{

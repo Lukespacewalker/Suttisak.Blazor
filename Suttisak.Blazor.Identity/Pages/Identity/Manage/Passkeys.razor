@@ -45,7 +45,7 @@
 							<input type="hidden" name="CredentialId" value="@credentialId" />
 							<FluentButton Type="ButtonType.Submit" Name="action" Value="rename" Title="@Passkeys_razor.RenameTitle">@Passkeys_razor.RenameButton</FluentButton>
 						</form>
-						
+
 						<form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
 							<AntiforgeryToken />
 							<input type="hidden" name="CredentialId" value="@credentialId" />
@@ -62,18 +62,14 @@ else
 	<p>@Passkeys_razor.NoPasskeys</p>
 }
 
-<form @formname="add-passkey" @onsubmit="AddPasskey" method="post">
-	<AntiforgeryToken />
-	@if (_currentPasskeys is { Count: >= MaxPasskeyCount })
-	{
-		<p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
-	}
-	else
-	{
-		<PasskeySubmit Operation="PasskeyOperation.Create" Name="Input" class="btn btn-primary">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
-	}
-
-</form>
+@if (_currentPasskeys is { Count: >= MaxPasskeyCount })
+{
+	<p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
+}
+else
+{
+	<PasskeySubmit FormName="add-passkey" Operation="PasskeyOperation.Create" OutputParameterName="Input">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
+}
 
 @code {
 	private const int MaxPasskeyCount = 100;
@@ -91,11 +87,11 @@ else
 	private string? CredentialId { get; set; }
 
 	[SupplyParameterFromForm(FormName = "add-passkey")]
-	private PasskeyInputModel Input { get; set; } = default!;
+	private PasskeyOutputModel Output { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
-		Input ??= new();
+		Output ??= new();
 
 		_user = await UserManager.GetUserAsync(HttpContext.User);
 		if (_user is null)
@@ -114,13 +110,13 @@ else
 			return;
 		}
 
-		if (!string.IsNullOrEmpty(Input.Error))
+		if (!string.IsNullOrEmpty(Output.Error))
 		{
-			RedirectManager.RedirectToCurrentPageWithStatus($"Error: {Input.Error}", HttpContext);
+			RedirectManager.RedirectToCurrentPageWithStatus($"Error: {Output.Error}", HttpContext);
 			return;
 		}
 
-		if (string.IsNullOrEmpty(Input.CredentialJson))
+		if (string.IsNullOrEmpty(Output.CredentialJson))
 		{
 			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorNoPasskey, HttpContext);
 			return;
@@ -132,7 +128,7 @@ else
 			return;
 		}
 
-		var attestationResult = await SignInManager.PerformPasskeyAttestationAsync(Input.CredentialJson);
+		var attestationResult = await SignInManager.PerformPasskeyAttestationAsync(Output.CredentialJson);
 		if (!attestationResult.Succeeded)
 		{
 			RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorAddPasskeyFailed, attestationResult.Failure.Message), HttpContext);

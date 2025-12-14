@@ -43,7 +43,7 @@
     private ExternalLoginInfo? _externalLoginInfo;
 
     [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
@@ -97,7 +97,7 @@
 
         // Sign in the user with this external login provider if the user already has a login.
         var result = await SignInManager.ExternalLoginSignInAsync(
-            _externalLoginInfo.LoginProvider,
+            _externalLoginInfo!.LoginProvider,
             _externalLoginInfo.ProviderKey,
             isPersistent: false,
             bypassTwoFactor: true);
@@ -138,10 +138,10 @@
         var result = await UserManager.CreateAsync(user);
         if (result.Succeeded)
         {
-            result = await UserManager.AddLoginAsync(user, _externalLoginInfo);
+            result = await UserManager.AddLoginAsync(user, _externalLoginInfo!);
             if (result.Succeeded)
             {
-                Logger.LogInformation("User created an account using {Name} provider.", _externalLoginInfo.LoginProvider);
+                Logger.LogInformation("User created an account using {Name} provider.", _externalLoginInfo!.LoginProvider);
 
                 var userId = await UserManager.GetUserIdAsync(user);
                 var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);

@@ -29,7 +29,7 @@ else
     private string? _statusMessage;
 
     [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromQuery]
     private string? Email { get; set; }
@@ -46,7 +46,7 @@ else
             RedirectManager.RedirectTo("");
         }
 
-        var user = await UserManager.FindByEmailAsync(Email);
+        var user = await UserManager.FindByEmailAsync(Email!);
         if (user is null)
         {
             HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;

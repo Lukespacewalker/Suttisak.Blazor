@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.40</AssemblyVersion>
+		<AssemblyVersion>0.1.41</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -207,8 +207,8 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-		<Compile Update="Region\Identity\Login.razor.Designer.cs">
-			<DependentUpon>Login.razor.resx</DependentUpon>
+		<Compile Update="Region\Identity\UsernamePasswordLogin.razor.Designer.cs">
+			<DependentUpon>UsernamePasswordLogin.razor.resx</DependentUpon>
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
@@ -355,8 +355,8 @@
 			<LastGenOutput>ConfirmEmailChange.razor.Designer.cs</LastGenOutput>
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Region\Identity\Login.razor.resx">
-			<LastGenOutput>Login.razor.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Region\Identity\UsernamePasswordLogin.razor.resx">
+			<LastGenOutput>UsernamePasswordLogin.razor.Designer.cs</LastGenOutput>
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
 	</ItemGroup>
