@@ -10,7 +10,7 @@
 
 <PageTitle>@Login_razor.Login</PageTitle>
 
-<section>
+<section style="display: flex; flex-direction: column;">
 	<h1 style="align-self:center">@UsernamePasswordLogin_razor.Login</h1>
 	<StatusMessage Message="@_statusMessage" />
 	<UsernamePasswordLogin FormName=@LoginWithUsernameFormName
@@ -19,11 +19,11 @@
 						   PasswordPlaceholder="@PasswordPlaceholder"
 						   OnValidSubmit="LoginWithUsernamePassword" />
 	<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
-	<div style="align-self:center">
+	<h3 style="align-self:center">
 		@UsernamePasswordLogin_razor.Alternative
-	</div>
+	</h3>
 	<div style="display:flex; gap: calc(var(--design-unit) * 2px); margin: calc(var(--design-unit) * 2px) 0;">
-		<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request" OutputParameterName="@nameof(LoginWithPasskeyOutput)">
+		<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request" OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
 			@Login_razor.Passkey
 		</PasskeySubmit>
 		<FluentDivider Orientation="Orientation.Vertical" Style="height: 32px;border-color: var(--neutral-fill-strong-rest);" />
