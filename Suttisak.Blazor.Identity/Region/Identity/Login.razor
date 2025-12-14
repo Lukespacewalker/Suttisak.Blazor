@@ -16,23 +16,23 @@
 			              Style="width: 100%">
 				@Login_razor.Login
 			</FluentButton>
-			@if (PasskeySubmitFragment is not null || ExternalLoginPickerFragment is not null)
-			{
-				<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
-				<div style="align-self:center">
-					@Login_razor.Alternative
-				</div>
-				<div style="display:flex; gap: calc(var(--design-unit) * 2px);">
-					@PasskeySubmitFragment
-					@if (PasskeySubmitFragment is not null && ExternalLoginPickerFragment is not null)
-					{
-						<FluentDivider Orientation="Orientation.Vertical" Style="height: 32px;border-color: var(--neutral-stroke-rest);" />
-					}
-					@ExternalLoginPickerFragment
-				</div>
-			}
 		</FluentStack>
 	</EditForm>
+	@if (PasskeySubmitFragment is not null || ExternalLoginPickerFragment is not null)
+	{
+		<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 2px) 0;" />
+		<div style="align-self:center">
+			@Login_razor.Alternative
+		</div>
+		<div style="display:flex; gap: calc(var(--design-unit) * 2px);">
+			@PasskeySubmitFragment
+			@if (PasskeySubmitFragment is not null && ExternalLoginPickerFragment is not null)
+			{
+				<FluentDivider Orientation="Orientation.Vertical" Style="height: 32px;border-color: var(--neutral-stroke-rest);" />
+			}
+			@ExternalLoginPickerFragment
+		</div>
+	}
 </section>
 
 @code {
