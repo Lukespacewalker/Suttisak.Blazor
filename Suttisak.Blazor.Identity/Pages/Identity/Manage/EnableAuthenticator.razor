@@ -9,14 +9,9 @@
 @inject UrlEncoder UrlEncoder
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<EnableAuthenticator<TUser>> Logger
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.EnableAuthenticator</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.EnableAuthenticator">@Manage_razor.EnableAuthenticator</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.EnableAuthenticator</FluentLabel>
 
@@ -66,6 +61,11 @@ else
 }
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.KeyMultiple();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.EnableAuthenticator;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.EnableAuthenticator);
+
     private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
     private string? _message;
@@ -80,8 +80,15 @@ else
     [SupplyParameterFromForm]
     protected virtual InputModel Input { get; set; } = new();
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<EnableAuthenticator<TUser>>();
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
 
         await LoadSharedKeyAndQrCodeUriAsync(_user);

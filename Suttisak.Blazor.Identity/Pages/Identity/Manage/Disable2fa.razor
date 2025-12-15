@@ -4,15 +4,10 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<Disable2fa<TUser>> Logger
+@inherits BreadcrumbPage
 
 
 <PageTitle>@Manage_razor.DisableTwoFactorAuthentication</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.DisableTwoFactorAuthentication">@Manage_razor.DisableTwoFactorAuthentication</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.DisableTwoFactorAuthentication</FluentLabel>
 
@@ -35,13 +30,25 @@
 </div>
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.ShieldDismiss();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.DisableTwoFactorAuthentication;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.DisableTwoFactorAuthentication);
+
     private TUser _user = null!;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<Disable2fa<TUser>>();
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
 
         if (HttpMethods.IsGet(HttpContext.Request.Method) && !await UserManager.GetTwoFactorEnabledAsync(_user))

@@ -3,14 +3,9 @@
 @inject UserManager<TUser> UserManager
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject ILogger<GenerateRecoveryCodes<TUser>> Logger
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.GenerateRecoveryCodes</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes">@Manage_razor.GenerateRecoveryCodes</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.GenerateRecoveryCodes</FluentLabel>
 
@@ -41,6 +36,11 @@ else
 }
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.KeyMultiple();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.GenerateRecoveryCodes;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.GenerateRecoveryCodes);
+
     private string? _message;
     private TUser _user = null!;
     private IEnumerable<string>? _recoveryCodes;
@@ -48,8 +48,15 @@ else
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<GenerateRecoveryCodes<TUser>>();
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
 
         var isTwoFactorEnabled = await UserManager.GetTwoFactorEnabledAsync(_user);

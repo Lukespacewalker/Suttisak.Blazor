@@ -7,13 +7,9 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IUserStore<TUser> UserStore
 @inject IdentityRedirectManager RedirectManager
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.ExternalLogins">@Manage_razor.ExternalLogins</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.ExternalLogins</FluentLabel>
 
@@ -69,6 +65,11 @@
 }
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.GlobeSurface();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.ExternalLogins;
+	public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.ExternalLogins);
+
     public const string LinkLoginCallback = "LinkLoginCallback";
 
     private TUser _user = null!;
@@ -85,11 +86,18 @@
     [SupplyParameterFromForm]
     protected virtual string? ProviderKey { get; set; }
 
-    [SupplyParameterFromQuery]
+    [SupplyParameterFromForm]
     protected virtual string? Action { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddThisPageAndPopulate<ExternalLogins<TUser>>();
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _currentLogins = await UserManager.GetLoginsAsync(_user);
         _otherLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync())
