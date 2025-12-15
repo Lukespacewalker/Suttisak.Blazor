@@ -5,14 +5,9 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ResetAuthenticator<TUser>> Logger
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.ResetAuthenticator</PageTitle>
-
-<FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.ResetAuthenticator">@Manage_razor.ResetAuthenticator</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.ResetAuthenticator</FluentLabel>
 
@@ -35,8 +30,19 @@
 </div>
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.ArrowCounterclockwise();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.ResetAuthenticator;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.ResetAuthenticator);
+
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<ResetAuthenticator<TUser>>();
+    }
 
     protected virtual async Task OnSubmitAsync()
     {

@@ -6,13 +6,9 @@
 @inject SignInManager<TUser> SignInManager
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.TwoFactorAuthentication</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.TwoFactorAuthentication</FluentLabel>
 
@@ -77,6 +73,11 @@ else
 }
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.KeyMultiple();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.TwoFactorAuthentication;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.TwoFactorAuthentication);
+
     private bool _canTrack;
     private bool _hasAuthenticator;
     private int _recoveryCodesLeft;
@@ -86,8 +87,15 @@ else
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddThisPageAndPopulate<TwoFactorAuthentication<TUser>>();
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         var user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _canTrack = HttpContext.Features.Get<ITrackingConsentFeature>()?.CanTrack ?? true;
         _hasAuthenticator = await UserManager.GetAuthenticatorKeyAsync(user) is not null;

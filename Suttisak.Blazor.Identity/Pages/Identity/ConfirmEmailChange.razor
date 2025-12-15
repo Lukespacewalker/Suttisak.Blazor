@@ -8,58 +8,64 @@
 
 <PageTitle>@ConfirmEmailChange_razor.ConfirmEmailChange</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@ConfirmEmailChange_razor.ConfirmEmailChange</FluentLabel>
+<section style="display: flex; flex-direction: column; align-items:center">
+	<h1>@ConfirmEmailChange_razor.ConfirmEmailChange</h1>
+	<StatusMessage Message="@_message"/>
+	<FluentNavLink Style="margin-top:4rem;" Href="/">
+		<h3>
+			Back to home
+		</h3>
+	</FluentNavLink>
+</section>
 
-<StatusMessage Message="@_message" />
+
 
 @code {
-    private string? _message;
+	private string? _message;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = null!;
+	[CascadingParameter]
+	private HttpContext HttpContext { get; set; } = null!;
 
-    [SupplyParameterFromQuery]
-    private string? UserId { get; set; }
+	[SupplyParameterFromQuery]
+	private string? UserId { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
+	[SupplyParameterFromQuery]
+	private string? Email { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? Code { get; set; }
+	[SupplyParameterFromQuery]
+	private string? Code { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (UserId is null || Email is null || Code is null)
-        {
-            RedirectManager.RedirectToWithStatus(
-                "Account/Login", ConfirmEmailChange_razor.ErrorInvalidLink, HttpContext);
-        }
+	protected override async Task OnInitializedAsync()
+	{
+		if (UserId is null || Email is null || Code is null)
+		{
+			RedirectManager.RedirectToWithStatus(
+				"Account/Login", ConfirmEmailChange_razor.ErrorInvalidLink, HttpContext);
+		}
 
-        var user = await UserManager.FindByIdAsync(UserId!);
-        if (user is null)
-        {
-            _message = string.Format(ConfirmEmailChange_razor.ErrorUserNotFound, UserId);
-            return;
-        }
+		var user = await UserManager.FindByIdAsync(UserId!);
+		if (user is null)
+		{
+			_message = string.Format(ConfirmEmailChange_razor.ErrorUserNotFound, UserId);
+			return;
+		}
 
-        var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code!));
-        var result = await UserManager.ChangeEmailAsync(user, Email!, code);
-        if (!result.Succeeded)
-        {
-            _message = ConfirmEmailChange_razor.ErrorChangingEmail;
-            return;
-        }
+		var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code!));
+		var result = await UserManager.ChangeEmailAsync(user, Email!, code);
+		if (!result.Succeeded)
+		{
+			_message = ConfirmEmailChange_razor.ErrorChangingEmail;
+			return;
+		}
 
-        // In our UI email and user name are one and the same, so when we update the email
-        // we need to update the user name.
-        var setUserNameResult = await UserManager.SetUserNameAsync(user, Email);
-        if (!setUserNameResult.Succeeded)
-        {
-            _message = ConfirmEmailChange_razor.ErrorChangingUserName;
-            return;
-        }
+		// var setUserNameResult = await UserManager.SetUserNameAsync(user, Email);
+		// if (!setUserNameResult.Succeeded)
+		// {
+		// 	_message = ConfirmEmailChange_razor.ErrorChangingUserName;
+		// 	return;
+		// }
 
-        await SignInManager.RefreshSignInAsync(user);
-        _message = ConfirmEmailChange_razor.ThankYouForConfirming;
-    }
+		await SignInManager.RefreshSignInAsync(user);
+		_message = ConfirmEmailChange_razor.ThankYouForConfirming;
+	}
 }

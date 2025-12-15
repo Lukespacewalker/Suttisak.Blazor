@@ -4,15 +4,9 @@
 
 @inject UserManager<TUser> UserManager
 @inject IdentityRedirectManager<TUser> RedirectManager
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">@Manage_razor.Passkeys</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.RenamePasskeyTemplate">@Manage_razor.RenamePasskey</FluentBreadcrumbItem>
-
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.RenamePasskey</FluentLabel>
 
@@ -33,6 +27,11 @@
 </EditForm>
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Edit();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.RenamePasskeyTemplate;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.RenamePasskey);
+
 	private TUser? _user;
 	private UserPasskeyInfo? _passkey;
 
@@ -45,8 +44,15 @@
 	[SupplyParameterFromForm]
     protected virtual InputModel Input { get; set; } = null!;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddPage<Passkeys<TUser>>().AddThisPageAndPopulate<RenamePasskey<TUser>>();
+    }
+
 	protected override async Task OnInitializedAsync()
 	{
+        await base.OnInitializedAsync();
 		Input ??= new();
 
 		_user = (await UserManager.GetUserAsync(HttpContext.User))!;
