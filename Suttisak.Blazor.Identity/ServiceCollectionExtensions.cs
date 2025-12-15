@@ -8,8 +8,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddBlazorIdentity<TUser>(
         this IServiceCollection services) where TUser : class
     {
-        // Register services
-
         // Register generic and non-generic versions of IdentityRedirectManager
         services.AddScoped<IdentityRedirectManager<TUser>>();
         services.AddScoped<IdentityRedirectManager>(serviceProvider =>

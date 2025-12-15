@@ -3,7 +3,7 @@
 @using Suttisak.Blazor.UserInterface.Models
 @using Suttisak.Blazor.UserInterface.Interfaces
 @layout RootLayout
-@implements IBreadcrumLayout
+@implements IBreadcrumbLayout
 @inject IOptions<BlazorUIOptions> GlobalDesign
 @inherits LayoutComponentBase
 
@@ -54,13 +54,13 @@
 
 	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 
-	public void PopulateBreadcrumbs(IEnumerable<Breadcrumb> breadcrumbs)
+	public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
 	{
 		var result = breadcrumbs.Select(breadcrumb =>
 	{
 		RenderFragment frag = @<FluentBreadcrumbItem Href="@breadcrumb.Url">
 				<FluentIcon Slot="start" Value="@breadcrumb.Icon" />
-			@breadcrumb.Title
+			@breadcrumb.TitleKey
 		</FluentBreadcrumbItem>;
 	return frag;
 	}).ToArray();

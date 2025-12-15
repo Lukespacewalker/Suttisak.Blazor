@@ -142,6 +142,15 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage your account.
+        /// </summary>
+        public static string Manage {
+            get {
+                return ResourceManager.GetString("Manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passkeys.
         /// </summary>
         public static string Passkeys {

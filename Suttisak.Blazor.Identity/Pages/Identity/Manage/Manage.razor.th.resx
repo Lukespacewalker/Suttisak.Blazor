@@ -165,4 +165,7 @@
   <data name="Logins" xml:space="preserve">
     <value>การเข้าสู่ระบบ</value>
   </data>
+  <data name="Manage" xml:space="preserve">
+    <value>จัดการบัญชีของคุณ</value>
+  </data>
 </root>
