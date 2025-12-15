@@ -8,14 +8,14 @@
 @inject IEmailSender<TUser> EmailSender
 @inject NavigationManager NavigationManager
 
-<PageTitle>@Manage.Email</PageTitle>
+<PageTitle>@Manage_razor.Email</PageTitle>
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Email">@Manage.Email</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Email">@Manage_razor.Email</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.Email</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.Email</FluentLabel>
 
 <StatusMessage Message="@_message"/>
 <FluentGrid>

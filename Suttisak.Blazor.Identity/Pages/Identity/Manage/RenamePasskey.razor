@@ -5,16 +5,16 @@
 @inject UserManager<TUser> UserManager
 @inject IdentityRedirectManager<TUser> RedirectManager
 
-<PageTitle>@Manage.RenamePasskey</PageTitle>
+<PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">@Manage.Passkeys</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.RenamePasskeyTemplate">@Manage.RenamePasskey</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Passkeys">@Manage_razor.Passkeys</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.RenamePasskeyTemplate">@Manage_razor.RenamePasskey</FluentBreadcrumbItem>
 
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.RenamePasskey</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.RenamePasskey</FluentLabel>
 
 <EditForm Model="Input" OnValidSubmit="Rename" FormName="rename-passkey" method="post">
 	<DataAnnotationsValidator />

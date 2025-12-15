@@ -162,4 +162,7 @@
   <data name="SetPassword" xml:space="preserve">
     <value>Set password</value>
   </data>
+  <data name="Logins" xml:space="preserve">
+    <value>Logins</value>
+  </data>
 </root>

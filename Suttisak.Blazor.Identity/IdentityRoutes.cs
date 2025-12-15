@@ -30,12 +30,15 @@ public static class IdentityRoutes
         public const string Lockout = $"{Root}/Lockout";
 
 
-        public const string Profile = $"{Root}/Manage";
+        
 
 
         public static class Manage
         {
             public const string Root = $"{Account.Root}/Manage";
+
+            public const string Profile = $"{Root}/Manage";
+
             public const string Email = $"{Root}/Email";
             public const string ChangePassword = $"{Account.Root}/Manage/ChangePassword";
             public const string PersonalData = $"{Root}/PersonalData";

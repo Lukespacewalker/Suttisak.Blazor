@@ -1,0 +1,41 @@
+@using Suttisak.Blazor.UserInterface.Components.Common
+@inherits BreadcrumbPage
+
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
+	<FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Profile</FluentLabel>
+	<CardMenu Url="@IdentityRoutes.Account.Manage.Profile"
+	          Icon="@(new Icons.Regular.Size20.PersonAccounts())"
+	          Title="@Manage_razor.Profile" />
+	<CardMenu Url="@IdentityRoutes.Account.Manage.Email"
+	          Icon="@(new Icons.Regular.Size20.Mail())"
+	          Title="@Manage_razor.Email" />
+	<CardMenu Url="@IdentityRoutes.Account.Manage.ChangePassword"
+	          Icon="@(new Icons.Regular.Size20.Password())"
+	          Title="@Manage_razor.ChangePassword" />
+	<FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Logins</FluentLabel>
+	<CardMenu Url="@IdentityRoutes.Account.Manage.ExternalLogins"
+	          Icon="@(new Icons.Regular.Size20.GlobeSurface())"
+	          Title="@Manage_razor.ExternalLogins" />
+	<CardMenu Url="@IdentityRoutes.Account.Manage.TwoFactorAuthentication"
+	          Icon="@(new Icons.Regular.Size20.KeyMultiple())"
+	          Title="@Manage_razor.TwoFactorAuthentication" />
+	<CardMenu Url="@IdentityRoutes.Account.Manage.Passkeys"
+	          Icon="@(new Icons.Regular.Size20.PersonPasskey())"
+	          Title="@Manage_razor.Passkeys" />
+	<FluentLabel Typo="Typography.PaneHeader">@Manage_razor.PersonalData</FluentLabel>
+	<CardMenu Url="@IdentityRoutes.Account.Manage.PersonalData"
+	          Icon="@(new Icons.Regular.Size20.DatabasePerson())"
+	          Title="@Manage_razor.PersonalData" />
+</FluentStack>
+
+@code {
+	protected override Icon PageIcon { get; set; } = new Icons.Regular.Size20.PersonCircle();
+	protected override string PageUrl { get; set; } = IdentityRoutes.Account.Manage.Root;
+	protected override string PageTitle { get; set; } = Manage_razor.Account;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		AddCurrentPage().PopulateBreadcrumbs();
+	}
+}

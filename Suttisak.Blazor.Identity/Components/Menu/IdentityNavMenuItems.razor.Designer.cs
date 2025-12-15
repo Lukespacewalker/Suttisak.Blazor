@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Suttisak.Blazor.UserInterface.Components.Menu {
+namespace Suttisak.Blazor.Identity.Components.Menu {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Suttisak.Blazor.UserInterface.Components.Menu {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.UserInterface.Components.Menu.IdentityNavMenuItems.razor", typeof(IdentityNavMenuItems_razor).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Suttisak.Blazor.Identity.Components.Menu.IdentityNavMenuItems.razor", typeof(IdentityNavMenuItems_razor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
