@@ -20,5 +20,4 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IThemeService, ThemeService>();
         return services;
     }
-
 }
