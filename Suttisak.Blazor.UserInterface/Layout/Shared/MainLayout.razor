@@ -1,6 +1,9 @@
 @using Microsoft.AspNetCore.Components.Sections
 @using Microsoft.Extensions.Options
+@using Suttisak.Blazor.UserInterface.Models
+@using Suttisak.Blazor.UserInterface.Interfaces
 @layout RootLayout
+@implements IBreadcrumLayout
 @inject IOptions<BlazorUIOptions> GlobalDesign
 @inherits LayoutComponentBase
 
@@ -8,20 +11,31 @@
 	<div class="root" style="position:relative">
 		<FluentLayout>
 			<FluentHeader>
-				<img src="@GlobalDesign.Value.LogoAssetPath" 
-				     style="width:2rem; height:2rem;margin-right:0.5rem;" />
+				<img src="@GlobalDesign.Value.LogoAssetPath"
+					 style="width:2rem; height:2rem;margin-right:0.5rem;" />
 				<SectionOutlet SectionId="HeaderSection" />
 				<FluentSpacer />
 				<HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
-				               @rendermode="HeaderRenderMode" />
+									   @rendermode="HeaderRenderMode" />
 			</FluentHeader>
 			<FluentBodyContent>
-				<FluentStack Class="main main-stack" 
-				             Orientation="Orientation.Horizontal" 
-				             Width="100%" HorizontalGap="0" VerticalGap="0">
+				<FluentStack Class="main main-stack"
+							 Orientation="Orientation.Horizontal"
+							 Width="100%" HorizontalGap="0" VerticalGap="0">
 					<SectionOutlet SectionId="NavigationSection" />
 					<div class="content">
 						<SectionOutlet SectionId="MessageBarSection" />
+						@if (_breadcrumbs.Any())
+						{
+							<nav aria-label="Breadcrumb" style="margin-bottom:calc( var(--design-unit) * 4px);">
+								<FluentBreadcrumb>
+									@foreach (var breadcrumb in _breadcrumbs)
+									{
+										@breadcrumb
+									}
+								</FluentBreadcrumb>
+							</nav>
+						}
 						@Body
 					</div>
 				</FluentStack>
@@ -31,9 +45,27 @@
 </CascadingValue>
 
 @code {
+	public static object BreadcrumbSection = new();
 	public static object HeaderSection = new();
 	public static object NavigationSection = new();
 	public static object MessageBarSection = new();
 
+	private RenderFragment[] _breadcrumbs = Array.Empty<RenderFragment>();
+
 	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
+
+	public void PopulateBreadcrumbs(IEnumerable<Breadcrumb> breadcrumbs)
+	{
+		var result = breadcrumbs.Select(breadcrumb =>
+	{
+		RenderFragment frag = @<FluentBreadcrumbItem Href="@breadcrumb.Url">
+				<FluentIcon Slot="start" Value="@breadcrumb.Icon" />
+			@breadcrumb.Title
+		</FluentBreadcrumbItem>;
+	return frag;
+	}).ToArray();
+	_breadcrumbs = result;
+	StateHasChanged();
+
+}
 }

@@ -8,14 +8,14 @@
 @inject IUserStore<TUser> UserStore
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>@Manage.ExternalLogins</PageTitle>
+<PageTitle>@Manage_razor.ExternalLogins</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.ExternalLogins">@Manage.ExternalLogins</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.ExternalLogins">@Manage_razor.ExternalLogins</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.ExternalLogins</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.ExternalLogins</FluentLabel>
 
 <StatusMessage />
 @if (_currentLogins?.Count > 0)

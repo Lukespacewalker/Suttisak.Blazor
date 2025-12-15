@@ -126,15 +126,6 @@
   <data name="DeletePersonalData" xml:space="preserve">
     <value>ลบข้อมูลส่วนตัว</value>
   </data>
-  <data name="PersonalData" xml:space="preserve">
-    <value>ข้อมูลส่วนตัว</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>โปรไฟล์</value>
-  </data>
-  <data name="ResetAuthenticator" xml:space="preserve">
-    <value>รีเซ็ตคีย์ยืนยันตัวตน</value>
-  </data>
   <data name="DisableTwoFactorAuthentication" xml:space="preserve">
     <value>ปิดใช้งานการยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
   </data>
@@ -150,16 +141,28 @@
   <data name="GenerateRecoveryCodes" xml:space="preserve">
     <value>สร้างรหัสกู้คืนการยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
   </data>
+  <data name="TwoFactorAuthentication" xml:space="preserve">
+    <value>การยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
+  </data>
   <data name="Passkeys" xml:space="preserve">
     <value>พาสคีย์</value>
+  </data>
+  <data name="PersonalData" xml:space="preserve">
+    <value>ข้อมูลส่วนตัว</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>โปรไฟล์</value>
   </data>
   <data name="RenamePasskey" xml:space="preserve">
     <value>เปลี่ยนชื่อพาสคีย์</value>
   </data>
+  <data name="ResetAuthenticator" xml:space="preserve">
+    <value>รีเซ็ตคีย์ยืนยันตัวตน</value>
+  </data>
   <data name="SetPassword" xml:space="preserve">
     <value>ตั้งรหัสผ่าน</value>
   </data>
-  <data name="TwoFactorAuthentication" xml:space="preserve">
-    <value>การยืนยันตัวตนแบบสองปัจจัย (2FA)</value>
+  <data name="Logins" xml:space="preserve">
+    <value>การเข้าสู่ระบบ</value>
   </data>
 </root>

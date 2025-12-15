@@ -10,15 +10,15 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<EnableAuthenticator<TUser>> Logger
 
-<PageTitle>@Manage.EnableAuthenticator</PageTitle>
+<PageTitle>@Manage_razor.EnableAuthenticator</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage.TwoFactorAuthentication</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.EnableAuthenticator">@Manage.EnableAuthenticator</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.EnableAuthenticator">@Manage_razor.EnableAuthenticator</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.EnableAuthenticator</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.EnableAuthenticator</FluentLabel>
 
 @if (_recoveryCodes is not null)
 {

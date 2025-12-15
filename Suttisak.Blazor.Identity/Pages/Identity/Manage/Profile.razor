@@ -5,14 +5,14 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>@Manage.Profile</PageTitle>
+<PageTitle>@Manage_razor.Profile</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Profile">@Manage.Profile</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Profile">@Manage_razor.Profile</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.Profile</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.Profile</FluentLabel>
 
 <StatusMessage />
 

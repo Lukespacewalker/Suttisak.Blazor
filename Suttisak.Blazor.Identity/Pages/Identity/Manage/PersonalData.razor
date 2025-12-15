@@ -1,14 +1,14 @@
 ﻿@typeparam TUser where TUser : class
 @inject IdentityUserAccessor<TUser> UserAccessor
 
-<PageTitle>@Manage.PersonalData</PageTitle>
+<PageTitle>@Manage_razor.PersonalData</PageTitle>
 
 <FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.PersonalData">@Manage.PersonalData</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.PersonalData">@Manage_razor.PersonalData</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.PersonalData</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.PersonalData</FluentLabel>
 
 <StatusMessage />
 
