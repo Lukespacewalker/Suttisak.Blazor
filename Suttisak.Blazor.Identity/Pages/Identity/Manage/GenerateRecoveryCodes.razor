@@ -4,15 +4,15 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject ILogger<GenerateRecoveryCodes<TUser>> Logger
 
-<PageTitle>@Manage.GenerateRecoveryCodes</PageTitle>
+<PageTitle>@Manage_razor.GenerateRecoveryCodes</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage.TwoFactorAuthentication</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes">@Manage.GenerateRecoveryCodes</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes">@Manage_razor.GenerateRecoveryCodes</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.GenerateRecoveryCodes</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.GenerateRecoveryCodes</FluentLabel>
 
 @if (_recoveryCodes is not null)
 {

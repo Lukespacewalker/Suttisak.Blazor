@@ -6,14 +6,14 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<DeletePersonalData<TUser>> Logger
 
-<PageTitle>@Manage.DeletePersonalData</PageTitle>
+<PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
 <FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Root">@Manage.Account</FluentBreadcrumbItem>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.PersonalData">@Manage.DeletePersonalData</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
+	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.PersonalData">@Manage_razor.DeletePersonalData</FluentBreadcrumbItem>
 </FluentBreadcrumb>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage.DeletePersonalData</FluentLabel>
+<FluentLabel Typo="Typography.PageTitle">@Manage_razor.DeletePersonalData</FluentLabel>
 
 <StatusMessage Message="@_message" />
 

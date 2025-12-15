@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.44</AssemblyVersion>
+		<AssemblyVersion>0.1.45</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -41,6 +41,11 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>ShowRecoveryCodes.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Components\Menu\IdentityNavMenuItems.razor.Designer.cs">
+		  <DependentUpon>IdentityNavMenuItems.razor.resx</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
 		</Compile>
 		<Compile Update="Pages\Identity\AccessDenied.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
@@ -137,10 +142,10 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>GenerateRecoveryCodes.razor.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Pages\Identity\Manage\Manage.Designer.cs">
+		<Compile Update="Pages\Identity\Manage\Manage.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Manage.resx</DependentUpon>
+		  <DependentUpon>Manage.razor.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Pages\Identity\Manage\Passkeys.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
@@ -223,6 +228,10 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ShowRecoveryCodes.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Components\Menu\IdentityNavMenuItems.razor.resx">
+		  <LastGenOutput>IdentityNavMenuItems.razor.Designer.cs</LastGenOutput>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\AccessDenied.razor.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>AccessDenied.razor.Designer.cs</LastGenOutput>
@@ -299,9 +308,9 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>GenerateRecoveryCodes.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Pages\Identity\Manage\Manage.resx">
+		<EmbeddedResource Update="Pages\Identity\Manage\Manage.razor.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Manage.Designer.cs</LastGenOutput>
+		  <LastGenOutput>Manage.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\Manage\Passkeys.razor.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
