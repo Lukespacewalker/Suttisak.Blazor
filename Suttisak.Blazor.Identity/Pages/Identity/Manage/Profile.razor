@@ -4,13 +4,9 @@
 @inject SignInManager<TUser> SignInManager
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
+@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.Profile</PageTitle>
-
-<FluentBreadcrumb>
-	<FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Root">@Manage_razor.Account</FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="@IdentityRoutes.Account.Manage.Profile">@Manage_razor.Profile</FluentBreadcrumbItem>
-</FluentBreadcrumb>
 
 <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Profile</FluentLabel>
 
@@ -30,6 +26,11 @@
 </FluentGrid>
 
 @code {
+    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.PersonAccounts();
+    public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.Profile;
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_",".");
+    public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.Profile);
+
     private TUser _user = null!;
     private string? _username;
     private string? _phoneNumber;
@@ -40,8 +41,15 @@
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
+    protected override void OnInitialized()
+    {
+	    base.OnInitialized();
+	    AddPage<Manage>().AddThisPageAndPopulate<Profile<TUser>>();
+    }
+
     protected override async Task OnInitializedAsync()
     {
+	    await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _username = await UserManager.GetUserNameAsync(_user);
         _phoneNumber = await UserManager.GetPhoneNumberAsync(_user);
