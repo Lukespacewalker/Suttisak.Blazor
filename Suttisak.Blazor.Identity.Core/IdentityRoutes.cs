@@ -1,6 +1,4 @@
-﻿using Suttisak.Blazor.Identity.Pages.Identity.Manage;
-
-namespace Suttisak.Blazor.Identity;
+﻿namespace Suttisak.Blazor.Identity;
 
 public static class IdentityRoutes
 {
@@ -29,10 +27,6 @@ public static class IdentityRoutes
         public const string ExternalLogin = $"{Root}/ExternalLogin";
         public const string Lockout = $"{Root}/Lockout";
 
-
-        
-
-
         public static class Manage
         {
             public const string Root = $"{Account.Root}/Manage";
@@ -58,11 +52,9 @@ public static class IdentityRoutes
             public const string GenerateRecoveryCodes = $"{Root}/GenerateRecoveryCodes";
         }
     }
-
     public static class Api
     {
         public const string DownloadPersonalData = "Account/Manage/DownloadPersonalData";
-        // Account/PerformExternalLogin
         public const string PerformExternalLogin = "Account/PerformExternalLogin";
     }
 }

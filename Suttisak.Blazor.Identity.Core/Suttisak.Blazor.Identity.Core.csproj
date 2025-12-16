@@ -1,14 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Title>Suttisak's Blazor User Interface Components</Title>
+		<Title>Suttisak's Blazor Identity Core Components</Title>
 		<Copyright>Suttisak Denduangchai</Copyright>
-		<Description>A collection of useful components for Blazor</Description>
+		<Description>A core component of Suttisak's Blazor Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.44</AssemblyVersion>
+		<AssemblyVersion>0.1.48</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -17,32 +17,34 @@
 		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
+
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.1" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.13.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Components\ProfileMenu.razor.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>ProfileMenu.razor.resx</DependentUpon>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Components\Menu\IdentityNavMenuItems.razor.Designer.cs">
+			<DependentUpon>IdentityNavMenuItems.razor.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="Components\ProfileMenu.razor.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>ProfileMenu.razor.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="Components\Menu\IdentityNavMenuItems.razor.resx">
+			<LastGenOutput>IdentityNavMenuItems.razor.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
 	</ItemGroup>
-
 
 </Project>

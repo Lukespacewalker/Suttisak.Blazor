@@ -1,4 +1,6 @@
-@using Microsoft.AspNetCore.Components.Routing
+@using Suttisak.Blazor.Identity.Core.Components.Menu
+@namespace Suttisak.Blazor.Identity.Components.Menu
+
 <FluentNavGroup Icon="@(new Icons.Regular.Size20.PersonCircle())" Href="@IdentityRoutes.Account.Manage.Root" Title="@IdentityNavMenuItems_razor.Account">
 	<FluentNavLink Icon="@(new Icons.Regular.Size24.PersonAccounts())" Href="@IdentityRoutes.Account.Manage.Profile" Match="NavLinkMatch.All">@IdentityNavMenuItems_razor.Profile</FluentNavLink>
 	<FluentNavLink Icon="@(new Icons.Regular.Size20.Mail())" Href="@IdentityRoutes.Account.Manage.Email">@IdentityNavMenuItems_razor.Email</FluentNavLink>
