@@ -2,29 +2,43 @@
     display: grid;
     background-color: var(--neutral-layer-2);
     grid-template-columns: minmax(400px, 800px) 1fr;
+    grid-template-columns: minmax(calc(375px - var(--design-unit) * 4px * 2), 800px) 1fr;
     padding: calc(var(--design-unit) * 4px);
     gap: calc(var(--design-unit) * 4px);
     height: 100dvh;
     width: 100dvw;
 }
 
-    .root > section, .root > div {
-        border-radius: 10px;
-        overflow: hidden;
+@media (max-width: 846px) {
+    .root {
+        gap: unset;
     }
 
-    .root > div {
-        background-color: var(--neutral-fill-rest);
-    }
+        .root .section-image {
+            display: none;
+        }
+}
 
-    .root .section-body {
-        backdrop-filter: blur(30px);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: calc(var(--design-unit) * 2px);
-        padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 2px)
-    }
+
+.root > section, .root > div {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.root > div {
+    background-color: var(--neutral-fill-rest);
+}
+
+.root .section-body {
+    backdrop-filter: blur(30px);
+    height: 100%;
+    backdrop-filter: blur(25px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--design-unit) * 2px);
+    padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 2px)
+}
 
     .root .section-body .actual-body {
         padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 16px)
@@ -42,6 +56,7 @@
     top: 80px;
     left: 50%;
     transform: translateX(-50%) scale(2);
+    transform: translateX(-50%) scale(3);
 }
 
 .root .section-image {

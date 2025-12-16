@@ -8,7 +8,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A core component of Suttisak's Blazor Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.48</AssemblyVersion>
+		<AssemblyVersion>0.1.49</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -16,6 +16,13 @@
 		<DebugType>Embedded</DebugType>
 		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="wwwroot\**" />
+	  <Content Remove="wwwroot\**" />
+	  <EmbeddedResource Remove="wwwroot\**" />
+	  <None Remove="wwwroot\**" />
+	</ItemGroup>
 
 
 	<ItemGroup>
@@ -26,10 +33,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.1" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.13.2" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.13.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wwwroot\" />
 	</ItemGroup>
 
 	<ItemGroup>
