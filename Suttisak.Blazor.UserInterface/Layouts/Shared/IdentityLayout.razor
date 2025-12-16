@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.Extensions.Options
+@using Suttisak.Blazor.UserInterface.Region
+@using Suttisak.Blazor.UserInterface.Services
+@layout RootLayout
+@inject IOptions<BlazorUIOptions> GlobalDesign
+@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+	<div class="root" style="position:relative">
+		<div style="position:relative">
+			<img class="logo-backdrop" src="@GlobalDesign.Value.LogoAssetPath"
+				 style="width:4rem; height:4rem" />
+			<section class="section-body">
+				<div class="header-control-container">
+					<HeaderControl @rendermode="HeaderRenderMode" />
+				</div>
+				<img src="@GlobalDesign.Value.LogoAssetPath"
+					 style="width:4rem; height:4rem;align-self:center" />
+				<SectionOutlet SectionId="HeadingSection" />
+				<div class="actual-body">
+					@Body
+				</div>
+			</section>
+		</div>
+		<section class="section-image" style="background-image:url(@BackgroundImageUrl)">
+			<SectionOutlet SectionId="ImageOverlaySection" />
+		</section>
+	</div>
+</CascadingValue>
+
+@code {
+	public static object ImageOverlaySection = new();
+	public static object HeadingSection = new();
+
+	[Parameter] public string? BackgroundImageUrl { get; set; }
+
+	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
+}
