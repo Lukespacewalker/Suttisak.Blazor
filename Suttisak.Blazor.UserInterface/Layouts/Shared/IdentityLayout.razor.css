@@ -1,0 +1,51 @@
+﻿.root {
+    display: grid;
+    background-color: var(--neutral-layer-2);
+    grid-template-columns: minmax(400px, 800px) 1fr;
+    padding: calc(var(--design-unit) * 4px);
+    gap: calc(var(--design-unit) * 4px);
+    height: 100dvh;
+    width: 100dvw;
+}
+
+    .root > section, .root > div {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .root > div {
+        background-color: var(--neutral-fill-rest);
+    }
+
+    .root .section-body {
+        backdrop-filter: blur(30px);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--design-unit) * 2px);
+        padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 2px)
+    }
+
+    .root .section-body .actual-body {
+        padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 16px)
+    }
+
+.header-control-container {
+    display: flex;
+    justify-content: space-between;
+    gap: calc(var(--design-unit) * 1px);
+    margin-top: calc(var(--design-unit) * 2px);
+}
+
+.logo-backdrop {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) scale(2);
+}
+
+.root .section-image {
+    background-size: cover;
+    background-origin: border-box;
+    background-position: center center;
+}
