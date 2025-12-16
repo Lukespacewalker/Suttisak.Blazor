@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.1.47</AssemblyVersion>
+		<AssemblyVersion>0.1.48</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -28,6 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Suttisak.Blazor.Identity.Core\Suttisak.Blazor.Identity.Core.csproj" />
 		<ProjectReference Include="..\Suttisak.Blazor.UserInterface\Suttisak.Blazor.UserInterface.csproj" />
 	</ItemGroup>
 
@@ -41,11 +42,6 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>ShowRecoveryCodes.razor.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Components\Menu\IdentityNavMenuItems.razor.Designer.cs">
-		  <DependentUpon>IdentityNavMenuItems.razor.resx</DependentUpon>
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
 		</Compile>
 		<Compile Update="Pages\Identity\AccessDenied.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
@@ -228,10 +224,6 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ShowRecoveryCodes.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Components\Menu\IdentityNavMenuItems.razor.resx">
-		  <LastGenOutput>IdentityNavMenuItems.razor.Designer.cs</LastGenOutput>
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\AccessDenied.razor.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>AccessDenied.razor.Designer.cs</LastGenOutput>
@@ -371,6 +363,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Components\Menu\" />
 	  <Folder Include="wwwroot\images\icons\" />
 	</ItemGroup>
 

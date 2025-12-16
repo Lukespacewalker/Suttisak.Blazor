@@ -4,7 +4,6 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Suttisak.Blazor.UserInterface.Interfaces;
 using Suttisak.Blazor.UserInterface.Models;
 using System.Reflection;
-using System.Security.AccessControl;
 
 namespace Suttisak.Blazor.UserInterface.Components.Pages;
 
