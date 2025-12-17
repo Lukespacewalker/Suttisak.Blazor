@@ -6,6 +6,8 @@ public static class IdentityRoutes
     {
         public const string Root = "/Account";
 
+        public const string AccessDenied = $"{Root}/AccessDenied";
+
         public const string ConfirmEmail = $"{Root}/ConfirmEmail";
         public const string ConfirmEmailChange = $"{Root}/ConfirmEmailChange";
         public const string ForgotPassword = $"{Root}/ForgotPassword";
