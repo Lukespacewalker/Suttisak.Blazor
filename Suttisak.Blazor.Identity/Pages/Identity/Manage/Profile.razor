@@ -8,7 +8,9 @@
 
 <PageTitle>@Manage_razor.Profile</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.Profile</FluentLabel>
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Profile</FluentLabel>
+</SectionContent>
 
 <StatusMessage />
 
@@ -28,7 +30,7 @@
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.PersonAccounts();
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.Profile;
-    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_",".");
+    public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.Profile);
 
     private TUser _user = null!;
@@ -43,13 +45,13 @@
 
     protected override void OnInitialized()
     {
-	    base.OnInitialized();
-	    AddPage<Manage>().AddThisPageAndPopulate<Profile<TUser>>();
+        base.OnInitialized();
+        AddPage<Manage>().AddThisPageAndPopulate<Profile<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()
     {
-	    await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _username = await UserManager.GetUserNameAsync(_user);
         _phoneNumber = await UserManager.GetPhoneNumberAsync(_user);

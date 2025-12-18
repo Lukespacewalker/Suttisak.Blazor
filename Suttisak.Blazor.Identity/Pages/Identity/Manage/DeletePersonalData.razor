@@ -9,28 +9,30 @@
 
 <PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.DeletePersonalData</FluentLabel>
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.DeletePersonalData</FluentLabel>
+</SectionContent>
 
 <StatusMessage Message="@_message" />
 
 <FluentGrid>
-	<FluentGridItem sm="6">
-		<div class="alert alert-warning" role="alert">
-			<p>
-				<strong>@DeletePersonalData_razor.WarningMessage</strong>
-			</p>
-		</div>
-		<EditForm Model="Input" FormName="delete-user" OnValidSubmit="OnValidSubmitAsync" method="post">
-			<DataAnnotationsValidator />
-			<FluentValidationSummary class="text-danger" role="alert" />
-			@if (_requirePassword)
-			{
-				<FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
-				<FluentValidationMessage For="() => Input.Password" class="text-danger" />
-			}
-			<FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
-		</EditForm>
-	</FluentGridItem>
+    <FluentGridItem sm="6">
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <strong>@DeletePersonalData_razor.WarningMessage</strong>
+            </p>
+        </div>
+        <EditForm Model="Input" FormName="delete-user" OnValidSubmit="OnValidSubmitAsync" method="post">
+            <DataAnnotationsValidator />
+            <FluentValidationSummary class="text-danger" role="alert" />
+            @if (_requirePassword)
+            {
+                <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
+                <FluentValidationMessage For="() => Input.Password" class="text-danger" />
+            }
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
+        </EditForm>
+    </FluentGridItem>
 </FluentGrid>
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Delete();
@@ -38,55 +40,55 @@
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.DeletePersonalData);
 
-	private string? _message;
-	private TUser _user = null!;
-	private bool _requirePassword;
+    private string? _message;
+    private TUser _user = null!;
+    private bool _requirePassword;
 
-	[CascadingParameter]
-	private HttpContext HttpContext { get; set; } = null!;
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = null!;
 
-	[SupplyParameterFromForm]
+    [SupplyParameterFromForm]
     protected virtual InputModel Input { get; set; } = new();
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		AddPage<Manage>().AddPage<PersonalData<TUser>>().AddThisPageAndPopulate<DeletePersonalData<TUser>>();
-	}
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddPage<Manage>().AddPage<PersonalData<TUser>>().AddThisPageAndPopulate<DeletePersonalData<TUser>>();
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
+    protected override async Task OnInitializedAsync()
+    {
         await base.OnInitializedAsync();
-		Input ??= new();
-		_user = await UserAccessor.GetRequiredUserAsync(HttpContext);
-		_requirePassword = await UserManager.HasPasswordAsync(_user);
-	}
+        Input ??= new();
+        _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+        _requirePassword = await UserManager.HasPasswordAsync(_user);
+    }
 
-	protected virtual async Task OnValidSubmitAsync()
-	{
-		if (_requirePassword && !await UserManager.CheckPasswordAsync(_user, Input.Password))
-		{
-			_message = DeletePersonalData_razor.IncorrectPasswordError;
-			return;
-		}
+    protected virtual async Task OnValidSubmitAsync()
+    {
+        if (_requirePassword && !await UserManager.CheckPasswordAsync(_user, Input.Password))
+        {
+            _message = DeletePersonalData_razor.IncorrectPasswordError;
+            return;
+        }
 
-		var result = await UserManager.DeleteAsync(_user);
-		if (!result.Succeeded)
-		{
-			throw new InvalidOperationException(DeletePersonalData_razor.UnexpectedErrorDeletingUser);
-		}
+        var result = await UserManager.DeleteAsync(_user);
+        if (!result.Succeeded)
+        {
+            throw new InvalidOperationException(DeletePersonalData_razor.UnexpectedErrorDeletingUser);
+        }
 
-		await SignInManager.SignOutAsync();
+        await SignInManager.SignOutAsync();
 
-		var userId = await UserManager.GetUserIdAsync(_user);
-		Logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+        var userId = await UserManager.GetUserIdAsync(_user);
+        Logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
 
-		RedirectManager.RedirectToCurrentPage();
-	}
+        RedirectManager.RedirectToCurrentPage();
+    }
 
-	protected class InputModel
-	{
-		[DataType(DataType.Password)]
-		public string Password { get; set; } = "";
-	}
+    protected class InputModel
+    {
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+    }
 }

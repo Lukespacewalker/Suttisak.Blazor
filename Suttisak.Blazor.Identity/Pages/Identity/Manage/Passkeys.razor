@@ -10,61 +10,62 @@
 
 <PageTitle>@Manage_razor.Passkeys</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.Passkeys</FluentLabel>
-
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Passkeys</FluentLabel>
+</SectionContent>
 <StatusMessage />
 
 @if (_currentPasskeys is { Count: > 0 })
 {
-	<table class="dashboard-table">
-		<thead>
-			<tr>
-				<td>
-					@Passkeys_razor.NameHeader
-				</td>
-				<td>
-					@Passkeys_razor.ActionHeader
-				</td>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var passkey in _currentPasskeys)
-			{
-				<tr>
-					<td>@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)</td>
-					<td>
-						@{
-							var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
-						}
-						<form @formname="@($"update-passkey-{credentialId}-1")" @onsubmit="UpdatePasskey" method="post">
-							<AntiforgeryToken />
-							<input type="hidden" name="CredentialId" value="@credentialId" />
-							<FluentButton Type="ButtonType.Submit" Name="action" Value="rename" Title="@Passkeys_razor.RenameTitle">@Passkeys_razor.RenameButton</FluentButton>
-						</form>
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <td>
+                    @Passkeys_razor.NameHeader
+                </td>
+                <td>
+                    @Passkeys_razor.ActionHeader
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var passkey in _currentPasskeys)
+            {
+                <tr>
+                    <td>@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)</td>
+                    <td>
+                        @{
+                            var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
+                        }
+                        <form @formname="@($"update-passkey-{credentialId}-1")" @onsubmit="UpdatePasskey" method="post">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="CredentialId" value="@credentialId" />
+                            <FluentButton Type="ButtonType.Submit" Name="action" Value="rename" Title="@Passkeys_razor.RenameTitle">@Passkeys_razor.RenameButton</FluentButton>
+                        </form>
 
-						<form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
-							<AntiforgeryToken />
-							<input type="hidden" name="CredentialId" value="@credentialId" />
-							<FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle">@Passkeys_razor.DeleteButton</FluentButton>
-						</form>
-					</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+                        <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="CredentialId" value="@credentialId" />
+                            <FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle">@Passkeys_razor.DeleteButton</FluentButton>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else
 {
-	<p>@Passkeys_razor.NoPasskeys</p>
+    <p>@Passkeys_razor.NoPasskeys</p>
 }
 
 @if (_currentPasskeys is { Count: >= MaxPasskeyCount })
 {
-	<p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
+    <p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
 }
 else
 {
-	<PasskeySubmit OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
+    <PasskeySubmit OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
 }
 
 @code {
@@ -73,24 +74,24 @@ else
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.Passkeys);
 
-	private const int MaxPasskeyCount = 100;
+    private const int MaxPasskeyCount = 100;
 
-	private const string AddPasskeyFormName = "add-passkey";
+    private const string AddPasskeyFormName = "add-passkey";
 
-	private TUser? _user;
-	private IList<UserPasskeyInfo>? _currentPasskeys;
+    private TUser? _user;
+    private IList<UserPasskeyInfo>? _currentPasskeys;
 
-	[CascadingParameter]
-	private HttpContext HttpContext { get; set; } = null!;
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = null!;
 
-	[SupplyParameterFromForm]
-	private string? Action { get; set; }
+    [SupplyParameterFromForm]
+    private string? Action { get; set; }
 
-	[SupplyParameterFromForm]
-	private string? CredentialId { get; set; }
+    [SupplyParameterFromForm]
+    private string? CredentialId { get; set; }
 
-	[SupplyParameterFromForm(FormName = AddPasskeyFormName)]
-	private PasskeyOutputModel Output { get; set; } = null!;
+    [SupplyParameterFromForm(FormName = AddPasskeyFormName)]
+    private PasskeyOutputModel Output { get; set; } = null!;
 
     protected override void OnInitialized()
     {
@@ -98,107 +99,107 @@ else
         AddPage<Manage>().AddThisPageAndPopulate<Passkeys<TUser>>();
     }
 
-	protected override async Task OnInitializedAsync()
-	{
+    protected override async Task OnInitializedAsync()
+    {
         await base.OnInitializedAsync();
-		Output ??= new();
+        Output ??= new();
 
-		_user = await UserManager.GetUserAsync(HttpContext.User);
-		if (_user is null)
-		{
-			RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
-			return;
-		}
-		_currentPasskeys = await UserManager.GetPasskeysAsync(_user);
-	}
+        _user = await UserManager.GetUserAsync(HttpContext.User);
+        if (_user is null)
+        {
+            RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
+            return;
+        }
+        _currentPasskeys = await UserManager.GetPasskeysAsync(_user);
+    }
 
-	protected virtual async Task AddPasskey()
-	{
-		if (_user is null)
-		{
-			RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
-			return;
-		}
+    protected virtual async Task AddPasskey()
+    {
+        if (_user is null)
+        {
+            RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
+            return;
+        }
 
-		if (!string.IsNullOrEmpty(Output.Error))
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus($"Error: {Output.Error}", HttpContext);
-			return;
-		}
+        if (!string.IsNullOrEmpty(Output.Error))
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus($"Error: {Output.Error}", HttpContext);
+            return;
+        }
 
-		if (string.IsNullOrEmpty(Output.CredentialJson))
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorNoPasskey, HttpContext);
-			return;
-		}
+        if (string.IsNullOrEmpty(Output.CredentialJson))
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorNoPasskey, HttpContext);
+            return;
+        }
 
-		if (_currentPasskeys!.Count >= MaxPasskeyCount)
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorMaxPasskeys, HttpContext);
-			return;
-		}
+        if (_currentPasskeys!.Count >= MaxPasskeyCount)
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorMaxPasskeys, HttpContext);
+            return;
+        }
 
-		var attestationResult = await SignInManager.PerformPasskeyAttestationAsync(Output.CredentialJson);
-		if (!attestationResult.Succeeded)
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorAddPasskeyFailed, attestationResult.Failure.Message), HttpContext);
-			return;
-		}
+        var attestationResult = await SignInManager.PerformPasskeyAttestationAsync(Output.CredentialJson);
+        if (!attestationResult.Succeeded)
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorAddPasskeyFailed, attestationResult.Failure.Message), HttpContext);
+            return;
+        }
 
-		var addPasskeyResult = await UserManager.AddOrUpdatePasskeyAsync(_user, attestationResult.Passkey);
-		if (!addPasskeyResult.Succeeded)
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorAddPasskeyToAccount, HttpContext);
-			return;
-		}
+        var addPasskeyResult = await UserManager.AddOrUpdatePasskeyAsync(_user, attestationResult.Passkey);
+        if (!addPasskeyResult.Succeeded)
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorAddPasskeyToAccount, HttpContext);
+            return;
+        }
 
-		// Immediately prompt the user to enter a name for the credential
-		var credentialIdBase64Url = Base64Url.EncodeToString(attestationResult.Passkey.CredentialId);
-		RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(credentialIdBase64Url));
-	}
+        // Immediately prompt the user to enter a name for the credential
+        var credentialIdBase64Url = Base64Url.EncodeToString(attestationResult.Passkey.CredentialId);
+        RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(credentialIdBase64Url));
+    }
 
-	protected virtual async Task UpdatePasskey()
-	{
-		switch (Action)
-		{
-			case "rename":
-				RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(CredentialId));
-				break;
-			case "delete":
-				await DeletePasskey();
-				break;
-			default:
-				RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorUnknownAction, Action), HttpContext);
-				break;
-		}
-	}
+    protected virtual async Task UpdatePasskey()
+    {
+        switch (Action)
+        {
+            case "rename":
+                RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(CredentialId));
+                break;
+            case "delete":
+                await DeletePasskey();
+                break;
+            default:
+                RedirectManager.RedirectToCurrentPageWithStatus(string.Format(Passkeys_razor.ErrorUnknownAction, Action), HttpContext);
+                break;
+        }
+    }
 
-	protected virtual async Task DeletePasskey()
-	{
-		if (_user is null)
-		{
-			RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
-			return;
-		}
+    protected virtual async Task DeletePasskey()
+    {
+        if (_user is null)
+        {
+            RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
+            return;
+        }
 
-		byte[] credentialId;
-		try
-		{
-			credentialId = Base64Url.DecodeFromChars(CredentialId);
-		}
-		catch (FormatException)
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorInvalidPasskeyId, HttpContext);
-			return;
-		}
+        byte[] credentialId;
+        try
+        {
+            credentialId = Base64Url.DecodeFromChars(CredentialId);
+        }
+        catch (FormatException)
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorInvalidPasskeyId, HttpContext);
+            return;
+        }
 
-		var result = await UserManager.RemovePasskeyAsync(_user, credentialId);
-		if (!result.Succeeded)
-		{
-			RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorDeletePasskey, HttpContext);
-			return;
-		}
+        var result = await UserManager.RemovePasskeyAsync(_user, credentialId);
+        if (!result.Succeeded)
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.ErrorDeletePasskey, HttpContext);
+            return;
+        }
 
-		RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.PasskeyDeleted, HttpContext);
-	}
+        RedirectManager.RedirectToCurrentPageWithStatus(Passkeys_razor.PasskeyDeleted, HttpContext);
+    }
 }

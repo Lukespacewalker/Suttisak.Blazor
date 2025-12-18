@@ -21,9 +21,17 @@
             height: 100%;
         }
 
-    .navmenu-toggle {
-        appearance: none;
-    }
+        .navmenu ::deep .fluent-nav-menu {
+            width: 100% !important;
+        }
+
+            .navmenu ::deep .fluent-nav-menu > div:first-child:is(.expander) {
+                display: none;
+            }
+
+        .navmenu-toggle {
+            appearance: none;
+        }
 
         .navmenu-toggle ~ nav {
             display: none;

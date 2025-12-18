@@ -4,8 +4,9 @@
 
 <PageTitle>@Manage_razor.PersonalData</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.PersonalData</FluentLabel>
-
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.PersonalData</FluentLabel>
+</SectionContent>
 <StatusMessage />
 
 <FluentGrid>
@@ -18,9 +19,9 @@
             <AntiforgeryToken />
             <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width:20%;">@PersonalData_razor.DownloadButton</FluentButton>
         </form>
-        
+
         <hr />
-        
+
         <p>
             <FluentAnchor Href="@IdentityRoutes.Account.Manage.DeletePersonalData" Style="width:20%;">@PersonalData_razor.DeleteLink</FluentAnchor>
         </p>
