@@ -2,6 +2,14 @@
     background: var(--neutral-layer-1);
 }
 
+    .navmenu nav {
+        transition: height ease 0.25s;
+    }
+
+    .navmenu ::deep .fluent-nav-menu {
+        transition: width ease 0.25s;
+    }
+
     .navmenu .fluent-nav-link.active .positioning-region {
         background: color-mix(in srgb, var(--accent-fill-active), 80% transparent) !important;
     }
@@ -29,16 +37,18 @@
                 display: none;
             }
 
-        .navmenu-toggle {
-            appearance: none;
-        }
+    .navmenu-toggle {
+        appearance: none;
+    }
 
         .navmenu-toggle ~ nav {
-            display: none;
+            height: 0px;
+            overflow: hidden;
         }
 
         .navmenu-toggle:checked ~ nav {
-            display: block;
+            height: auto;
+            height: calc-size(auto, size);
         }
 
     .navmenu-icon {
