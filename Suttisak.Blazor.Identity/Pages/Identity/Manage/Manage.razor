@@ -3,43 +3,45 @@
 
 <PageTitle>@Manage_razor.Manage</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.Manage</FluentLabel>
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Manage</FluentLabel>
+</SectionContent>
 
 <FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
-	<FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Account</FluentLabel>
-	<CardMenu Url="@IdentityRoutes.Account.Manage.Profile"
-	          Icon="@(new Icons.Regular.Size20.PersonAccounts())"
-	          Title="@Manage_razor.Profile" />
-	<CardMenu Url="@IdentityRoutes.Account.Manage.Email"
-	          Icon="@(new Icons.Regular.Size20.Mail())"
-	          Title="@Manage_razor.Email" />
-	<CardMenu Url="@IdentityRoutes.Account.Manage.ChangePassword"
-	          Icon="@(new Icons.Regular.Size20.Password())"
-	          Title="@Manage_razor.ChangePassword" />
-	<FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Logins</FluentLabel>
-	<CardMenu Url="@IdentityRoutes.Account.Manage.ExternalLogins"
-	          Icon="@(new Icons.Regular.Size20.GlobeSurface())"
-	          Title="@Manage_razor.ExternalLogins" />
-	<CardMenu Url="@IdentityRoutes.Account.Manage.TwoFactorAuthentication"
-	          Icon="@(new Icons.Regular.Size20.KeyMultiple())"
-	          Title="@Manage_razor.TwoFactorAuthentication" />
-	<CardMenu Url="@IdentityRoutes.Account.Manage.Passkeys"
-	          Icon="@(new Icons.Regular.Size20.PersonPasskey())"
-	          Title="@Manage_razor.Passkeys" />
-	<FluentLabel Typo="Typography.PaneHeader">@Manage_razor.PersonalData</FluentLabel>
-	<CardMenu Url="@IdentityRoutes.Account.Manage.PersonalData"
-	          Icon="@(new Icons.Regular.Size20.DatabasePerson())"
-	          Title="@Manage_razor.PersonalData" />
+    <FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Account</FluentLabel>
+    <CardMenu Url="@IdentityRoutes.Account.Manage.Profile"
+              Icon="@(new Icons.Regular.Size20.PersonAccounts())"
+              Title="@Manage_razor.Profile" />
+    <CardMenu Url="@IdentityRoutes.Account.Manage.Email"
+              Icon="@(new Icons.Regular.Size20.Mail())"
+              Title="@Manage_razor.Email" />
+    <CardMenu Url="@IdentityRoutes.Account.Manage.ChangePassword"
+              Icon="@(new Icons.Regular.Size20.Password())"
+              Title="@Manage_razor.ChangePassword" />
+    <FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Logins</FluentLabel>
+    <CardMenu Url="@IdentityRoutes.Account.Manage.ExternalLogins"
+              Icon="@(new Icons.Regular.Size20.GlobeSurface())"
+              Title="@Manage_razor.ExternalLogins" />
+    <CardMenu Url="@IdentityRoutes.Account.Manage.TwoFactorAuthentication"
+              Icon="@(new Icons.Regular.Size20.KeyMultiple())"
+              Title="@Manage_razor.TwoFactorAuthentication" />
+    <CardMenu Url="@IdentityRoutes.Account.Manage.Passkeys"
+              Icon="@(new Icons.Regular.Size20.PersonPasskey())"
+              Title="@Manage_razor.Passkeys" />
+    <FluentLabel Typo="Typography.PaneHeader">@Manage_razor.PersonalData</FluentLabel>
+    <CardMenu Url="@IdentityRoutes.Account.Manage.PersonalData"
+              Icon="@(new Icons.Regular.Size20.DatabasePerson())"
+              Title="@Manage_razor.PersonalData" />
 </FluentStack>
 
 @code {
-	public static Icon StaticPageIcon { get; } = new Icons.Regular.Size20.PersonCircle();
-	public static string StaticPageUrl { get; } = IdentityRoutes.Account.Manage.Root;
-	public static string StaticPageTitleKey { get; } = nameof(Manage_razor.Manage);
+    public static Icon StaticPageIcon { get; } = new Icons.Regular.Size20.PersonCircle();
+    public static string StaticPageUrl { get; } = IdentityRoutes.Account.Manage.Root;
+    public static string StaticPageTitleKey { get; } = nameof(Manage_razor.Manage);
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		AddThisPageAndPopulate<Manage>();
-	}
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AddThisPageAndPopulate<Manage>();
+    }
 }
