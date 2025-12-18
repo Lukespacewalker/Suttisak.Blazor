@@ -11,7 +11,9 @@
 
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.ExternalLogins</FluentLabel>
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.ExternalLogins</FluentLabel>
+</SectionContent>
 
 <StatusMessage />
 @if (_currentLogins?.Count > 0)

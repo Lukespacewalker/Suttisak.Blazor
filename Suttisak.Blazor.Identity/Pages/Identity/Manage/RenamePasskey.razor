@@ -8,22 +8,24 @@
 
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
-<FluentLabel Typo="Typography.PageTitle">@Manage_razor.RenamePasskey</FluentLabel>
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.RenamePasskey</FluentLabel>
+</SectionContent>
 
 <EditForm Model="Input" OnValidSubmit="Rename" FormName="rename-passkey" method="post">
-	<DataAnnotationsValidator />
-	@if (_passkey?.Name is { } name)
-	{
-		<h4>@string.Format(RenamePasskey_razor.EnterNewName, name)</h4>
-	}
-	else
-	{
-		<h4>@RenamePasskey_razor.EnterName</h4>
-	}
-	<ValidationSummary class="text-danger" role="alert" />
-	<FluentTextField Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
-	<ValidationMessage For="() => Input.Name" class="text-danger" />
-	<FluentButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</FluentButton>
+    <DataAnnotationsValidator />
+    @if (_passkey?.Name is { } name)
+    {
+        <h4>@string.Format(RenamePasskey_razor.EnterNewName, name)</h4>
+    }
+    else
+    {
+        <h4>@RenamePasskey_razor.EnterName</h4>
+    }
+    <ValidationSummary class="text-danger" role="alert" />
+    <FluentTextField Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
+    <ValidationMessage For="() => Input.Name" class="text-danger" />
+    <FluentButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</FluentButton>
 </EditForm>
 
 @code {
@@ -32,16 +34,16 @@
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.RenamePasskey);
 
-	private TUser? _user;
-	private UserPasskeyInfo? _passkey;
+    private TUser? _user;
+    private UserPasskeyInfo? _passkey;
 
-	[CascadingParameter]
-	private HttpContext HttpContext { get; set; } = null!;
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = null!;
 
-	[Parameter]
-	public string? CredentialId { get; set; }
+    [Parameter]
+    public string? CredentialId { get; set; }
 
-	[SupplyParameterFromForm]
+    [SupplyParameterFromForm]
     protected virtual InputModel Input { get; set; } = null!;
 
     protected override void OnInitialized()
@@ -50,54 +52,54 @@
         AddPage<Manage>().AddPage<Passkeys<TUser>>().AddThisPageAndPopulate<RenamePasskey<TUser>>();
     }
 
-	protected override async Task OnInitializedAsync()
-	{
+    protected override async Task OnInitializedAsync()
+    {
         await base.OnInitializedAsync();
-		Input ??= new();
+        Input ??= new();
 
-		_user = (await UserManager.GetUserAsync(HttpContext.User))!;
-		if (_user is null)
-		{
-			RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
-			return;
-		}
+        _user = (await UserManager.GetUserAsync(HttpContext.User))!;
+        if (_user is null)
+        {
+            RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
+            return;
+        }
 
-		byte[] credentialId;
-		try
-		{
-			credentialId = Base64Url.DecodeFromChars(CredentialId);
-		}
-		catch (FormatException)
-		{
-			RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorInvalidFormat, HttpContext);
-			return;
-		}
+        byte[] credentialId;
+        try
+        {
+            credentialId = Base64Url.DecodeFromChars(CredentialId);
+        }
+        catch (FormatException)
+        {
+            RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorInvalidFormat, HttpContext);
+            return;
+        }
 
-		_passkey = await UserManager.GetPasskeyAsync(_user, credentialId);
-		if (_passkey is null)
-		{
-			RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorNotFound, HttpContext);
-			return;
-		}
-	}
+        _passkey = await UserManager.GetPasskeyAsync(_user, credentialId);
+        if (_passkey is null)
+        {
+            RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorNotFound, HttpContext);
+            return;
+        }
+    }
 
-	protected virtual async Task Rename()
-	{
-		_passkey!.Name = Input.Name;
-		var result = await UserManager.AddOrUpdatePasskeyAsync(_user!, _passkey);
-		if (!result.Succeeded)
-		{
-			RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorUpdateFailed, HttpContext);
-			return;
-		}
+    protected virtual async Task Rename()
+    {
+        _passkey!.Name = Input.Name;
+        var result = await UserManager.AddOrUpdatePasskeyAsync(_user!, _passkey);
+        if (!result.Succeeded)
+        {
+            RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.ErrorUpdateFailed, HttpContext);
+            return;
+        }
 
-		RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.SuccessUpdate, HttpContext);
-	}
+        RedirectManager.RedirectToWithStatus(IdentityRoutes.Account.Manage.Passkeys, RenamePasskey_razor.SuccessUpdate, HttpContext);
+    }
 
-	protected class InputModel
-	{
-		[Required]
-		[StringLength(200, ErrorMessageResourceType = typeof(RenamePasskey_razor), ErrorMessageResourceName = nameof(RenamePasskey_razor.ErrorNameLength))]
-		public string Name { get; set; } = "";
-	}
+    protected class InputModel
+    {
+        [Required]
+        [StringLength(200, ErrorMessageResourceType = typeof(RenamePasskey_razor), ErrorMessageResourceName = nameof(RenamePasskey_razor.ErrorNameLength))]
+        public string Name { get; set; } = "";
+    }
 }

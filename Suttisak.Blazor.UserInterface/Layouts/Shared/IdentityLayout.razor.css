@@ -1,7 +1,6 @@
 ﻿.root {
     display: grid;
     background-color: var(--neutral-layer-2);
-    grid-template-columns: minmax(400px, 800px) 1fr;
     grid-template-columns: minmax(calc(375px - var(--design-unit) * 4px * 2), 800px) 1fr;
     padding: calc(var(--design-unit) * 4px);
     gap: calc(var(--design-unit) * 4px);
@@ -30,9 +29,8 @@
 }
 
 .root .section-body {
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(35px);
     height: 100%;
-    backdrop-filter: blur(25px);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -41,7 +39,9 @@
 }
 
     .root .section-body .actual-body {
-        padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 16px)
+        padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 16px);
+        margin-bottom: calc(var(--design-unit) * 8px);
+        overflow-y:auto;
     }
 
 .header-control-container {
@@ -55,8 +55,7 @@
     position: absolute;
     top: 80px;
     left: 50%;
-    transform: translateX(-50%) scale(2);
-    transform: translateX(-50%) scale(3);
+    transform: translateX(-50%) scale(2.5);
 }
 
 .root .section-image {

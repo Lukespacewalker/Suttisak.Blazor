@@ -8,64 +8,75 @@
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-	<div class="root" style="position:relative">
-		<FluentLayout>
-			<FluentHeader>
-				<img src="@GlobalDesign.Value.LogoAssetPath"
-					 style="width:2rem; height:2rem;margin-right:0.5rem;" />
-				<SectionOutlet SectionId="HeaderSection" />
-				<FluentSpacer />
-				<HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
-									   @rendermode="HeaderRenderMode" />
-			</FluentHeader>
-			<FluentBodyContent>
-				<FluentStack Class="main main-stack"
-							 Orientation="Orientation.Horizontal"
-							 Width="100%" HorizontalGap="0" VerticalGap="0">
-					<SectionOutlet SectionId="NavigationSection" />
-					<div class="content">
-						<SectionOutlet SectionId="MessageBarSection" />
-						@if (_breadcrumbs.Any())
-						{
-							<nav aria-label="Breadcrumb" style="margin-bottom:calc( var(--design-unit) * 4px);">
-								<FluentBreadcrumb>
-									@foreach (var breadcrumb in _breadcrumbs)
-									{
-										@breadcrumb
-									}
-								</FluentBreadcrumb>
-							</nav>
-						}
-						@Body
-					</div>
-				</FluentStack>
-			</FluentBodyContent>
-		</FluentLayout>
-	</div>
+    <div class="root" style="position:relative">
+        <FluentLayout>
+            <FluentHeader>
+                <img src="@GlobalDesign.Value.LogoAssetPath"
+                     style="width:2rem; height:2rem;margin-right:0.5rem;" />
+                <SectionOutlet SectionId="HeaderSection" />
+                <FluentSpacer />
+                <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
+                                       @rendermode="HeaderRenderMode" />
+                <FluentSpacer Width="24"/>
+            </FluentHeader>
+            <FluentBodyContent>
+                <FluentStack Class="main main-stack"
+                             Orientation="Orientation.Horizontal"
+                             Width="100%" HorizontalGap="0" VerticalGap="0">
+                    <SectionOutlet SectionId="NavigationSection" />
+                    <div class="content">
+                        <SectionOutlet SectionId="MessageBarSection" />
+                        <nav aria-label="Breadcrumb" style="margin-bottom:calc( var(--design-unit) * 4px);">
+                            @if (UseCustomBreadcrumb)
+                            {
+                                <SectionOutlet SectionId="BreadcrumbSection" />
+                            }
+                            else if (_breadcrumbs.Any())
+                            {
+                            <FluentBreadcrumb>
+                                @foreach (var breadcrumb in _breadcrumbs)
+                                {
+                                    @breadcrumb
+                                }
+                            </FluentBreadcrumb>
+
+                            }
+                        </nav>
+                        <div style="margin-bottom:calc( var(--design-unit) * 4px);">
+                            <SectionOutlet SectionName="@CommonSections.PageTitle" />
+                        </div>
+                        @Body
+                    </div>
+                </FluentStack>
+            </FluentBodyContent>
+        </FluentLayout>
+    </div>
 </CascadingValue>
 
 @code {
-	public static object BreadcrumbSection = new();
-	public static object HeaderSection = new();
-	public static object NavigationSection = new();
-	public static object MessageBarSection = new();
+    public static object BreadcrumbSection = new();
+    public static object HeaderSection = new();
+    public static object NavigationSection = new();
+    public static object MessageBarSection = new();
 
-	private RenderFragment[] _breadcrumbs = Array.Empty<RenderFragment>();
+    [Parameter] public bool UseCustomBreadcrumb { get; set; } = false;
 
-	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
+    private RenderFragment[] _breadcrumbs = Array.Empty<RenderFragment>();
 
-	public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
-	{
-		var result = breadcrumbs.Select(breadcrumb =>
-	{
-		RenderFragment frag = @<FluentBreadcrumbItem Href="@breadcrumb.Url">
-				<FluentIcon Slot="start" Value="@breadcrumb.Icon" />
-			@breadcrumb.TitleKey
-		</FluentBreadcrumbItem>;
-	return frag;
-	}).ToArray();
-_breadcrumbs = result;
-StateHasChanged();
+    public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 
-}
+    public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
+    {
+        var result = breadcrumbs.Select(breadcrumb =>
+    {
+        RenderFragment frag = @<FluentBreadcrumbItem Href="@breadcrumb.Url">
+            <FluentIcon Slot="start" Value="@breadcrumb.Icon" />
+        @breadcrumb.TitleKey
+        </FluentBreadcrumbItem>;
+        return frag;
+    }).ToArray();
+        _breadcrumbs = result;
+        StateHasChanged();
+
+    }
 }
