@@ -1,6 +1,10 @@
 ﻿@media (max-width: 600px) {
-    .root .main-stack {
+    .root ::deep .main-stack {
         flex-direction: column !important;
         row-gap: 0 !important;
+    }
+
+    .root ::deep header.header .header-gutters{
+        margin-right: calc(1.5rem + 24px);
     }
 }
