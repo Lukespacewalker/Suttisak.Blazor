@@ -10,12 +10,7 @@ public interface IComponentCancellationToken : IDisposable
 
     protected CancellationToken CtxWhenComponentDetached => (CancellationTokenSource ??= new CancellationTokenSource()).Token;
 
-    protected void Dispose(bool disposing)
-    {
-        if (disposing is false) return;
-        CancellationTokenSource?.Cancel();
-        CancellationTokenSource?.Dispose();
-    }
+    protected void Dispose(bool disposing);
     void IDisposable.Dispose()
     {
         Dispose(true);
