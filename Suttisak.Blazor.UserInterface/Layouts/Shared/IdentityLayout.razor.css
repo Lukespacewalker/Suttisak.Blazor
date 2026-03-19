@@ -1,11 +1,15 @@
-﻿.root {
+.root {
     display: grid;
-    background-color: var(--neutral-layer-2);
+    background: linear-gradient(150deg, #EAF1FF 0%, #F2F6FF 45%, #EDF0FD 100%);
     grid-template-columns: minmax(calc(375px - var(--design-unit) * 4px * 2), 800px) 1fr;
     padding: calc(var(--design-unit) * 4px);
     gap: calc(var(--design-unit) * 4px);
     height: 100dvh;
     width: 100dvw;
+}
+
+body[data-theme="dark"] .root {
+    background: linear-gradient(150deg, #070D1B 0%, #0C1526 50%, #090F1E 100%);
 }
 
 @media (max-width: 846px) {
@@ -20,16 +24,24 @@
 
 
 .root > section, .root > div {
-    border-radius: 10px;
+    border-radius: 14px;
     overflow: hidden;
 }
 
 .root > div {
     background-color: var(--neutral-fill-rest);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 40px rgba(72, 99, 148, 0.10);
+}
+
+body[data-theme="dark"] .root > div {
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
 }
 
 .root .section-body {
-    backdrop-filter: blur(35px);
+    backdrop-filter: blur(35px) saturate(160%);
+    -webkit-backdrop-filter: blur(35px) saturate(160%);
     height: 100%;
     position: relative;
     display: flex;
@@ -56,6 +68,8 @@
     top: 80px;
     left: 50%;
     transform: translateX(-50%) scale(2.5);
+    opacity: 0.12;
+    filter: blur(2px);
 }
 
 .root .section-image {

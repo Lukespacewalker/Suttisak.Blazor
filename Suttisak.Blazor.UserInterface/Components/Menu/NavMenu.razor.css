@@ -1,5 +1,10 @@
-﻿.navmenu {
-    background: var(--neutral-layer-1);
+.navmenu {
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--accent-base-color) 7%, var(--neutral-layer-1)),
+        color-mix(in srgb, var(--accent-base-color) 4%, var(--neutral-layer-1))
+    );
+    border-right: 1px solid color-mix(in srgb, var(--accent-base-color) 18%, var(--neutral-stroke-rest));
 }
 
     .navmenu nav {
@@ -22,6 +27,8 @@
 
     .navmenu {
         width: 100%;
+        border-right: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--accent-base-color) 18%, var(--neutral-stroke-rest));
     }
 
         .navmenu nav {

@@ -1,7 +1,18 @@
-﻿header.header {
-    background: color-mix(in srgb, var(--accent-base-color) 60%, transparent) !important;
-    box-shadow: 0 0 10px 3px color-mix(in srgb, var(--accent-base-color) 40%, transparent) !important;
-    border-bottom: 1px solid color-mix(in srgb, var(--accent-base-color) 40%, transparent) !important;
-    backdrop-filter: blur(4px) !important;
+header.header {
+    background: color-mix(in srgb, var(--accent-base-color) 28%, rgba(255, 255, 255, 0.70)) !important;
+    box-shadow:
+        0 1px 0 color-mix(in srgb, var(--accent-base-color) 22%, rgba(255, 255, 255, 0.22)),
+        0 4px 28px rgba(0, 0, 0, 0.09) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent-base-color) 28%, rgba(255, 255, 255, 0.30)) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
     color: var(--neutral-foreground-rest) !important;
+}
+
+body[data-theme="dark"] header.header {
+    background: color-mix(in srgb, var(--accent-base-color) 20%, rgba(8, 15, 30, 0.72)) !important;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06),
+        0 4px 28px rgba(0, 0, 0, 0.38) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent-base-color) 20%, rgba(255, 255, 255, 0.07)) !important;
 }

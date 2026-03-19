@@ -1,6 +1,16 @@
-﻿@import url('./components/_button.css');
+@import url('./components/_button.css');
 @import url('./components/_fluentheader.css');
 
+
+body {
+    background: linear-gradient(
+        150deg,
+        color-mix(in srgb, var(--accent-base-color) 5%, var(--neutral-layer-2)),
+        var(--neutral-layer-2) 50%,
+        color-mix(in srgb, var(--accent-base-color) 3%, var(--neutral-layer-2))
+    );
+    background-attachment: fixed;
+}
 
 .shadow-subtle {
     box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.12), 0 calc(1.5 * 0.25px) calc((1.5 * 0.5px)) rgba(0, 0, 0, 0.14);
