@@ -3,8 +3,11 @@
 @using Suttisak.Blazor.UserInterface.Models
 @using Suttisak.Blazor.UserInterface.Interfaces
 @layout RootLayout
+@using Microsoft.JSInterop
 @implements IBreadcrumbLayout
+@implements IAsyncDisposable
 @inject IOptions<BlazorUIOptions> GlobalDesign
+@inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
@@ -77,5 +80,25 @@
         _breadcrumbs = result;
         StateHasChanged();
 
+    }
+
+    private IJSObjectReference? _module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/Layouts/Shared/MainLayout.razor.js");
+            // use query selectors for flexible target element query
+            await _module.InvokeVoidAsync("initScrollObserver", "header.header", ".main-stack");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is not null)
+        {
+            await _module.DisposeAsync();
+        }
     }
 }
