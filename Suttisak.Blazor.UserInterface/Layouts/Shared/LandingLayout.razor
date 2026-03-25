@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Components.Sections
 @using Microsoft.Extensions.Options
+@using Microsoft.JSInterop
 
 @layout RootLayout
 @inject IOptions<BlazorUIOptions> GlobalDesign
 @inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
 
 <CascadingValue Value="this">
     <div class="root" style="position:relative">
@@ -33,4 +35,16 @@
     public static object HeaderSection = new();
 
     public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
+
+    private IJSObjectReference? _module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/Layouts/Shared/MainLayout.razor.js");
+            // use query selectors for flexible target element query
+            await _module.InvokeVoidAsync("initScrollObserver", "header.header", ".main-stack");
+        }
+    }
 }

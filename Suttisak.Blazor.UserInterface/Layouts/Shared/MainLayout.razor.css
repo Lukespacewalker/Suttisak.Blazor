@@ -1,4 +1,52 @@
-﻿@media (max-width: 600px) {
+﻿/*.root {
+    background: linear-gradient(135deg, #f4f6f8 0%, #e9ecef 100%) !important;
+    min-height: 100vh;
+}
+
+.root ::deep fluent-layout {
+    background: transparent !important;
+    min-height: 100vh;
+}
+
+.root ::deep fluent-header {
+    background: transparent !important;
+    backdrop-filter: blur(0px) !important;
+    -webkit-backdrop-filter: blur(0px) !important;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    z-index: 10;
+}
+
+.root ::deep fluent-header.header-scrolled {
+    background: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.root ::deep fluent-nav-menu {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.root ::deep fluent-body-content {
+    background: transparent !important;
+}
+
+.content {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    margin: 1rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}*/
+
+@media (max-width: 600px) {
     .root ::deep .main-stack {
         flex-direction: column !important;
         row-gap: 0 !important;

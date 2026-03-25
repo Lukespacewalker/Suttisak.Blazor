@@ -1,10 +1,13 @@
 .navmenu {
     background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--accent-base-color) 7%, var(--neutral-layer-1)),
-        color-mix(in srgb, var(--accent-base-color) 4%, var(--neutral-layer-1))
+        color-mix(in srgb, var(--accent-base-color) 7%, rgba(255, 255, 255, 0.4)),
+        color-mix(in srgb, var(--accent-base-color) 4%, rgba(255, 255, 255, 0.2))
     );
-    border-right: 1px solid color-mix(in srgb, var(--accent-base-color) 18%, var(--neutral-stroke-rest));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
     .navmenu nav {
@@ -13,6 +16,7 @@
 
     .navmenu ::deep .fluent-nav-menu {
         transition: width ease 0.25s;
+        background: transparent !important;
     }
 
     .navmenu .fluent-nav-link.active .positioning-region {
