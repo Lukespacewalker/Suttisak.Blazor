@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @inject UserManager<TUser> UserManager
 @inject SignInManager<TUser> SignInManager
@@ -10,7 +10,7 @@
 <PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.DeletePersonalData</FluentLabel>
+    <FluentLabel>@Manage_razor.DeletePersonalData</FluentLabel>
 </SectionContent>
 
 <StatusMessage Message="@_message" />
@@ -27,10 +27,11 @@
             <FluentValidationSummary class="text-danger" role="alert" />
             @if (_requirePassword)
             {
-                <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
-                <FluentValidationMessage For="() => Input.Password" class="text-danger" />
+                <FluentTextInput type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
+                @*<FluentValidationMessage For="() => Input.Password" class="text-danger" />*@
+                @* TODO: restore FluentValidationMessage later in RC3 *@
             }
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>

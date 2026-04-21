@@ -1,4 +1,4 @@
-@inherits FluentNavMenu
+@* @inherits FluentNav
 <div class="navmenu">
     <input type="checkbox" title="Menu expand/collapse toggle" id="@_menuGuid" class="navmenu-icon navmenu-toggle" />
     <label for="@_menuGuid" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
@@ -18,4 +18,4 @@
         _menuGuid = Guid.CreateVersion7();
     }
 
-}
+} *@

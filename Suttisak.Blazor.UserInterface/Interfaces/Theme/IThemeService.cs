@@ -1,11 +1,9 @@
-﻿using Microsoft.FluentUI.AspNetCore.Components;
-
-namespace Suttisak.Blazor.UserInterface.Interfaces.Theme;
+﻿namespace Suttisak.Blazor.UserInterface.Interfaces.Theme;
 
 public interface IThemeService
 {
-    DesignThemeModes ThemeConfiguration { get; set; }
+    DesignThemeMode ThemeConfiguration { get; set; }
     ThemeMode CurrentThemeMode { get; set; }
-    event EventHandler<DesignThemeModes>? ThemeConfigurationChanged;
+    event EventHandler<DesignThemeMode>? ThemeConfigurationChanged;
     event EventHandler<ThemeMode>? CurrentThemeChanged;
 }

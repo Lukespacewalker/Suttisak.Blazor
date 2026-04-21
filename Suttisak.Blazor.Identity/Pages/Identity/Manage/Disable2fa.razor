@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @inject UserManager<TUser> UserManager
 @inject IdentityUserAccessor<TUser> UserAccessor
@@ -10,7 +10,7 @@
 <PageTitle>@Manage_razor.DisableTwoFactorAuthentication</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.DisableTwoFactorAuthentication</FluentLabel>
+    <FluentLabel>@Manage_razor.DisableTwoFactorAuthentication</FluentLabel>
 </SectionContent>
 
 <StatusMessage />
@@ -27,7 +27,7 @@
 <div>
     <form @formname="disable-2fa" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken />
-        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@Disable2fa_razor.DisableButton</FluentButton>
+        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Disable2fa_razor.DisableButton</FluentButton>
     </form>
 </div>
 

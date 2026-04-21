@@ -1,17 +1,18 @@
-﻿@using Suttisak.Blazor.UserInterface.Components
+@using Suttisak.Blazor.UserInterface.Components
 @using Suttisak.Blazor.UserInterface.Helper
 @inject NavigationManager NavigationManager
 
 <CultureSelector />
+<FluentSpacer Width="6px" />
 <ThemeSelector />
-<FluentSpacer Width="6" />
+<FluentSpacer Width="6px" />
 <AuthorizeView>
 	<Authorized>
 		<ProfileMenu LoginText="@LoginText" LogoutText="@LogoutText" />
 	</Authorized>
 	<NotAuthorized>
-		<FluentButton IconStart="@(new Icons.Regular.Size20.Key())"
-					  Appearance="Appearance.Stealth"
+		<FluentButton IconStart="@(new Icons.Regular.Size24.Key())"
+					  Appearance="ButtonAppearance.Primary"
 					  OnClick="@(() => NavigationManager.NavigateTo(LoginUrl))">
 			@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)
 		</FluentButton>

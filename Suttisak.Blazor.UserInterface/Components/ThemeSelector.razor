@@ -1,61 +1,54 @@
-﻿@inject IThemeService ThemeService
-
+﻿@using Microsoft.JSInterop
 @using Suttisak.Blazor.UserInterface.Interfaces.Theme
-@implements IDisposable
-<FluentDesignTheme @bind-Mode="@ThemeService.ThemeConfiguration" StorageName="theme" OnLuminanceChanged="Callback" />
-<button class="button stealth circle" style="height:34px;width:34px;align-items:center;justify-content:center;" @onclick="CycleTheme">
-	<FluentIcon Value="CurrentThemeIcon" />
-</button>
+@using FluentIThemeService = Microsoft.FluentUI.AspNetCore.Components.IThemeService
+@using FluentThemeMode = Microsoft.FluentUI.AspNetCore.Components.ThemeMode
+@inject Suttisak.Blazor.UserInterface.Interfaces.Theme.IThemeService ThemeService
+@inject FluentIThemeService FluentThemeService
+@inject IJSRuntime JsRuntime
+
+<div class="theme-selector">
+    <button class="@($"{(IsCurrentTheme(FluentThemeMode.System) ? "active" : "")}")"
+        @onclick="@(() => SetThemeAsync(FluentThemeMode.System))">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
+    </button>
+    <button class="@($"{(IsCurrentTheme(FluentThemeMode.Light) ? "active" : "")}")"
+            @onclick="@(() => SetThemeAsync(FluentThemeMode.Light))">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+    </button>
+    <button class="@($"{(IsCurrentTheme(FluentThemeMode.Dark) ? "active" : "")}")"
+            @onclick="@(() => SetThemeAsync(FluentThemeMode.Dark))">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+    </button>
+</div>
 
 @code {
-    protected override void OnInitialized()
-    {
-        ThemeService.ThemeConfigurationChanged += ThemeConfigurationServiceThemeConfigurationChanged;
-        base.OnInitialized();
-    }
+    private IJSObjectReference? _module;
 
-    public void Dispose()
-    {
-        ThemeService.ThemeConfigurationChanged -= ThemeConfigurationServiceThemeConfigurationChanged;
-    }
+    private FluentThemeMode _currentThemeMode;
 
-    public void ThemeConfigurationServiceThemeConfigurationChanged(object? sender, DesignThemeModes mode)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        StateHasChanged();
-    }
-
-    private void Callback(LuminanceChangedEventArgs obj)
-    {
-        ThemeService.CurrentThemeMode =  obj.IsDark ? ThemeMode.Dark : ThemeMode.Light;
-    }
-
-    private Icon CurrentThemeIcon
-    {
-        get
+        if (firstRender)
         {
-            return ThemeService.ThemeConfiguration switch
+            _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSelector.razor.js");
+            // use query selectors for flexible target element query
+            var result = await _module.InvokeAsync<string>("getTheme");
+            if (Enum.TryParse<FluentThemeMode>(result, true, out var themeMode))
             {
-                DesignThemeModes.System => new Icons.Regular.Size20.DarkTheme(),
-                DesignThemeModes.Light => new Icons.Regular.Size20.WeatherSunny(),
-                DesignThemeModes.Dark => new Icons.Regular.Size20.WeatherMoon(),
-                _ => new Icons.Regular.Size20.DarkTheme(),
-            };
+                _currentThemeMode = themeMode;
+            }
         }
     }
 
-    private void CycleTheme()
+    private bool IsCurrentTheme(FluentThemeMode mode)
     {
-        switch (ThemeService.ThemeConfiguration)
-        {
-            case DesignThemeModes.System:
-                ThemeService.ThemeConfiguration = DesignThemeModes.Light;
-                break;
-            case DesignThemeModes.Light:
-                ThemeService.ThemeConfiguration = DesignThemeModes.Dark;
-                break;
-            case DesignThemeModes.Dark:
-                ThemeService.ThemeConfiguration = DesignThemeModes.System;
-                break;
-        }
+        return _currentThemeMode == mode;
+    }
+
+    private async Task SetThemeAsync(FluentThemeMode mode)
+    {
+        _currentThemeMode = mode;
+        await FluentThemeService.SetThemeAsync(mode);
     }
 }
+

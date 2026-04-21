@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @inject UserManager<TUser> UserManager
 @inject IdentityUserAccessor<TUser> UserAccessor
@@ -8,7 +8,7 @@
 <PageTitle>@Manage_razor.GenerateRecoveryCodes</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.GenerateRecoveryCodes</FluentLabel>
+    <FluentLabel>@Manage_razor.GenerateRecoveryCodes</FluentLabel>
 </SectionContent>
 
 @if (_recoveryCodes is not null)
@@ -32,7 +32,7 @@ else
     <div>
         <form @formname="generate-recovery-codes" @onsubmit="OnSubmitAsync" method="post">
             <AntiforgeryToken />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">@GenerateRecoveryCodes_razor.GenerateButton</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary">@GenerateRecoveryCodes_razor.GenerateButton</FluentButton>
         </form>
     </div>
 }

@@ -7,15 +7,15 @@
 <CascadingValue Value="this">
     <div class="root" style="position:relative">
         <FluentLayout>
-            <FluentHeader>
+            <FluentLayoutItem Area="LayoutArea.Header">
                 <img src="@GlobalDesign.Value.LogoAssetPath" 
                      style="width:2rem; height:2rem;margin-right:0.5rem;" />
                 <SectionOutlet SectionId="HeaderSection" />
                 <FluentSpacer />
                 <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
                                        @rendermode="HeaderRenderMode" />
-            </FluentHeader>
-            <FluentBodyContent>
+            </FluentLayoutItem>
+            <FluentLayoutItem Area="LayoutArea.Content">
                 <FluentStack Class="main" 
                              Orientation="Orientation.Horizontal" 
                              Width="100%" HorizontalGap="0" VerticalGap="0">
@@ -23,7 +23,7 @@
                         @Body
                     </div>
                 </FluentStack>
-            </FluentBodyContent>
+            </FluentLayoutItem>
         </FluentLayout>
     </div>
 </CascadingValue>
