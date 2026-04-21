@@ -4,11 +4,11 @@
 <PageTitle>@Manage_razor.Manage</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Manage</FluentLabel>
+    <FluentLabel>@Manage_razor.Manage</FluentLabel>
 </SectionContent>
 
 <FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
-    <FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Account</FluentLabel>
+    <FluentLabel>@Manage_razor.Account</FluentLabel>
     <CardMenu Url="@IdentityRoutes.Account.Manage.Profile"
               Icon="@(new Icons.Regular.Size20.PersonAccounts())"
               Title="@Manage_razor.Profile" />
@@ -18,7 +18,7 @@
     <CardMenu Url="@IdentityRoutes.Account.Manage.ChangePassword"
               Icon="@(new Icons.Regular.Size20.Password())"
               Title="@Manage_razor.ChangePassword" />
-    <FluentLabel Typo="Typography.PaneHeader">@Manage_razor.Logins</FluentLabel>
+    <FluentLabel>@Manage_razor.Logins</FluentLabel>
     <CardMenu Url="@IdentityRoutes.Account.Manage.ExternalLogins"
               Icon="@(new Icons.Regular.Size20.GlobeSurface())"
               Title="@Manage_razor.ExternalLogins" />
@@ -28,7 +28,7 @@
     <CardMenu Url="@IdentityRoutes.Account.Manage.Passkeys"
               Icon="@(new Icons.Regular.Size20.PersonPasskey())"
               Title="@Manage_razor.Passkeys" />
-    <FluentLabel Typo="Typography.PaneHeader">@Manage_razor.PersonalData</FluentLabel>
+    <FluentLabel>@Manage_razor.PersonalData</FluentLabel>
     <CardMenu Url="@IdentityRoutes.Account.Manage.PersonalData"
               Icon="@(new Icons.Regular.Size20.DatabasePerson())"
               Title="@Manage_razor.PersonalData" />

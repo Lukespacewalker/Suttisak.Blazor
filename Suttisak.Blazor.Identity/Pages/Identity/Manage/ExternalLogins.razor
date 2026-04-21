@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @using Microsoft.AspNetCore.Authentication
 
@@ -12,7 +12,7 @@
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.ExternalLogins</FluentLabel>
+    <FluentLabel>@Manage_razor.ExternalLogins</FluentLabel>
 </SectionContent>
 
 <StatusMessage />
@@ -33,7 +33,7 @@
                                 <div>
                                     <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider" />
                                     <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey" />
-                                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</FluentButton>
+                                    <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</FluentButton>
                                 </div>
                             </form>
                         }
@@ -57,7 +57,7 @@
             <p>
                 @foreach (var provider in _otherLogins)
                 {
-                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
+                    <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
                         @provider.DisplayName
                     </FluentButton>
                 }

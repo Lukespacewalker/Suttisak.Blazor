@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @using System.ComponentModel.DataAnnotations
 
@@ -20,9 +20,10 @@
         <EditForm Model="Input" FormName="login-with-recovery-code" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.RecoveryCode" @bind-Value="Input.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
-            <FluentValidationMessage For="() => Input.RecoveryCode" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</FluentButton>
+            <FluentTextInput Name="Input.RecoveryCode" @bind-Value="Input.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
+            @*<FluentValidationMessage For="() => Input.RecoveryCode" class="text-danger" />*@
+            @* TODO: restore FluentValidationMessage later in RC3 *@
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>

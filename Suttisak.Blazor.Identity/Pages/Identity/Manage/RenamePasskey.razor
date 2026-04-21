@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @using System.Buffers.Text
 
@@ -9,7 +9,7 @@
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.RenamePasskey</FluentLabel>
+    <FluentLabel>@Manage_razor.RenamePasskey</FluentLabel>
 </SectionContent>
 
 <EditForm Model="Input" OnValidSubmit="Rename" FormName="rename-passkey" method="post">
@@ -23,7 +23,7 @@
         <h4>@RenamePasskey_razor.EnterName</h4>
     }
     <ValidationSummary class="text-danger" role="alert" />
-    <FluentTextField Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
+    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
     <ValidationMessage For="() => Input.Name" class="text-danger" />
     <FluentButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</FluentButton>
 </EditForm>

@@ -1,9 +1,9 @@
 export function initScrollObserver(headerSelector, contentSelector) {
-    const layout = document.querySelector("div.layout");
+    const layout = document.querySelector(".fluent-layout");
     if (!layout) return;
 
     // Usually the scroll happens on a container inside fluent-layout or window
-    const bodyContent = document.querySelector(contentSelector) || document.querySelector("fluent-body-content") || window;
+    const bodyContent = document.querySelector(contentSelector) || document.querySelector(".fluent-layout-item[area=content]") || window;
     const header = document.querySelector(headerSelector);
 
     if (!header) return;
@@ -14,9 +14,9 @@ export function initScrollObserver(headerSelector, contentSelector) {
     const onScroll = () => {
         const scrollTop = bodyContent !== window ? bodyContent.scrollTop : (window.scrollY || document.documentElement.scrollTop);
         if (scrollTop > 10) {
-            header.classList.add("header-scrolled");
+            header.classList.remove("header-transparent");
         } else {
-            header.classList.remove("header-scrolled");
+            header.classList.add("header-transparent");
         }
     };
 

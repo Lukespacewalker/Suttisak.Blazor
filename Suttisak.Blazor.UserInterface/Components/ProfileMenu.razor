@@ -13,13 +13,13 @@
 							   OnHeaderButtonClick='() => NavigationManager.NavigateTo("Account/Logout?ReturnUrl=", forceLoad:true)'>
 				<StartTemplate>
 					<FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
-						<FluentLabel Typo="Typography.Subject">@_username</FluentLabel>
+						<FluentLabel>@_username</FluentLabel>
 					</FluentStack>
 				</StartTemplate>
 			</FluentProfileMenu>
 		</Authorized>
 		<NotAuthorized>
-			<FluentNavLink Href="Account/Login">@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavLink>
+			<FluentNavItem Href="Account/Login">@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavItem>
 		</NotAuthorized>
 	</AuthorizeView>
 </div>

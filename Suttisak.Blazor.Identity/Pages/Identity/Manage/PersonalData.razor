@@ -1,11 +1,11 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.PersonalData</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.PersonalData</FluentLabel>
+    <FluentLabel>@Manage_razor.PersonalData</FluentLabel>
 </SectionContent>
 <StatusMessage />
 
@@ -17,13 +17,13 @@
         </p>
         <form action="@IdentityRoutes.Api.DownloadPersonalData" method="post">
             <AntiforgeryToken />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width:20%;">@PersonalData_razor.DownloadButton</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width:20%;">@PersonalData_razor.DownloadButton</FluentButton>
         </form>
 
         <hr />
 
         <p>
-            <FluentAnchor Href="@IdentityRoutes.Account.Manage.DeletePersonalData" Style="width:20%;">@PersonalData_razor.DeleteLink</FluentAnchor>
+            <FluentLink Href="@IdentityRoutes.Account.Manage.DeletePersonalData" Style="width:20%;">@PersonalData_razor.DeleteLink</FluentLink>
         </p>
     </FluentGridItem>
 </FluentGrid>

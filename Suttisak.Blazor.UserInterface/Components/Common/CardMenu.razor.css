@@ -1,9 +1,8 @@
-﻿fluent-card:hover {
+﻿div:hover {
     background: var(--neutral-fill-secondary-rest);
     cursor: pointer;
 }
-
-fluent-card {
+div {
     background: var(--neutral-fill-layer-rest);
     display: flex;
     flex-direction: row;
@@ -14,6 +13,6 @@ fluent-card {
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.12), 0 calc(1.5 * 0.25px) calc((1.5 * 0.5px)) rgba(0, 0, 0, 0.14);
 }
 
-    fluent-card .subtitle {
+    div .subtitle {
         color: var(--neutral-foreground-hint);
     }

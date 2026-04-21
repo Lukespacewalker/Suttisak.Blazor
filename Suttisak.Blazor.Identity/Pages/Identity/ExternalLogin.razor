@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
@@ -16,8 +16,8 @@
 <PageTitle>@ExternalLogin_razor.PageTitle</PageTitle>
 
 <StatusMessage Message="@_message" />
-<FluentLabel Typo="Typography.PageTitle">@ExternalLogin_razor.Header</FluentLabel>
-<FluentLabel Typo="Typography.PaneHeader">@string.Format(ExternalLogin_razor.AssociateAccount, ProviderDisplayName)</FluentLabel>
+<FluentLabel>@ExternalLogin_razor.Header</FluentLabel>
+<FluentLabel>@string.Format(ExternalLogin_razor.AssociateAccount, ProviderDisplayName)</FluentLabel>
 <hr />
 
 <div  class="alert alert-info">
@@ -29,9 +29,10 @@
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" FormName="confirmation" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Placeholder="@ExternalLogin_razor.EmailPlaceholder" Label="@ExternalLogin_razor.EmailLabel" Style="width: 100%;"/>
-            <FluentValidationMessage For="() => Input.Email" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@ExternalLogin_razor.RegisterButton</FluentButton>
+            <FluentTextInput Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Placeholder="@ExternalLogin_razor.EmailPlaceholder" Label="@ExternalLogin_razor.EmailLabel" Style="width: 100%;"/>
+            @*<FluentValidationMessage For="() => Input.Email" />*@
+            @* TODO: restore FluentValidationMessage later in RC3 *@
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@ExternalLogin_razor.RegisterButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>

@@ -1,72 +1,66 @@
+@using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @inherits FluentCard
 @inject NavigationManager NavigationManager
 
-@if (MinimalStyle)
-{
-	<div @ref=Element
-	     id="@Id"
-		 class="@ClassValue card-menu"
-	     style="@StyleValue"
-	     @onclick="OnClick"
-	     @attributes="AdditionalAttributes">
-		@if (Icon is not null)
-		{
-			<FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Accent" />
-		}
-		<div style="flex:1 1 auto;">
-			@if (Title is not null)
-			{
-				<FluentLabel Typo="Typography.Subject">@Title</FluentLabel>
-			}
-			@if(Subtitle is not null)
-			{
-				<span class="subtitle">@((MarkupString)Subtitle)</span>
-			}
-			@ChildContent
-		</div>
-		<FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Neutral" />
-	</div>
-}
-else
-{
-	<fluent-card @ref=Element
-	             id="@Id"
-				 class="@ClassValue card-menu"
-	             style="@StyleValue"
-				 @onclick="OnClick"
-	             @attributes="AdditionalAttributes">
-		@if (Icon is not null)
-		{
-			<FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Accent" />
-		}
-		<div style="flex:1 1 auto;">
-			@if (Title is not null)
-			{
-				<FluentLabel Typo="Typography.Subject">@Title</FluentLabel>
-			}
-			@if(Subtitle is not null)
-			{
-				<span class="subtitle">@((MarkupString)Subtitle)</span>
-			}
-			@ChildContent
-		</div>
-		<FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Neutral" />
-	</fluent-card>
-}
+<div id="@Id"
+	 appearance="@Appearance.ToAttributeValue(CardAppearance.Default, returnEmptyAsNull: true)"
+	 shadow="@Shadow.ToAttributeValue(CardShadow.Default, returnEmptyAsNull: true)"
+	 class="@ClassValue"
+	 style="@StyleValue"
+	 role="@Role"
+	 selectable="@OnClick.HasDelegate"
+	 tabindex="@(OnClick.HasDelegate ? 0 : null)"
+	 @onclick="@ClickHandlerAsync"
+	 @onkeydown="KeyDownHandlerAsync"
+	 @attributes="@AdditionalAttributes">
+    @if (Icon is not null)
+    {
+        <FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Primary" />
+    }
+    <div style="flex:1 1 auto;">
+        @if (Title is not null)
+        {
+            <FluentLabel>@Title</FluentLabel>
+        }
+        @if(Subtitle is not null)
+        {
+            <span class="subtitle">@((MarkupString)Subtitle)</span>
+        }
+        @ChildContent
+    </div>
+    <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Default" />
+</div>
 @code {
     [Parameter] public string? Url { get; set; }
 
     [Parameter] public Icon? Icon { get; set; }
 
     [Parameter] public string? Title { get; set; }
-    [Parameter] public string? Subtitle { get; set; }
+	[Parameter] public string? Subtitle { get; set; }
 
-
-    private void OnClick()
+    /// <summary />
+    internal async Task ClickHandlerAsync(MouseEventArgs args)
     {
-        if (!string.IsNullOrEmpty(Url))
+        if (OnClick.HasDelegate)
         {
-            NavigationManager.NavigateTo(Url);
+            await OnClick.InvokeAsync(args);
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(Url))
+            {
+                NavigationManager.NavigateTo(Url);
+            }
+        }
+    }
+
+    /// <summary />
+    internal async Task KeyDownHandlerAsync(KeyboardEventArgs args)
+    {
+        if (string.Equals(args.Key, "Enter", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(args.Key, " ", StringComparison.OrdinalIgnoreCase))
+        {
+            await ClickHandlerAsync(new MouseEventArgs { ClientX = 0, ClientY = 0 });
         }
     }
 }

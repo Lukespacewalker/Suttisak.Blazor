@@ -1,22 +1,23 @@
-﻿.culture-selector {
+﻿.theme-selector {
     border-radius: 8px;
     border: var(--strokeWidthThin) solid var(--colorNeutralStencil1);
     display: flex;
-    overflow: hidden;
+    overflow:hidden;
 }
 
-    .culture-selector button {
-        border: none;
+    .theme-selector button {
+        border:none;
         color: var(--colorNeutralForeground2);
         background: var(--colorNeutralBackground2);
         outline: none;
         border-radius: 8px;
         height: 32px;
+        width: 32px;
         align-items: center;
         justify-content: center;
     }
 
-        .culture-selector button.active {
+        .theme-selector button.active {
             color: var(--colorBrandForeground1);
             background: var(--colorNeutralBackground6);
         }
