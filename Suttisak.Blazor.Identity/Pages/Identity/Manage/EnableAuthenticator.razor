@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @using System.Globalization
 @using System.Text
@@ -14,7 +14,7 @@
 <PageTitle>@Manage_razor.EnableAuthenticator</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.EnableAuthenticator</FluentLabel>
+    <FluentLabel>@Manage_razor.EnableAuthenticator</FluentLabel>
 </SectionContent>
 
 @if (_recoveryCodes is not null)
@@ -51,9 +51,10 @@ else
 
                     <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
-                        <FluentTextField Name="Input.Code" @bind-Value="Input.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
-                        <FluentValidationMessage For="() => Input.Code" class="text-danger" />
-                        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</FluentButton>
+                        <FluentTextInput Name="Input.Code" @bind-Value="Input.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
+                        @*<FluentValidationMessage For="() => Input.Code" class="text-danger" />*@
+                        @* TODO: restore FluentValidationMessage later in RC3 *@
+                        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</FluentButton>
                         <ValidationSummary class="text-danger" role="alert" />
                     </EditForm>
                 </li>

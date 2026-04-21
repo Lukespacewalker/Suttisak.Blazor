@@ -1,8 +1,22 @@
-﻿::deep .header-gutters {
-    margin: 0.5rem 1.5rem !important;
+﻿.root ::deep .fluent-layout-item[area=header] {
+    position: sticky;
+    width: 100%;
 }
 
-::deep header.header {
-    position: fixed;
+.logo {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+}
+
+.header-container {
+    max-width: 90rem;
+    margin: 0 auto;
+    display: flex;
     width: 100%;
+    align-items: center;
+}
+
+.header-transparent{
+    background: transparent;
 }

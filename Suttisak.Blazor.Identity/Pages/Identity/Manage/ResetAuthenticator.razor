@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @inject UserManager<TUser> UserManager
 @inject SignInManager<TUser> SignInManager
@@ -10,7 +10,7 @@
 <PageTitle>@Manage_razor.ResetAuthenticator</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.ResetAuthenticator</FluentLabel>
+    <FluentLabel>@Manage_razor.ResetAuthenticator</FluentLabel>
 </SectionContent>
 
 <StatusMessage />
@@ -27,7 +27,7 @@
 <div>
     <form @formname="reset-authenticator" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken />
-        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">@ResetAuthenticator_razor.SubmitButton</FluentButton>
+        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary">@ResetAuthenticator_razor.SubmitButton</FluentButton>
     </form>
 </div>
 

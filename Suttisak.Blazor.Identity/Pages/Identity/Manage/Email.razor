@@ -1,4 +1,4 @@
-﻿@using System.Text
+@using System.Text
 @using System.Text.Encodings.Web
 @typeparam TUser where TUser : class
 
@@ -12,7 +12,7 @@
 <PageTitle>@Manage_razor.Email</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Email</FluentLabel>
+    <FluentLabel>@Manage_razor.Email</FluentLabel>
 </SectionContent>
 
 <StatusMessage Message="@_message" />
@@ -26,18 +26,20 @@
             <FluentValidationSummary class="text-danger" role="alert" />
             @if (_isEmailConfirmed)
             {
-                <FluentTextField Value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=FluentInputAppearance.Filled Style="width: 100%">
+                <FluentTextInput Value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=TextInputAppearance.Outline Style="width: 100%">
                     <span slot="end">✓</span>
-                </FluentTextField>
+                </FluentTextInput>
             }
             else
             {
-                <FluentTextField value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=FluentInputAppearance.Filled Style="width: 100%" />
-                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</FluentButton>
+                <FluentTextInput value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
+                <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</FluentButton>
             }
-            <FluentTextField Name="Input.NewEmail" @bind-Value="Input.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
-            <FluentValidationMessage For="() => Input.NewEmail" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@Email_razor.ChangeEmailButton</FluentButton>
+            <FluentTextInput 
+                Name="Input.NewEmail" 
+                @bind-Value="Input.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
+            <!-- TODO : Restore Fluent Validation Message Later-->
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>

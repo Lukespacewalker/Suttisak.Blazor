@@ -1,4 +1,4 @@
-﻿@typeparam TUser where TUser : class
+@typeparam TUser where TUser : class
 
 @inject UserManager<TUser> UserManager
 @inject SignInManager<TUser> SignInManager
@@ -9,7 +9,7 @@
 <PageTitle>@Manage_razor.Profile</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel Typo="Typography.PageTitle">@Manage_razor.Profile</FluentLabel>
+    <FluentLabel>@Manage_razor.Profile</FluentLabel>
 </SectionContent>
 
 <StatusMessage />
@@ -19,10 +19,10 @@
         <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled Label="@Profile_razor.UsernameLabel" Appearance=FluentInputAppearance.Filled Style="width: 100%" />
-            <FluentTextField Name="Input.PhoneNumber" @bind-Value="Input.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
-            <FluentValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">@Profile_razor.SaveButton</FluentButton>
+            <FluentTextInput Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
+            <FluentTextInput Name="Input.PhoneNumber" @bind-Value="Input.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
+            <!-- TODO : Restore Fluent Validation Message Later-->
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Profile_razor.SaveButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>

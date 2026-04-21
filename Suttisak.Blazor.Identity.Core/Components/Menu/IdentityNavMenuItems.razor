@@ -1,12 +1,12 @@
 @using Suttisak.Blazor.Identity.Core.Components.Menu
 @namespace Suttisak.Blazor.Identity.Components.Menu
 
-<FluentNavGroup Icon="@(new Icons.Regular.Size20.PersonCircle())" Href="@IdentityRoutes.Account.Manage.Root" Title="@IdentityNavMenuItems_razor.Account">
-	<FluentNavLink Icon="@(new Icons.Regular.Size24.PersonAccounts())" Href="@IdentityRoutes.Account.Manage.Profile" Match="NavLinkMatch.All">@IdentityNavMenuItems_razor.Profile</FluentNavLink>
-	<FluentNavLink Icon="@(new Icons.Regular.Size20.Mail())" Href="@IdentityRoutes.Account.Manage.Email">@IdentityNavMenuItems_razor.Email</FluentNavLink>
-	<FluentNavLink Icon="@(new Icons.Regular.Size20.Password())" Href="@IdentityRoutes.Account.Manage.ChangePassword">@IdentityNavMenuItems_razor.Password</FluentNavLink>
-	<FluentNavLink Icon="@(new Icons.Regular.Size20.GlobeSurface())" Href="@IdentityRoutes.Account.Manage.ExternalLogins">@IdentityNavMenuItems_razor.ExternalLogins</FluentNavLink>
-	<FluentNavLink Icon="@(new Icons.Regular.Size20.KeyMultiple())" Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@IdentityNavMenuItems_razor._2FA</FluentNavLink>
-	<FluentNavLink Icon="@(new Icons.Regular.Size20.PersonPasskey())" Href="@IdentityRoutes.Account.Manage.Passkeys">@IdentityNavMenuItems_razor.Passkeys</FluentNavLink>
-	<FluentNavLink Icon="@(new Icons.Regular.Size20.DatabasePerson())" Href="@IdentityRoutes.Account.Manage.PersonalData">@IdentityNavMenuItems_razor.PersonalData</FluentNavLink>
-</FluentNavGroup>
+<FluentNavCategory Icon="@(new Icons.Regular.Size20.PersonCircle())" Href="@IdentityRoutes.Account.Manage.Root" Title="@IdentityNavMenuItems_razor.Account">
+	<FluentNavItem Icon="@(new Icons.Regular.Size24.PersonAccounts())" Href="@IdentityRoutes.Account.Manage.Profile" Match="NavLinkMatch.All">@IdentityNavMenuItems_razor.Profile</FluentNavItem>
+	<FluentNavItem Icon="@(new Icons.Regular.Size20.Mail())" Href="@IdentityRoutes.Account.Manage.Email">@IdentityNavMenuItems_razor.Email</FluentNavItem>
+	<FluentNavItem Icon="@(new Icons.Regular.Size20.Password())" Href="@IdentityRoutes.Account.Manage.ChangePassword">@IdentityNavMenuItems_razor.Password</FluentNavItem>
+	<FluentNavItem Icon="@(new Icons.Regular.Size20.GlobeSurface())" Href="@IdentityRoutes.Account.Manage.ExternalLogins">@IdentityNavMenuItems_razor.ExternalLogins</FluentNavItem>
+	<FluentNavItem Icon="@(new Icons.Regular.Size20.KeyMultiple())" Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@IdentityNavMenuItems_razor._2FA</FluentNavItem>
+	<FluentNavItem Icon="@(new Icons.Regular.Size20.PersonPasskey())" Href="@IdentityRoutes.Account.Manage.Passkeys">@IdentityNavMenuItems_razor.Passkeys</FluentNavItem>
+	<FluentNavItem Icon="@(new Icons.Regular.Size20.DatabasePerson())" Href="@IdentityRoutes.Account.Manage.PersonalData">@IdentityNavMenuItems_razor.PersonalData</FluentNavItem>
+</FluentNavCategory>

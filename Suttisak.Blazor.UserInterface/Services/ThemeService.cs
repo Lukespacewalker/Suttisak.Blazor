@@ -1,11 +1,10 @@
-﻿using Microsoft.FluentUI.AspNetCore.Components;
-using Suttisak.Blazor.UserInterface.Interfaces.Theme;
+﻿using Suttisak.Blazor.UserInterface.Interfaces.Theme;
 
 namespace Suttisak.Blazor.UserInterface.Services;
 
 public class ThemeService : IThemeService
 {
-    public DesignThemeModes ThemeConfiguration
+    public DesignThemeMode ThemeConfiguration
     {
         get;
         set
@@ -13,7 +12,7 @@ public class ThemeService : IThemeService
             field = value;
             ThemeConfigurationChanged?.Invoke(this, field);
         }
-    } = DesignThemeModes.System;
+    } = DesignThemeMode.System;
 
     public ThemeMode CurrentThemeMode
     {
@@ -25,6 +24,6 @@ public class ThemeService : IThemeService
         }
     }
 
-    public event EventHandler<DesignThemeModes>? ThemeConfigurationChanged;
+    public event EventHandler<DesignThemeMode>? ThemeConfigurationChanged;
     public event EventHandler<ThemeMode>? CurrentThemeChanged;
 }
