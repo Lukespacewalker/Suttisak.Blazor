@@ -8,12 +8,8 @@ namespace Suttisak.Blazor.UserInterface.Components.Common;
 
 public partial class CardMenu : FluentCard
 {
-    public CardMenu(LibraryConfiguration configuration, NavigationManager navigationManager, string? url, Icon? icon, string? title, string? subtitle) : base(configuration)
+    public CardMenu(LibraryConfiguration configuration, NavigationManager navigationManager) : base(configuration)
     {
         NavigationManager = navigationManager;
-        Url = url;
-        Icon = icon;
-        Title = title;
-        Subtitle = subtitle;
     }
 }
