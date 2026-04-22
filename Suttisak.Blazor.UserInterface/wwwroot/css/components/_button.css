@@ -1,4 +1,4 @@
-﻿fluent-button[appearance='primary'] {
+﻿fluent-button[appearance='primary']:enabled {
     box-shadow: 0 4px 14px color-mix(in lch, var(--colorBrandBackground), transparent 20%);
 }
 

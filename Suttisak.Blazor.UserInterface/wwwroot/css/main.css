@@ -35,3 +35,8 @@ body {
     box-shadow: var(--glass-shadow) !important;
     color: var(--neutral-foreground-rest) !important;
 }
+
+.fluent-stack-horizontal[role=menubar] fluent-divider[orientation=vertical] {
+    min-height: 0 !important;
+    height: 36px !important;
+}
