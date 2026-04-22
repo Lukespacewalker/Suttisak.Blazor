@@ -2,16 +2,17 @@
 @import url('./components/_fluentheader.css');
 :root {
     --design-unit: 4;
+    --nav-bg-color: transparent;
     --glass-blur: blur(20px);
     --glass-bg: rgba(255,255,255,72%);
-    --glass-translucent-bg: rgba(255,255,255,36%);
+    --glass-translucent-bg: rgba(255,255,255,50%);
     --glass-border-color: rgba(255,255,255,55%);
     --glass-shadow: 0 8px 32px #6366f112, 0 1px 2px #0000000a;
 }
 
 body[data-theme="dark"] {
-    --glass-bg: rgba(15,10,35,72%);
-    --glass-translucent-bg: rgba(15,10,35,36%);
+    --glass-bg: rgba(20,22,31,72%);
+    --glass-translucent-bg: rgba(20,22,31,50%);
     --glass-border-color: #ffffff14;
     --glass-shadow: 0 8px 32px #00000059, 0 1px 2px #0000004d;
 }
@@ -45,4 +46,8 @@ body {
 .fluent-stack-horizontal[role=menubar] fluent-divider[orientation=vertical], div[role=menubar] fluent-divider[orientation=vertical] {
     min-height: 0 !important;
     height: 32px !important;
+}
+
+fluent-text-input {
+    display: flex;
 }
