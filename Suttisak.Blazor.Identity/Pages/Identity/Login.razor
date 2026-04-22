@@ -22,7 +22,7 @@
 	<h5 style="align-self:center">
 		@UsernamePasswordLogin_razor.Alternative
 	</h5>
-	<div style="display:flex; gap: calc(var(--design-unit) * 2px); margin: calc(var(--design-unit) * 2px) 0;">
+	<div role="menubar" style="display:flex; gap: calc(var(--design-unit) * 2px); margin: calc(var(--design-unit) * 2px) 0;">
         <PasskeySubmit FormName="@LoginWithPasskeyFormName" 
                        Operation="PasskeyOperation.Request" 
                        OutputParameterName="@nameof(LoginWithPasskeyOutput)" 
