@@ -366,15 +366,15 @@ public partial class FluentNumberInput<TValue> : FluentInputImmediateBase<TValue
     private async Task ApplyNumberMaskAsync()
     {
         // Set the mask pattern
-        await JSRuntime.InvokeVoidAsync("Microsoft.FluentUI.Blazor.Components.TextMasked.applyNumberMask",
-            Id,
-            IsDecimal ? Culture.NumberFormat.NumberDecimalDigits : 0,       // Scale
-            Culture.NumberFormat.NumberDecimalSeparator,                    // Radix char
-            new[] { Culture.NumberFormat.NumberDecimalSeparator, CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator },  // Map to radix
-            Min,                                                            // Min
-            Max,                                                            // Max
-            Culture.NumberFormat.NumberGroupSeparator,                      // Thousands separator
-            Step);                                                          // Step
+        //await JSRuntime.InvokeVoidAsync("Microsoft.FluentUI.Blazor.Components.TextMasked.applyNumberMask",
+        //    Id,
+        //    IsDecimal ? Culture.NumberFormat.NumberDecimalDigits : 0,       // Scale
+        //    Culture.NumberFormat.NumberDecimalSeparator,                    // Radix char
+        //    new[] { Culture.NumberFormat.NumberDecimalSeparator, CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator },  // Map to radix
+        //    Min,                                                            // Min
+        //    Max,                                                            // Max
+        //    Culture.NumberFormat.NumberGroupSeparator,                      // Thousands separator
+        //    Step);                                                          // Step
     }
 
     /// <summary>
