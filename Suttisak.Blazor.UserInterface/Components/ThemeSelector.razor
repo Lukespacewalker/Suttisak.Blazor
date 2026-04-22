@@ -30,12 +30,23 @@
     {
         if (firstRender)
         {
+            var mustUpdate = false;
             _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSelector.razor.js");
             // use query selectors for flexible target element query
             var result = await _module.InvokeAsync<string>("getTheme");
             if (Enum.TryParse<FluentThemeMode>(result, true, out var themeMode))
             {
-                _currentThemeMode = themeMode;
+                if (_currentThemeMode != themeMode)
+                {
+                    _currentThemeMode = themeMode;
+                    await FluentThemeService.SetThemeAsync(themeMode);
+                    mustUpdate = true;
+                }
+            }
+
+            if (mustUpdate)
+            {
+                StateHasChanged();
             }
         }
     }

@@ -3,13 +3,15 @@
 :root {
     --design-unit: 4;
     --glass-blur: blur(20px);
-    --glass-bg: #ffffffb8;
-    --glass-border-color: #ffffff8c;
+    --glass-bg: rgba(255,255,255,72%);
+    --glass-translucent-bg: rgba(255,255,255,36%);
+    --glass-border-color: rgba(255,255,255,55%);
     --glass-shadow: 0 8px 32px #6366f112, 0 1px 2px #0000000a;
 }
 
 body[data-theme="dark"] {
-    --glass-bg: #0f0a238c;
+    --glass-bg: rgba(15,10,35,72%);
+    --glass-translucent-bg: rgba(15,10,35,36%);
     --glass-border-color: #ffffff14;
     --glass-shadow: 0 8px 32px #00000059, 0 1px 2px #0000004d;
 }
@@ -28,6 +30,10 @@ body {
     box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.12), 0 calc(1.5 * 0.25px) calc((1.5 * 0.5px)) rgba(0, 0, 0, 0.14);
 }
 
+.glass.translucent {
+    background: var(--glass-translucent-bg) !important;
+}
+
 .glass {
     backdrop-filter: var(--glass-blur);
     background: var(--glass-bg) !important;
@@ -36,7 +42,7 @@ body {
     color: var(--neutral-foreground-rest) !important;
 }
 
-.fluent-stack-horizontal[role=menubar] fluent-divider[orientation=vertical] {
+.fluent-stack-horizontal[role=menubar] fluent-divider[orientation=vertical], div[role=menubar] fluent-divider[orientation=vertical] {
     min-height: 0 !important;
-    height: 36px !important;
+    height: 32px !important;
 }
