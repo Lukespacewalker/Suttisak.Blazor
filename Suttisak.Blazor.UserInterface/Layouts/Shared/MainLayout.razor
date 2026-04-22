@@ -11,8 +11,11 @@
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-    <div class="root" style="position:relative">
-        <FluentLayout>
+    <div class="root app-background">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <FluentLayout Style="position:relative" GlobalScrollbar="true">
             <FluentLayoutItem Area="LayoutArea.Header">
                 <img src="@GlobalDesign.Value.LogoAssetPath"
                      style="width:2rem; height:2rem;margin-right:0.5rem;" />
@@ -26,7 +29,7 @@
                              Orientation="Orientation.Horizontal"
                              Width="100%" HorizontalGap="0" VerticalGap="0">
                     <SectionOutlet SectionId="NavigationSection" />
-                    <div class="content">
+                    <div class="content" style="background:color-mix(in lch, var(--colorNeutralBackground2), transparent 20%);">
                         <SectionOutlet SectionId="MessageBarSection" />
                         <nav aria-label="Breadcrumb" style="margin-bottom:calc( var(--design-unit) * 4px);">
                             @if (UseCustomBreadcrumb)
@@ -35,12 +38,12 @@
                             }
                             else if (_breadcrumbs.Any())
                             {
-                            <FluentBreadcrumb>
-                                @foreach (var breadcrumb in _breadcrumbs)
-                                {
-                                    @breadcrumb
-                                }
-                            </FluentBreadcrumb>
+                                <FluentBreadcrumb>
+                                    @foreach (var breadcrumb in _breadcrumbs)
+                                    {
+                                        @breadcrumb
+                                    }
+                                </FluentBreadcrumb>
 
                             }
                         </nav>
@@ -72,7 +75,7 @@
     {
         RenderFragment frag = @<FluentBreadcrumbItem Href="@breadcrumb.Url">
             <FluentIcon Slot="start" Value="@breadcrumb.Icon" />
-        @breadcrumb.TitleKey
+            @breadcrumb.TitleKey
         </FluentBreadcrumbItem>;
         return frag;
     }).ToArray();
