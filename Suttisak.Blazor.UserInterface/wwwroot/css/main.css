@@ -1,34 +1,32 @@
 @import url('./components/_button.css');
 @import url('./components/_fluentheader.css');
+
 :root {
+    color-scheme: light dark;
+
     --design-unit: 4;
     --nav-bg-color: transparent;
     --glass-blur: blur(20px);
-    --glass-bg: rgba(255,255,255,72%);
-    --glass-translucent-bg: rgba(255,255,255,50%);
-    --glass-border-color: rgba(255,255,255,55%);
-    --glass-shadow: 0 8px 32px #6366f112, 0 1px 2px #0000000a;
-}
-
-body[data-theme="dark"] {
-    --glass-bg: rgba(20,22,31,72%);
-    --glass-translucent-bg: rgba(20,22,31,50%);
-    --glass-border-color: #ffffff14;
-    --glass-shadow: 0 8px 32px #00000059, 0 1px 2px #0000004d;
 }
 
 body {
-    background: linear-gradient(
-        150deg,
-        color-mix(in srgb, var(--accent-base-color) 5%, var(--neutral-layer-2)),
-        var(--neutral-layer-2) 50%,
-        color-mix(in srgb, var(--accent-base-color) 3%, var(--neutral-layer-2))
-    );
-    background-attachment: fixed;
+    --glass-bg: light-dark(rgba(255,255,255,50%),rgba(20,22,31,60%));
+    --glass-translucent-bg: light-dark(rgba(255,255,255,40%),rgba(20,22,31,50%));
+    --glass-border-color: light-dark(rgba(255,255,255,60%), rgba(255,255,255,8%));
+    --glass-shadow: 0 8px 32px light-dark(rgba(0,0,0,8%),rgba(0,0,0,6%)),0 1px 2px light-dark(rgba(0,0,0,12%),rgba(0,0,0,8%));
+
+    &[data-theme="light"] {
+        color-scheme: light;
+    }
+
+    &[data-theme="dark"] {
+        color-scheme: dark;
+    }
 }
 
-.shadow-subtle {
-    box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.12), 0 calc(1.5 * 0.25px) calc((1.5 * 0.5px)) rgba(0, 0, 0, 0.14);
+body {
+    background: linear-gradient( 150deg, color-mix(in srgb, var(--accent-base-color) 5%, var(--neutral-layer-2)), var(--neutral-layer-2) 50%, color-mix(in srgb, var(--accent-base-color) 3%, var(--neutral-layer-2)) );
+    background-attachment: fixed;
 }
 
 .glass.translucent {
@@ -50,4 +48,17 @@ body {
 
 fluent-text-input {
     display: flex;
+}
+
+.glass-container {
+    backdrop-filter: var(--glass-blur);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+}
+
+.margin-bottom{
+    margin-bottom:1rem;
 }
