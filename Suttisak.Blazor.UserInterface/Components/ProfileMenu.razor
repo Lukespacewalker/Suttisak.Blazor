@@ -5,18 +5,32 @@
 <div style="display:flex;flex-direction:row;gap:0.5rem;align-items:center;">
 	<AuthorizeView>
 		<Authorized>
-			<FluentProfileMenu Initials="@_initial" TopCorner="true"
-							   FullName="@_username"
-							   PopoverStyle="min-width: 330px;"
-							   OnFooterLinkClick='() => NavigationManager.NavigateTo("Account/Manage")'
-							   HeaderButton="@Helper.TryGetCustomStringThenFallbackToResource(LogoutText, ProfileMenu_razor.Logout)" 
-							   OnHeaderButtonClick='() => NavigationManager.NavigateTo("Account/Logout?ReturnUrl=", forceLoad:true)'>
-				<StartTemplate>
-					<FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
-						<FluentLabel>@_username</FluentLabel>
+			<details style="position:relative;">
+				<summary style="list-style:none;cursor:pointer;display:flex;align-items:center;">
+					<FluentButton Appearance="ButtonAppearance.Transparent"
+								  IconStart="@(new Icons.Regular.Size20.PersonCircle())"
+								  IconEnd="@(new Icons.Regular.Size20.ChevronDown())">
+						@_initial
+					</FluentButton>
+				</summary>
+				<div style="position:absolute;right:0;top:calc(100% + 0.5rem);min-width:18rem;padding:1rem;border-radius:calc(var(--layer-corner-radius) * 1px);background:var(--colorNeutralBackground1);border:1px solid var(--colorNeutralStroke1);box-shadow:var(--shadow16);z-index:1000;">
+					<FluentStack Orientation="Orientation.Vertical" VerticalGap="8">
+						<FluentLabel Style="font-weight:600;">@_username</FluentLabel>
+						<FluentButton Appearance="ButtonAppearance.Transparent"
+								  Style="justify-content:flex-start;"
+								  IconStart="@(new Icons.Regular.Size20.PersonAccounts())"
+								  OnClick="NavigateToManageAccount">
+							@ProfileMenu_razor.ManageAccount
+						</FluentButton>
+						<FluentButton Appearance="ButtonAppearance.Transparent"
+								  Style="justify-content:flex-start;"
+								  IconStart="@(new Icons.Regular.Size20.SignOut())"
+								  OnClick="Logout">
+							@Helper.TryGetCustomStringThenFallbackToResource(LogoutText, ProfileMenu_razor.Logout)
+						</FluentButton>
 					</FluentStack>
-				</StartTemplate>
-			</FluentProfileMenu>
+				</div>
+			</details>
 		</Authorized>
 		<NotAuthorized>
 			<FluentNavItem Href="Account/Login">@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavItem>
@@ -38,9 +52,24 @@
 		{
 			_username = authState.User.Identity.Name;
 
-			_initial = _username?[0..2] ?? string.Empty;
+			_initial = _username switch
+			{
+				null or "" => string.Empty,
+				{ Length: 1 } value => value,
+				_ => _username[..2]
+			};
 		}
 
 		await base.OnInitializedAsync();
+	}
+
+	private void NavigateToManageAccount()
+	{
+		NavigationManager.NavigateTo("Account/Manage");
+	}
+
+	private void Logout()
+	{
+		NavigationManager.NavigateTo("Account/Logout?ReturnUrl=", forceLoad: true);
 	}
 }
