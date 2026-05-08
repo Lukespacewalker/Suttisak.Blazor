@@ -120,6 +120,9 @@
   <data name="Login" xml:space="preserve">
     <value>เข้าสู่ระบบ</value>
   </data>
+  <data name="ManageAccount" xml:space="preserve">
+    <value>จัดการบัญชี</value>
+  </data>
   <data name="Logout" xml:space="preserve">
     <value>ออกจากระบบ</value>
   </data>
