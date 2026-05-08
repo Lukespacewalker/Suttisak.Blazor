@@ -68,6 +68,15 @@ namespace Suttisak.Blazor.UserInterface.Components {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Manage account.
+        /// </summary>
+        public static string ManageAccount {
+            get {
+                return ResourceManager.GetString("ManageAccount", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Logout.
