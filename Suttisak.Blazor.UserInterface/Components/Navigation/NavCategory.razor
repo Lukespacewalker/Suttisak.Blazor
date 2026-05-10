@@ -1,0 +1,108 @@
+@implements IDisposable
+@inject NavigationManager NavigationManager
+
+<div class="nav-category @(Expanded ? "nav-category--expanded" : string.Empty)">
+    @if (HasHref)
+    {
+        <div class="nav-category__header-row">
+            <a class="nav-category__header nav-category__header--link" href="@Href" @onclick="HandleNavigate">
+                <span class="nav-category__icon">@IconMarkup</span>
+                <span class="nav-category__label">@Title</span>
+            </a>
+            <button class="nav-category__toggle" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded" aria-label="Toggle @Title submenu">
+                <span class="nav-category__chevron">
+                    @(Expanded ? "⌄" : "›")
+                </span>
+            </button>
+        </div>
+    }
+    else
+    {
+        <button class="nav-category__header" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded">
+            <span class="nav-category__icon">@IconMarkup</span>
+            <span class="nav-category__label">@Title</span>
+            <span class="nav-category__chevron">
+                @(Expanded ? "⌄" : "›")
+            </span>
+        </button>
+    }
+
+    <div class="nav-category__panel">
+        <div class="nav-category__content">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public Nav? NavRoot { get; set; }
+
+    [CascadingParameter]
+    public Nav.NavComponentState State { get; set; } = null!;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public Icon? IconRest { get; set; }
+
+    [Parameter]
+    public Icon? IconActive { get; set; }
+
+    [Parameter]
+    public bool Expanded { get; set; }
+
+    [Parameter]
+    public string? Href { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment? IconMarkup => DisplayIcon is null
+        ? null
+        : builder =>
+        {
+            builder.OpenComponent<FluentIcon<Icon>>(0);
+            builder.AddAttribute(1, "Value", DisplayIcon);
+            builder.CloseComponent();
+        };
+
+    private Icon? DisplayIcon => IsActive ? IconActive ?? IconRest : IconRest;
+
+    private bool HasHref => !string.IsNullOrWhiteSpace(Href);
+
+    private bool IsActive => HasHref
+        && NavigationManager.Uri.Contains(NavigationManager.ToAbsoluteUri(Href!).PathAndQuery, StringComparison.OrdinalIgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        State.Changed += HandleStateChanged;
+    }
+
+    private void ToggleExpanded()
+    {
+        if (State.IsCollapsed)
+        {
+            return;
+        }
+
+        Expanded = !Expanded;
+    }
+
+    private void HandleNavigate()
+    {
+        NavRoot?.CloseMobileAfterNavigation();
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        State.Changed -= HandleStateChanged;
+    }
+}

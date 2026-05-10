@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Components.Routing
+@implements IDisposable
+@inject NavigationManager NavigationManager
+
+<a class="nav-item @(IsActive ? "nav-item--active" : string.Empty)"
+   href="@Href"
+   @onclick="HandleClick">
+    <span class="nav-item__icon">
+        @if (DisplayIcon is not null)
+        {
+            <FluentIcon Value="@(DisplayIcon)" />
+        }
+    </span>
+    <span class="nav-item__label">@ChildContent</span>
+    @if (TrailingContent is not null)
+    {
+        <span class="nav-item__trailing">@TrailingContent</span>
+    }
+</a>
+
+@code {
+    [CascadingParameter]
+    public Nav? NavRoot { get; set; }
+
+    [CascadingParameter]
+    public Nav.NavComponentState State { get; set; } = null!;
+
+    [Parameter]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter]
+    public Icon? IconRest { get; set; }
+
+    [Parameter]
+    public Icon? IconActive { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? TrailingContent { get; set; }
+
+    private Icon? DisplayIcon => IsActive ? IconActive ?? IconRest : IconRest;
+
+    private bool IsActive => NavigationManager.Uri.Contains(NavigationManager.ToAbsoluteUri(Href).PathAndQuery, StringComparison.OrdinalIgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        State.Changed += HandleStateChanged;
+    }
+
+    private void HandleClick()
+    {
+        NavRoot?.CloseMobileAfterNavigation();
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+        State.Changed -= HandleStateChanged;
+    }
+}
