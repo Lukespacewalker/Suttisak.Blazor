@@ -1,0 +1,108 @@
+.app-nav {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.nav-shell {
+    width: 260px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s ease, transform 0.25s ease;
+    overflow: hidden;
+}
+
+.app-nav--collapsed .nav-shell {
+    width: 76px;
+}
+
+.nav-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+}
+
+.nav-toolbar-button {
+    flex: 0 0 auto;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.nav-toolbar-button:hover {
+    transform: scale(1.04);
+}
+
+.nav-brand {
+    flex: 1 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.2s ease, transform 0.2s ease, max-width 0.25s ease;
+    max-width: 100%;
+}
+
+.app-nav--collapsed .nav-brand {
+    opacity: 0;
+    transform: translateX(-8px);
+    max-width: 0;
+}
+
+.nav-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0 0.5rem 0.75rem;
+}
+
+.nav-backdrop {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .app-nav {
+        position: static;
+    }
+
+    .nav-shell {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 30;
+        transform: translateX(-100%);
+        width: min(85vw, 260px);
+    }
+
+    .app-nav--mobile-open .nav-shell {
+        transform: translateX(0);
+    }
+
+    .app-nav--collapsed .nav-shell {
+        width: min(85vw, 260px);
+    }
+
+    .app-nav--collapsed .nav-brand {
+        opacity: 1;
+        transform: translateX(0);
+        max-width: 100%;
+    }
+
+    .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        border: 0;
+        padding: 0;
+        background: rgba(15, 23, 42, 0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+
+    .app-nav--mobile-open .nav-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
