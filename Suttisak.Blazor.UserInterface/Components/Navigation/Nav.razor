@@ -1,0 +1,121 @@
+@implements IDisposable
+
+<CascadingValue Value="this">
+    <CascadingValue Value="_state">
+        <FluentLayoutItem Area="LayoutArea.Navigation" Class="@($"app-nav {CollapsedClass} {MobileOpenClass}")">
+            <div class="nav-shell glass">
+                <div class="nav-toolbar">
+                    <FluentButton Class="nav-toolbar-button nav-toolbar-button--hamburger"
+                                  IconStart="@(new Icons.Regular.Size20.Navigation())"
+                                  OnClick="ToggleMobileMenu"
+                                  aria-label="Toggle navigation menu" />
+                    <div class="nav-brand">
+                        @if (BrandContent is not null)
+                        {
+                            @BrandContent
+                        }
+                    </div>
+                    <FluentButton Class="nav-toolbar-button nav-toolbar-button--collapse"
+                                  IconStart="@(CollapseIcon)"
+                                  OnClick="ToggleCollapsed"
+                                  aria-label="Collapse navigation menu" />
+                </div>
+
+                <div class="nav-panel">
+                    @ChildContent
+                </div>
+            </div>
+
+            <button class="nav-backdrop" @onclick="CloseMobileMenu" aria-label="Close navigation menu"></button>
+        </FluentLayoutItem>
+    </CascadingValue>
+</CascadingValue>
+
+@code {
+    private readonly NavComponentState _state = new();
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? BrandContent { get; set; }
+
+    public bool IsCollapsed => _state.IsCollapsed;
+
+    public bool IsMobileOpen => _state.IsMobileOpen;
+
+    private string CollapsedClass => _state.IsCollapsed ? "app-nav--collapsed" : string.Empty;
+
+    private string MobileOpenClass => _state.IsMobileOpen ? "app-nav--mobile-open" : string.Empty;
+
+    private Icon CollapseIcon => _state.IsCollapsed
+        ? new Icons.Regular.Size20.PanelLeftExpand()
+        : new Icons.Regular.Size20.PanelLeftContract();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _state.Changed += HandleStateChanged;
+    }
+
+    public void CloseMobileAfterNavigation()
+    {
+        _state.CloseMobile();
+    }
+
+    private void ToggleCollapsed()
+    {
+        _state.ToggleCollapsed();
+    }
+
+    private void ToggleMobileMenu()
+    {
+        _state.ToggleMobileOpen();
+    }
+
+    private void CloseMobileMenu()
+    {
+        _state.CloseMobile();
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _state.Changed -= HandleStateChanged;
+    }
+
+    public sealed class NavComponentState
+    {
+        public bool IsCollapsed { get; private set; }
+        public bool IsMobileOpen { get; private set; }
+
+        public event Action? Changed;
+
+        public void ToggleCollapsed()
+        {
+            IsCollapsed = !IsCollapsed;
+            Changed?.Invoke();
+        }
+
+        public void ToggleMobileOpen()
+        {
+            IsMobileOpen = !IsMobileOpen;
+            Changed?.Invoke();
+        }
+
+        public void CloseMobile()
+        {
+            if (!IsMobileOpen)
+            {
+                return;
+            }
+
+            IsMobileOpen = false;
+            Changed?.Invoke();
+        }
+    }
+}
