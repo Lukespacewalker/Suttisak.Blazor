@@ -1,18 +1,22 @@
-﻿div:hover {
-    background: var(--neutral-fill-secondary-rest);
+﻿.fluent-card:hover {
+    background: var(--color-card-hover);
+    box-shadow: 0 12px 40px var(--color-glass-shadow);
     cursor: pointer;
 }
-div {
-    background: var(--neutral-fill-layer-rest);
+.fluent-card {
+    background: var(--color-glass-layer2-bg);
+    backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 0 8px 32px var(--color-glass-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: var(--border-radius);
+    padding: calc(var(--design-unit) * 4px) !important;
+    gap: calc(var(--design-unit) * 4px);
     display: flex;
     flex-direction: row;
-    border-radius: calc(var(--layer-corner-radius) * 1px);
-    padding: calc(var(--design-unit) * 4px) !important;
     align-items: center;
-    gap: calc(var(--design-unit) * 4px);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.12), 0 calc(1.5 * 0.25px) calc((1.5 * 0.5px)) rgba(0, 0, 0, 0.14);
 }
 
-    div .subtitle {
+    .fluent-card .subtitle {
         color: var(--neutral-foreground-hint);
     }

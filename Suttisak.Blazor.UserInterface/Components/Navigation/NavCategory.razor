@@ -10,8 +10,8 @@
                 <span class="nav-category__label">@Title</span>
             </a>
             <button class="nav-category__toggle" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded" aria-label="Toggle @Title submenu">
-                <span class="nav-category__chevron">
-                    @(Expanded ? "⌄" : "›")
+                <span class="nav-category__chevron @(Expanded ? "expanded":"")">
+                    <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())"></FluentIcon>
                 </span>
             </button>
         </div>
@@ -21,8 +21,8 @@
         <button class="nav-category__header" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded">
             <span class="nav-category__icon">@IconMarkup</span>
             <span class="nav-category__label">@Title</span>
-            <span class="nav-category__chevron">
-                @(Expanded ? "⌄" : "›")
+            <span class="nav-category__chevron @(Expanded ? "expanded" : "")">
+                <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())"></FluentIcon>
             </span>
         </button>
     }
