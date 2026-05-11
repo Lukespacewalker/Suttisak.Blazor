@@ -6,13 +6,16 @@
     --design-unit: 4;
     --nav-bg-color: transparent;
     --glass-blur: blur(20px);
+
+    --border-radius: 12px;
+
     /* Light Theme Variables */
     --light-color-glass-layer0-bg: rgba(255, 255, 255, 0.2);
     --light-color-glass-layer1-bg: rgba(255, 255, 255, 0.5);
     --light-color-glass-layer2-bg: rgba(255, 255, 255, 0.7);
     --light-color-glass-border: rgba(255, 255, 255, 0.5);
     --light-color-glass-shadow: rgba(148, 163, 184, 0.15);
-    --light-color-card-hover: rgba(255, 255, 255, 0.8);
+    --light-color-card-hover: rgba(245, 245, 245, 0.8);
     /* Dark Theme Variables */
     --dark-color-glass-nav-bg: rgba(15, 23, 42, 0.15);
     --dark-color-glass-layer1-bg: rgba(15, 23, 42, 0.45);
@@ -52,7 +55,7 @@
     border: 1px solid var(--color-glass-border);
     box-shadow: 0 8px 32px var(--color-glass-shadow);
     padding: 1rem 1.5rem;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
 }
 
 .content {
