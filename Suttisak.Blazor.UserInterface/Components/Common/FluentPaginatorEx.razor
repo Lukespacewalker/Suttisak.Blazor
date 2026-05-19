@@ -1,0 +1,68 @@
+@if (SummaryTemplate is not null)
+{
+    <FluentPaginator State="State">
+        <PaginationTextTemplate>
+            @_paginationTextTemplate
+        </PaginationTextTemplate>
+        <SummaryTemplate>
+            @SummaryTemplate
+        </SummaryTemplate>
+    </FluentPaginator>
+}
+else
+{
+    <FluentPaginator State="State">
+        <PaginationTextTemplate>
+            @_paginationTextTemplate
+        </PaginationTextTemplate>
+    </FluentPaginator>
+}
+
+@code {
+    [Parameter, EditorRequired] public PaginationState State { get; set; } = null!;
+
+    [Parameter] public RenderFragment? SummaryTemplate { get; set; }
+
+    [Parameter] public string NumberFieldStyle { get; set; } = "width:5em";
+
+    private RenderFragment _paginationTextTemplate = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _paginationTextTemplate = @<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4">
+            Page
+            <FluentNumberInput TValue="int"
+                               Min="@Min()"
+                               Style="@NumberFieldStyle"
+                               Max="@Max()"
+                               Value="State.CurrentPageIndex + 1"
+                               ValueChanged="SetCurrentPageIndexAsync"
+                               ValueExpression="() => State.CurrentPageIndex">
+            </FluentNumberInput>
+            of
+            <strong>@(State.LastPageIndex + 1)</strong>
+        </FluentStack>
+;
+    }
+
+    private int Min()
+    {
+        var max = State.LastPageIndex + 1;
+        return 1 > max ? max.Value : // Assuming you want to return a default minimum value
+            1; // Return a default minimum value
+    }
+
+    private int Max()
+    {
+        if (State.LastPageIndex is null) return 1;
+        return (State.LastPageIndex.Value + 1); // Return the maximum page index as a string
+    }
+
+    private async Task SetCurrentPageIndexAsync(int index)
+    {
+        var target = index - 1;
+        if (target < 0 || target > State.LastPageIndex) return; // Prevent setting an invalid page index
+        await State.SetCurrentPageIndexAsync(target);
+    }
+}
