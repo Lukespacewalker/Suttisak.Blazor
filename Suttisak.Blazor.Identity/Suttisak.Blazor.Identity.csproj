@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.2.11</AssemblyVersion>
+		<AssemblyVersion>0.2.12</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -24,7 +24,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="5.0.0-rc.2-26098.1" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.1" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.2" />
 	</ItemGroup>
 
 	<ItemGroup>
