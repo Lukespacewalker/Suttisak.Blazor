@@ -71,14 +71,17 @@
 
     public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
     {
-        var result = breadcrumbs.Select(breadcrumb =>
-    {
-        RenderFragment frag = @<FluentBreadcrumbItem Href="@breadcrumb.Url">
-            <FluentIcon Slot="start" Value="@breadcrumb.Icon" />
-            @breadcrumb.TitleKey
-        </FluentBreadcrumbItem>;
-        return frag;
-    }).ToArray();
+        var breadcrumbItems = breadcrumbs.ToArray();
+        var result = breadcrumbItems.Select((breadcrumb, index) =>
+        {
+            var href = index == breadcrumbItems.Length - 1 ? null : breadcrumb.Url;
+
+            RenderFragment frag = @<FluentBreadcrumbItem Href="@href">
+                <FluentIcon Slot="start" Value="@breadcrumb.Icon" />
+                @breadcrumb.TitleKey
+            </FluentBreadcrumbItem>;
+            return frag;
+        }).ToArray();
         _breadcrumbs = result;
         StateHasChanged();
 
