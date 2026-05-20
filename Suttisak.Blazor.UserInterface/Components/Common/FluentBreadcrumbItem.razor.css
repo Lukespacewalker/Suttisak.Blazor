@@ -1,0 +1,9 @@
+.fluent-breadcrumb-item {
+    color: inherit;
+    text-decoration: none;
+}
+
+.fluent-breadcrumb-item:hover,
+.fluent-breadcrumb-item:focus-visible {
+    text-decoration: underline;
+}

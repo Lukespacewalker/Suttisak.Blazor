@@ -1,0 +1,18 @@
+.fluent-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.fluent-breadcrumb ::deep .fluent-breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.fluent-breadcrumb ::deep .fluent-breadcrumb-item + .fluent-breadcrumb-item::before {
+    content: "›";
+    color: var(--neutral-foreground-hint, var(--fill-color-text-secondary, currentColor));
+    margin-right: 0.125rem;
+}
