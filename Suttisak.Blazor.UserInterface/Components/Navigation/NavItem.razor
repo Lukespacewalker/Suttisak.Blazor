@@ -23,7 +23,7 @@
     public Nav? NavRoot { get; set; }
 
     [CascadingParameter]
-    public Nav.NavComponentState State { get; set; } = null!;
+    public NavComponentState? State { get; set; }
 
     [Parameter]
     public string Href { get; set; } = string.Empty;
@@ -48,7 +48,7 @@
     {
         base.OnInitialized();
         NavigationManager.LocationChanged += HandleLocationChanged;
-        State.Changed += HandleStateChanged;
+        State?.Changed += HandleStateChanged;
     }
 
     private void HandleClick()
@@ -69,6 +69,6 @@
     public void Dispose()
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
-        State.Changed -= HandleStateChanged;
+        State?.Changed -= HandleStateChanged;
     }
 }
