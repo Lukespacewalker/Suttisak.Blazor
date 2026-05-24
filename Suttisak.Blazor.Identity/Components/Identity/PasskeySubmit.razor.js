@@ -93,20 +93,17 @@ customElements.define('passkey-submit', class extends HTMLElement {
         const formData = new FormData();
         try {
             const credential = await this.obtainCredential(useConditionalMediation, signal);
-            let credentialJson;
-            try {
-                credentialJson = JSON.stringify(credential);
-            } catch (error) {
-                // Check for 'TypeError' instead of relying on the exact error message.
-                if (error.name !== 'TypeError') {
-                    throw error;
-                }
 
+            let credentialData;
+            if (typeof credential.toJSON === 'function') {
+                // Use toJSON if available
+                credentialData = credential.toJSON();
+            } else {
                 // Some password managers do not implement PublicKeyCredential.prototype.toJSON correctly,
                 // which is required for JSON.stringify() to work.
                 // e.g. https://www.1password.community/discussions/1password/typeerror-illegal-invocation-in-chrome-browser/47399
                 // Try and serialize the credential to JSON manually.
-                credentialJson = JSON.stringify({
+                credentialData = {
                     authenticatorAttachment: credential.authenticatorAttachment,
                     clientExtensionResults: credential.getClientExtensionResults(),
                     id: credential.id,
@@ -122,9 +119,10 @@ customElements.define('passkey-submit', class extends HTMLElement {
                         userHandle: this.convertToBase64(credential.response.userHandle),
                     },
                     type: credential.type,
-                });
+                };
             }
 
+            const credentialJson = JSON.stringify(credentialData);
             formData.append(`${this.attrs.name}.CredentialJson`, credentialJson);
 
         } catch (error) {
