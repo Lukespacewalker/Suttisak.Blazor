@@ -1,5 +1,9 @@
 @import url('./components/_button.css');
+@import url('./components/_content.css');
+@import url('./components/_fluent.css');
 @import url('./components/_fluentheader.css');
+@import url('./components/_glass.css');
+@import url('./components/_utility.css');
 
 :root {
     color-scheme: light dark;
@@ -32,39 +36,6 @@
     --color-card-hover: light-dark(var(--light-color-card-hover), var(--dark-color-card-hover));
 }
 
-/* Components */
-/* Glass Card */
-
-.glass-card {
-    background: var(--color-glass-layer2-bg);
-    backdrop-filter: blur(20px) saturate(200%);
-    border: 1px solid var(--color-glass-border);
-    box-shadow: 0 8px 32px var(--color-glass-shadow);
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-    .glass-card:hover {
-        background: var(--color-card-hover);
-        box-shadow: 0 12px 40px var(--color-glass-shadow);
-    }
-
-/* Glass Container */
-.glass-container {
-    backdrop-filter: blur(20px) saturate(200%);
-    background: var(--color-glass-layer2-bg);
-    border: 1px solid var(--color-glass-border);
-    box-shadow: 0 8px 32px var(--color-glass-shadow);
-    padding: 1rem 1.5rem;
-    border-radius: var(--border-radius);
-}
-
-.content {
-    border-top-left-radius: 20px;
-    background: var(--color-glass-layer1-bg) !important;
-    border-left: 2px solid var(--color-glass-border);
-    backdrop-filter: blur(16px) saturate(250%);
-}
-
 html {
     scroll-behavior: smooth;
 }
@@ -77,17 +48,4 @@ body {
     &[data-theme="dark"] {
         color-scheme: dark;
     }
-}
-
-.fluent-stack-horizontal[role=menubar] fluent-divider[orientation=vertical], div[role=menubar] fluent-divider[orientation=vertical] {
-    min-height: 0 !important;
-    height: 32px !important;
-}
-
-fluent-text-input {
-    display: flex;
-}
-
-.margin-bottom {
-    margin-bottom: 1rem;
 }

@@ -1,0 +1,9 @@
+.fluent-stack-horizontal[role=menubar] fluent-divider[orientation=vertical],
+div[role=menubar] fluent-divider[orientation=vertical] {
+    min-height: 0 !important;
+    height: 32px !important;
+}
+
+fluent-text-input {
+    display: flex;
+}
