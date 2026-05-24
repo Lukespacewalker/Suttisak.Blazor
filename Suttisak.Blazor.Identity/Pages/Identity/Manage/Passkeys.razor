@@ -11,21 +11,21 @@
 <PageTitle>@Manage_razor.Passkeys</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <FluentLabel>@Manage_razor.Passkeys</FluentLabel>
+    <h1>@Manage_razor.Passkeys</h1>
 </SectionContent>
 <StatusMessage />
 
 @if (_currentPasskeys is { Count: > 0 })
 {
-    <table class="dashboard-table">
+    <table class="glass-table">
         <thead>
             <tr>
-                <td>
+                <th scope="col">
                     @Passkeys_razor.NameHeader
-                </td>
-                <td>
+                </th>
+                <th scope="col">
                     @Passkeys_razor.ActionHeader
-                </td>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
             {
                 <tr>
                     <td>@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)</td>
-                    <td>
+                    <td style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
                         @{
                             var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
                         }
