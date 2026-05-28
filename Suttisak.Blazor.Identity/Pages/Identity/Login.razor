@@ -10,27 +10,39 @@
 
 <PageTitle>@Login_razor.Login</PageTitle>
 
-<section style="display: flex; flex-direction: column;">
-	<h1 style="align-self:center">@UsernamePasswordLogin_razor.Login</h1>
-	<StatusMessage Message="@_statusMessage" />
-	<UsernamePasswordLogin FormName=@LoginWithUsernameFormName
-						   UsernamePasswordInput="@LoginWithUsernamePasswordInput"
-						   UserNamePlaceholder="@UserNamePlaceholder"
-						   PasswordPlaceholder="@PasswordPlaceholder"
-						   OnValidSubmit="LoginWithUsernamePassword" />
-	<FluentDivider Style="width: 100%;border-color: var(--accent-fill-rest); margin: calc(var(--design-unit) * 6px) 0 calc(var(--design-unit) * 4px) 0;" />
-	<h5 style="align-self:center">
-		@UsernamePasswordLogin_razor.Alternative
-	</h5>
-	<div role="menubar" style="display:flex; gap: calc(var(--design-unit) * 2px); margin: calc(var(--design-unit) * 2px) 0;">
+<section class="login-page">
+	<div class="login-shell">
+		<div class="login-panel">
+			<header class="login-header">
+				<p class="login-eyebrow">@Login_razor.Login</p>
+				<h1>@UsernamePasswordLogin_razor.Login</h1>
+			</header>
+
+			<StatusMessage Message="@_statusMessage" />
+
+			<UsernamePasswordLogin FormName=@LoginWithUsernameFormName
+							   UsernamePasswordInput="@LoginWithUsernamePasswordInput"
+							   UserNamePlaceholder="@UserNamePlaceholder"
+							   PasswordPlaceholder="@PasswordPlaceholder"
+							   OnValidSubmit="LoginWithUsernamePassword" />
+
+			<FluentDivider class="login-divider" />
+
+			<h5 class="login-alternative">
+				@UsernamePasswordLogin_razor.Alternative
+			</h5>
+
+			<div class="login-actions" role="menubar">
         <PasskeySubmit FormName="@LoginWithPasskeyFormName" 
                        Operation="PasskeyOperation.Request" 
                        OutputParameterName="@nameof(LoginWithPasskeyOutput)" 
                        OnSubmit="LoginWithPasskey">
 			@Login_razor.Passkey
 		</PasskeySubmit>
-		<FluentDivider Vertical="true" Style="height: 32px;border-color: var(--neutral-fill-strong-rest);" />
+		<FluentDivider Vertical="true" class="login-actions-divider" />
 		<ExternalLoginPicker TUser="TUser" />
+			</div>
+		</div>
 	</div>
 </section>
 
