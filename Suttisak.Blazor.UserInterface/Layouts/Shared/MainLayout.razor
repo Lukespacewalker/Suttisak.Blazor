@@ -4,6 +4,7 @@
 @using Suttisak.Blazor.UserInterface.Interfaces
 @layout RootLayout
 @using Microsoft.JSInterop
+@using Suttisak.Blazor.UserInterface.Components.Navigation
 @implements IBreadcrumbLayout
 @implements IAsyncDisposable
 @inject IOptions<BlazorUIOptions> GlobalDesign
@@ -17,12 +18,13 @@
         <div class="orb orb-3"></div>
         <FluentLayout Style="position:relative" GlobalScrollbar="true">
             <FluentLayoutItem Area="LayoutArea.Header" Sticky="true">
+                <LayoutMobileMenuButtonWrapper @rendermode="HeaderRenderMode" />
                 <img src="@GlobalDesign.Value.LogoAssetPath"
-                     style="width:2rem; height:2rem;margin-right:0.5rem;" />
-                <SectionOutlet SectionId="HeaderSection" />
-                <FluentSpacer />
+                     style="width:2rem; height:2rem;margin-right:0.5rem;"/>
+                <SectionOutlet SectionId="HeaderSection"/>
+                <FluentSpacer/>
                 <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
-                                       @rendermode="HeaderRenderMode" />
+                                       @rendermode="HeaderRenderMode"/>
             </FluentLayoutItem>
             <FluentLayoutItem Area="LayoutArea.Content">
                 <FluentStack Class="main main-stack"
@@ -63,6 +65,8 @@
     public static object NavigationSection = new();
     public static object MessageBarSection = new();
 
+    [CascadingParameter] public NavComponentState? NavState { get; set; }
+
     [Parameter] public bool UseCustomBreadcrumb { get; set; } = false;
 
     private RenderFragment[] _breadcrumbs = Array.Empty<RenderFragment>();
@@ -79,7 +83,8 @@
             RenderFragment frag = @<FluentBreadcrumbItem Href="@href">
                 <FluentIcon Slot="start" Value="@breadcrumb.Icon" />
                 @breadcrumb.TitleKey
-            </FluentBreadcrumbItem>;
+            </FluentBreadcrumbItem>
+    ;
             return frag;
         }).ToArray();
         _breadcrumbs = result;
