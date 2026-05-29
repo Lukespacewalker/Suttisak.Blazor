@@ -1,8 +1,9 @@
-﻿<FluentButton Class="nav-toolbar-button nav-toolbar-button--hamburger"
-              IconStart="@(new Icons.Regular.Size20.Navigation())"
-              OnClick="ToggleMobileMenu"
-              aria-label="Toggle navigation menu" />
-@RendererInfo.Name
+<span class="mobile-menu-button-container">
+    <FluentButton Class="nav-toolbar-button nav-toolbar-button--hamburger"
+                  IconStart="@(new Icons.Regular.Size20.Navigation())"
+                  OnClick="ToggleMobileMenu"
+                  aria-label="Toggle navigation menu" />
+</span>
 @code {
     [CascadingParameter] public NavComponentState? NavState { get; set; }
 
