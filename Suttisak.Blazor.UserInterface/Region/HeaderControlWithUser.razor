@@ -13,6 +13,7 @@
     <NotAuthorized>
         <FluentButton IconStart="@(new Icons.Regular.Size24.Key())"
                       Appearance="ButtonAppearance.Primary"
+                      Style="border-radius: var(--borderRadiusCircular);"
                       OnClick="@OnClickHandler">
             @Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)
         </FluentButton>
