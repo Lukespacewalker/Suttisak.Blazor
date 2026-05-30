@@ -1,5 +1,19 @@
 ﻿fluent-button[appearance='primary']:enabled {
-    box-shadow: 0 4px 14px color-mix(in lch, var(--colorBrandBackground), transparent 20%);
+    /* box-shadow: 0 4px 14px color-mix(in lch, var(--colorBrandBackground), transparent 20%); */
+    background: var(--gradient-brand);
+}
+
+fluent-button[appearance='primary']{
+    border: none;
+}
+
+fluent-button[appearance='primary']:enabled:hover {
+    background: var(--gradient-brand-hover);
+    /* box-shadow: 0 6px 20px color-mix(in lch, var(--colorBrandBackground), transparent 30%); */
+}
+
+fluent-button {
+    transition: var(--transition);
 }
 
 .button.stealth {
@@ -10,24 +24,26 @@
     padding: 0.25rem;
 }
 
-    .button.stealth:hover {
-        background: color-mix(in lch, var(--neutral-fill-inverse-hover) 20%,transparent);
-    }
+.button.stealth:hover {
+    background: color-mix(in lch, var(--neutral-fill-inverse-hover) 20%, transparent);
+}
 
-    .button.stealth:active {
-        background: color-mix(in lch, var(--neutral-fill-inverse-active) 20%,transparent);
-    }
+.button.stealth:active {
+    background: color-mix(in lch, var(--neutral-fill-inverse-active) 20%, transparent);
+}
 
 .button.circle {
     border-radius: 50%;
 }
 
 
-a.action:hover, a.button:hover {
+a.action:hover,
+a.button:hover {
     background: var(--accent-fill-hover);
 }
 
-a.action, a.button {
+a.action,
+a.button {
     color: var(--foreground-on-accent-rest);
     display: inline-block;
     background: var(--accent-base-color);

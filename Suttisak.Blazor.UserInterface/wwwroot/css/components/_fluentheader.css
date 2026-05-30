@@ -1,14 +1,15 @@
 .fluent-layout-item[area=header] {
     background: var(--color-glass-layer0-bg) !important;
-    backdrop-filter: blur(10px) saturate(300%);
+    backdrop-filter: blur(10px) saturate(200%);
     border-bottom: 2px solid var(--color-glass-border) !important;
     color: var(--neutral-foreground-rest) !important;
     overflow: unset !important;
+    /* margin-bottom: calc(-1 * var(--layout-header-height)) !important; */
 }
 
 .fluent-layout-item[area=nav] {
     background: var(--color-glass-layer0-bg) !important;
-    backdrop-filter: blur(10px) saturate(300%);
+    backdrop-filter: blur(10px) saturate(200%);
 }
 
 .fluent-layout {

@@ -7,7 +7,7 @@
 		<Authorized>
 			<details style="position:relative;">
 				<summary style="list-style:none;cursor:pointer;display:flex;align-items:center;">
-					<FluentButton Appearance="ButtonAppearance.Transparent"
+					<FluentButton Appearance="ButtonAppearance.Transparent" 
 								  IconStart="@(new Icons.Regular.Size20.PersonCircle())"
 								  IconEnd="@(new Icons.Regular.Size20.ChevronDown())">
 						@_initial
@@ -33,7 +33,7 @@
 			</details>
 		</Authorized>
 		<NotAuthorized>
-			<FluentNavItem Href="Account/Login">@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavItem>
+			<FluentNavItem Href="Account/Login" >@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavItem>
 		</NotAuthorized>
 	</AuthorizeView>
 </div>
