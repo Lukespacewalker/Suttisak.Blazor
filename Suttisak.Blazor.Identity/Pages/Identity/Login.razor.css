@@ -21,7 +21,7 @@
     flex-direction: column;
     gap: calc(var(--design-unit) * 4px);
     padding: calc(var(--design-unit) * 6px);
-    border-radius: calc(var(--border-radius, 12px) * 1.5);
+    border-radius: calc(var(--borderRadius2XLarge) * 1.5);
     border: 1px solid var(--login-border);
     background:
         linear-gradient(180deg, var(--login-highlight), transparent 22%),
