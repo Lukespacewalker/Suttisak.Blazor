@@ -15,7 +15,7 @@
 <p>@LoginWith2fa_razor.InfoMessage</p>
 <FluentGrid>
     <FluentGridItem xs="8" sm="4">
-        <EditForm Model="Input" FormName="login-with-2fa" OnValidSubmit="OnValidSubmitAsync" method="post">
+        <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
             <input type="hidden" name="RememberMe" value="@RememberMe" />
             <DataAnnotationsValidator />
@@ -38,7 +38,12 @@
     private TUser _user = null!;
 
     [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    private InputModel? Input { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Input ??= new();
+    }
 
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
@@ -55,7 +60,7 @@
 
     private async Task OnValidSubmitAsync()
     {
-        var authenticatorCode = Input.TwoFactorCode!.Replace(" ", string.Empty).Replace("-", string.Empty);
+        var authenticatorCode = Input!.TwoFactorCode!.Replace(" ", string.Empty).Replace("-", string.Empty);
         var result = await SignInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, RememberMe, Input.RememberMachine);
         var userId = await UserManager.GetUserIdAsync(_user);
 

@@ -59,11 +59,12 @@
     private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm(FormName = "change-email")]
-    protected virtual InputModel Input { get; set; } = new();
+    protected virtual InputModel? Input { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Input ??= new();
         AddPage<Manage>().AddThisPageAndPopulate<Email<TUser>>();
     }
 
@@ -73,12 +74,12 @@
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _email = await UserManager.GetEmailAsync(_user);
         _isEmailConfirmed = await UserManager.IsEmailConfirmedAsync(_user);
-        Input.NewEmail ??= _email;
+        Input!.NewEmail ??= _email;
     }
 
     protected virtual async Task OnValidSubmitAsync()
     {
-        if (Input.NewEmail is null || Input.NewEmail == _email)
+        if (Input!.NewEmail is null || Input.NewEmail == _email)
         {
             _message = Email_razor.EmailUnchangedMessage;
             return;

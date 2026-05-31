@@ -49,7 +49,7 @@ else
                         @EnableAuthenticator_razor.Step3
                     </p>
 
-                    <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
+                    <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
                         <FluentTextInput Name="Input.Code" @bind-Value="Input.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
                         @*<FluentValidationMessage For="() => Input.Code" class="text-danger" />*@
@@ -81,11 +81,12 @@ else
     private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm]
-    protected virtual InputModel Input { get; set; } = new();
+    protected virtual InputModel? Input { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Input ??= new();
         AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<EnableAuthenticator<TUser>>();
     }
 
@@ -100,7 +101,7 @@ else
     protected virtual async Task OnValidSubmitAsync()
     {
         // Strip spaces and hyphens
-        var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+        var verificationCode = Input!.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
         var is2FaTokenValid = await UserManager.VerifyTwoFactorTokenAsync(
             _user, UserManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
