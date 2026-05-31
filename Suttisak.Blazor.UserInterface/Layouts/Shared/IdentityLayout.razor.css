@@ -1,79 +1,333 @@
-.root {
-    display: grid;
-    background: linear-gradient(150deg, #EAF1FF 0%, #F2F6FF 45%, #EDF0FD 100%);
-    grid-template-columns: minmax(calc(375px - var(--design-unit) * 4px * 2), 800px) 1fr;
-    padding: calc(var(--design-unit) * 4px);
-    gap: calc(var(--design-unit) * 4px);
-    height: 100dvh;
-    width: 100dvw;
-}
-
-body[data-theme="dark"] .root {
-    background: linear-gradient(150deg, #070D1B 0%, #0C1526 50%, #090F1E 100%);
-}
-
-@media (max-width: 846px) {
-    .root {
-        gap: unset;
-    }
-
-        .root .section-image {
-            display: none;
-        }
-}
-
-
-.root > section, .root > div {
-    border-radius: 14px;
-    overflow: hidden;
-}
-
-.root > div {
-    background-color: var(--neutral-fill-rest);
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    box-shadow: 0 8px 40px rgba(72, 99, 148, 0.10);
-}
-
-body[data-theme="dark"] .root > div {
-    border-color: rgba(255, 255, 255, 0.07);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
-}
-
-.root .section-body {
-    backdrop-filter: blur(35px) saturate(160%);
-    -webkit-backdrop-filter: blur(35px) saturate(160%);
-    height: 100%;
+.identity-layout-shell {
+    --identity-bg: color-mix(in srgb, var(--primary-surface-1) 84%, transparent);
+    --identity-bg-strong: color-mix(in srgb, var(--primary-surface-strong) 94%, transparent);
+    --identity-border: var(--primary-border-soft);
+    --identity-shadow: light-dark(0 30px 90px rgba(45, 74, 122, 0.16), 0 30px 90px rgba(0, 0, 0, 0.36));
+    --identity-text: var(--primary-text);
+    --identity-text-soft: var(--primary-text-soft);
+    --identity-text-muted: var(--primary-text-muted);
+    --identity-highlight: var(--primary-highlight);
+    --identity-highlight-soft: var(--primary-highlight-soft);
+    --identity-divider: var(--primary-divider);
+    --identity-grid-line: var(--primary-grid-line);
     position: relative;
+    overflow: hidden;
+    min-height: calc(100dvh);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    background:
+        radial-gradient(circle at top, var(--primary-overlay-soft) 0%, transparent 30%),
+        linear-gradient(180deg, var(--primary-surface-1) 0%, var(--primary-surface-2) 50%, var(--primary-surface-3) 100%);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.identity-layout-background {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle, color-mix(in srgb, var(--identity-grid-line) 72%, var(--primary-overlay-soft)) 1.3px, transparent 1.6px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.55));
+}
+
+.identity-layout-background-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(18px);
+}
+
+.identity-layout-background-orb-primary {
+    width: 42rem;
+    height: 42rem;
+    top: -16rem;
+    right: -8rem;
+    background: radial-gradient(circle, var(--primary-overlay) 0%, transparent 70%);
+}
+
+.identity-layout-background-orb-secondary {
+    width: 28rem;
+    height: 28rem;
+    bottom: -10rem;
+    left: -8rem;
+    background: radial-gradient(circle, var(--primary-overlay-alt) 0%, transparent 70%);
+}
+
+.identity-layout-background-orb-tertiary {
+    width: 20rem;
+    height: 20rem;
+    top: 32%;
+    left: 42%;
+    background: radial-gradient(circle, var(--primary-overlay-ghost) 0%, transparent 72%);
+}
+
+.identity-layout-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 32rem);
+    align-items: stretch;
+    gap: clamp(1rem, 2.4vw, 2rem);
+    width: min(1180px, 100%);
+}
+
+.identity-showcase,
+.identity-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--identity-border);
+    border-radius: 32px;
+    background: var(--identity-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: var(--identity-shadow);
+}
+
+.identity-showcase {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    background:
+        linear-gradient(135deg, light-dark(rgba(255, 255, 255, 0.4), rgba(10, 19, 36, 0.24)), transparent 56%),
+        linear-gradient(var(--identity-grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--identity-grid-line) 1px, transparent 1px),
+        linear-gradient(160deg, var(--primary-surface-1) 0%, color-mix(in srgb, var(--primary-surface-2) 78%, white) 48%, var(--primary-surface-3) 100%);
+    background-size: auto, 22px 22px, 22px 22px, auto;
+}
+
+.identity-showcase-panel {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: calc(var(--design-unit) * 2px);
-    padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 2px)
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    color: var(--identity-text);
 }
 
-    .root .section-body .actual-body {
-        padding: calc(var(--design-unit) * 0px) calc(var(--design-unit) * 16px);
-        margin-bottom: calc(var(--design-unit) * 8px);
-        overflow-y:auto;
+.identity-showcase ::deep h1 {
+    margin: 0;
+    max-width: 11ch;
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+}
+
+.identity-showcase ::deep p {
+    margin: 0;
+    max-width: 40rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--identity-text-soft);
+}
+
+.identity-showcase-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(10px);
+}
+
+.identity-showcase-orb-primary {
+    width: 26rem;
+    height: 26rem;
+    top: -9rem;
+    right: -6rem;
+    background: radial-gradient(circle, var(--primary-overlay) 0%, transparent 68%);
+}
+
+.identity-showcase-orb-secondary {
+    width: 18rem;
+    height: 18rem;
+    left: -5rem;
+    bottom: -4rem;
+    background: radial-gradient(circle, var(--primary-overlay-alt) 0%, transparent 68%);
+}
+
+.identity-card-wrap {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.identity-card {
+    width: 100%;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: var(--identity-bg-strong);
+}
+
+.identity-card-header {
+    display: grid;
+    /* 3 columns: culture selector, spacer, theme selector */
+    /* 2 rows: first row for culture selector and theme selector, second row for title only */
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas: "culture-selector spacer theme-selector"
+        "header header header";
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+}
+
+.identity-card-header ::deep .culture-selector {
+    grid-area: culture-selector;
+}
+
+.identity-card-header ::deep .theme-selector {
+    grid-area: theme-selector;
+}
+
+.identity-card-header .header {
+    grid-area: header;
+}
+
+.identity-eyebrow {
+    margin: 0;
+    color: var(--identity-highlight);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.identity-card-header h2 {
+    margin: 0;
+    color: var(--identity-text);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-weight: 900;
+}
+
+.identity-intro {
+    margin: 0.95rem 0 0 0;
+    color: var(--identity-text-soft);
+    line-height: 1.7;
+}
+
+/*
+::deep .identity-form {
+    display: grid;
+    gap: 1.1rem;
+}
+
+.identity-remember-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--identity-text-soft);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.identity-remember-row input {
+    inline-size: 1rem;
+    block-size: 1rem;
+    accent-color: var(--identity-highlight);
+}
+
+.identity-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.identity-form-actions ::deep fluent-button {
+    width: min(100%, 11rem);
+}
+
+.identity-secondary-link {
+    color: var(--identity-highlight);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.identity-secondary-link:hover,
+.identity-secondary-link:focus-visible {
+    text-decoration: underline;
+}*/
+
+
+.identity-card ::deep .status-message,
+.identity-card ::deep .alert,
+.identity-card ::deep .validation-errors,
+.identity-card ::deep .validation-message {
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 960px) {
+    .identity-layout-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
     }
 
-.header-control-container {
-    display: flex;
-    justify-content: space-between;
-    gap: calc(var(--design-unit) * 1px);
-    margin-top: calc(var(--design-unit) * 2px);
+    .identity-card-wrap {
+        order: -1;
+    }
+
+    .identity-showcase {
+        min-height: 22rem;
+    }
+
+    .identity-showcase h1 {
+        max-width: 12ch;
+    }
 }
 
-.logo-backdrop {
-    position: absolute;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%) scale(2.5);
-    opacity: 0.12;
-    filter: blur(2px);
-}
+@media (max-width: 640px) {
+    .identity-layout-shell {
+        padding: 0.5rem;
+        min-height: calc(100dvh - 1rem);
+    }
 
-.root .section-image {
-    background-size: cover;
-    background-origin: border-box;
-    background-position: center center;
+    .identity-layout-background {
+        background-size: 24px 24px;
+    }
+
+    .identity-layout-background-orb-primary {
+        width: 28rem;
+        height: 28rem;
+        top: -10rem;
+        right: -10rem;
+    }
+
+    .identity-layout-background-orb-secondary {
+        width: 18rem;
+        height: 18rem;
+        left: -6rem;
+        bottom: 12rem;
+    }
+
+    .identity-layout-background-orb-tertiary {
+        width: 14rem;
+        height: 14rem;
+        left: auto;
+        right: -4rem;
+        top: 48%;
+    }
+
+    .identity-layout-grid {
+        gap: 0.75rem;
+    }
+
+    .identity-showcase,
+    .identity-card {
+        border-radius: 24px;
+    }
+
+    .identity-showcase {
+        min-height: 0;
+    }
+
+    .identity-showcase-panel {
+        padding: 1.25rem;
+    }
+
+    .identity-showcase h1 {
+        font-size: clamp(2rem, 11vw, 3rem);
+    }
 }

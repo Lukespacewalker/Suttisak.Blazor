@@ -3,18 +3,19 @@
 
 <CascadingValue Value="this">
     <FluentLayoutItem Area="LayoutArea.Navigation" Class="@($"app-nav {CollapsedClass} {MobileOpenClass}")">
-        <div class="nav-shell glass">
+        <div class="nav-shell">
             <div class="nav-toolbar">
-                <FluentButton Class="nav-toolbar-button nav-toolbar-button--collapse"
-                              IconStart="@(CollapseIcon)"
-                              OnClick="ToggleCollapsed"
-                              aria-label="Collapse navigation menu" />
-                <div class="nav-brand">
-                    @if (BrandContent is not null)
-                    {
+                <button class="nav-toolbar-button nav-toolbar-button--collapse"
+                        @onclick="ToggleCollapsed"
+                        aria-label="Collapse navigation menu">
+                    <FluentIcon Value="@CollapseIcon" />
+                </button>
+                @if (BrandContent is not null)
+                {
+                    <div class="nav-brand">
                         @BrandContent
-                    }
-                </div>
+                    </div>
+                }
             </div>
 
             <div class="nav-panel">
@@ -22,7 +23,7 @@
             </div>
         </div>
 
-        <button class="nav-backdrop" @onclick="CloseMobileMenu" aria-label="Close navigation menu"></button>
+        @* <button class="nav-backdrop" @onclick="CloseMobileMenu" aria-label="Close navigation menu"></button> *@
     </FluentLayoutItem>
 </CascadingValue>
 

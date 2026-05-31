@@ -1,0 +1,76 @@
+.identity-showcase-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: var(--identity-highlight-soft);
+    color: var(--identity-highlight);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.identity-showcase-points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.identity-showcase-point {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem;
+    border-radius: 22px;
+    border: 1px solid var(--identity-border);
+    background: color-mix(in srgb, var(--primary-surface-strong) 52%, transparent);
+}
+
+.identity-showcase-point-title {
+    font-weight: 800;
+    color: var(--identity-text);
+}
+
+.identity-showcase-point-copy {
+    color: var(--identity-text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+
+.identity-separator {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 1.35rem 0;
+}
+
+.identity-separator span {
+    height: 1px;
+    background: var(--identity-divider);
+}
+
+.identity-separator p {
+    margin: 0;
+    color: var(--identity-text-muted);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 960px) {
+    .identity-showcase-points {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .identity-form-actions {
+        align-items: stretch;
+    }
+
+    .identity-form-actions ::deep fluent-button {
+        width: 100%;
+    }
+}

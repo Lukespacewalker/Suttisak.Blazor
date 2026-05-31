@@ -2,7 +2,7 @@
 @implements IDisposable
 @inject NavigationManager NavigationManager
 
-<a class="nav-item @(IsActive ? "nav-item--active" : string.Empty)"
+<a style="@Style" class="nav-item @(IsActive ? "nav-item--active" : string.Empty)"
    href="@Href"
    @onclick="HandleClick">
     <span class="nav-item__icon">
@@ -19,6 +19,9 @@
 </a>
 
 @code {
+
+    [Parameter] public string Style { get; set; } = string.Empty;
+
     [CascadingParameter]
     public Nav? NavRoot { get; set; }
 

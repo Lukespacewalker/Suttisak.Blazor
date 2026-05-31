@@ -8,7 +8,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A core component of Suttisak's Blazor Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.2.14</AssemblyVersion>
+		<AssemblyVersion>0.2.15</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>

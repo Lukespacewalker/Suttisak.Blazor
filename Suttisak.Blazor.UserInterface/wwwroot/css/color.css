@@ -1,0 +1,99 @@
+@property --gradient-brand-start {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: transparent;
+}
+
+@property --gradient-brand-end {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: transparent;
+}
+
+:root {
+    color-scheme: light dark;
+
+    /* Primary surface backgrounds for cards, panels, sections, and elevated containers. */
+    --primary-surface-1: light-dark(color-mix(in srgb, var(--primary-color) 6%, white), color-mix(in srgb, var(--primary-color) 12%, #020812));
+    --primary-surface-2: light-dark(color-mix(in srgb, var(--primary-color) 8%, white), color-mix(in srgb, var(--primary-color) 16%, #04101d));
+    --primary-surface-3: light-dark(color-mix(in srgb, var(--primary-color) 10%, white), color-mix(in srgb, var(--primary-color) 10%, #020812));
+    --primary-surface-strong: light-dark(color-mix(in srgb, var(--primary-color) 24%, white), color-mix(in srgb, var(--primary-color) 26%, #08172b));
+
+    /* Primary overlays for translucent fills, hover layers, and decorative washes. */
+    --primary-overlay-soft: light-dark(color-mix(in srgb, var(--primary-color) 16%, transparent), color-mix(in srgb, var(--primary-color) 16%, transparent));
+    --primary-overlay: light-dark(color-mix(in srgb, var(--primary-color) 24%, transparent), color-mix(in srgb, var(--primary-color) 34%, transparent));
+    --primary-overlay-alt: light-dark(color-mix(in srgb, var(--primary-color-alt) 16%, transparent), color-mix(in srgb, var(--primary-color-alt) 18%, transparent));
+    --primary-overlay-ghost: light-dark(color-mix(in srgb, white 46%, transparent), color-mix(in srgb, var(--primary-color) 12%, transparent));
+
+    /* Primary structural accents for grid lines, borders, separators, and dividers. */
+    --primary-grid-line: light-dark(color-mix(in srgb, var(--primary-color) 18%, transparent), color-mix(in srgb, white 6%, transparent));
+    --primary-border-soft: light-dark(color-mix(in srgb, var(--primary-color) 22%, rgba(107, 138, 183, 0.22)), color-mix(in srgb, var(--primary-color) 16%, rgba(142, 168, 206, 0.14)));
+    --primary-border: light-dark(color-mix(in srgb, var(--primary-color) 28%, rgba(107, 138, 183, 0.3)), color-mix(in srgb, var(--primary-color) 18%, rgba(161, 184, 218, 0.25)));
+
+    /* Primary fills for subtle backgrounds inside inputs, badges, and interactive elements. */
+    --primary-fill-soft: light-dark(color-mix(in srgb, var(--primary-color) 10%, rgba(255, 255, 255, 0.7)), color-mix(in srgb, var(--primary-color) 10%, rgba(8, 20, 36, 0.5)));
+    --primary-fill-subtle: light-dark(color-mix(in srgb, var(--primary-color) 6%, rgba(246, 249, 255, 0.88)), rgba(255, 255, 255, 0.04));
+    --primary-band-soft: light-dark(color-mix(in srgb, var(--primary-color) 8%, transparent), color-mix(in srgb, white 3%, transparent));
+    --primary-divider: light-dark(color-mix(in srgb, var(--primary-color) 24%, rgba(117, 145, 185, 0.2)), color-mix(in srgb, var(--primary-color) 12%, rgba(161, 184, 218, 0.14)));
+    --primary-shadow-soft: light-dark(rgba(38, 61, 97, 0.12), rgba(0, 0, 0, 0.24));
+
+    /* Primary text colors for headings, body text, muted copy, and labels on branded surfaces. */
+    --primary-text: light-dark(color-mix(in srgb, var(--primary-color) 18%, #10213a), #e5eefc);
+    --primary-text-strong: light-dark(color-mix(in srgb, var(--primary-color) 12%, #10213a), #f3f7ff);
+    --primary-text-soft: light-dark(color-mix(in srgb, var(--primary-color) 14%, rgba(40, 58, 84, 0.78)), rgba(214, 226, 244, 0.78));
+    --primary-text-muted: light-dark(color-mix(in srgb, var(--primary-color) 12%, rgba(56, 76, 104, 0.72)), rgba(214, 226, 244, 0.74));
+    --primary-text-label: light-dark(color-mix(in srgb, var(--primary-color) 16%, rgba(43, 63, 90, 0.68)), rgba(184, 201, 228, 0.68));
+
+    /* Primary emphasis tokens for highlights, callouts, buttons, and hero backgrounds. */
+    --primary-highlight: light-dark(color-mix(in srgb, var(--primary-color) 78%, var(--primary-color-alt)), color-mix(in srgb, var(--primary-color) 62%, white));
+    --primary-highlight-soft: light-dark(color-mix(in srgb, var(--primary-color) 14%, transparent), color-mix(in srgb, var(--primary-color) 18%, transparent));
+    --primary-gradient: linear-gradient(135deg, var(--primary-color), color-mix(in srgb, var(--primary-color) 40%, var(--primary-color-alt)));
+
+    /* Secondary surface backgrounds for alternate cards, panels, sections, and elevated containers. */
+    --secondary-surface-1: light-dark(color-mix(in srgb, var(--secondary-color) 6%, white), color-mix(in srgb, var(--secondary-color) 12%, #020812));
+    --secondary-surface-2: light-dark(color-mix(in srgb, var(--secondary-color) 8%, white), color-mix(in srgb, var(--secondary-color) 16%, #04101d));
+    --secondary-surface-3: light-dark(color-mix(in srgb, var(--secondary-color) 10%, white), color-mix(in srgb, var(--secondary-color) 10%, #020812));
+    --secondary-surface-strong: light-dark(color-mix(in srgb, var(--secondary-color) 24%, white), color-mix(in srgb, var(--secondary-color) 26%, #08172b));
+
+    /* Secondary overlays for translucent fills, hover layers, and decorative washes. */
+    --secondary-overlay-soft: light-dark(color-mix(in srgb, var(--secondary-color) 16%, transparent), color-mix(in srgb, var(--secondary-color) 16%, transparent));
+    --secondary-overlay: light-dark(color-mix(in srgb, var(--secondary-color) 24%, transparent), color-mix(in srgb, var(--secondary-color) 34%, transparent));
+    --secondary-overlay-alt: light-dark(color-mix(in srgb, var(--secondary-color-alt) 16%, transparent), color-mix(in srgb, var(--secondary-color-alt) 18%, transparent));
+    --secondary-overlay-ghost: light-dark(color-mix(in srgb, white 46%, transparent), color-mix(in srgb, var(--secondary-color) 12%, transparent));
+
+    /* Secondary structural accents for grid lines, borders, separators, and dividers. */
+    --secondary-grid-line: light-dark(color-mix(in srgb, var(--secondary-color) 18%, transparent), color-mix(in srgb, white 6%, transparent));
+    --secondary-border-soft: light-dark(color-mix(in srgb, var(--secondary-color) 22%, rgba(107, 138, 183, 0.22)), color-mix(in srgb, var(--secondary-color) 16%, rgba(142, 168, 206, 0.14)));
+    --secondary-border: light-dark(color-mix(in srgb, var(--secondary-color) 28%, rgba(107, 138, 183, 0.3)), color-mix(in srgb, var(--secondary-color) 18%, rgba(161, 184, 218, 0.25)));
+
+    /* Secondary fills for subtle backgrounds inside inputs, badges, and interactive elements. */
+    --secondary-fill-soft: light-dark(color-mix(in srgb, var(--secondary-color) 10%, rgba(255, 255, 255, 0.7)), color-mix(in srgb, var(--secondary-color) 10%, rgba(8, 20, 36, 0.5)));
+    --secondary-fill-subtle: light-dark(color-mix(in srgb, var(--secondary-color) 6%, rgba(246, 249, 255, 0.88)), rgba(255, 255, 255, 0.04));
+    --secondary-band-soft: light-dark(color-mix(in srgb, var(--secondary-color) 8%, transparent), color-mix(in srgb, white 3%, transparent));
+    --secondary-divider: light-dark(color-mix(in srgb, var(--secondary-color) 24%, rgba(117, 145, 185, 0.2)), color-mix(in srgb, var(--secondary-color) 12%, rgba(161, 184, 218, 0.14)));
+    --secondary-shadow-soft: light-dark(rgba(38, 61, 97, 0.12), rgba(0, 0, 0, 0.24));
+
+    /* Secondary text colors for headings, body text, muted copy, and labels on alternate branded surfaces. */
+    --secondary-text: light-dark(color-mix(in srgb, var(--secondary-color) 18%, #10213a), #e5eefc);
+    --secondary-text-strong: light-dark(color-mix(in srgb, var(--secondary-color) 12%, #10213a), #f3f7ff);
+    --secondary-text-soft: light-dark(color-mix(in srgb, var(--secondary-color) 14%, rgba(40, 58, 84, 0.78)), rgba(214, 226, 244, 0.78));
+    --secondary-text-muted: light-dark(color-mix(in srgb, var(--secondary-color) 12%, rgba(56, 76, 104, 0.72)), rgba(214, 226, 244, 0.74));
+    --secondary-text-label: light-dark(color-mix(in srgb, var(--secondary-color) 16%, rgba(43, 63, 90, 0.68)), rgba(184, 201, 228, 0.68));
+
+    /* Secondary emphasis tokens for highlights, callouts, buttons, and hero backgrounds. */
+    --secondary-highlight: light-dark(color-mix(in srgb, var(--secondary-color) 78%, var(--secondary-color-alt)), color-mix(in srgb, var(--secondary-color) 62%, white));
+    --secondary-highlight-soft: light-dark(color-mix(in srgb, var(--secondary-color) 14%, transparent), color-mix(in srgb, var(--secondary-color) 18%, transparent));
+    --secondary-gradient: linear-gradient(135deg, var(--secondary-color), color-mix(in srgb, var(--secondary-color) 40%, var(--secondary-color-alt)));
+}
+
+.gradient-brand {
+    --gradient-brand-start: var(--primary-highlight);
+    --gradient-brand-end: var(--secondary-highlight);
+    transition: --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
+    background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
+}
+
+.gradient-brand:hover {
+    --gradient-brand-start: oklch(from var(--primary-highlight) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--secondary-highlight) calc(l + 0.1) c h);
+}

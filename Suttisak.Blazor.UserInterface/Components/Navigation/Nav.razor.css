@@ -10,10 +10,12 @@
     flex-direction: column;
     transition: width 0.25s ease, transform 0.25s ease;
     overflow: hidden;
+    background: var(--color-glass-layer1-bg);
+    backdrop-filter: blur(20px) saturate(200%);
 }
 
 .app-nav--collapsed .nav-shell {
-    width: 76px;
+    width: 82px;
 }
 
 .nav-toolbar {
@@ -25,12 +27,22 @@
 
 .nav-toolbar-button {
     flex: 0 0 auto;
-    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    width: 44px;
+    height: 44px;
+    border-radius: 0.75rem;
+    border: none;
+    background: transparent;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.nav-toolbar-button:hover {
-    transform: scale(1.04);
-}
+    .nav-toolbar-button:hover {
+        transform: translateX(2px);
+        background: var(--color-glass-layer1-bg);
+    }
+
+    .nav-toolbar-button:active {
+        transform: translateX(2px) scale(0.98);
+    }
 
 .nav-brand {
     flex: 1 1 auto;
@@ -51,7 +63,7 @@
 .nav-panel {
     display: flex;
     flex-direction: column;
-    padding-left:0.25rem;
+    padding-left: 0.25rem;
 }
 
 .nav-backdrop {
@@ -65,12 +77,19 @@
 
     .nav-shell {
         position: fixed;
-        top: 0;
+        top: var(--layout-header-height);
         left: 0;
         bottom: 0;
         z-index: 30;
         transform: translateX(-100%);
-        width: min(85vw, 260px);
+        width: 100dvw;
+        border: 1px solid var(--color-glass-border);
+        border-radius: var(--borderRadius2XLarge);
+        box-shadow: 0 8px 32px var(--color-glass-shadow);
+    }
+
+    .nav-toolbar {
+        display: none;
     }
 
     .app-nav--mobile-open .nav-shell {
@@ -87,21 +106,21 @@
         max-width: 100%;
     }
 
-    .nav-backdrop {
-        display: block;
-        position: fixed;
-        inset: 0;
-        z-index: 20;
-        border: 0;
-        padding: 0;
-        background: rgba(15, 23, 42, 0.35);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-    }
+    /*   .nav-backdrop {
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            border: 0;
+            padding: 0;
+            background: rgba(15, 23, 42, 0.35);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
 
-    .app-nav--mobile-open .nav-backdrop {
-        opacity: 1;
-        pointer-events: auto;
-    }
+        .app-nav--mobile-open .nav-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        } */
 }
