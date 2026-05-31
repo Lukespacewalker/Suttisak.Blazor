@@ -9,43 +9,56 @@
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>@Login_razor.Login</PageTitle>
+<text>
+	<StatusMessage Message="@_statusMessage" />
 
-<section class="login-page">
-	<div class="login-shell">
-		<div class="login-panel">
-			<header class="login-header">
-				<p class="login-eyebrow">@Login_razor.Login</p>
-				<h1>@UsernamePasswordLogin_razor.Login</h1>
-			</header>
+	<EditForm Model="LoginWithUsernamePasswordInput" asp-route-returnUrl="@ReturnUrl" method="post"
+			  OnValidSubmit="LoginWithUsernamePassword" FormName="@LoginWithUsernameFormName" class="login-form">
+		<DataAnnotationsValidator />
+		<FluentValidationSummary class="text-danger" role="alert" />
 
-			<StatusMessage Message="@_statusMessage" />
+		<div>
+			<FluentTextInput Name="LoginWithUsernamePasswordInput.Username" Width="100%"
+							 @bind-Value="LoginWithUsernamePasswordInput.Username" AutoComplete="username" Required="true"
+							 Placeholder="@Login_razor.EmailOrUsername" Label="@Login_razor.Username" Style="width: 100%" />
 
-			<UsernamePasswordLogin FormName=@LoginWithUsernameFormName
-							   UsernamePasswordInput="@LoginWithUsernamePasswordInput"
-							   UserNamePlaceholder="@UserNamePlaceholder"
-							   PasswordPlaceholder="@PasswordPlaceholder"
-							   OnValidSubmit="LoginWithUsernamePassword" />
+			<FluentTextInput Name="LoginWithUsernamePasswordInput.Password" " Width="100%"
+							 @bind-Value="LoginWithUsernamePasswordInput.Password" AutoComplete="current-password" Required="true"
+							 Placeholder="@Login_razor.Password" Label="@Login_razor.Password" Style="width: 100%"
+							 InputType="InputType.Password" />
 
-			<FluentDivider class="login-divider" />
+			<label class="login-remember-row" for="remember-me">
+				<input id="remember-me" name="@($"{LoginWithUsernameFormName}.RememberMe")" type="checkbox"
+					   @bind="LoginWithUsernamePasswordInput.RememberMe" />
+				<span>@Login_razor.KeepMeSignedInOnThisDevice</span>
+			</label>
+		</div>
 
-			<h5 class="login-alternative">
-				@UsernamePasswordLogin_razor.Alternative
-			</h5>
+		<div class="login-form-actions">
+			<FluentButton Appearance="ButtonAppearance.Primary" Type="ButtonType.Submit">@Login_razor.SignIn
+			</FluentButton>
+			<a class="login-secondary-link"
+			   href="@IdentityRoutes.Account.ForgotPassword">@Login_razor.ForgotPassword</a>
+		</div>
+	</EditForm>
 
-			<div class="login-actions" role="menubar">
-        <PasskeySubmit FormName="@LoginWithPasskeyFormName" 
-                       Operation="PasskeyOperation.Request" 
-                       OutputParameterName="@nameof(LoginWithPasskeyOutput)" 
-                       OnSubmit="LoginWithPasskey">
-			@Login_razor.Passkey
+	<div class="identity-separator" aria-hidden="true">
+		<span></span>
+		<p>@Login_razor.AlternativeAccess</p>
+		<span></span>
+	</div>
+
+	<div class="login-alt-actions" role="group" aria-label="@Login_razor.AlternativeAccess">
+		<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request"
+					   OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
+			@Login_razor.ContinueWithPasskey
 		</PasskeySubmit>
-		<FluentDivider Vertical="true" class="login-actions-divider" />
-		<ExternalLoginPicker TUser="TUser" />
-			</div>
+
+		<div class="login-provider-block">
+			<ExternalLoginPicker TUser="TUser" />
 		</div>
 	</div>
-</section>
-
+</text>
 @code {
 	private string? _statusMessage;
 
@@ -96,7 +109,8 @@
 
 	public async Task LoginWithUsernamePassword()
 	{
-		var result = await SignInManager.PasswordSignInAsync(LoginWithUsernamePasswordInput.Username, LoginWithUsernamePasswordInput.Password, LoginWithUsernamePasswordInput.RememberMe, lockoutOnFailure: false);
+		var result = await SignInManager.PasswordSignInAsync(LoginWithUsernamePasswordInput.Username,
+LoginWithUsernamePasswordInput.Password, LoginWithUsernamePasswordInput.RememberMe, lockoutOnFailure: false);
 		HandleResult(result);
 	}
 
@@ -117,7 +131,11 @@
 		{
 			RedirectManager.RedirectTo(
 				IdentityRoutes.Account.LoginWith2fa,
-				new Dictionary<string, object?> { ["returnUrl"] = ReturnUrl, ["rememberMe"] = LoginWithUsernamePasswordInput.RememberMe });
+				new Dictionary<string, object?>
+				{
+					["returnUrl"] = ReturnUrl,
+					["rememberMe"] = LoginWithUsernamePasswordInput.RememberMe
+				});
 		}
 		else if (result.IsLockedOut)
 		{

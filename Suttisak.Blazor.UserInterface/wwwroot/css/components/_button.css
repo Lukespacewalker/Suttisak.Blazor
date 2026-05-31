@@ -1,58 +1,68 @@
-﻿fluent-button[appearance='primary']:enabled {
-    /* box-shadow: 0 4px 14px color-mix(in lch, var(--colorBrandBackground), transparent 20%); */
-    background: var(--gradient-brand);
+﻿fluent-button[appearance='primary'] {
+    border: none;
 }
 
-fluent-button[appearance='primary']{
-    border: none;
+fluent-button[appearance='primary']:enabled {
+    --gradient-brand-start: var(--primary-highlight);
+    --gradient-brand-end: var(--secondary-highlight);
+    background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
 }
 
 fluent-button[appearance='primary']:enabled:hover {
-    background: var(--gradient-brand-hover);
-    /* box-shadow: 0 6px 20px color-mix(in lch, var(--colorBrandBackground), transparent 30%); */
+    --gradient-brand-start: oklch(from var(--primary-highlight) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--secondary-highlight) calc(l + 0.1) c h);
 }
 
 fluent-button {
-    transition: var(--transition);
+    transition: --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
 }
 
-.button.stealth {
+/* Theme Selector and Culture Selector*/
+
+.theme-selector,
+.culture-selector {
+    border-radius: var(--borderRadiusCircular);
+    border: 1px solid var(--color-glass-border);
     display: flex;
+    overflow: hidden;
+}
+
+.theme-selector button,
+.culture-selector button {
     outline: none;
-    background: none;
+    border-radius: var(--borderRadiusCircular);
     border: none;
-    padding: 0.25rem;
-}
 
-.button.stealth:hover {
-    background: color-mix(in lch, var(--neutral-fill-inverse-hover) 20%, transparent);
-}
+    color: light-dark(var(--colorNeutralForeground2), var(--colorBrandForeground2));
+    background: transparent;
 
-.button.stealth:active {
-    background: color-mix(in lch, var(--neutral-fill-inverse-active) 20%, transparent);
-}
+    height: 32px;
+    width: 36px;
 
-.button.circle {
-    border-radius: 50%;
-}
-
-
-a.action:hover,
-a.button:hover {
-    background: var(--accent-fill-hover);
-}
-
-a.action,
-a.button {
-    color: var(--foreground-on-accent-rest);
-    display: inline-block;
-    background: var(--accent-base-color);
-    border-radius: 4px;
-    padding: 0.5em 1em;
-    font-weight: bold;
-    gap: 0.5em;
     display: inline-flex;
-    flex-direction: row;
     align-items: center;
-    text-decoration: none;
+    justify-content: center;
+
+    transition: all var(--transition), --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
+
+}
+
+.theme-selector button.active,
+.culture-selector button.active {
+    --gradient-brand-start: var(--primary-highlight);
+    --gradient-brand-end: var(--secondary-highlight);
+    color: var(--colorNeutralForegroundOnBrand);
+
+    background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
+}
+
+.theme-selector button:hover:not(.active),
+.culture-selector button:hover:not(.active) {
+    background: var(--colorNeutralBackground1Hover);
+}
+
+.theme-selector button.active:hover,
+.culture-selector button.active:hover {
+    --gradient-brand-start: oklch(from var(--primary-highlight) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--secondary-highlight) calc(l + 0.1) c h);
 }

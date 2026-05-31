@@ -4,6 +4,18 @@
 @import url('./components/_fluentheader.css');
 @import url('./components/_glass.css');
 @import url('./components/_utility.css');
+@import url('./utilities/_identity.css');
+@import url('./color.css');
+
+@property --color-start {
+    syntax: '<color>';
+    inherits: false;
+}
+
+@property --color-end {
+    syntax: '<color>';
+    inherits: false;
+}
 
 :root {
     color-scheme: light dark;
@@ -11,18 +23,21 @@
     --nav-bg-color: transparent;
     --glass-blur: blur(20px);
 
+    --color-start: var(--primary-highlight-soft);
+    --color-end: var(--secondary-highlight-soft);
+
     /* Light Theme Variables */
     --light-color-glass-layer0-bg: rgba(255, 255, 255, 0.2);
     --light-color-glass-layer1-bg: rgba(255, 255, 255, 0.5);
     --light-color-glass-layer2-bg: rgba(255, 255, 255, 0.7);
-    --light-color-glass-border: rgba(255, 255, 255, 0.5);
+    --light-color-glass-border: rgba(78, 96, 74, .14);
     --light-color-glass-shadow: rgba(148, 163, 184, 0.15);
     --light-color-card-hover: rgba(245, 245, 245, 0.8);
     /* Dark Theme Variables */
     --dark-color-glass-nav-bg: rgba(15, 23, 42, 0.15);
     --dark-color-glass-layer1-bg: rgba(15, 23, 42, 0.45);
     --dark-color-glass-layer2-bg: rgba(15, 23, 42, 0.6);
-    --dark-color-glass-border: rgba(255, 255, 255, 0.08);
+    --dark-color-glass-border: rgba(159, 180, 140, .18);
     --dark-color-glass-shadow: rgba(0, 0, 0, 0.4);
     --dark-color-card-hover: rgba(30, 41, 59, 0.7);
     /* Theme Variables */
@@ -33,7 +48,7 @@
     --color-glass-shadow: light-dark(var(--light-color-glass-shadow), var(--dark-color-glass-shadow));
     --color-card-hover: light-dark(var(--light-color-card-hover), var(--dark-color-card-hover));
 
-    --gradient-brand: linear-gradient(135deg, var(--colorBrandBackground) 0%, var(--colorBrandForeground1) 100%);
+    --gradient-brand: linear-gradient(135deg, var(--color-start) 0%, var(--color-end) 100%);
     --gradient-brand-2: linear-gradient(135deg, var(--colorBrandBackgroundHover) 0%, var(--colorBrandForeground1) 100%);
     --gradient-brand-hover: var(--gradient-brand-2);
 

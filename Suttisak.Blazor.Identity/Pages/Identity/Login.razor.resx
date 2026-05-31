@@ -129,4 +129,28 @@
   <data name="Passkey" xml:space="preserve">
     <value>Passkey</value>
   </data>
+  <data name="AlternativeAccess" xml:space="preserve">
+    <value>Alternative access</value>
+  </data>
+  <data name="ContinueWithPasskey" xml:space="preserve">
+    <value>Continue with passkey</value>
+  </data>
+  <data name="EmailOrUsername" xml:space="preserve">
+    <value>Email or username</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password</value>
+  </data>
+  <data name="KeepMeSignedInOnThisDevice" xml:space="preserve">
+    <value>Keep me signed in on this device</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>

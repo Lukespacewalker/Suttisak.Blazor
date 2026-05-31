@@ -61,6 +61,33 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alternative access.
+        /// </summary>
+        public static string AlternativeAccess {
+            get {
+                return ResourceManager.GetString("AlternativeAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue with passkey.
+        /// </summary>
+        public static string ContinueWithPasskey {
+            get {
+                return ResourceManager.GetString("ContinueWithPasskey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email or username.
+        /// </summary>
+        public static string EmailOrUsername {
+            get {
+                return ResourceManager.GetString("EmailOrUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
@@ -70,11 +97,29 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forgot password.
+        /// </summary>
+        public static string ForgotPassword {
+            get {
+                return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid login attempt..
         /// </summary>
         public static string InvalidLoginAttempt {
             get {
                 return ResourceManager.GetString("InvalidLoginAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep me signed in on this device.
+        /// </summary>
+        public static string KeepMeSignedInOnThisDevice {
+            get {
+                return ResourceManager.GetString("KeepMeSignedInOnThisDevice", resourceCulture);
             }
         }
         
@@ -93,6 +138,33 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
         public static string Passkey {
             get {
                 return ResourceManager.GetString("Passkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign in.
+        /// </summary>
+        public static string SignIn {
+            get {
+                return ResourceManager.GetString("SignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
     }

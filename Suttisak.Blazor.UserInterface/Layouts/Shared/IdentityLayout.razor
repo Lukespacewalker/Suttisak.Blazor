@@ -1,36 +1,50 @@
 ﻿@using Microsoft.AspNetCore.Components.Sections
 @using Microsoft.Extensions.Options
+@using Suttisak.Blazor.UserInterface.Components
 @layout RootLayout
 @inject IOptions<BlazorUIOptions> GlobalDesign
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-	<div class="root" style="position:relative">
-		<div style="position:relative">
-			<img class="logo-backdrop" src="@GlobalDesign.Value.LogoAssetPath"
-				 style="width:4rem; height:4rem" />
-			<section class="section-body">
-				<div class="header-control-container">
-					<HeaderControl @rendermode="HeaderRenderMode" />
+
+	<section class="identity-layout-shell">
+		<div class="identity-layout-background" aria-hidden="true">
+			<div class="identity-layout-background-orb identity-layout-background-orb-primary"></div>
+			<div class="identity-layout-background-orb identity-layout-background-orb-secondary"></div>
+			<div class="identity-layout-background-orb identity-layout-background-orb-tertiary"></div>
+		</div>
+		<div class="identity-layout-grid">
+			<aside class="identity-showcase" aria-hidden="true">
+				<div class="identity-showcase-orb identity-showcase-orb-primary"></div>
+				<div class="identity-showcase-orb identity-showcase-orb-secondary"></div>
+
+				<div class="identity-showcase-panel">
+					<SectionOutlet SectionId="ShowcaseSection" />
 				</div>
-				<img src="@GlobalDesign.Value.LogoAssetPath"
-					 style="width:4rem; height:4rem;align-self:center" />
-				<SectionOutlet SectionId="HeadingSection" />
-				<div class="actual-body">
+			</aside>
+
+			<main class="identity-card-wrap">
+				<div class="identity-card">
+					<div class="identity-card-header">
+						<CultureSelector @rendermode="HeaderRenderMode" />
+						<ThemeSelector @rendermode="HeaderRenderMode" />
+						<div class="header">
+							<p class="identity-eyebrow"><SectionOutlet SectionId="CardEyebrowSection" /></p>
+							<h2><SectionOutlet SectionId="CardTitleSection" /></h2>
+							<p class="identity-intro"><SectionOutlet SectionId="CardIntroSection" /></p>
+						</div>
+					</div>
 					@Body
 				</div>
-			</section>
+			</main>
 		</div>
-		<section class="section-image" style="background-image:url(@BackgroundImageUrl)">
-			<SectionOutlet SectionId="ImageOverlaySection" />
-		</section>
-	</div>
+	</section>
 </CascadingValue>
 @code {
-	public static object ImageOverlaySection = new();
-	public static object HeadingSection = new();
-
-	[Parameter] public string? BackgroundImageUrl { get; set; }
+	public static object ShowcaseSection = new();
+	public static object CardEyebrowSection = new();
+	public static object CardTitleSection = new();
+	public static object CardIntroSection = new();
 
 	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 }
