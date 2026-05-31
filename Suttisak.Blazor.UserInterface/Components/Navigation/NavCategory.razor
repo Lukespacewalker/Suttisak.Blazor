@@ -1,7 +1,9 @@
+@using Microsoft.AspNetCore.Components.Routing
 @implements IDisposable
 @inject NavigationManager NavigationManager
 
-<div class="nav-category @(Expanded ? "nav-category--expanded" : string.Empty)">
+<div style="@Style"
+     class="nav-category @(Expanded ? "nav-category--expanded" : string.Empty) @(IsActive ? "nav-category--active" : string.Empty) @(IsSelected ? "nav-category--selected" : string.Empty)">
     @if (HasHref)
     {
         <div class="nav-category__header-row">
@@ -9,8 +11,9 @@
                 <span class="nav-category__icon">@IconMarkup</span>
                 <span class="nav-category__label">@Title</span>
             </a>
-            <button class="nav-category__toggle" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded" aria-label="Toggle @Title submenu">
-                <span class="nav-category__chevron @(Expanded ? "expanded":"")">
+            <button class="nav-category__toggle" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded"
+                    aria-label="Toggle @Title submenu">
+                <span class="nav-category__chevron @(Expanded ? "expanded" : "")">
                     <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())"></FluentIcon>
                 </span>
             </button>
@@ -35,11 +38,13 @@
 </div>
 
 @code {
+    [Parameter] public string Style { get; set; } = string.Empty;
+
     [CascadingParameter]
     public Nav? NavRoot { get; set; }
 
     [CascadingParameter]
-    public NavComponentState? State { get; set; } 
+    public NavComponentState? State { get; set; }
 
     [Parameter]
     public string Title { get; set; } = string.Empty;
@@ -72,28 +77,52 @@
 
     private bool HasHref => !string.IsNullOrWhiteSpace(Href);
 
-    private bool IsActive => HasHref
-        && NavigationManager.Uri.Contains(NavigationManager.ToAbsoluteUri(Href!).PathAndQuery, StringComparison.OrdinalIgnoreCase);
+    private bool IsSelected => HasHref && IsCurrentUrlExactMatch();
+
+    private bool IsActive => HasHref && IsCurrentUrlWithinCategory();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        NavigationManager.LocationChanged += HandleLocationChanged;
         State?.Changed += HandleStateChanged;
+    }
+
+    private bool IsCurrentUrlExactMatch()
+    {
+        var current = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).PathAndQuery.TrimEnd('/');
+        var target = NavigationManager.ToAbsoluteUri(Href!).PathAndQuery.TrimEnd('/');
+
+        return string.Equals(current, target, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool IsCurrentUrlWithinCategory()
+    {
+        if (IsCurrentUrlExactMatch())
+        {
+            return true;
+        }
+
+        var current = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).PathAndQuery.TrimEnd('/');
+        var target = NavigationManager.ToAbsoluteUri(Href!).PathAndQuery.TrimEnd('/');
+
+        return current.StartsWith(target + "/", StringComparison.OrdinalIgnoreCase)
+            || current.StartsWith(target + "?", StringComparison.OrdinalIgnoreCase);
     }
 
     private void ToggleExpanded()
     {
-        if (State?.IsCollapsed ?? true)
-        {
-            return;
-        }
-
         Expanded = !Expanded;
     }
 
     private void HandleNavigate()
     {
         NavRoot?.CloseMobileAfterNavigation();
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private void HandleStateChanged()
@@ -103,6 +132,7 @@
 
     public void Dispose()
     {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
         State?.Changed -= HandleStateChanged;
     }
 }

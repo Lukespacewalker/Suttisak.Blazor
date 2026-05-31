@@ -2,8 +2,8 @@
 @using Suttisak.Blazor.UserInterface.Components.Navigation
 @namespace Suttisak.Blazor.Identity.Components.Menu
 
-<NavCategory IconRest="@(new Icons.Regular.Size20.PersonCircle())" Href="@IdentityRoutes.Account.Manage.Root" Title="@IdentityNavMenuItems_razor.Account">
-	<NavItem IconRest="@(new Icons.Regular.Size24.PersonAccounts())" Href="@IdentityRoutes.Account.Manage.Profile" >@IdentityNavMenuItems_razor.Profile</NavItem>
+<NavCategory Style="@Style" IconRest="@(new Icons.Regular.Size20.PersonCircle())" Href="@IdentityRoutes.Account.Manage.Root" Title="@IdentityNavMenuItems_razor.Account">
+	<NavItem IconRest="@(new Icons.Regular.Size20.PersonAccounts())" Href="@IdentityRoutes.Account.Manage.Profile" >@IdentityNavMenuItems_razor.Profile</NavItem>
 	<NavItem IconRest="@(new Icons.Regular.Size20.Mail())" Href="@IdentityRoutes.Account.Manage.Email">@IdentityNavMenuItems_razor.Email</NavItem>
 	<NavItem IconRest="@(new Icons.Regular.Size20.Password())" Href="@IdentityRoutes.Account.Manage.ChangePassword">@IdentityNavMenuItems_razor.Password</NavItem>
 	<NavItem IconRest="@(new Icons.Regular.Size20.GlobeSurface())" Href="@IdentityRoutes.Account.Manage.ExternalLogins">@IdentityNavMenuItems_razor.ExternalLogins</NavItem>
@@ -11,3 +11,7 @@
 	<NavItem IconRest="@(new Icons.Regular.Size20.PersonPasskey())" Href="@IdentityRoutes.Account.Manage.Passkeys">@IdentityNavMenuItems_razor.Passkeys</NavItem>
 	<NavItem IconRest="@(new Icons.Regular.Size20.DatabasePerson())" Href="@IdentityRoutes.Account.Manage.PersonalData">@IdentityNavMenuItems_razor.PersonalData</NavItem>
 </NavCategory>
+
+@code {
+	[Parameter] public string Style { get; set; } = string.Empty;
+}
