@@ -22,7 +22,7 @@
                 <strong>@DeletePersonalData_razor.WarningMessage</strong>
             </p>
         </div>
-        <EditForm Model="Input" FormName="delete-user" OnValidSubmit="OnValidSubmitAsync" method="post">
+        <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
             @if (_requirePassword)
@@ -49,25 +49,25 @@
     private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm]
-    protected virtual InputModel Input { get; set; } = new();
+    protected virtual InputModel? Input { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Input ??= new();
         AddPage<Manage>().AddPage<PersonalData<TUser>>().AddThisPageAndPopulate<DeletePersonalData<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Input ??= new();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _requirePassword = await UserManager.HasPasswordAsync(_user);
     }
 
     protected virtual async Task OnValidSubmitAsync()
     {
-        if (_requirePassword && !await UserManager.CheckPasswordAsync(_user, Input.Password))
+        if (_requirePassword && !await UserManager.CheckPasswordAsync(_user, Input!.Password))
         {
             _message = DeletePersonalData_razor.IncorrectPasswordError;
             return;

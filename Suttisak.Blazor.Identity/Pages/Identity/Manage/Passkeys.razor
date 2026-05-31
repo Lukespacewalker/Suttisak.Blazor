@@ -91,7 +91,7 @@ else
     private string? CredentialId { get; set; }
 
     [SupplyParameterFromForm(FormName = AddPasskeyFormName)]
-    private PasskeyOutputModel Output { get; set; } = null!;
+    private PasskeyOutputModel? Output { get; set; }
 
     protected override void OnInitialized()
     {
@@ -121,7 +121,7 @@ else
             return;
         }
 
-        if (!string.IsNullOrEmpty(Output.Error))
+        if (!string.IsNullOrEmpty(Output!.Error))
         {
             RedirectManager.RedirectToCurrentPageWithStatus($"Error: {Output.Error}", HttpContext);
             return;

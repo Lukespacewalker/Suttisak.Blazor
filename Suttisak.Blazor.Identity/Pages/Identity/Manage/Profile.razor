@@ -16,7 +16,7 @@
 
 <FluentGrid>
     <FluentGridItem xs="12" sm="6">
-        <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
+        <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
             <FluentTextInput Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
@@ -41,11 +41,12 @@
     private HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    private InputModel? Input { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Input ??= new();
         AddPage<Manage>().AddThisPageAndPopulate<Profile<TUser>>();
     }
 
@@ -56,12 +57,12 @@
         _username = await UserManager.GetUserNameAsync(_user);
         _phoneNumber = await UserManager.GetPhoneNumberAsync(_user);
 
-        Input.PhoneNumber ??= _phoneNumber;
+        Input!.PhoneNumber ??= _phoneNumber;
     }
 
     protected virtual async Task OnValidSubmitAsync()
     {
-        if (Input.PhoneNumber != _phoneNumber)
+        if (Input!.PhoneNumber != _phoneNumber)
         {
             var setPhoneResult = await UserManager.SetPhoneNumberAsync(_user, Input.PhoneNumber);
             if (!setPhoneResult.Succeeded)
