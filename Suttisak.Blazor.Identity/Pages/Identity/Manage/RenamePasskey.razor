@@ -12,7 +12,7 @@
     <h1>@Manage_razor.RenamePasskey</h1>
 </SectionContent>
 
-<EditForm Model="Input" OnValidSubmit="Rename" FormName="rename-passkey" method="post">
+<EditForm Model="Input" OnValidSubmit="Rename" method="post">
     <DataAnnotationsValidator />
     @if (_passkey?.Name is { } name)
     {
@@ -44,19 +44,18 @@
     public string? CredentialId { get; set; }
 
     [SupplyParameterFromForm]
-    protected virtual InputModel Input { get; set; } = null!;
+    protected virtual InputModel? Input { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Input ??= new();
         AddPage<Manage>().AddPage<Passkeys<TUser>>().AddThisPageAndPopulate<RenamePasskey<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Input ??= new();
-
         _user = (await UserManager.GetUserAsync(HttpContext.User))!;
         if (_user is null)
         {
@@ -85,7 +84,7 @@
 
     protected virtual async Task Rename()
     {
-        _passkey!.Name = Input.Name;
+        _passkey!.Name = Input!.Name;
         var result = await UserManager.AddOrUpdatePasskeyAsync(_user!, _passkey);
         if (!result.Succeeded)
         {

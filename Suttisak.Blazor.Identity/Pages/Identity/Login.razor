@@ -69,10 +69,10 @@
 	private HttpContext HttpContext { get; set; } = null!;
 
 	[SupplyParameterFromForm(FormName = LoginWithUsernameFormName)]
-	protected virtual UsernamePasswordInputModel LoginWithUsernamePasswordInput { get; set; } = new();
+	protected virtual UsernamePasswordInputModel? LoginWithUsernamePasswordInput { get; set; }
 
 	[SupplyParameterFromForm(FormName = LoginWithPasskeyFormName)]
-	protected virtual PasskeyOutputModel LoginWithPasskeyOutput { get; set; } = new();
+	protected virtual PasskeyOutputModel? LoginWithPasskeyOutput { get; set; } 
 
 	[SupplyParameterFromQuery]
 	private string? ReturnUrl { get; set; }
@@ -81,7 +81,14 @@
 	protected virtual string UserNamePlaceholder { get; set; } = "";
 	protected virtual string PasswordPlaceholder { get; set; } = "";
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoginWithUsernamePasswordInput ??= new();
+        LoginWithPasskeyOutput ??= new();
+    }
+
+    protected override async Task OnInitializedAsync()
 	{
 		if (HttpMethods.IsGet(HttpContext.Request.Method))
 		{
