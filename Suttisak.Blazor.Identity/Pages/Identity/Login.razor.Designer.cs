@@ -160,6 +160,15 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use your account, passkey, or an external provider to enter the workspace..
+        /// </summary>
+        public static string SignInIntro {
+            get {
+                return ResourceManager.GetString("SignInIntro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Username {

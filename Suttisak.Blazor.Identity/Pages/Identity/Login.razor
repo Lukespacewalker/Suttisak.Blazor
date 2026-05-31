@@ -1,7 +1,9 @@
 ﻿@typeparam TUser where TUser : class
 
 @using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Components.Sections
 @using Suttisak.Blazor.Identity.Region.Identity
+@using Suttisak.Blazor.UserInterface.Layouts.Shared
 
 
 @inject SignInManager<TUser> SignInManager
@@ -9,6 +11,15 @@
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>@Login_razor.Login</PageTitle>
+
+<SectionContent SectionId="IdentityLayout.CardTitleSection">
+    @Login_razor.Login
+</SectionContent>
+
+<SectionContent SectionId="IdentityLayout.CardIntroSection">
+    @Login_razor.SignInIntro
+</SectionContent>
+
 <text>
 	<StatusMessage Message="@_statusMessage" />
 
@@ -22,7 +33,7 @@
 							 @bind-Value="LoginWithUsernamePasswordInput.Username" AutoComplete="username" Required="true"
 							 Placeholder="@Login_razor.EmailOrUsername" Label="@Login_razor.Username" Style="width: 100%" />
 
-			<FluentTextInput Name="LoginWithUsernamePasswordInput.Password" " Width="100%"
+			<FluentTextInput Name="LoginWithUsernamePasswordInput.Password" Width="100%"
 							 @bind-Value="LoginWithUsernamePasswordInput.Password" AutoComplete="current-password" Required="true"
 							 Placeholder="@Login_razor.Password" Label="@Login_razor.Password" Style="width: 100%"
 							 InputType="InputType.Password" />
