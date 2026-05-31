@@ -153,4 +153,7 @@
   <data name="Username" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="SignInIntro" xml:space="preserve">
+    <value>Use your account, passkey, or an external provider to enter the workspace.</value>
+  </data>
 </root>
