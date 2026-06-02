@@ -117,37 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ContinueButton" xml:space="preserve">
-    <value>ดำเนินการต่อ</value>
-  </data>
-  <data name="EnterName" xml:space="preserve">
-    <value>ป้อนชื่อสำหรับพาสคีย์ของคุณ</value>
-  </data>
-  <data name="EnterNewName" xml:space="preserve">
-    <value>ป้อนชื่อใหม่สำหรับพาสคีย์ "{0}" ของคุณ</value>
-  </data>
   <data name="Error" xml:space="preserve">
     <value>ข้อผิดพลาด</value>
   </data>
-  <data name="ErrorInvalidFormat" xml:space="preserve">
-    <value>ข้อผิดพลาด: ID พาสคีย์ที่ระบุมีรูปแบบไม่ถูกต้อง</value>
-  </data>
-  <data name="ErrorNameLength" xml:space="preserve">
-    <value>ชื่อพาสคีย์ต้องมีความยาวไม่เกิน {1} ตัวอักษร</value>
-  </data>
-  <data name="ErrorNotFound" xml:space="preserve">
-    <value>ข้อผิดพลาด: ไม่พบพาสคีย์ที่ระบุ</value>
-  </data>
-  <data name="ErrorUpdateFailed" xml:space="preserve">
-    <value>ข้อผิดพลาด: ไม่สามารถอัปเดตพาสคีย์ได้</value>
-  </data>
-  <data name="PasskeyNameLabel" xml:space="preserve">
-    <value>ชื่อพาสคีย์</value>
-  </data>
-  <data name="PasskeyNamePlaceholder" xml:space="preserve">
-    <value>พาสคีย์ของฉัน</value>
-  </data>
-  <data name="SuccessUpdate" xml:space="preserve">
-    <value>อัปเดตพาสคีย์เรียบร้อยแล้ว</value>
+  <data name="Success" xml:space="preserve">
+    <value>สำเร็จ</value>
   </data>
 </root>

@@ -6,6 +6,7 @@
 @inject UserManager<TUser> UserManager
 @inject SignInManager<TUser> SignInManager
 @inject IdentityRedirectManager<TUser> RedirectManager
+
 @inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.Passkeys</PageTitle>
@@ -15,44 +16,34 @@
 </SectionContent>
 <StatusMessage />
 
+@if (_currentPasskeys is not { Count: >= MaxPasskeyCount })
+{
+    <FluentStack role="menubar" Orientation="Orientation.Horizontal" Class="glass-container margin-bottom">
+        <PasskeySubmit Appearance="ButtonAppearance.Primary" OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
+    </FluentStack>
+}
+
 @if (_currentPasskeys is { Count: > 0 })
 {
-    <table class="glass-table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    @Passkeys_razor.NameHeader
-                </th>
-                <th scope="col">
-                    @Passkeys_razor.ActionHeader
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var passkey in _currentPasskeys)
-            {
-                <tr>
-                    <td>@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)</td>
-                    <td style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
-                        @{
-                            var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
-                        }
-                        <form @formname="@($"update-passkey-{credentialId}-1")" @onsubmit="UpdatePasskey" method="post">
-                            <AntiforgeryToken />
-                            <input type="hidden" name="CredentialId" value="@credentialId" />
-                            <FluentButton Type="ButtonType.Submit" Name="action" Value="rename" Title="@Passkeys_razor.RenameTitle">@Passkeys_razor.RenameButton</FluentButton>
-                        </form>
+    <div class="glass-container" style="overflow:auto;" tabindex="-1">
+        <FluentDataGrid Items="_currentPasskeys.AsQueryable()" TGridItem="UserPasskeyInfo" ItemKey="@(passkey => Base64Url.EncodeToString(passkey.CredentialId))">
+            <PropertyColumn Title="@Passkeys_razor.NameHeader" Property="@(passkey => passkey.Name ?? Passkeys_razor.UnnamedPasskey)" />
+            <TemplateColumn Title="@Passkeys_razor.ActionHeader">
+                @{
+                    var credentialId = Base64Url.EncodeToString(context.CredentialId);
+                }
+                <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+                    <RenamePasskeyWrapper TUser="TUser" Passkey="context" @rendermode="@(new InteractiveServerRenderMode())" />
 
-                        <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
-                            <AntiforgeryToken />
-                            <input type="hidden" name="CredentialId" value="@credentialId" />
-                            <FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle">@Passkeys_razor.DeleteButton</FluentButton>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="CredentialId" value="@credentialId" />
+                        <FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStart="@(new Icons.Filled.Size20.Delete())">@Passkeys_razor.DeleteButton</FluentButton>
+                    </form>
+                </div>
+            </TemplateColumn>
+        </FluentDataGrid>
+    </div>
 }
 else
 {
@@ -62,10 +53,6 @@ else
 @if (_currentPasskeys is { Count: >= MaxPasskeyCount })
 {
     <p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
-}
-else
-{
-    <PasskeySubmit OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
 }
 
 @code {
@@ -157,6 +144,8 @@ else
         var credentialIdBase64Url = Base64Url.EncodeToString(attestationResult.Passkey.CredentialId);
         RedirectManager.RedirectTo(IdentityRoutes.Account.Manage.RenamePasskeyById(credentialIdBase64Url));
     }
+
+
 
     protected virtual async Task UpdatePasskey()
     {
