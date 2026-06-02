@@ -1,0 +1,27 @@
+﻿@typeparam TUser where TUser : class
+
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+<FluentButton OnClick="() => EditPasskeyName(Passkey)" 
+              Title="@Passkeys_razor.RenameTitle" 
+              IconStart="@(new Icons.Filled.Size20.Edit())">@Passkeys_razor.RenameButton</FluentButton>
+
+@code {
+    [Parameter]
+    public UserPasskeyInfo Passkey { get; set; } = null!;
+
+    private async Task EditPasskeyName(UserPasskeyInfo passkey)
+    {
+        var result = await DialogService.ShowDialogAsync<RenamePasskeyDialog<TUser>>(dialogOptions =>
+        {
+            dialogOptions.Header.Title = Manage_razor.RenamePasskey;
+            dialogOptions.Parameters[nameof(RenamePasskeyDialog<>.Passkey)] = passkey;
+        });
+
+        if (result is { Cancelled: false})
+        {
+            NavigationManager.NavigateTo(IdentityRoutes.Account.Manage.Passkeys);
+        }
+    }
+}

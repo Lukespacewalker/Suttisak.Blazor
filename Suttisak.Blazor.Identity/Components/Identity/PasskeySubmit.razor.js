@@ -94,33 +94,7 @@ customElements.define('passkey-submit', class extends HTMLElement {
         try {
             const credential = await this.obtainCredential(useConditionalMediation, signal);
 
-            let credentialData;
-            if (typeof credential.toJSON === 'function') {
-                // Use toJSON if available
-                credentialData = credential.toJSON();
-            } else {
-                // Some password managers do not implement PublicKeyCredential.prototype.toJSON correctly,
-                // which is required for JSON.stringify() to work.
-                // e.g. https://www.1password.community/discussions/1password/typeerror-illegal-invocation-in-chrome-browser/47399
-                // Try and serialize the credential to JSON manually.
-                credentialData = {
-                    authenticatorAttachment: credential.authenticatorAttachment,
-                    clientExtensionResults: credential.getClientExtensionResults(),
-                    id: credential.id,
-                    rawId: this.convertToBase64(credential.rawId),
-                    response: {
-                        attestationObject: this.convertToBase64(credential.response.attestationObject),
-                        authenticatorData: this.convertToBase64(credential.response.authenticatorData ?? credential.response.getAuthenticatorData?.() ?? undefined),
-                        clientDataJSON: this.convertToBase64(credential.response.clientDataJSON),
-                        publicKey: this.convertToBase64(credential.response.getPublicKey?.() ?? undefined),
-                        publicKeyAlgorithm: credential.response.getPublicKeyAlgorithm?.() ?? undefined,
-                        transports: credential.response.getTransports?.() ?? undefined,
-                        signature: this.convertToBase64(credential.response.signature),
-                        userHandle: this.convertToBase64(credential.response.userHandle),
-                    },
-                    type: credential.type,
-                };
-            }
+            const credentialData = this.serializeCredential(credential);
 
             const credentialJson = JSON.stringify(credentialData);
             formData.append(`${this.attrs.name}.CredentialJson`, credentialJson);
@@ -143,6 +117,39 @@ customElements.define('passkey-submit', class extends HTMLElement {
         }
         this.internals.setFormValue(formData);
         this.internals.form.submit();
+    }
+
+    serializeCredential(credential) {
+        const toJson = credential?.toJSON ?? credential?.toJson;
+        let credentialData = typeof toJson === 'function'
+            ? toJson.call(credential)
+            : undefined;
+
+        if (!credentialData || typeof credentialData !== 'object') {
+            credentialData = {};
+        }
+
+        // Some password managers do not implement PublicKeyCredential JSON serialization correctly,
+        // which is required for JSON.stringify() to work.
+        // e.g. https://www.1password.community/discussions/1password/typeerror-illegal-invocation-in-chrome-browser/47399
+        // Use built-in serialization when available, then backfill any missing properties manually.
+        credentialData.authenticatorAttachment ??= credential.authenticatorAttachment;
+        credentialData.clientExtensionResults ??= credential.getClientExtensionResults?.();
+        credentialData.id ??= credential.id;
+        credentialData.rawId ??= this.convertToBase64(credential.rawId);
+        credentialData.type ??= credential.type;
+
+        credentialData.response ??= {};
+        credentialData.response.attestationObject ??= this.convertToBase64(credential.response.attestationObject);
+        credentialData.response.authenticatorData ??= this.convertToBase64(credential.response.authenticatorData ?? credential.response.getAuthenticatorData?.() ?? undefined);
+        credentialData.response.clientDataJSON ??= this.convertToBase64(credential.response.clientDataJSON);
+        credentialData.response.publicKey ??= this.convertToBase64(credential.response.getPublicKey?.() ?? undefined);
+        credentialData.response.publicKeyAlgorithm ??= credential.response.getPublicKeyAlgorithm?.() ?? undefined;
+        credentialData.response.transports ??= credential.response.getTransports?.() ?? undefined;
+        credentialData.response.signature ??= this.convertToBase64(credential.response.signature);
+        credentialData.response.userHandle ??= this.convertToBase64(credential.response.userHandle);
+
+        return credentialData;
     }
 
     convertToBase64(o) {

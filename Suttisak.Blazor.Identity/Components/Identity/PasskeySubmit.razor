@@ -6,7 +6,8 @@
 <form @formname="@FormName" @onsubmit="OnSubmit" method="post">
 	<AntiforgeryToken />
     <FluentButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())" 
-                  Type="ButtonType.Submit" 
+                  Type="ButtonType.Submit"
+				  Appearance="@Appearance"
                   Name="__passkeySubmit" 
                   @attributes="AdditionalAttributes">@ChildContent</FluentButton>
 	<passkey-submit operation="@Operation"
@@ -18,6 +19,8 @@
 </form>
 @code {
 	private AntiforgeryTokenSet? _tokens;
+
+	[Parameter] public ButtonAppearance Appearance { get; set; } = ButtonAppearance.Default;
 
 	[Parameter, EditorRequired]
 	public EventCallback OnSubmit { get; set; }

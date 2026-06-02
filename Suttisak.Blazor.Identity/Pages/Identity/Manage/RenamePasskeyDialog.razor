@@ -1,0 +1,44 @@
+﻿@typeparam TUser where TUser : class
+@inherits FluentDialogInstance
+
+@inject UserManager<TUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (_showError)
+{
+    <FluentMessageBar Intent="MessageBarIntent.Error" Title="@RenamePasskey_razor.Error">
+        @RenamePasskey_razor.ErrorUpdateFailed
+    </FluentMessageBar>
+}
+
+<FluentDialogBody>
+    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Passkey.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
+</FluentDialogBody>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public UserPasskeyInfo Passkey { get; set; }
+
+    private bool _showError;
+
+    protected override async Task OnActionClickedAsync(bool primary)
+    {
+        if (primary)
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = await UserManager.GetUserAsync(authState.User);
+            var passkeyResult = await UserManager.AddOrUpdatePasskeyAsync(user!, Passkey);
+            if (!passkeyResult.Succeeded)
+            {
+                _showError = true;
+                return;
+            }
+            await DialogInstance.CloseAsync();
+        }
+        else
+        {
+            await DialogInstance.CancelAsync();
+        }
+    }
+}
