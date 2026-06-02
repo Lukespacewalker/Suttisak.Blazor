@@ -88,6 +88,15 @@ namespace Suttisak.Blazor.Identity.Pages.Identity.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: The specified passkey ID had an invalid format..
         /// </summary>
         public static string ErrorInvalidFormat {

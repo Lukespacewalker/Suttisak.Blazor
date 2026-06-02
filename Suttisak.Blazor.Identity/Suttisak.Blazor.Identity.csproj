@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.2.19</AssemblyVersion>
+		<AssemblyVersion>0.2.20</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -41,6 +41,11 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>ShowRecoveryCodes.razor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Components\Identity\StatusMessage.razor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>StatusMessage.razor.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Pages\Identity\AccessDenied.razor.Designer.cs">
 		  <DesignTime>True</DesignTime>
@@ -222,6 +227,10 @@
 		<EmbeddedResource Update="Components\Identity\ShowRecoveryCodes.razor.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ShowRecoveryCodes.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Components\Identity\StatusMessage.razor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>StatusMessage.razor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Pages\Identity\AccessDenied.razor.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
