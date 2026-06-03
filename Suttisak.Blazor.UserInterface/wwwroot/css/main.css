@@ -1,30 +1,16 @@
 @import url('./components/_button.css');
 @import url('./components/_content.css');
 @import url('./components/_fluent.css');
-@import url('./components/_fluentheader.css');
 @import url('./components/_glass.css');
 @import url('./components/_utility.css');
 @import url('./utilities/_identity.css');
 @import url('./color.css');
-
-@property --color-start {
-    syntax: '<color>';
-    inherits: false;
-}
-
-@property --color-end {
-    syntax: '<color>';
-    inherits: false;
-}
 
 :root {
     color-scheme: light dark;
     --design-unit: 4;
     --nav-bg-color: transparent;
     --glass-blur: blur(20px);
-
-    --color-start: var(--primary-highlight-soft);
-    --color-end: var(--secondary-highlight-soft);
 
     /* Light Theme Variables */
     --light-color-glass-layer0-bg: rgba(255, 255, 255, 0.2);
@@ -47,10 +33,6 @@
     --color-glass-border: light-dark(var(--light-color-glass-border), var(--dark-color-glass-border));
     --color-glass-shadow: light-dark(var(--light-color-glass-shadow), var(--dark-color-glass-shadow));
     --color-card-hover: light-dark(var(--light-color-card-hover), var(--dark-color-card-hover));
-
-    --gradient-brand: linear-gradient(135deg, var(--color-start) 0%, var(--color-end) 100%);
-    --gradient-brand-2: linear-gradient(135deg, var(--colorBrandBackgroundHover) 0%, var(--colorBrandForeground1) 100%);
-    --gradient-brand-hover: var(--gradient-brand-2);
 
     --transition: .22s cubic-bezier(.4, 0, .2, 1);
     --transition-slow: .42s cubic-bezier(.4, 0, .2, 1);
