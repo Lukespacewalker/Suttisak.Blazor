@@ -3,14 +3,14 @@
 }
 
 fluent-button[appearance='primary']:enabled {
-    --gradient-brand-start: var(--primary-highlight);
-    --gradient-brand-end: var(--secondary-highlight);
+    --gradient-brand-start: var(--primary-color);
+    --gradient-brand-end: var(--primary-color-alt);
     background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
 }
 
 fluent-button[appearance='primary']:enabled:hover {
-    --gradient-brand-start: oklch(from var(--primary-highlight) calc(l + 0.1) c h);
-    --gradient-brand-end: oklch(from var(--secondary-highlight) calc(l + 0.1) c h);
+    --gradient-brand-start: oklch(from var(--primary-color) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--primary-color-alt) calc(l + 0.1) c h);
 }
 
 fluent-button {
@@ -49,8 +49,8 @@ fluent-button {
 
 .theme-selector button.active,
 .culture-selector button.active {
-    --gradient-brand-start: var(--primary-highlight);
-    --gradient-brand-end: var(--secondary-highlight);
+    --gradient-brand-start: var(--primary-color);
+    --gradient-brand-end: var(--primary-color-alt);
     color: var(--colorNeutralForegroundOnBrand);
 
     background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
@@ -63,6 +63,6 @@ fluent-button {
 
 .theme-selector button.active:hover,
 .culture-selector button.active:hover {
-    --gradient-brand-start: oklch(from var(--primary-highlight) calc(l + 0.1) c h);
-    --gradient-brand-end: oklch(from var(--secondary-highlight) calc(l + 0.1) c h);
+    --gradient-brand-start: oklch(from var(--primary-color) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--primary-color-alt) calc(l + 0.1) c h);
 }

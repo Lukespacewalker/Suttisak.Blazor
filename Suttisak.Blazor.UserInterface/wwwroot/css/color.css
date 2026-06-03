@@ -86,14 +86,26 @@
     --secondary-gradient: linear-gradient(135deg, var(--secondary-color), color-mix(in srgb, var(--secondary-color) 40%, var(--secondary-color-alt)));
 }
 
-.gradient-brand {
-    --gradient-brand-start: var(--primary-highlight);
-    --gradient-brand-end: var(--secondary-highlight);
+.gradient-brand, .primary-gradient {
+    --gradient-brand-start: var(--primary-color);
+    --gradient-brand-end: var(--primary-color-alt);
     transition: --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
     background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
 }
 
-.gradient-brand:hover {
-    --gradient-brand-start: oklch(from var(--primary-highlight) calc(l + 0.1) c h);
-    --gradient-brand-end: oklch(from var(--secondary-highlight) calc(l + 0.1) c h);
+.gradient-brand:hover, .primary-gradient:hover {
+    --gradient-brand-start: oklch(from var(--primary-color) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--primary-color-alt) calc(l + 0.1) c h);
+}
+
+.secondary-gradient {
+    --gradient-brand-start: var(--secondary-color);
+    --gradient-brand-end: var(--secondary-color-alt);
+    transition: --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
+    background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
+}
+
+.secondary-gradient:hover {
+    --gradient-brand-start: oklch(from var(--secondary-color) calc(l + 0.1) c h);
+    --gradient-brand-end: oklch(from var(--secondary-color-alt) calc(l + 0.1) c h);
 }
