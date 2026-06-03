@@ -1,0 +1,22 @@
+﻿@using Microsoft.JSInterop
+@using Suttisak.Blazor.UserInterface.Providers
+@code {
+    [Inject(Key = nameof(BrowserTimeProvider))] public TimeProvider TimeProvider { get; set; } = null!;
+    [Inject] public IJSRuntime JsRuntime { get; set; } = null!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && TimeProvider is BrowserTimeProvider { IsLocalTimeZoneSet: false } browserTimeProvider)
+        {
+            try
+            {
+                await using var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", Assets["_content/Suttisak.Blazor.UserInterface/Components/Timezone/InitializeTimeZone.razor.js"]);
+                var timeZone = await module.InvokeAsync<string>("getBrowserTimeZone");
+                browserTimeProvider.SetBrowserTimeZone(timeZone);
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
+    }
+}
