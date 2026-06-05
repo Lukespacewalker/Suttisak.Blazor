@@ -10,7 +10,7 @@
         {
             try
             {
-                await using var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", Assets["_content/Suttisak.Blazor.UserInterface/Components/Timezone/InitializeTimeZone.razor.js"]);
+                await using var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", Assets["./_content/Suttisak.Blazor.UserInterface/Components/Timezone/InitializeTimeZone.razor.js"]);
                 var timeZone = await module.InvokeAsync<string>("getBrowserTimeZone");
                 browserTimeProvider.SetBrowserTimeZone(timeZone);
             }
