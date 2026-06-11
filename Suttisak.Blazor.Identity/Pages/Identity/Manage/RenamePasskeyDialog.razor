@@ -12,7 +12,9 @@
 }
 
 <FluentDialogBody>
-    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Passkey.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
+    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" 
+    @bind-Value:get="Passkey.Name" 
+    @bind-Value:set="value => Passkey.Name = value?.Trim()" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
 </FluentDialogBody>
 
 @code {

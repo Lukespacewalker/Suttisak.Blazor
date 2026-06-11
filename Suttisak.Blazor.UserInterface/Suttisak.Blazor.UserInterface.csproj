@@ -35,12 +35,21 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>ProfileMenu.razor.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Localizations\CommonStrings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>CommonStrings.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Update="Components\ProfileMenu.razor.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ProfileMenu.razor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Localizations\CommonStrings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CommonStrings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 

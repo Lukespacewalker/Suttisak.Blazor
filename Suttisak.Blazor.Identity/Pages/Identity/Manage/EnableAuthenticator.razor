@@ -177,6 +177,10 @@ else
         [StringLength(7, ErrorMessageResourceName = nameof(EnableAuthenticator_razor.CodeLengthError), ErrorMessageResourceType = typeof(EnableAuthenticator_razor), MinimumLength = 6)]
         [DataType(DataType.Text)]
         [Display(Name = nameof(EnableAuthenticator_razor.VerificationCodeLabel), ResourceType = typeof(EnableAuthenticator_razor))]
-        public string Code { get; set; } = "";
+        public string Code 
+        { 
+            get => field; 
+            set => field = value.Trim(); 
+        } = "";
     }
 }
