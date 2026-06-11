@@ -5,7 +5,11 @@ namespace Suttisak.Blazor.Identity.Region.Identity;
 public class UsernamePasswordInputModel
 {
     [Required]
-    public string Username { get; set; } = "";
+    public string Username
+    {
+        get => field;
+        set => field = value.Trim();
+    } = "";
 
     [Required]
     [DataType(DataType.Password)]

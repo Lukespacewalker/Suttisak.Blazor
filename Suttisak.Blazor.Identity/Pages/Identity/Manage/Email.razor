@@ -131,6 +131,10 @@
         [Required]
         [EmailAddress]
         [Display(Name = nameof(Email_razor.NewEmailLabel), ResourceType = typeof(Email_razor))]
-        public string? NewEmail { get; set; }
+        public string? NewEmail 
+        { 
+            get=> field; 
+            set => field = value?.Trim(); 
+        }
     }
 }
