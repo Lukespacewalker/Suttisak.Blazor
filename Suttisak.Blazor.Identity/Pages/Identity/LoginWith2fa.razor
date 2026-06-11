@@ -87,7 +87,11 @@
         [StringLength(7, ErrorMessageResourceType = typeof(LoginWith2fa_razor), ErrorMessageResourceName = nameof(LoginWith2fa_razor.ValidationMessage), MinimumLength = 6)]
         [DataType(DataType.Text)]
         [Display(Name = "Authenticator code")]
-        public string? TwoFactorCode { get; set; }
+        public string? TwoFactorCode
+        {
+            get => field;
+            set => field = value?.Trim();
+        }
 
         [Display(Name = "Remember this machine")]
         public bool RememberMachine { get; set; }
