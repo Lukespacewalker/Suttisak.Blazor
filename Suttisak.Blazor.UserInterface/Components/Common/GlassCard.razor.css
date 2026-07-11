@@ -1,6 +1,6 @@
 .glass-card {
-    background: color-mix(in srgb, var(--neutral-layer-1, #ffffff), transparent 12%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--neutral-stroke-rest, #d4d4d8), transparent 30%);
+    background: color-mix(in srgb, var(--colorNeutralBackground2, #ffffff), transparent 12%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--colorNeutralStroke1, #d4d4d8), transparent 30%);
     border-radius: 0.75rem;
     padding: 1rem;
     display: flex;
@@ -16,12 +16,12 @@
 }
 
 .glass-card--clickable:hover {
-    background: color-mix(in srgb, var(--neutral-layer-1, #ffffff), var(--neutral-foreground-rest, #000000) 5%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--neutral-stroke-rest, #d4d4d8), transparent 15%), 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: color-mix(in srgb, var(--colorNeutralBackground2, #ffffff), var(--colorNeutralForeground1, #000000) 5%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--colorNeutralStroke1, #d4d4d8), transparent 15%), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .glass-card--active {
-    background: color-mix(in srgb, var(--accent-fill-rest, #c47701), transparent 90%);
+    background: var(--primary-overlay-soft, color-mix(in srgb, var(--primary-color, #3f8ddd), transparent 90%));
 }
 
 .glass-card--active::before {
@@ -31,7 +31,7 @@
     top: 0;
     bottom: 0;
     width: 4px;
-    background-color: var(--accent-fill-rest, #c47701);
+    background-color: var(--primary-color, #3f8ddd);
 }
 
 .glass-card__header {
@@ -43,12 +43,12 @@
 .glass-card__title {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--neutral-foreground-rest, #1f2937);
+    color: var(--colorNeutralForeground1, #1f2937);
 }
 
 .glass-card__subtitle {
     font-size: 0.85rem;
-    color: var(--neutral-foreground-hint, #5b6472);
+    color: var(--colorNeutralForeground2, #5b6472);
 }
 
 .glass-card__body {

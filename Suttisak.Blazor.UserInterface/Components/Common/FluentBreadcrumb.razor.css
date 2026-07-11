@@ -13,6 +13,6 @@
 
 .fluent-breadcrumb ::deep .fluent-breadcrumb-item + .fluent-breadcrumb-item::before {
     content: "›";
-    color: var(--neutral-foreground-hint, var(--fill-color-text-secondary, currentColor));
+    color: var(--colorNeutralForeground2, var(--fill-color-text-secondary, currentColor));
     margin-right: 0.125rem;
 }
