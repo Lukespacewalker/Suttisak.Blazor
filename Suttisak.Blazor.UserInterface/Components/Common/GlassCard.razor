@@ -1,31 +1,45 @@
-<div class="glass-card @CssClass @(IsActive ? "glass-card--active" : "") @(OnClick.HasDelegate ? "glass-card--clickable" : "")" style="@Style" @onclick="HandleClick">
-    @if (Header != null || !string.IsNullOrWhiteSpace(Title))
-    {
-        <div class="glass-card__header">
-            @if (Header != null)
-            {
-                @Header
-            }
-            else
-            {
-                <div class="glass-card__title">@Title</div>
-                @if (!string.IsNullOrWhiteSpace(Subtitle))
-                {
-                    <div class="glass-card__subtitle">@Subtitle</div>
-                }
-            }
-        </div>
-    }
-    
-    @if (ChildContent != null)
-    {
-        <div class="glass-card__body">
-            @ChildContent
-        </div>
-    }
-</div>
+@if (OnClick.HasDelegate)
+{
+    <div class="glass-card @CssClass @(IsActive ? "glass-card--active" : "") glass-card--clickable" style="@Style" @onclick="HandleClick" @onclick:stopPropagation="true">
+        @RenderCardContent()
+    </div>
+}
+else
+{
+    <div class="glass-card @CssClass @(IsActive ? "glass-card--active" : "")" style="@Style">
+        @RenderCardContent()
+    </div>
+}
 
 @code {
+    private RenderFragment RenderCardContent() => __builder =>
+    {
+        @if (Header != null || !string.IsNullOrWhiteSpace(Title))
+        {
+            <div class="glass-card__header">
+                @if (Header != null)
+                {
+                    @Header
+                }
+                else
+                {
+                    <div class="glass-card__title">@Title</div>
+                    @if (!string.IsNullOrWhiteSpace(Subtitle))
+                    {
+                        <div class="glass-card__subtitle">@Subtitle</div>
+                    }
+                }
+            </div>
+        }
+        
+        @if (ChildContent != null)
+        {
+            <div class="glass-card__body">
+                @ChildContent
+            </div>
+        }
+    };
+
     [Parameter]
     public RenderFragment? Header { get; set; }
 
@@ -42,7 +56,7 @@
     public bool IsActive { get; set; }
 
     [Parameter]
-    public EventCallback OnClick { get; set; }
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     [Parameter]
     public string? CssClass { get; set; }
@@ -50,11 +64,11 @@
     [Parameter]
     public string? Style { get; set; }
 
-    private async Task HandleClick()
+    private async Task HandleClick(MouseEventArgs e)
     {
         if (OnClick.HasDelegate)
         {
-            await OnClick.InvokeAsync();
+            await OnClick.InvokeAsync(e);
         }
     }
 }
