@@ -1,4 +1,4 @@
-﻿.root ::deep .fluent-layout-item[area=header] {
+.root ::deep .fluent-layout-item[area=header] {
     position: sticky;
     width: 100%;
     margin-bottom: calc(-1 * var(--layout-header-height)) !important;

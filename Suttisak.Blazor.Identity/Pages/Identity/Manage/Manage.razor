@@ -8,7 +8,7 @@
 </SectionContent>
 
 <FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
-    <FluentLabel>@Manage_razor.Account</FluentLabel>
+    <span>@Manage_razor.Account</span>
     <CardMenu Url="@IdentityRoutes.Account.Manage.Profile"
               Icon="@(new Icons.Regular.Size20.PersonAccounts())"
               Title="@Manage_razor.Profile" />
@@ -18,7 +18,7 @@
     <CardMenu Url="@IdentityRoutes.Account.Manage.ChangePassword"
               Icon="@(new Icons.Regular.Size20.Password())"
               Title="@Manage_razor.ChangePassword" />
-    <FluentLabel>@Manage_razor.Logins</FluentLabel>
+    <span>@Manage_razor.Logins</span>
     <CardMenu Url="@IdentityRoutes.Account.Manage.ExternalLogins"
               Icon="@(new Icons.Regular.Size20.GlobeSurface())"
               Title="@Manage_razor.ExternalLogins" />
@@ -28,7 +28,7 @@
     <CardMenu Url="@IdentityRoutes.Account.Manage.Passkeys"
               Icon="@(new Icons.Regular.Size20.PersonPasskey())"
               Title="@Manage_razor.Passkeys" />
-    <FluentLabel>@Manage_razor.PersonalData</FluentLabel>
+    <span>@Manage_razor.PersonalData</span>
     <CardMenu Url="@IdentityRoutes.Account.Manage.PersonalData"
               Icon="@(new Icons.Regular.Size20.DatabasePerson())"
               Title="@Manage_razor.PersonalData" />

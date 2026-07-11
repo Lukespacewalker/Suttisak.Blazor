@@ -1,4 +1,4 @@
-﻿.fluent-card:hover {
+.fluent-card:hover {
     background: var(--color-card-hover);
     box-shadow: 0 12px 40px var(--color-glass-shadow);
     cursor: pointer;
@@ -18,5 +18,5 @@
 }
 
     .fluent-card .subtitle {
-        color: var(--neutral-foreground-hint);
+        color: var(--colorNeutralForeground2);
     }
