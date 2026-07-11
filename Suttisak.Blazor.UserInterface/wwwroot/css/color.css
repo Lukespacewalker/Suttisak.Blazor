@@ -10,7 +10,7 @@
     initial-value: transparent;
 }
 
-:root {
+:root, body {
     color-scheme: light dark;
 
     /* Primary surface backgrounds for cards, panels, sections, and elevated containers. */
