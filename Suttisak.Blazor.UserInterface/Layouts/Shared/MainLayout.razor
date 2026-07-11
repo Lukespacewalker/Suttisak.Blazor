@@ -65,7 +65,7 @@
 
     [CascadingParameter] public NavComponentState? NavState { get; set; }
 
-    [Parameter] public bool UseCustomBreadcrumb { get; set; } = false;
+    public bool UseCustomBreadcrumb { get; set; } = false;
 
     private RenderFragment[] _breadcrumbs = Array.Empty<RenderFragment>();
 
