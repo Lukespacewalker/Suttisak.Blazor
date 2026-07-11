@@ -1,4 +1,4 @@
-﻿.root ::deep .content {
+.root ::deep .content {
     background: url(/assets/backgrounds/gradient.svg);
     display: flex;
     justify-content: center;

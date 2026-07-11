@@ -13,7 +13,7 @@ fluent-text-input {
     background: var(--color-glass-layer1-bg) !important;
     backdrop-filter: blur(10px) saturate(200%);
     border-bottom: 2px solid var(--color-glass-border) !important;
-    color: var(--neutral-foreground-rest) !important;
+    color: var(--colorNeutralForeground1) !important;
     overflow: unset !important;
 }
 
