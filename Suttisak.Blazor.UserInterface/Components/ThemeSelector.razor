@@ -2,7 +2,6 @@
 @using Suttisak.Blazor.UserInterface.Interfaces.Theme
 @using FluentIThemeService = Microsoft.FluentUI.AspNetCore.Components.IThemeService
 @using FluentThemeMode = Microsoft.FluentUI.AspNetCore.Components.ThemeMode
-@inject Suttisak.Blazor.UserInterface.Interfaces.Theme.IThemeService ThemeService
 @inject FluentIThemeService FluentThemeService
 @inject IJSRuntime JsRuntime
 
@@ -60,6 +59,7 @@
     {
         _currentThemeMode = mode;
         await FluentThemeService.SetThemeAsync(mode);
+        await _module!.InvokeVoidAsync("setThemePreference", mode.ToString().ToLowerInvariant());
     }
 }
 

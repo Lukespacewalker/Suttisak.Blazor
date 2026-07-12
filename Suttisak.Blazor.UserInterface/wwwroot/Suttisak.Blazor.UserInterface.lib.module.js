@@ -1,71 +1,59 @@
 let isThemingSetup = false;
 
+const themeSettingsKey = "fluentui-blazor:theme-settings";
+
+function getThemePreference() {
+    try {
+        const raw = localStorage.getItem(themeSettingsKey);
+        if (!raw) return "system";
+
+        const mode = JSON.parse(raw)?.mode;
+        return mode === "light" || mode === "dark" ? mode : "system";
+    } catch {
+        return "system";
+    }
+}
+
+function applyResolvedTheme(preference = getThemePreference()) {
+    if (!document.body) return;
+
+    const resolvedTheme = preference === "system"
+        ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        : preference;
+
+    document.body.dataset.theme = resolvedTheme;
+    document.body.dataset.themePreference = preference;
+}
+
 function setupTheming() {
     if (isThemingSetup) return;
-    isThemingSetup = true;
 
-    function getTheme() {
-        const raw = localStorage.getItem("fluentui-blazor:theme-settings");
-        if (!raw) return "system";
-        try {
-            const parsed = JSON.parse(raw);
-            const mode = parsed?.mode;
-            if (mode === "light") return "light";
-            if (mode === "dark") return "dark";
-            return "system";
-        } catch {
-            return "system";
-        }
-    }
-
-    const targetNode = document.body;
-    if (!targetNode) {
-        // If body is not ready yet, wait for DOMContentLoaded
+    if (!document.body) {
         document.addEventListener('DOMContentLoaded', setupTheming);
-        isThemingSetup = false;
         return;
     }
 
-    const callback = (mutationsList) => {
-        const theme = getTheme();
-        const currentDataTheme = targetNode.getAttribute("data-theme");
+    isThemingSetup = true;
 
-        if (theme === "dark") {
-            if (currentDataTheme !== "dark") {
-                targetNode.setAttribute("data-theme", "dark");
-            }
-        } else if (theme === "light") {
-            if (currentDataTheme !== "light") {
-                targetNode.setAttribute("data-theme", "light");
-            }
-        } else {
-            // "system" mode
-            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (isDark) {
-                if (currentDataTheme !== "dark") {
-                    targetNode.setAttribute("data-theme", "dark");
-                }
-            } else {
-                if (currentDataTheme != null) {
-                    targetNode.removeAttribute("data-theme");
-                }
-            }
-        }
-    };
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+    systemTheme.addEventListener("change", () => {
+        if (getThemePreference() === "system") applyResolvedTheme("system");
+    });
+    window.addEventListener("storage", event => {
+        if (event.key === themeSettingsKey) applyResolvedTheme();
+    });
 
-    const config = {
-        subtree: true,
-        childList: true,
-        attributes: true,        // Required to watch attributes
-    };
-
-    const observer = new MutationObserver(callback);
-    observer.observe(targetNode, config);
-
-    // Run it once immediately to ensure correct initial state
-    callback();
+    applyResolvedTheme();
 }
 
 export function beforeWebStart() {
     setupTheming();
+}
+
+export function afterWebStarted() {
+    setupTheming();
+}
+
+export function setThemePreference(preference) {
+    applyResolvedTheme(preference);
 }
