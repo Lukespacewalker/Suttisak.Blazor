@@ -32,11 +32,8 @@
                     <div class="content" style="background:color-mix(in lch, var(--colorNeutralBackground2), transparent 90%);">
                         <SectionOutlet SectionId="MessageBarSection"/>
                         <nav aria-label="Breadcrumb" style="margin-bottom:calc( var(--design-unit) * 4px);">
-                            @if (UseCustomBreadcrumb)
-                            {
-                                <SectionOutlet SectionId="BreadcrumbSection"/>
-                            }
-                            else if (_breadcrumbs.Any())
+                            <SectionOutlet SectionId="BreadcrumbSection"/>
+                            @if (!UseCustomBreadcrumb && _breadcrumbs.Any())
                             {
                                 <FluentBreadcrumb>
                                     @foreach (var breadcrumb in _breadcrumbs)
