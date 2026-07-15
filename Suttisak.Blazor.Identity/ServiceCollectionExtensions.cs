@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Suttisak.Blazor.Identity;
 
@@ -15,6 +16,7 @@ public static class ServiceCollectionExtensions
 
         // Register IdentityUserAccessor
         services.AddScoped<IdentityUserAccessor<TUser>>();
+        services.TryAddScoped<IExternalLoginProfileStore<TUser>, NullExternalLoginProfileStore<TUser>>();
 
         // Register IdentityRevalidatingAuthenticationStateProvider
         services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider<TUser>>();
