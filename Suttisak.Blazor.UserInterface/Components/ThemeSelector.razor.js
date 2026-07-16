@@ -11,3 +11,16 @@
         return "system";
     }
 }
+
+export function setThemePreference(preference) {
+    if (!document.body) return;
+
+    const resolvedTheme = preference === "system"
+        ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+        : preference;
+
+    document.documentElement.dataset.theme = resolvedTheme;
+    document.documentElement.dataset.themePreference = preference;
+    document.body.dataset.theme = resolvedTheme;
+    document.body.dataset.themePreference = preference;
+}
