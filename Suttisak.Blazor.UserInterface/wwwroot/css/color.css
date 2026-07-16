@@ -11,8 +11,6 @@
 }
 
 :root, body {
-    color-scheme: light dark;
-
     /* Primary surface backgrounds for cards, panels, sections, and elevated containers. */
     --primary-surface-1: light-dark(color-mix(in srgb, var(--primary-color) 6%, white), color-mix(in srgb, var(--primary-color) 12%, #020812));
     --primary-surface-2: light-dark(color-mix(in srgb, var(--primary-color) 8%, white), color-mix(in srgb, var(--primary-color) 16%, #04101d));

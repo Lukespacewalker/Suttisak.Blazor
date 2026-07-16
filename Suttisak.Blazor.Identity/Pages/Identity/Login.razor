@@ -31,11 +31,11 @@
 		<div>
 			<FluentTextInput Name="LoginWithUsernamePasswordInput.Username" Width="100%"
 							 @bind-Value="LoginWithUsernamePasswordInput.Username" AutoComplete="username" Required="true"
-							 Placeholder="@Login_razor.EmailOrUsername" Label="@Login_razor.Username" Style="width: 100%" />
+							 Placeholder="@(string.IsNullOrEmpty(UserNamePlaceholder) ? Login_razor.EmailOrUsername : UserNamePlaceholder)" Label="@Login_razor.Username" Style="width: 100%" />
 
 			<FluentTextInput Name="LoginWithUsernamePasswordInput.Password" Width="100%"
 							 @bind-Value="LoginWithUsernamePasswordInput.Password" AutoComplete="current-password" Required="true"
-							 Placeholder="@Login_razor.Password" Label="@Login_razor.Password" Style="width: 100%"
+							 Placeholder="@(string.IsNullOrEmpty(PasswordPlaceholder) ? Login_razor.Password : PasswordPlaceholder)" Label="@Login_razor.Password" Style="width: 100%"
 							 TextInputType="TextInputType.Password" />
 
 			<label class="login-remember-row" for="remember-me">
