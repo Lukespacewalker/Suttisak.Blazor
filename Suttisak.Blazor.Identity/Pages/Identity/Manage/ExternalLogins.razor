@@ -7,6 +7,7 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IUserStore<TUser> UserStore
 @inject IdentityRedirectManager RedirectManager
+@inject IExternalLoginProfileStore<TUser> ExternalLoginProfileStore
 @inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
@@ -23,8 +24,15 @@
         <tbody>
             @foreach (var login in _currentLogins)
             {
+                var profile = GetProfile(login);
                 <tr>
-                    <td>@login.ProviderDisplayName</td>
+                    <td>
+                        <strong>@(profile?.DisplayName ?? login.ProviderDisplayName)</strong>
+                        @if (!string.IsNullOrWhiteSpace(profile?.Email) && !string.Equals(profile.Email, profile.DisplayName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <small style="display: block; color: var(--neutral-foreground-hint);">@profile.Email</small>
+                        }
+                    </td>
                     <td>
                         @if (_showRemoveButton)
                         {
@@ -77,6 +85,7 @@
     private TUser _user = null!;
     private IList<UserLoginInfo>? _currentLogins;
     private IList<AuthenticationScheme>? _otherLogins;
+    private IReadOnlyCollection<ExternalLoginProfileInfo> _externalLoginProfiles = [];
     private bool _showRemoveButton;
 
     [CascadingParameter]
@@ -102,6 +111,7 @@
         await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         _currentLogins = await UserManager.GetLoginsAsync(_user);
+        _externalLoginProfiles = await ExternalLoginProfileStore.GetAsync(_user, HttpContext.RequestAborted);
         _otherLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync())
             .Where(auth => _currentLogins.All(ul => auth.Name != ul.LoginProvider))
             .ToList();
@@ -128,6 +138,8 @@
             RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorRemoveLogin, HttpContext);
         }
 
+        await ExternalLoginProfileStore.RemoveAsync(_user, LoginProvider!, ProviderKey!, HttpContext.RequestAborted);
+
         await SignInManager.RefreshSignInAsync(_user);
         RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.LoginRemoved, HttpContext);
     }
@@ -147,9 +159,15 @@
             RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.ErrorAddLogin, HttpContext);
         }
 
+        await ExternalLoginProfileStore.SaveAsync(_user, ExternalLoginProfileInfo.From(info!), HttpContext.RequestAborted);
+
         // Clear the existing external cookie to ensure a clean login process
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         RedirectManager.RedirectToCurrentPageWithStatus(ExternalLogins_razor.LoginAdded, HttpContext);
     }
+
+    private ExternalLoginProfileInfo? GetProfile(UserLoginInfo login)
+        => _externalLoginProfiles.SingleOrDefault(profile =>
+            profile.LoginProvider == login.LoginProvider && profile.ProviderKey == login.ProviderKey);
 }

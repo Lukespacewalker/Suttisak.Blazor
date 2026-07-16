@@ -11,6 +11,7 @@
 @inject IEmailSender<TUser> EmailSender
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject IExternalLoginProfileStore<TUser> ExternalLoginProfileStore
 @inject ILogger<ExternalLogin<TUser>> Logger
 
 <PageTitle>@ExternalLogin_razor.PageTitle</PageTitle>
@@ -110,6 +111,11 @@
 
         if (result.Succeeded)
         {
+            var user = await UserManager.FindByLoginAsync(_externalLoginInfo.LoginProvider, _externalLoginInfo.ProviderKey);
+            if (user is not null)
+            {
+                await ExternalLoginProfileStore.SaveAsync(user, ExternalLoginProfileInfo.From(_externalLoginInfo!));
+            }
             Logger.LogInformation(
                 "{Name} logged in with {LoginProvider} provider.",
                 _externalLoginInfo.Principal.Identity?.Name,
@@ -147,6 +153,7 @@
             result = await UserManager.AddLoginAsync(user, _externalLoginInfo!);
             if (result.Succeeded)
             {
+                await ExternalLoginProfileStore.SaveAsync(user, ExternalLoginProfileInfo.From(_externalLoginInfo!));
                 Logger.LogInformation("User created an account using {Name} provider.", _externalLoginInfo!.LoginProvider);
 
                 var userId = await UserManager.GetUserIdAsync(user);
