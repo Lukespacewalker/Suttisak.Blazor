@@ -14,6 +14,15 @@ function getThemePreference() {
     }
 }
 
+function getAppliedThemePreference() {
+    const preference = document.documentElement.dataset.themePreference
+        ?? document.body?.dataset.themePreference;
+
+    return preference === "light" || preference === "dark" || preference === "system"
+        ? preference
+        : getThemePreference();
+}
+
 function applyResolvedTheme(preference = getThemePreference()) {
     if (!document.body) return;
 
@@ -21,6 +30,8 @@ function applyResolvedTheme(preference = getThemePreference()) {
         ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
         : preference;
 
+    document.documentElement.dataset.theme = resolvedTheme;
+    document.documentElement.dataset.themePreference = preference;
     document.body.dataset.theme = resolvedTheme;
     document.body.dataset.themePreference = preference;
 }
@@ -37,7 +48,7 @@ function setupTheming() {
 
     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
     systemTheme.addEventListener("change", () => {
-        if (getThemePreference() === "system") applyResolvedTheme("system");
+        if (getAppliedThemePreference() === "system") applyResolvedTheme("system");
     });
     window.addEventListener("storage", event => {
         if (event.key === themeSettingsKey) applyResolvedTheme();
