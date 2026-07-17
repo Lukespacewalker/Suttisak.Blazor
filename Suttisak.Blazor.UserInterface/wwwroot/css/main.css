@@ -42,12 +42,12 @@ html {
     scroll-behavior: smooth;
 }
 
-:root[data-theme="light"],
-body[data-theme="light"] {
+:root[data-color-scheme="light"],
+body[data-color-scheme="light"] {
     color-scheme: light;
 }
 
-:root[data-theme="dark"],
-body[data-theme="dark"] {
+:root[data-color-scheme="dark"],
+body[data-color-scheme="dark"] {
     color-scheme: dark;
 }
