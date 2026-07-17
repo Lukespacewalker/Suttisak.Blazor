@@ -59,7 +59,6 @@
     {
         _currentThemeMode = mode;
         await FluentThemeService.SetThemeAsync(mode);
-        await _module!.InvokeVoidAsync("setThemePreference", mode.ToString().ToLowerInvariant());
     }
 }
 
