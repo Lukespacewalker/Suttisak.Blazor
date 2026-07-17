@@ -35,7 +35,7 @@ fluent-text-input {
     --dialog-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-:root:has(body[data-theme="dark"]) {
+:root[data-color-scheme="dark"] {
     --dialog-overlay: rgba(0, 0, 0, 0.65);
     --dialog-border: rgba(255, 255, 255, 0.1);
     --dialog-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);

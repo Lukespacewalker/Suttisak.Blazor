@@ -14,25 +14,15 @@ function getThemePreference() {
     }
 }
 
-function getAppliedThemePreference() {
-    const preference = document.documentElement.dataset.themePreference
-        ?? document.body?.dataset.themePreference;
-
-    return preference === "light" || preference === "dark" || preference === "system"
-        ? preference
-        : getThemePreference();
-}
-
-function applyResolvedTheme(preference = getThemePreference()) {
+function applyResolvedTheme(isDark) {
     if (!document.body) return;
 
-    const resolvedTheme = preference === "system"
-        ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-        : preference;
+    const preference = getThemePreference();
+    const colorScheme = isDark ? "dark" : "light";
 
-    document.documentElement.dataset.theme = resolvedTheme;
+    document.documentElement.dataset.colorScheme = colorScheme;
     document.documentElement.dataset.themePreference = preference;
-    document.body.dataset.theme = resolvedTheme;
+    document.body.dataset.colorScheme = colorScheme;
     document.body.dataset.themePreference = preference;
 }
 
@@ -46,15 +36,13 @@ function setupTheming() {
 
     isThemingSetup = true;
 
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
-    systemTheme.addEventListener("change", () => {
-        if (getAppliedThemePreference() === "system") applyResolvedTheme("system");
-    });
-    window.addEventListener("storage", event => {
-        if (event.key === themeSettingsKey) applyResolvedTheme();
+    document.body.addEventListener("themeChanged", event => {
+        if (typeof event.detail?.isDark === "boolean") {
+            applyResolvedTheme(event.detail.isDark);
+        }
     });
 
-    applyResolvedTheme();
+    applyResolvedTheme(document.body.dataset.theme === "dark");
 }
 
 export function beforeWebStart() {
@@ -63,8 +51,4 @@ export function beforeWebStart() {
 
 export function afterWebStarted() {
     setupTheming();
-}
-
-export function setThemePreference(preference) {
-    applyResolvedTheme(preference);
 }

@@ -4,6 +4,6 @@
     justify-content: center;
 }
 
-body[data-theme="dark"] .root ::deep .content {
+body[data-color-scheme="dark"] .root ::deep .content {
     background: url(/assets/backgrounds/gradient-dark.svg)
 }
