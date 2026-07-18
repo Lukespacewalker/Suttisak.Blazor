@@ -1,0 +1,18 @@
+<main class="marketing-page @Class" id="@Id" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(SkipTarget) && !string.IsNullOrWhiteSpace(SkipText))
+    {
+        <a class="marketing-page__skip-link" href="#@SkipTarget">@SkipText</a>
+    }
+    @ChildContent
+</main>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Id { get; set; } = "main-content";
+    [Parameter] public string? SkipTarget { get; set; }
+    [Parameter] public string? SkipText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}
+

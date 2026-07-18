@@ -1,0 +1,55 @@
+.marketing-page {
+    --marketing-space-1: 0.5rem;
+    --marketing-space-2: 1rem;
+    --marketing-space-3: 1.5rem;
+    --marketing-space-4: 2rem;
+    --marketing-space-5: 3rem;
+    --marketing-space-6: 4.5rem;
+    --marketing-space-7: 6rem;
+    --marketing-gutter: 3rem;
+    --marketing-text: var(--primary-text);
+    --marketing-text-soft: var(--primary-text-soft);
+    --marketing-text-muted: var(--primary-text-muted);
+    --marketing-surface: var(--primary-surface-strong);
+    --marketing-surface-soft: var(--primary-fill-soft);
+    --marketing-border: var(--primary-border-soft);
+    --marketing-shadow: var(--primary-shadow-soft);
+    width: 100%;
+    min-width: 0;
+    color: var(--marketing-text);
+    background:
+        radial-gradient(circle at top, var(--primary-overlay-soft), transparent 34%),
+        linear-gradient(180deg, var(--primary-surface-1) 0%, var(--primary-surface-2) 48%, var(--primary-surface-3) 100%);
+}
+
+.marketing-page__skip-link {
+    position: fixed;
+    z-index: 10;
+    top: var(--marketing-space-2);
+    left: 50%;
+    transform: translate(-50%, -150%);
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: var(--primary-color);
+    color: var(--colorNeutralForegroundOnBrand);
+    text-decoration: none;
+}
+
+.marketing-page__skip-link:focus {
+    transform: translate(-50%, 0);
+}
+
+.marketing-page__skip-link:focus-visible {
+    outline: 3px solid var(--secondary-highlight);
+    outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+    .marketing-page {
+        --marketing-gutter: 1.5rem;
+        --marketing-space-5: 2.5rem;
+        --marketing-space-6: 3.5rem;
+        --marketing-space-7: 4.5rem;
+    }
+}
+

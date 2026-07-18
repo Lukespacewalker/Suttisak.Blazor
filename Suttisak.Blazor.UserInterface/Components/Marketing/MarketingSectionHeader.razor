@@ -1,0 +1,26 @@
+<div class="marketing-section-header @(Compact ? "marketing-section-header--compact" : null) @Class"
+     @attributes="AdditionalAttributes">
+    @Eyebrow
+    <h2 id="@HeadingId">@Title</h2>
+    @if (DescriptionContent is not null)
+    {
+        <div class="marketing-section-header__description">@DescriptionContent</div>
+    }
+    else if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <p class="marketing-section-header__description">@Description</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? HeadingId { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? DescriptionContent { get; set; }
+    [Parameter] public RenderFragment? Eyebrow { get; set; }
+    [Parameter] public bool Compact { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}
+
