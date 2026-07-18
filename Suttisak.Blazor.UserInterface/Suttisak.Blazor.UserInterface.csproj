@@ -8,7 +8,8 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful components for Blazor</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.2.39</AssemblyVersion>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AssemblyVersion>0.2.40</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -19,6 +20,7 @@
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
+		<None Update="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

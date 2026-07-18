@@ -1,0 +1,29 @@
+.marketing-section-header {
+    max-width: 45rem;
+    margin-bottom: var(--marketing-space-5);
+}
+
+.marketing-section-header--compact {
+    margin-bottom: var(--marketing-space-4);
+}
+
+.marketing-section-header h2 {
+    margin: var(--marketing-space-2) 0;
+    font-size: clamp(2.15rem, 4vw, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+}
+
+.marketing-section-header__description {
+    max-width: 42rem;
+    margin: 0;
+    color: var(--marketing-text-soft);
+    line-height: 1.7;
+}
+
+@media (max-width: 760px) {
+    .marketing-section-header {
+        margin-bottom: var(--marketing-space-4);
+    }
+}
+

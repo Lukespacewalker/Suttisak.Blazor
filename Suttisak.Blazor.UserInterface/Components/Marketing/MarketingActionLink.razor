@@ -1,0 +1,22 @@
+<a class="marketing-action marketing-action--@VariantClass @Class"
+   href="@Href"
+   @attributes="AdditionalAttributes">
+    @if (LeadingContent is not null)
+    {
+        <span class="marketing-action__leading" aria-hidden="true">@LeadingContent</span>
+    }
+    @ChildContent
+</a>
+
+@code {
+    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+    [Parameter] public MarketingActionVariant Variant { get; set; } = MarketingActionVariant.Primary;
+    [Parameter] public RenderFragment? LeadingContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string VariantClass => Variant.ToString().ToLowerInvariant();
+}
+

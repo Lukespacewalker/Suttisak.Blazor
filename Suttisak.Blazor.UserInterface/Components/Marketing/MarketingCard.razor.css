@@ -1,0 +1,47 @@
+.marketing-card {
+    min-width: 0;
+    min-height: 15.5rem;
+    padding: var(--marketing-space-3);
+    border: 1px solid var(--marketing-border);
+    border-radius: 1.5rem;
+    background: var(--marketing-surface);
+    box-shadow: 0 1.25rem 2.75rem color-mix(in srgb, var(--marketing-shadow) 42%, transparent);
+}
+
+.marketing-card--featured {
+    background: linear-gradient(145deg, color-mix(in srgb, var(--primary-color) 13%, var(--marketing-surface)), var(--marketing-surface));
+}
+
+.marketing-card--compact {
+    min-height: 12.5rem;
+    border-radius: 1.25rem;
+}
+
+.marketing-card h3 {
+    margin: var(--marketing-space-2) 0 0.65rem;
+    font-size: 1.13rem;
+    line-height: 1.35;
+}
+
+.marketing-card__visual {
+    color: var(--secondary-highlight);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.marketing-card__body ::deep p {
+    margin: 0;
+    color: var(--marketing-text-soft);
+    font-size: 0.96rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 760px) {
+    .marketing-card,
+    .marketing-card--compact {
+        min-height: 0;
+    }
+}
+
