@@ -23,6 +23,26 @@
 <text>
 	<StatusMessage Message="@_statusMessage" />
 
+	@if (ShowAlternativeSignInFirst)
+	{
+		<div class="login-alt-actions" role="group" aria-label="@Login_razor.AlternativeAccess">
+			<div class="login-provider-block">
+				<ExternalLoginPicker TUser="TUser" ProviderDescriptions="ExternalLoginProviderDescriptions" />
+			</div>
+
+			<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request"
+						   OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
+				@Login_razor.ContinueWithPasskey
+			</PasskeySubmit>
+		</div>
+
+		<div class="identity-separator" aria-hidden="true">
+			<span></span>
+			<p>@Login_razor.UsernamePasswordAccess</p>
+			<span></span>
+		</div>
+	}
+
 	<EditForm Model="LoginWithUsernamePasswordInput" asp-route-returnUrl="@ReturnUrl" method="post"
 			  OnValidSubmit="LoginWithUsernamePassword" FormName="@LoginWithUsernameFormName" class="login-form">
 		<DataAnnotationsValidator />
@@ -53,22 +73,25 @@
 		</div>
 	</EditForm>
 
-	<div class="identity-separator" aria-hidden="true">
-		<span></span>
-		<p>@Login_razor.AlternativeAccess</p>
-		<span></span>
-	</div>
-
-	<div class="login-alt-actions" role="group" aria-label="@Login_razor.AlternativeAccess">
-		<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request"
-					   OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
-			@Login_razor.ContinueWithPasskey
-		</PasskeySubmit>
-
-		<div class="login-provider-block">
-			<ExternalLoginPicker TUser="TUser" />
+	@if (!ShowAlternativeSignInFirst)
+	{
+		<div class="identity-separator" aria-hidden="true">
+			<span></span>
+			<p>@Login_razor.AlternativeAccess</p>
+			<span></span>
 		</div>
-	</div>
+
+		<div class="login-alt-actions" role="group" aria-label="@Login_razor.AlternativeAccess">
+			<div class="login-provider-block">
+				<ExternalLoginPicker TUser="TUser" ProviderDescriptions="ExternalLoginProviderDescriptions" />
+			</div>
+
+			<PasskeySubmit FormName="@LoginWithPasskeyFormName" Operation="PasskeyOperation.Request"
+						   OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
+				@Login_razor.ContinueWithPasskey
+			</PasskeySubmit>
+		</div>
+	}
 </text>
 @code {
 	private string? _statusMessage;
@@ -91,6 +114,8 @@
 	protected virtual string RedirectUrl { get; set; } = "/";
 	protected virtual string UserNamePlaceholder { get; set; } = "";
 	protected virtual string PasswordPlaceholder { get; set; } = "";
+	protected virtual bool ShowAlternativeSignInFirst { get; set; }
+	protected virtual IReadOnlyDictionary<string, string>? ExternalLoginProviderDescriptions { get; set; }
 
 	protected override void OnInitialized()
     {

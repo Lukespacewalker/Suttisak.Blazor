@@ -13,11 +13,16 @@
 			<input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
 			@foreach (var provider in _externalLogins)
 			{
-				<FluentButton Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
-					<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?"/>
-					@provider.DisplayName
-				</FluentButton>
-				<text>&nbsp;</text>
+				<div class="external-login-option">
+					<FluentButton Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
+						<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?"/>
+						@provider.DisplayName
+					</FluentButton>
+					@if (ProviderDescriptions?.GetValueOrDefault(provider.Name) is { } description)
+					{
+						<span class="external-login-description">@description</span>
+					}
+				</div>
 			}
 		</div>
 	</form>
@@ -42,6 +47,9 @@
 
 	[SupplyParameterFromQuery]
 	private string? ReturnUrl { get; set; }
+
+	[Parameter]
+	public IReadOnlyDictionary<string, string>? ProviderDescriptions { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
