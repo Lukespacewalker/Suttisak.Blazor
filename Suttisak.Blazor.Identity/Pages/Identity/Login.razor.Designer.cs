@@ -176,5 +176,14 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 return ResourceManager.GetString("Username", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Or sign in with username and password.
+        /// </summary>
+        public static string UsernamePasswordAccess {
+            get {
+                return ResourceManager.GetString("UsernamePasswordAccess", resourceCulture);
+            }
+        }
     }
 }
