@@ -153,6 +153,9 @@
   <data name="Username" xml:space="preserve">
     <value>ชื่อผู้ใช้</value>
   </data>
+  <data name="UsernamePasswordAccess" xml:space="preserve">
+    <value>หรือเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน</value>
+  </data>
   <data name="SignInIntro" xml:space="preserve">
     <value>ใช้บัญชี พาสคีย์ หรือผู้ให้บริการภายนอกของคุณเพื่อเข้าสู่พื้นที่ทำงาน</value>
   </data>
