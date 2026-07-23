@@ -1,0 +1,30 @@
+.data-grid-container {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 0;
+    border: 1px solid var(--color-glass-border, var(--colorNeutralStroke2));
+    border-radius: var(--borderRadius2XLarge, 1rem);
+    background: var(--color-glass-layer2-bg, var(--colorNeutralBackground1));
+    box-shadow: 0 8px 32px var(--color-glass-shadow, rgba(20, 35, 50, .08));
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    scrollbar-gutter: stable;
+}
+
+.data-grid-container ::deep > .fluent-data-grid {
+    width: 100%;
+    min-width: max-content;
+}
+
+.data-grid-container ::deep > .fluent-data-grid thead {
+    background: var(--color-glass-layer1-bg, var(--colorNeutralBackground2));
+}
+
+@media (max-width: 48rem) {
+    .data-grid-container {
+        border-radius: .75rem;
+    }
+}
