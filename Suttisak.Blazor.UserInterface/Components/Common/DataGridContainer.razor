@@ -1,0 +1,18 @@
+<div @attributes="AdditionalAttributes"
+     class="@CssClassValue"
+     style="@Style"
+     tabindex="@TabIndex">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? CssClass { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public int TabIndex { get; set; } = -1;
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue => string.IsNullOrWhiteSpace(CssClass)
+        ? "data-grid-container"
+        : $"data-grid-container {CssClass}";
+}
