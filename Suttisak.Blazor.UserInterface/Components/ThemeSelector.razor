@@ -31,7 +31,7 @@
         {
             var mustUpdate = false;
             _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSelector.razor.js");
-            // use query selectors for flexible target element query
+            await _module.InvokeVoidAsync("initializeColorScheme");
             var result = await _module.InvokeAsync<string>("getTheme");
             if (Enum.TryParse<FluentThemeMode>(result, true, out var themeMode))
             {
@@ -39,6 +39,7 @@
                 {
                     _currentThemeMode = themeMode;
                     await FluentThemeService.SetThemeAsync(themeMode);
+                    await _module.InvokeVoidAsync("setColorScheme", themeMode.ToString());
                     mustUpdate = true;
                 }
             }
@@ -59,6 +60,10 @@
     {
         _currentThemeMode = mode;
         await FluentThemeService.SetThemeAsync(mode);
+        if (_module is not null)
+        {
+            await _module.InvokeVoidAsync("setColorScheme", mode.ToString());
+        }
     }
 }
 
