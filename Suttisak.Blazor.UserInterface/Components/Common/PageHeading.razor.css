@@ -1,0 +1,69 @@
+.page-heading {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: .75rem;
+}
+
+.page-heading__icon {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: .75rem;
+    background: color-mix(in srgb, var(--accent-fill-rest, var(--colorBrandBackground)) 12%, transparent);
+    color: var(--accent-fill-rest, var(--colorBrandForeground1));
+}
+
+.page-heading__copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.page-heading__copy h1,
+.page-heading__copy p {
+    margin: 0;
+}
+
+.page-heading__copy h1 {
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: -.015em;
+}
+
+.page-heading__copy p {
+    margin-top: .25rem;
+    color: var(--neutral-foreground-hint, var(--colorNeutralForeground3));
+    font-size: .9rem;
+    line-height: 1.5;
+}
+
+.page-heading__eyebrow {
+    display: block;
+    margin-bottom: .2rem;
+    color: var(--accent-fill-rest, var(--colorBrandForeground1));
+    font-size: .72rem;
+    font-weight: 750;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.page-heading__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+@media (max-width: 40rem) {
+    .page-heading {
+        align-items: flex-start;
+    }
+
+    .page-heading__actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
