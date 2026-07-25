@@ -20,6 +20,13 @@
     @Login_razor.SignInIntro
 </SectionContent>
 
+@if (UiSlots?.LoginShowcase is not null)
+{
+    <SectionContent SectionId="IdentityLayout.ShowcaseSection">
+        @UiSlots.LoginShowcase
+    </SectionContent>
+}
+
 <text>
 	<StatusMessage Message="@_statusMessage" />
 
@@ -101,6 +108,9 @@
 
 	[CascadingParameter]
 	private HttpContext HttpContext { get; set; } = null!;
+
+	[CascadingParameter]
+	private IdentityUiSlots? UiSlots { get; set; }
 
 	[SupplyParameterFromForm(FormName = LoginWithUsernameFormName)]
 	protected virtual UsernamePasswordInputModel? LoginWithUsernamePasswordInput { get; set; }
