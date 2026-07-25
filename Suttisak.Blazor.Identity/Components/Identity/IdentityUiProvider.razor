@@ -1,0 +1,11 @@
+<CascadingValue Value="@Slots" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? LoginShowcase { get; set; }
+    [Parameter] public RenderFragment? LoginFooter { get; set; }
+
+    private IdentityUiSlots Slots => new(LoginShowcase, LoginFooter);
+}
