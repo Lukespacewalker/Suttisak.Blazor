@@ -1,0 +1,64 @@
+@switch (State)
+{
+    case AsyncContentState.Loading:
+        if (LoadingContent is not null)
+        {
+            @LoadingContent
+        }
+        else
+        {
+            <StatusPanel Loading="true" Title="@LoadingTitle" Message="@LoadingMessage" />
+        }
+        break;
+    case AsyncContentState.Empty:
+        if (EmptyContent is not null)
+        {
+            @EmptyContent
+        }
+        else
+        {
+            <StatusPanel Title="@EmptyTitle" Message="@EmptyMessage" Icon="@EmptyIcon" />
+        }
+        break;
+    case AsyncContentState.Error:
+        if (ErrorContent is not null)
+        {
+            @ErrorContent
+        }
+        else
+        {
+            <StatusPanel Title="@ErrorTitle"
+                         Message="@ErrorMessage"
+                         Icon="@ErrorIcon"
+                         Intent="FeedbackIntent.Error"
+                         Role="alert"
+                         AriaLive="assertive"
+                         Actions="@(OnRetry.HasDelegate ? RetryActions : null)" />
+        }
+        break;
+    default:
+        @ChildContent
+        break;
+}
+
+@code {
+    [Parameter] public AsyncContentState State { get; set; } = AsyncContentState.Ready;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? LoadingContent { get; set; }
+    [Parameter] public RenderFragment? EmptyContent { get; set; }
+    [Parameter] public RenderFragment? ErrorContent { get; set; }
+    [Parameter] public string LoadingTitle { get; set; } = "Loading";
+    [Parameter] public string? LoadingMessage { get; set; }
+    [Parameter] public string EmptyTitle { get; set; } = "No content yet";
+    [Parameter] public string? EmptyMessage { get; set; }
+    [Parameter] public Icon? EmptyIcon { get; set; }
+    [Parameter] public string ErrorTitle { get; set; } = "We couldn't load this content";
+    [Parameter] public string? ErrorMessage { get; set; }
+    [Parameter] public Icon? ErrorIcon { get; set; }
+    [Parameter] public string RetryLabel { get; set; } = "Try again";
+    [Parameter] public EventCallback OnRetry { get; set; }
+
+    private RenderFragment RetryActions => @<FluentButton Appearance="ButtonAppearance.Primary" OnClick="@OnRetry">
+        @RetryLabel
+    </FluentButton>;
+}

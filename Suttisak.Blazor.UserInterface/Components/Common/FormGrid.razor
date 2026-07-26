@@ -1,0 +1,16 @@
+<div @attributes="AdditionalAttributes"
+     class="@CssClassValue"
+     style="@GridStyle">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public int Columns { get; set; } = 2;
+    [Parameter] public string? CssClass { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue => $"form-grid {CssClass}".Trim();
+    private string GridStyle => $"--form-grid-columns: {Math.Clamp(Columns, 1, 4)}; {Style}";
+}

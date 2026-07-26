@@ -1,0 +1,17 @@
+<div @attributes="AdditionalAttributes" class="@CssClassValue">
+    @if (SecondaryActions is not null)
+    {
+        <div class="form-actions__secondary">@SecondaryActions</div>
+    }
+    <div class="form-actions__primary">@ChildContent</div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public RenderFragment? SecondaryActions { get; set; }
+    [Parameter] public bool Sticky { get; set; }
+    [Parameter] public string? CssClass { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue => $"form-actions {(Sticky ? "form-actions--sticky" : null)} {CssClass}".Trim();
+}
