@@ -21,3 +21,8 @@
 .header-transparent {
     background: transparent;
 }
+
+.landing-page-content {
+    width: 100%;
+    min-width: 0;
+}

@@ -1,0 +1,43 @@
+.form-actions {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--app-border);
+}
+
+.form-actions__primary,
+.form-actions__secondary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .65rem;
+}
+
+.form-actions__primary {
+    margin-inline-start: auto;
+}
+
+.form-actions--sticky {
+    position: sticky;
+    z-index: 4;
+    bottom: 0;
+    padding: .85rem;
+    background: color-mix(in srgb, var(--app-surface) 92%, transparent);
+    backdrop-filter: blur(16px);
+}
+
+@media (max-width: 520px) {
+    .form-actions,
+    .form-actions__primary,
+    .form-actions__secondary {
+        width: 100%;
+    }
+
+    .form-actions ::deep fluent-button {
+        flex: 1 1 auto;
+    }
+}

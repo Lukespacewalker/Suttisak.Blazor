@@ -1,0 +1,39 @@
+<section @attributes="AdditionalAttributes"
+         class="@CssClassValue"
+         aria-labelledby="@(!string.IsNullOrWhiteSpace(Title) ? HeadingId : null)">
+    @if (!string.IsNullOrWhiteSpace(Title) || !string.IsNullOrWhiteSpace(Description) || HeaderActions is not null)
+    {
+        <header class="form-section__header">
+            <div>
+                @if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    <h2 id="@HeadingId">@Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Description))
+                {
+                    <p>@Description</p>
+                }
+            </div>
+            @if (HeaderActions is not null)
+            {
+                <div class="form-section__header-actions">@HeaderActions</div>
+            }
+        </header>
+    }
+    <div class="form-section__body">@ChildContent</div>
+</section>
+
+@code {
+    private readonly string _generatedHeadingId = $"form-section-{Guid.NewGuid():N}";
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public RenderFragment? HeaderActions { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public string? CssClass { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string HeadingId => Id ?? _generatedHeadingId;
+    private string CssClassValue => $"form-section {CssClass}".Trim();
+}

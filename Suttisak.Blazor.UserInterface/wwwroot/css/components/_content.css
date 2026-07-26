@@ -1,4 +1,4 @@
-.main-stack > .content {
+.app-page {
     border-top-left-radius: 20px;
     background: var(--color-glass-layer1-bg) !important;
     border-left: 2px solid var(--color-glass-border);

@@ -18,6 +18,10 @@
     margin: 0;
 }
 
+.status-panel h2 {
+    font-family: var(--app-font-heading);
+}
+
 .status-panel p {
     max-width: 34rem;
     color: var(--neutral-foreground-hint, var(--colorNeutralForeground3));
@@ -34,9 +38,9 @@
     color: var(--accent-fill-rest, var(--colorBrandForeground1));
 }
 
-.status-panel--success { border-color: color-mix(in srgb, #107c10 35%, var(--neutral-stroke-rest)); }
-.status-panel--warning { border-color: color-mix(in srgb, #a15c00 35%, var(--neutral-stroke-rest)); }
-.status-panel--error { border-color: color-mix(in srgb, #b42318 35%, var(--neutral-stroke-rest)); }
+.status-panel--success { border-color: color-mix(in srgb, var(--app-success, #107c10) 35%, var(--app-border, #d7dde5)); }
+.status-panel--warning { border-color: color-mix(in srgb, var(--app-warning, #a15c00) 35%, var(--app-border, #d7dde5)); }
+.status-panel--error { border-color: color-mix(in srgb, var(--app-danger, #b42318) 35%, var(--app-border, #d7dde5)); }
 
 .status-panel__actions {
     display: flex;

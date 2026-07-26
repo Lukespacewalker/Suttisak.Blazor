@@ -1,4 +1,26 @@
-.app-content-surface {
+.app-shell-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}
+
+.app-shell-header__logo {
+    width: 2rem;
+    height: 2rem;
+    margin-inline-end: .5rem;
+}
+
+.app-shell-header__title {
+    min-width: 0;
+    overflow: hidden;
+    font-family: var(--app-font-heading);
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+::deep .app-page {
     background: color-mix(in srgb, var(--colorNeutralBackground2) 56%, transparent);
     border: 1px solid color-mix(in srgb, var(--colorNeutralStroke2) 45%, transparent);
     border-radius: var(--borderRadiusXLarge);
@@ -8,7 +30,7 @@
 }
 
 @media (max-width: 600px) {
-    .app-content-surface {
+    ::deep .app-page {
         border-inline: 0;
         border-radius: 0;
     }
