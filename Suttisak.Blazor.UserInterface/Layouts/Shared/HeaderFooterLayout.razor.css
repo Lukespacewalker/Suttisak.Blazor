@@ -1,9 +1,10 @@
-.root ::deep .content {
+.header-footer-content {
+    width: 100%;
     background: url(/assets/backgrounds/gradient.svg);
     display: flex;
     justify-content: center;
 }
 
-body[data-color-scheme="dark"] .root ::deep .content {
+body[data-color-scheme="dark"] .header-footer-content {
     background: url(/assets/backgrounds/gradient-dark.svg)
 }

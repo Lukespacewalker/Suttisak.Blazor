@@ -5,7 +5,7 @@
     gap: 0.75rem;
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 1rem;
+    margin: 0;
     padding: 0.75rem 1rem;
     border: 1px solid var(--colorNeutralStroke2, rgba(0, 0, 0, 0.12));
     border-radius: 0.75rem;
@@ -13,9 +13,24 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
 }
 
+.toolbar ::deep fluent-search,
+.toolbar ::deep fluent-text-field {
+    min-width: min(18rem, 100%);
+}
+
 @media (max-width: 40rem) {
     .toolbar {
         gap: 0.5rem;
         padding: 0.75rem;
+    }
+
+    .toolbar ::deep fluent-button {
+        flex: 1 1 auto;
+    }
+
+    .toolbar ::deep fluent-search,
+    .toolbar ::deep fluent-text-field {
+        flex: 1 1 100%;
+        min-width: 0;
     }
 }

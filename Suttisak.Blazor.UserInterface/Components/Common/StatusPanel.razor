@@ -29,6 +29,7 @@
     [Parameter] public string Role { get; set; } = "status";
     [Parameter] public string AriaLive { get; set; } = "polite";
     [Parameter] public string? Variant { get; set; }
+    [Parameter] public FeedbackIntent? Intent { get; set; }
     [Parameter] public string? CssClass { get; set; }
     [Parameter] public RenderFragment? Actions { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
@@ -36,7 +37,9 @@
     private string CssClassValue => string.Join(" ", new[]
     {
         "status-panel",
-        string.IsNullOrWhiteSpace(Variant) ? null : $"status-panel--{Variant}",
+        Intent is not null
+            ? $"status-panel--{Intent.Value.ToString().ToLowerInvariant()}"
+            : string.IsNullOrWhiteSpace(Variant) ? null : $"status-panel--{Variant}",
         CssClass
     }.Where(value => !string.IsNullOrWhiteSpace(value)));
 }

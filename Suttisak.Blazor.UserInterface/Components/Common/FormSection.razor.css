@@ -1,0 +1,43 @@
+.form-section {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.form-section + .form-section {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--app-border);
+}
+
+.form-section__header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.form-section__header h2,
+.form-section__header p {
+    margin: 0;
+}
+
+.form-section__header h2 {
+    font-size: 1.05rem;
+}
+
+.form-section__header p {
+    margin-top: .3rem;
+    max-width: 58ch;
+    color: var(--app-foreground-muted);
+    line-height: 1.55;
+}
+
+.form-section__header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.form-section__body {
+    min-width: 0;
+}
