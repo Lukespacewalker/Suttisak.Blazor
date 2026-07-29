@@ -1,5 +1,7 @@
 :root {
-    --app-font-body: "IBM Plex Sans Thai", "Segoe UI Variable", "Segoe UI", sans-serif;
+    /* Keep Thai body copy looped, matching AudiogramIQ's original readable
+       Thai typography, while headings retain their distinct display role. */
+    --app-font-body: "Noto Sans", "Noto Sans Thai Looped", "Segoe UI Variable", "Segoe UI", sans-serif;
     --app-font-heading: "Figtree", "IBM Plex Sans Thai", "Segoe UI Variable", sans-serif;
     --app-font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
 
@@ -67,6 +69,32 @@ kbd,
 pre,
 samp {
     font-family: var(--app-font-mono);
+}
+
+/* The shared visual baseline also covers grids rendered inside reusable app
+   components that have not yet been wrapped in DataGridContainer. The
+   container adds the surface and scrolling behaviour; these rules keep the
+   table treatment consistent everywhere. */
+.fluent-data-grid {
+    color: var(--app-foreground);
+}
+
+.fluent-data-grid thead {
+    background: var(--color-glass-layer1-bg, var(--app-surface-muted));
+}
+
+.fluent-data-grid th,
+.fluent-data-grid [role="columnheader"] {
+    color: var(--app-foreground-muted);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.fluent-data-grid td,
+.fluent-data-grid [role="gridcell"] {
+    vertical-align: middle;
 }
 
 .app-page {

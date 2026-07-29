@@ -12,19 +12,46 @@
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     scrollbar-gutter: stable;
+    overscroll-behavior-inline: contain;
 }
 
-.data-grid-container ::deep > .fluent-data-grid {
+.data-grid-container ::deep .fluent-data-grid {
     width: 100%;
     min-width: max-content;
 }
 
-.data-grid-container ::deep > .fluent-data-grid thead {
+.data-grid-container ::deep .fluent-data-grid thead {
     background: var(--color-glass-layer1-bg, var(--colorNeutralBackground2));
+}
+
+.data-grid-container ::deep .fluent-data-grid th,
+.data-grid-container ::deep .fluent-data-grid [role="columnheader"] {
+    color: var(--app-foreground-muted, var(--colorNeutralForeground3));
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.data-grid-container ::deep .fluent-data-grid tr {
+    transition: background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.data-grid-container ::deep .fluent-data-grid tr:focus-within {
+    position: relative;
+    z-index: 1;
+    box-shadow: inset 3px 0 0 var(--app-accent, var(--colorBrandBackground));
+}
+
+.data-grid-container ::deep .fluent-data-grid td,
+.data-grid-container ::deep .fluent-data-grid [role="gridcell"] {
+    vertical-align: middle;
 }
 
 @media (max-width: 48rem) {
     .data-grid-container {
         border-radius: .75rem;
+        /* Preserve the grid's column geometry on compact screens. */
+        overflow-x: auto;
     }
 }
