@@ -18,7 +18,18 @@ jobs:
 
       - name: Generate NuGet package
         run: |
-          dotnet pack \
+          dotnet pack Suttisak.Blazor.Identity.Generator/Suttisak.Blazor.Identity.Generator.csproj \
+          --configuration Release \
+          -o packages
+          dotnet pack Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.csproj \
+          --configuration Release \
+          -o packages \
+          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+          dotnet pack Suttisak.Blazor.Identity.Core/Suttisak.Blazor.Identity.Core.csproj \
+          --configuration Release \
+          -o packages \
+          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+          dotnet pack Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj \
           --configuration Release \
           -o packages \
           -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
