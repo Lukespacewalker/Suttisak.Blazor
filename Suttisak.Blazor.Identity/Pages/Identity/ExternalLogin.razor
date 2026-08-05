@@ -30,7 +30,7 @@
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextInput Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Placeholder="@ExternalLogin_razor.EmailPlaceholder" Label="@ExternalLogin_razor.EmailLabel" Style="width: 100%;"/>
+            <FluentTextInput Name="Input.Email" @bind-Value="Input!.Email" AutoComplete="email" Placeholder="@ExternalLogin_razor.EmailPlaceholder" Label="@ExternalLogin_razor.EmailLabel" Style="width: 100%;"/>
             @*<FluentValidationMessage For="() => Input.Email" />*@
             @* TODO: restore FluentValidationMessage later in RC3 *@
             <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@ExternalLogin_razor.RegisterButton</FluentButton>

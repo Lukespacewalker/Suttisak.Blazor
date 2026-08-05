@@ -57,17 +57,17 @@
 
 		<div>
 			<FluentTextInput Name="LoginWithUsernamePasswordInput.Username" Width="100%"
-							 @bind-Value="LoginWithUsernamePasswordInput.Username" AutoComplete="username" Required="true"
+							 @bind-Value="LoginWithUsernamePasswordInput!.Username" AutoComplete="username" Required="true"
 							 Placeholder="@(string.IsNullOrEmpty(UserNamePlaceholder) ? Login_razor.EmailOrUsername : UserNamePlaceholder)" Label="@Login_razor.Username" Style="width: 100%" />
 
 			<FluentTextInput Name="LoginWithUsernamePasswordInput.Password" Width="100%"
-							 @bind-Value="LoginWithUsernamePasswordInput.Password" AutoComplete="current-password" Required="true"
+							 @bind-Value="LoginWithUsernamePasswordInput!.Password" AutoComplete="current-password" Required="true"
 							 Placeholder="@(string.IsNullOrEmpty(PasswordPlaceholder) ? Login_razor.Password : PasswordPlaceholder)" Label="@Login_razor.Password" Style="width: 100%"
 							 TextInputType="TextInputType.Password" />
 
 			<label class="login-remember-row" for="remember-me">
 				<input id="remember-me" name="@($"{LoginWithUsernameFormName}.RememberMe")" type="checkbox"
-					   @bind="LoginWithUsernamePasswordInput.RememberMe" />
+					   @bind="LoginWithUsernamePasswordInput!.RememberMe" />
 				<span>@Login_razor.KeepMeSignedInOnThisDevice</span>
 			</label>
 		</div>
@@ -145,7 +145,7 @@
 
 	public async Task LoginWithPasskey()
 	{
-		if (!string.IsNullOrEmpty(LoginWithPasskeyOutput.Error))
+		if (!string.IsNullOrEmpty(LoginWithPasskeyOutput!.Error))
 		{
 			_statusMessage = $"{Login_razor.Error}: {LoginWithPasskeyOutput.Error}";
 			return;
@@ -162,8 +162,8 @@
 
 	public async Task LoginWithUsernamePassword()
 	{
-		var result = await SignInManager.PasswordSignInAsync(LoginWithUsernamePasswordInput.Username,
-LoginWithUsernamePasswordInput.Password, LoginWithUsernamePasswordInput.RememberMe, lockoutOnFailure: false);
+		var result = await SignInManager.PasswordSignInAsync(LoginWithUsernamePasswordInput!.Username,
+			LoginWithUsernamePasswordInput.Password, LoginWithUsernamePasswordInput.RememberMe, lockoutOnFailure: false);
 		HandleResult(result);
 	}
 
@@ -187,7 +187,7 @@ LoginWithUsernamePasswordInput.Password, LoginWithUsernamePasswordInput.Remember
 				new Dictionary<string, object?>
 				{
 					["returnUrl"] = ReturnUrl,
-					["rememberMe"] = LoginWithUsernamePasswordInput.RememberMe
+					["rememberMe"] = LoginWithUsernamePasswordInput!.RememberMe
 				});
 		}
 		else if (result.IsLockedOut)
