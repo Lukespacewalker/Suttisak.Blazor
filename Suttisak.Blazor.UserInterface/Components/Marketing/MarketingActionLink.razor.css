@@ -13,21 +13,21 @@
 
 .marketing-action--primary {
     color: var(--colorNeutralForegroundOnBrand);
-    background: var(--primary-gradient);
+    background: var(--app-brand-gradient);
 }
 
 .marketing-action--secondary {
-    border: 1px solid var(--marketing-border);
-    background: var(--marketing-surface-soft);
-    color: var(--marketing-text);
+    border: 1px solid var(--app-border);
+    background: var(--app-surface-muted);
+    color: var(--app-foreground);
 }
 
 .marketing-action:hover {
-    box-shadow: 0 0.75rem 1.5rem color-mix(in srgb, var(--marketing-shadow) 50%, transparent);
+    box-shadow: 0 0.75rem 1.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 50%, transparent);
 }
 
 .marketing-action:focus-visible {
-    outline: 3px solid var(--secondary-highlight);
+    outline: 3px solid var(--app-secondary-highlight);
     outline-offset: 3px;
 }
 

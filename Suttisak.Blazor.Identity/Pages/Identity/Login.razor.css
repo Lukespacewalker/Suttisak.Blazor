@@ -1,5 +1,5 @@
 text {
-    --login-highlight: var(--primary-highlight);
+    --login-highlight: var(--app-brand-highlight);
 }
 
 ::deep .login-form {

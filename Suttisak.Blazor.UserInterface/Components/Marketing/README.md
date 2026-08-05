@@ -12,7 +12,7 @@ Import the namespace:
 
 ### `MarketingPage`
 
-Provides the themed page surface, spacing tokens, and an optional keyboard-accessible skip link.
+Provides the semantic `--app-*` page surface and an optional keyboard-accessible skip link. Version 0.4.0 removes the former component-specific customization API.
 
 ```razor
 <MarketingPage SkipTarget="features" SkipText="Skip to features">

@@ -4,7 +4,7 @@
     align-items: center;
     min-height: min(49rem, calc(100vh - 2rem));
     overflow: clip;
-    padding-block: var(--marketing-space-4) var(--marketing-space-5);
+    padding-block: var(--app-space-8) var(--app-space-12);
 }
 
 .marketing-hero__backdrop {
@@ -25,24 +25,15 @@
     height: 26rem;
     top: 5%;
     left: -8rem;
-    background: radial-gradient(circle, var(--primary-overlay) 0%, transparent 72%);
+    background: radial-gradient(circle, var(--app-brand-overlay) 0%, transparent 72%);
 }
 
 .marketing-hero__orb--end {
-    width: 30rem;
-    height: 30rem;
-    right: -10rem;
-    bottom: -12rem;
-    background: radial-gradient(circle, var(--primary-overlay-alt) 0%, transparent 72%);
+    display: none;
 }
 
 .marketing-hero__grid {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, color-mix(in srgb, var(--secondary-highlight) 24%, transparent) 0.12rem, transparent 0.16rem);
-    background-size: 2.5rem 2.5rem;
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 66%, transparent 100%);
-    mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 66%, transparent 100%);
+    display: none;
 }
 
 .marketing-hero__container-scope {
@@ -55,15 +46,15 @@
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(24rem, 0.92fr);
     align-items: center;
-    gap: clamp(var(--marketing-space-4), 5vw, var(--marketing-space-7));
+    gap: clamp(var(--app-space-8), 5vw, var(--app-space-24));
     min-height: 39rem;
-    padding: clamp(var(--marketing-space-4), 4vw, var(--marketing-space-5));
-    border: 1px solid color-mix(in srgb, var(--marketing-border) 85%, transparent);
+    padding: clamp(var(--app-space-8), 4vw, var(--app-space-12));
+    border: 1px solid color-mix(in srgb, var(--app-border) 85%, transparent);
     border-radius: 2rem;
     background:
-        linear-gradient(135deg, color-mix(in srgb, var(--marketing-surface) 92%, white 8%), color-mix(in srgb, var(--primary-surface-1) 94%, transparent)),
-        radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--primary-overlay) 70%, transparent), transparent 36%);
-    box-shadow: 0 2rem 5rem color-mix(in srgb, var(--marketing-shadow) 55%, transparent);
+        linear-gradient(135deg, color-mix(in srgb, var(--app-surface) 92%, white 8%), color-mix(in srgb, var(--app-brand-surface-1) 94%, transparent)),
+        radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--app-brand-overlay) 70%, transparent), transparent 36%);
+    box-shadow: 0 2rem 5rem color-mix(in srgb, var(--app-brand-shadow-soft) 55%, transparent);
 }
 
 .marketing-hero--without-media .marketing-hero__container-scope ::deep .marketing-hero__container {
@@ -77,7 +68,7 @@
 
 .marketing-hero__copy h1 {
     max-width: 39rem;
-    margin: var(--marketing-space-3) 0;
+    margin: var(--app-space-6) 0;
     font-size: clamp(2.8rem, 5vw, 5.35rem);
     line-height: 0.98;
     letter-spacing: -0.045em;
@@ -86,8 +77,8 @@
 
 .marketing-hero__description {
     max-width: 38rem;
-    margin: var(--marketing-space-2) 0 0;
-    color: var(--marketing-text-soft);
+    margin: var(--app-space-4) 0 0;
+    color: var(--app-foreground-muted);
     font-size: clamp(1rem, 1.5vw, 1.1rem);
     line-height: 1.7;
 }
@@ -95,8 +86,8 @@
 .marketing-hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--marketing-space-2);
-    margin-top: var(--marketing-space-4);
+    gap: var(--app-space-4);
+    margin-top: var(--app-space-8);
 }
 
 .marketing-hero__media {
@@ -116,13 +107,13 @@
     max-height: 37rem;
     object-fit: contain;
     object-position: center bottom;
-    filter: drop-shadow(0 1.5rem 1.5rem color-mix(in srgb, var(--marketing-shadow) 60%, transparent));
+    filter: drop-shadow(0 1.5rem 1.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 60%, transparent));
 }
 
 @media (max-width: 1080px) {
     .marketing-hero__container-scope ::deep .marketing-hero__container {
         grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.78fr);
-        gap: var(--marketing-space-3);
+        gap: var(--app-space-6);
     }
 
     .marketing-hero__media ::deep img {
@@ -134,13 +125,13 @@
 @media (max-width: 760px) {
     .marketing-hero {
         min-height: auto;
-        padding-block: var(--marketing-space-3) var(--marketing-space-4);
+        padding-block: var(--app-space-6) var(--app-space-8);
     }
 
     .marketing-hero__container-scope ::deep .marketing-hero__container {
         grid-template-columns: 1fr;
         min-height: auto;
-        padding: var(--marketing-space-3);
+        padding: var(--app-space-6);
         border-radius: 1.5rem;
     }
 
