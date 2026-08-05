@@ -37,7 +37,7 @@
             }
             <FluentTextInput 
                 Name="Input.NewEmail" 
-                @bind-Value="Input.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
+                @bind-Value="Input!.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
             <!-- TODO : Restore Fluent Validation Message Later-->
             <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</FluentButton>
         </EditForm>

@@ -51,7 +51,7 @@ else
 
                     <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
-                        <FluentTextInput Name="Input.Code" @bind-Value="Input.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
+                        <FluentTextInput Name="Input.Code" @bind-Value="Input!.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
                         @*<FluentValidationMessage For="() => Input.Code" class="text-danger" />*@
                         @* TODO: restore FluentValidationMessage later in RC3 *@
                         <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</FluentButton>

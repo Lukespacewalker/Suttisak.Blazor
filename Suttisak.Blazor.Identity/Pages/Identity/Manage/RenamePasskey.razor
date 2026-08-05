@@ -23,8 +23,8 @@
         <h4>@RenamePasskey_razor.EnterName</h4>
     }
     <ValidationSummary class="text-danger" role="alert" />
-    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
-    <ValidationMessage For="() => Input.Name" class="text-danger" />
+    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input!.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
+    <ValidationMessage For="() => Input!.Name" class="text-danger" />
     <FluentButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</FluentButton>
 </EditForm>
 
