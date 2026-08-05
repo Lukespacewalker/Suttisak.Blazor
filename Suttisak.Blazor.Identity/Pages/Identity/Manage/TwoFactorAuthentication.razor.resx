@@ -108,7 +108,7 @@
 		<value>Authenticator app</value>
 	</data>
 	<data name="BrowserForgottenMessage" xml:space="preserve">
-		<value>The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.</value>
+    <value>The current browser has been forgotten. When you sign in again from this browser you will be prompted for your 2fa code.</value>
 	</data>
 	<data name="CanGenerateNewCodesMessage" xml:space="preserve">
 		<value>You can &lt;a href="{0}"&gt;generate a new set of recovery codes&lt;/a&gt;.</value>

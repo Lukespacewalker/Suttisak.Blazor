@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
 		Microsoft ResX Schema
@@ -111,7 +111,7 @@
 		<value>Your login is protected with an authenticator app. Enter your authenticator code below.</value>
 	</data>
 	<data name="LoginButton" xml:space="preserve">
-		<value>Log in</value>
+		<value>Sign in</value>
 	</data>
 	<data name="NoAccessText" xml:space="preserve">
 		<value>Don't have access to your authenticator device? You can</value>
@@ -120,7 +120,7 @@
 		<value>Two-factor authentication</value>
 	</data>
 	<data name="RecoveryCodeLink" xml:space="preserve">
-		<value>log in with a recovery code</value>
+		<value>Sign in with a recovery code</value>
 	</data>
 	<data name="RememberMachineLabel" xml:space="preserve">
 		<value>Remember this machine</value>
