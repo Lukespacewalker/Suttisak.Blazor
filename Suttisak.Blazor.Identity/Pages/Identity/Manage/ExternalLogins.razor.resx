@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
 		Microsoft ResX Schema
@@ -108,10 +108,10 @@
     <value>Remove</value>
   </data>
   <data name="AddAnotherService" xml:space="preserve">
-    <value>Add another service to log in.</value>
+    <value>Add another service to Sign in.</value>
   </data>
   <data name="LogInUsingTitle" xml:space="preserve">
-    <value>Log in using your {0} account</value>
+    <value>Sign in using your {0} account</value>
   </data>
   <data name="ErrorRemoveLogin" xml:space="preserve">
     <value>Error: The external login was not removed.</value>
