@@ -1,21 +1,50 @@
 :root {
-    /* Keep Thai body copy looped, matching AudiogramIQ's original readable
-       Thai typography, while headings retain their distinct display role. */
+    /* Primitive tokens: shared across every consuming application. */
     --app-font-body: "Noto Sans", "Noto Sans Thai Looped", "Segoe UI Variable", "Segoe UI", sans-serif;
     --app-font-heading: "Figtree", "IBM Plex Sans Thai", "Segoe UI Variable", sans-serif;
     --app-font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
 
+    --app-space-1: .25rem;
+    --app-space-2: .5rem;
+    --app-space-3: .75rem;
+    --app-space-4: 1rem;
+    --app-space-5: 1.25rem;
+    --app-space-6: 1.5rem;
+    --app-space-8: 2rem;
+    --app-space-10: 2.5rem;
+    --app-space-12: 3rem;
+    --app-space-14: 3.5rem;
+    --app-space-18: 4.5rem;
+    --app-space-24: 6rem;
+
+    --app-radius-sm: .5rem;
+    --app-radius-md: .75rem;
+    --app-radius-lg: 1rem;
+    --app-radius-xl: 1.5rem;
+    --app-shadow-sm: 0 1px 2px rgb(15 23 42 / .06);
+    --app-shadow-md: 0 12px 32px rgb(15 23 42 / .10);
+    --app-shadow-lg: 0 24px 64px rgb(15 23 42 / .14);
+    --app-duration-fast: 120ms;
+    --app-duration-normal: 220ms;
+    --app-duration-slow: 420ms;
+
     --app-page-padding-block: .75rem 1.5rem;
     --app-page-padding-inline: 1.5rem;
-    --app-page-gap: 1rem;
+    --app-page-gap: var(--app-space-4);
     --app-content-max-width: none;
+    --app-layout-gutter: clamp(1.25rem, 4vw, 3rem);
+    --app-marketing-max-width: 76rem;
 
-    --app-accent: var(--accent-fill-rest, var(--colorBrandBackground, #0f6cbd));
+    /* Semantic defaults. Applications override these values, never component CSS. */
+    --app-brand: var(--accent-fill-rest, var(--colorBrandBackground, #0f6cbd));
+    --app-brand-secondary: color-mix(in srgb, var(--app-brand) 72%, #107c10);
+    --app-background: var(--neutral-layer-1, var(--colorNeutralBackground1, #f7f9fb));
     --app-surface: var(--neutral-layer-1, var(--colorNeutralBackground1, #fff));
     --app-surface-muted: var(--neutral-layer-2, var(--colorNeutralBackground2, #f6f8fa));
     --app-border: var(--neutral-stroke-rest, var(--colorNeutralStroke2, #d7dde5));
     --app-foreground: var(--neutral-foreground-rest, var(--colorNeutralForeground1, #17212b));
     --app-foreground-muted: var(--neutral-foreground-hint, var(--colorNeutralForeground3, #5f6b7a));
+    --app-accent: var(--app-brand);
     --app-success: #107c10;
     --app-warning: #a15c00;
     --app-danger: #b42318;
@@ -25,11 +54,21 @@ body {
     --fontFamilyBase: var(--app-font-body);
     margin: 0;
     min-height: 100vh;
+    background: var(--app-background);
     color: var(--app-foreground);
     font-family: var(--app-font-body);
     font-optical-sizing: auto;
     font-size: var(--type-ramp-base-font-size, 1rem);
     line-height: var(--type-ramp-base-line-height, 1.5);
+}
+
+::selection {
+    background: color-mix(in srgb, var(--app-accent) 28%, transparent);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--app-accent);
+    outline-offset: 2px;
 }
 
 h1,
@@ -157,9 +196,9 @@ samp {
     box-sizing: border-box;
     padding: 0;
     border: 1px solid var(--color-glass-border, var(--app-border));
-    border-radius: var(--borderRadius2XLarge, 1rem);
+    border-radius: var(--borderRadius2XLarge, var(--app-radius-lg));
     background: var(--color-glass-layer2-bg, var(--app-surface));
-    box-shadow: 0 8px 32px var(--color-glass-shadow, rgba(20, 35, 50, .08));
+    box-shadow: var(--app-shadow-md);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     scrollbar-gutter: stable;
@@ -184,7 +223,7 @@ samp {
     align-content: center;
     gap: .75rem;
     border: 1px solid var(--app-border);
-    border-radius: 1.125rem;
+    border-radius: var(--app-radius-lg);
     background: var(--app-surface);
     color: var(--app-foreground);
     text-align: center;
@@ -237,5 +276,11 @@ samp {
         transition-duration: .01ms !important;
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
+    }
+}
+
+@media (forced-colors: active) {
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+        outline-color: Highlight;
     }
 }

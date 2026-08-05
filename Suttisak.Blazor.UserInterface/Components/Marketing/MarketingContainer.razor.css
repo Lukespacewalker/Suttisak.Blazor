@@ -1,5 +1,5 @@
 .marketing-container {
-    width: min(calc(100% - var(--marketing-gutter, 3rem)), 76rem);
+    width: min(calc(100% - var(--app-layout-gutter, 3rem)), 76rem);
     margin-inline: auto;
 }
 

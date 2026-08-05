@@ -29,3 +29,20 @@ Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 
 The application remains responsible for copy, localization, routes, authorization, and product assets.
 
+## Design token contract (0.4.0)
+
+Every application imports `wwwroot/css/main.css` and overrides semantic tokens only. Component styles must not contain product colors.
+
+| Role | Tokens |
+|---|---|
+| Brand | `--app-brand`, `--app-brand-secondary`, `--app-accent` |
+| Surfaces | `--app-background`, `--app-surface`, `--app-surface-muted` |
+| Content | `--app-foreground`, `--app-foreground-muted`, `--app-border` |
+| Status | `--app-success`, `--app-warning`, `--app-danger` |
+| Typography | `--app-font-body`, `--app-font-heading`, `--app-font-mono` |
+| Structure | `--app-space-*`, `--app-radius-*`, `--app-shadow-*`, `--app-duration-*` |
+
+Use `light-dark()` in application overrides so system, light, and dark preferences share the same contract. Derived `--app-brand-*` tokens in `color.css` are owned by the library and should not be redeclared by applications.
+
+For application pages, compose `PageHeading`, `Toolbar`, `FormSection`, `FormGrid`, `DataGridContainer`, `FeedbackBanner`, `StatusPanel`, and `GlassCard`. Landing pages use the Marketing components below; account flows use `IdentityLayout`.
+
