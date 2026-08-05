@@ -1,14 +1,14 @@
 .marketing-section-header {
     max-width: 45rem;
-    margin-bottom: var(--marketing-space-5);
+    margin-bottom: var(--app-space-12);
 }
 
 .marketing-section-header--compact {
-    margin-bottom: var(--marketing-space-4);
+    margin-bottom: var(--app-space-8);
 }
 
 .marketing-section-header h2 {
-    margin: var(--marketing-space-2) 0;
+    margin: var(--app-space-4) 0;
     font-size: clamp(2.15rem, 4vw, 3.5rem);
     line-height: 1.08;
     letter-spacing: -0.045em;
@@ -17,13 +17,13 @@
 .marketing-section-header__description {
     max-width: 42rem;
     margin: 0;
-    color: var(--marketing-text-soft);
+    color: var(--app-foreground-muted);
     line-height: 1.7;
 }
 
 @media (max-width: 760px) {
     .marketing-section-header {
-        margin-bottom: var(--marketing-space-4);
+        margin-bottom: var(--app-space-8);
     }
 }
 

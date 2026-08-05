@@ -67,8 +67,8 @@ neutral guidance.
 The shared `css/main.css` establishes typography roles, responsive page
 padding, semantic state colors, reduced-motion behavior, and compatibility
 classes for older pages. Applications should define product colors through
-`--primary-color`, `--primary-color-alt`, `--secondary-color`, and
-`--secondary-color-alt` rather than replacing the shared component styles.
+`--app-brand`, `--app-brand-secondary`, `--app-brand-secondary`, and
+`--app-brand` rather than replacing the shared component styles.
 
 ## Theme bootstrap
 

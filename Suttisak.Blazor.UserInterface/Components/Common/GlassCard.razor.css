@@ -1,6 +1,6 @@
 .glass-card {
-    background: color-mix(in srgb, var(--primary-color, #3f8ddd), transparent 88%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color, #3f8ddd), transparent 70%);
+    background: color-mix(in srgb, var(--app-brand, #3f8ddd), transparent 88%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app-brand, #3f8ddd), transparent 70%);
     border-radius: 0.75rem;
     padding: 1rem;
     display: flex;
@@ -16,12 +16,12 @@
 }
 
 .glass-card--clickable:hover {
-    background: color-mix(in srgb, var(--primary-color, #3f8ddd), transparent 82%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color, #3f8ddd), transparent 55%), 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: color-mix(in srgb, var(--app-brand, #3f8ddd), transparent 82%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app-brand, #3f8ddd), transparent 55%), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .glass-card--active {
-    background: var(--primary-overlay-soft, color-mix(in srgb, var(--primary-color, #3f8ddd), transparent 90%));
+    background: var(--app-brand-overlay-soft, color-mix(in srgb, var(--app-brand, #3f8ddd), transparent 90%));
 }
 
 .glass-card--active::before {
@@ -31,7 +31,7 @@
     top: 0;
     bottom: 0;
     width: 4px;
-    background-color: var(--primary-color, #3f8ddd);
+    background-color: var(--app-brand, #3f8ddd);
 }
 
 .glass-card__header {

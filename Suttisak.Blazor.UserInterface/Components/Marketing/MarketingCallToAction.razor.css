@@ -2,19 +2,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--marketing-space-4);
-    padding: clamp(var(--marketing-space-4), 5vw, var(--marketing-space-6));
-    border: 1px solid var(--marketing-border);
+    gap: var(--app-space-8);
+    padding: clamp(var(--app-space-8), 5vw, var(--app-space-18));
+    border: 1px solid var(--app-border);
     border-radius: 2rem;
     background:
-        radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--primary-overlay) 75%, transparent), transparent 32%),
-        var(--marketing-surface);
-    box-shadow: 0 1.5rem 3.5rem color-mix(in srgb, var(--marketing-shadow) 48%, transparent);
+        radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--app-brand-overlay) 75%, transparent), transparent 32%),
+        var(--app-surface);
+    box-shadow: 0 1.5rem 3.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 48%, transparent);
 }
 
 .marketing-call-to-action__content ::deep h2 {
     max-width: 38rem;
-    margin: var(--marketing-space-2) 0;
+    margin: var(--app-space-4) 0;
     font-size: clamp(2.15rem, 4vw, 3.5rem);
     line-height: 1.08;
     letter-spacing: -0.045em;
@@ -23,7 +23,7 @@
 .marketing-call-to-action__content ::deep p {
     max-width: 42rem;
     margin: 0;
-    color: var(--marketing-text-soft);
+    color: var(--app-foreground-muted);
     line-height: 1.7;
 }
 

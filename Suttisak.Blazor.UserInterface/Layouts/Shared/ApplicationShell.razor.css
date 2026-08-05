@@ -15,8 +15,8 @@
 .app-shell__orb {
     position: absolute;
     border-radius: 999px;
-    filter: blur(18px);
-    opacity: .8;
+    filter: blur(32px);
+    opacity: .32;
 }
 
 .app-shell__orb--primary {
@@ -24,15 +24,11 @@
     height: min(42rem, 75vw);
     top: -22rem;
     right: -10rem;
-    background: radial-gradient(circle, var(--primary-overlay, rgba(15, 108, 189, .12)), transparent 70%);
+    background: radial-gradient(circle, var(--app-brand-overlay, rgba(15, 108, 189, .12)), transparent 70%);
 }
 
 .app-shell__orb--secondary {
-    width: min(34rem, 68vw);
-    height: min(34rem, 68vw);
-    bottom: -20rem;
-    left: 12%;
-    background: radial-gradient(circle, var(--primary-overlay-alt, rgba(16, 124, 16, .1)), transparent 70%);
+    display: none;
 }
 
 .app-shell__skip-link {
