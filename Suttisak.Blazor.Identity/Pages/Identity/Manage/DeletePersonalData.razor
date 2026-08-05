@@ -27,7 +27,7 @@
             <FluentValidationSummary class="text-danger" role="alert" />
             @if (_requirePassword)
             {
-                <FluentTextInput type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
+                <FluentTextInput type="password" Name="Input.Password" @bind-Value="Input!.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
                 @*<FluentValidationMessage For="() => Input.Password" class="text-danger" />*@
                 @* TODO: restore FluentValidationMessage later in RC3 *@
             }

@@ -20,7 +20,7 @@
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
             <FluentTextInput Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
-            <FluentTextInput Name="Input.PhoneNumber" @bind-Value="Input.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
+            <FluentTextInput Name="Input.PhoneNumber" @bind-Value="Input!.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
             <!-- TODO : Restore Fluent Validation Message Later-->
             <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Profile_razor.SaveButton</FluentButton>
         </EditForm>
