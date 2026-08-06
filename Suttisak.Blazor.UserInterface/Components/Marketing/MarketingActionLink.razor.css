@@ -12,7 +12,7 @@
 }
 
 .marketing-action--primary {
-    color: var(--colorNeutralForegroundOnBrand);
+    color: var(--app-on-brand);
     background: var(--app-brand-gradient);
 }
 

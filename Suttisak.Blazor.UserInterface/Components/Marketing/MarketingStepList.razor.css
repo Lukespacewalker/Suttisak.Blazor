@@ -1,0 +1,43 @@
+.marketing-step-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--app-border);
+    list-style: none;
+}
+
+.marketing-step-list ::deep .marketing-step:not(:last-child) {
+    border-right: 1px solid var(--app-border);
+}
+
+@media (min-width: 761px) and (max-width: 980px) {
+    .marketing-step-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .marketing-step-list ::deep .marketing-step:nth-child(2n) {
+        border-right: 0;
+    }
+
+    .marketing-step-list ::deep .marketing-step:not(:nth-last-child(-n + 2)) {
+        border-bottom: 1px solid var(--app-border);
+    }
+
+    .marketing-step-list ::deep .marketing-step:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        border-right: 0;
+    }
+}
+
+@media (max-width: 760px) {
+    .marketing-step-list {
+        grid-template-columns: 1fr;
+    }
+
+    .marketing-step-list ::deep .marketing-step:not(:last-child) {
+        border-right: 0;
+        border-bottom: 1px solid var(--app-border);
+    }
+}
