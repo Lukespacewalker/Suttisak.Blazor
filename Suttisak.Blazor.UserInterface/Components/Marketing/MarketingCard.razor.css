@@ -5,12 +5,12 @@
     border: 1px solid var(--app-border);
     border-radius: 1.5rem;
     background: var(--app-surface);
-    box-shadow: 0 0.7rem 1.8rem color-mix(in srgb, var(--app-brand-shadow-soft) 24%, transparent);
+    box-shadow: 0 0.7rem 1.8rem color-mix(in srgb, var(--app-foreground) 5%, transparent);
 }
 
 .marketing-card--featured {
-    border-color: color-mix(in srgb, var(--app-border) 72%, var(--app-brand) 28%);
-    background: var(--app-brand-surface-1);
+    border-color: var(--app-border);
+    background: var(--app-surface-muted);
 }
 
 .marketing-card--compact {
