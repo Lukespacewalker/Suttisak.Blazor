@@ -39,8 +39,37 @@ Provides the responsive hero composition and decorative backdrop. Keep authoriza
     <Actions>
         <MarketingActionLink Href="/login">Sign in</MarketingActionLink>
     </Actions>
-    <Media><img src="/assets/product.png" alt="Product preview" /></Media>
+    <Media>
+        <MarketingProductFrame Label="Product workspace">
+            <img src="/assets/product.png" alt="Product preview" />
+        </MarketingProductFrame>
+    </Media>
 </MarketingHero>
+```
+
+### `MarketingProductFrame`
+
+Frames a real product screenshot or a lightweight product-state preview. It intentionally avoids decorative browser controls and keeps the product as the visual focus.
+
+### `MarketingProofStrip` and `MarketingProofItem`
+
+Present verified outcomes, trust statements, or workflow guarantees immediately after the hero. Do not invent metrics.
+
+```razor
+<MarketingProofStrip AriaLabel="Product assurances">
+    <MarketingProofItem Value="01" Title="Role-aware access" Description="People see only the work relevant to them." />
+</MarketingProofStrip>
+```
+
+### `MarketingStepList` and `MarketingStep`
+
+Describe one connected workflow in three or four concise stages.
+
+```razor
+<MarketingStepList>
+    <MarketingStep Number="01" Title="Prepare" Description="Set the context before work begins." />
+    <MarketingStep Number="02" Title="Complete" Description="Follow one clear operational path." />
+</MarketingStepList>
 ```
 
 ### `MarketingSectionHeader`
@@ -67,15 +96,17 @@ An anchor styled as a primary or secondary call to action. `LeadingContent` norm
 </MarketingActionLink>
 ```
 
-### `MarketingCard`
+### `MarketingFeatureGrid` and `MarketingCard`
 
-A semantic feature/support card. Use `Featured` for the emphasized card and `Compact` for denser groups. Grid placement remains the responsibility of the parent page.
+A shared capability grid and semantic feature/support card. Use `Featured` for one emphasized outcome and `Compact` for denser supporting groups.
 
 ```razor
-<MarketingCard Title="Structured workflow" Featured="true">
-    <Visual>...</Visual>
-    <p>Describe the outcome rather than implementation details.</p>
-</MarketingCard>
+<MarketingFeatureGrid>
+    <MarketingCard Title="Structured workflow" Featured="true">
+        <Visual>...</Visual>
+        <p>Describe the outcome rather than implementation details.</p>
+    </MarketingCard>
+</MarketingFeatureGrid>
 ```
 
 ### `MarketingCallToAction`

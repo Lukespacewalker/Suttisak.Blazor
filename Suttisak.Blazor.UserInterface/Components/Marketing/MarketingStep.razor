@@ -1,0 +1,13 @@
+<li class="marketing-step @Class" @attributes="AdditionalAttributes">
+    <span class="marketing-step__number" aria-hidden="true">@Number</span>
+    <div><h3>@Title</h3><p>@Description</p>@ChildContent</div>
+</li>
+
+@code {
+    [Parameter, EditorRequired] public string Number { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Description { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

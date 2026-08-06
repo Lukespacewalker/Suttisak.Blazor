@@ -51,7 +51,7 @@ fluent-button {
 .culture-selector button.active {
     --gradient-brand-start: var(--app-brand);
     --gradient-brand-end: var(--app-brand-secondary);
-    color: var(--colorNeutralForegroundOnBrand);
+    color: var(--app-on-brand);
 
     background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
 }

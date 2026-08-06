@@ -1,0 +1,12 @@
+<section class="marketing-proof-strip @Class" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    <MarketingContainer>
+        <div class="marketing-proof-strip__grid">@ChildContent</div>
+    </MarketingContainer>
+</section>
+
+@code {
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}
