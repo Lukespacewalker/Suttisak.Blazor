@@ -1,0 +1,27 @@
+.marketing-proof-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--app-space-4);
+    min-width: 0;
+    padding: var(--app-space-6);
+}
+
+.marketing-proof-item__value {
+    color: var(--app-brand);
+    font-size: var(--app-type-sm);
+    letter-spacing: 0.08em;
+}
+
+.marketing-proof-item h3 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.marketing-proof-item p,
+.marketing-proof-item ::deep p {
+    margin: var(--app-space-2) 0 0;
+    color: var(--app-foreground-muted);
+    font-size: var(--app-type-sm);
+    line-height: 1.55;
+}

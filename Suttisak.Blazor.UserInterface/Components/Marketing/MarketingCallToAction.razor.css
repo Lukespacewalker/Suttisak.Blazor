@@ -6,10 +6,8 @@
     padding: clamp(var(--app-space-8), 5vw, var(--app-space-18));
     border: 1px solid var(--app-border);
     border-radius: 2rem;
-    background:
-        radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--app-brand-overlay) 75%, transparent), transparent 32%),
-        var(--app-surface);
-    box-shadow: 0 1.5rem 3.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 48%, transparent);
+    background: var(--app-brand-surface-1);
+    box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 28%, transparent);
 }
 
 .marketing-call-to-action__content ::deep h2 {

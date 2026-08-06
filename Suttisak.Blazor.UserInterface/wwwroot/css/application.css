@@ -1,8 +1,15 @@
 :root {
     /* Primitive tokens: shared across every consuming application. */
-    --app-font-body: "Noto Sans", "Noto Sans Thai Looped", "Segoe UI Variable", "Segoe UI", sans-serif;
+    --app-font-body: "Source Sans 3", "Sarabun", "Segoe UI Variable", "Segoe UI", sans-serif;
     --app-font-heading: "Figtree", "IBM Plex Sans Thai", "Segoe UI Variable", sans-serif;
     --app-font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+
+    --app-type-xs: .75rem;
+    --app-type-sm: .875rem;
+    --app-type-body: 1rem;
+    --app-type-lead: clamp(1.04rem, 1.45vw, 1.22rem);
+    --app-type-title: clamp(2.15rem, 4vw, 3.5rem);
+    --app-type-display: clamp(2.65rem, 4vw, 4rem);
 
     --app-space-1: .25rem;
     --app-space-2: .5rem;
@@ -14,6 +21,7 @@
     --app-space-10: 2.5rem;
     --app-space-12: 3rem;
     --app-space-14: 3.5rem;
+    --app-space-16: 4rem;
     --app-space-18: 4.5rem;
     --app-space-24: 6rem;
 
@@ -37,6 +45,7 @@
 
     /* Semantic defaults. Applications override these values, never component CSS. */
     --app-brand: var(--accent-fill-rest, var(--colorBrandBackground, #0f6cbd));
+    --app-on-brand: light-dark(#ffffff, #07181d);
     --app-brand-secondary: color-mix(in srgb, var(--app-brand) 72%, #107c10);
     --app-background: var(--neutral-layer-1, var(--colorNeutralBackground1, #f7f9fb));
     --app-surface: var(--neutral-layer-1, var(--colorNeutralBackground1, #fff));
@@ -58,7 +67,7 @@ body {
     color: var(--app-foreground);
     font-family: var(--app-font-body);
     font-optical-sizing: auto;
-    font-size: var(--type-ramp-base-font-size, 1rem);
+    font-size: var(--app-type-body);
     line-height: var(--type-ramp-base-line-height, 1.5);
 }
 
@@ -71,14 +80,14 @@ body {
     outline-offset: 2px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-[role="heading"],
-.app-heading {
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
+body [role="heading"],
+body .app-heading {
     font-family: var(--app-font-heading);
     text-wrap: balance;
 }

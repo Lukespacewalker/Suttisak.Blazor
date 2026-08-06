@@ -1,0 +1,25 @@
+<div class="marketing-product-frame @Class" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(Label) || HeaderContent is not null)
+    {
+        <div class="marketing-product-frame__header">
+            <span class="marketing-product-frame__signal" aria-hidden="true"></span>
+            @if (HeaderContent is not null)
+            {
+                @HeaderContent
+            }
+            else
+            {
+                <span>@Label</span>
+            }
+        </div>
+    }
+    <div class="marketing-product-frame__content">@ChildContent</div>
+</div>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

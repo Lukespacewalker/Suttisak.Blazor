@@ -1,0 +1,31 @@
+.marketing-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--app-space-4);
+}
+
+.marketing-feature-grid ::deep .marketing-card {
+    grid-column: span 4;
+}
+
+.marketing-feature-grid ::deep .marketing-card--featured {
+    grid-column: span 6;
+}
+
+@media (max-width: 980px) {
+    .marketing-feature-grid ::deep .marketing-card,
+    .marketing-feature-grid ::deep .marketing-card--featured {
+        grid-column: span 6;
+    }
+}
+
+@media (max-width: 760px) {
+    .marketing-feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .marketing-feature-grid ::deep .marketing-card,
+    .marketing-feature-grid ::deep .marketing-card--featured {
+        grid-column: auto;
+    }
+}
