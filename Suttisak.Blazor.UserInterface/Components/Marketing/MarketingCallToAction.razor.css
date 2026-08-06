@@ -6,8 +6,8 @@
     padding: clamp(var(--app-space-8), 5vw, var(--app-space-18));
     border: 1px solid var(--app-border);
     border-radius: 2rem;
-    background: var(--app-brand-surface-1);
-    box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 28%, transparent);
+    background: var(--app-surface-muted);
+    box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--app-foreground) 6%, transparent);
 }
 
 .marketing-call-to-action__content ::deep h2 {
