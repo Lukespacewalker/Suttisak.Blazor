@@ -49,7 +49,9 @@ public sealed class IdentityRouteAdapterGenerator : IIncrementalGenerator
     {
         var requests = context.SyntaxProvider.ForAttributeWithMetadataName(
             AttributeMetadataName,
-            static (node, _) => node is AttributeSyntax,
+            // Assembly attributes are attached to the compilation unit, not to
+            // the AttributeSyntax node itself.
+            static (node, _) => node is CompilationUnitSyntax,
             static (attributeContext, _) => CreateRequest(attributeContext));
 
         context.RegisterSourceOutput(requests, static (productionContext, request) =>
