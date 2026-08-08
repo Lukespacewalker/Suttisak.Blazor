@@ -23,7 +23,11 @@
             </div>
         </div>
 
-        @* <button class="nav-backdrop" @onclick="CloseMobileMenu" aria-label="Close navigation menu"></button> *@
+        <button type="button"
+                class="nav-backdrop"
+                @onclick="CloseMobileMenu"
+                aria-label="Close navigation menu"
+                tabindex="@(IsMobileOpen ? 0 : -1)"></button>
     </FluentLayoutItem>
 </CascadingValue>
 
