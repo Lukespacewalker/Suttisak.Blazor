@@ -1,0 +1,15 @@
+@using Suttisak.Blazor.UserInterface.Interfaces
+@using Suttisak.Blazor.UserInterface.Models
+
+@code {
+    [CascadingParameter]
+    public IBreadcrumbLayout? BreadcrumbLayout { get; set; }
+
+    [Parameter, EditorRequired]
+    public IEnumerable<Breadcrumb> Items { get; set; } = Array.Empty<Breadcrumb>();
+
+    protected override void OnParametersSet()
+    {
+        BreadcrumbLayout?.PopulateBreadcrumbs(Items);
+    }
+}

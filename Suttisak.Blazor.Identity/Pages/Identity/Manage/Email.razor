@@ -7,9 +7,9 @@
 @inject IdentityRedirectManager RedirectManager
 @inject IEmailSender<TUser> EmailSender
 @inject NavigationManager NavigationManager
-@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.Email</PageTitle>
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.Email</h1>
@@ -65,7 +65,6 @@
     {
         base.OnInitialized();
         Input ??= new();
-        AddPage<Manage>().AddThisPageAndPopulate<Email<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()

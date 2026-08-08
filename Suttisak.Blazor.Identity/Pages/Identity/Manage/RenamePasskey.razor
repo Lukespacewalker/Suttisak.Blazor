@@ -4,7 +4,7 @@
 
 @inject UserManager<TUser> UserManager
 @inject IdentityRedirectManager<TUser> RedirectManager
-@inherits BreadcrumbPage
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(Passkeys<TUser>.StaticPageIcon, Passkeys<TUser>.StaticPageUrl, Manage_razor.Passkeys), new Breadcrumb(StaticPageIcon, null, Manage_razor.RenamePasskey) })" />
 
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
@@ -50,7 +50,6 @@
     {
         base.OnInitialized();
         Input ??= new();
-        AddPage<Manage>().AddPage<Passkeys<TUser>>().AddThisPageAndPopulate<RenamePasskey<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()
