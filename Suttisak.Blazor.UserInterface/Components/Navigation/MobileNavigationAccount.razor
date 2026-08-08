@@ -1,0 +1,74 @@
+@using System.Globalization
+@using System.Security.Claims
+@using Microsoft.Extensions.Options
+@inject IOptions<BlazorUIOptions> GlobalDesign
+@inject NavigationManager NavigationManager
+
+<div class="mobile-nav-account">
+    <div class="mobile-nav-account__preferences" aria-label="@PreferencesLabel">
+        <ThemeSelector />
+        <CultureSelector />
+    </div>
+
+    <AuthorizeView Context="authenticationState">
+        <Authorized>
+            <div class="mobile-nav-account__profile">
+                @if (!string.IsNullOrWhiteSpace(GlobalDesign.Value.ProfileImageUrl))
+                {
+                    <img class="mobile-nav-account__avatar"
+                         src="@GlobalDesign.Value.ProfileImageUrl"
+                         alt="" />
+                }
+                else
+                {
+                    <span class="mobile-nav-account__avatar mobile-nav-account__avatar--fallback" aria-hidden="true">
+                        <FluentIcon Value="@(new Icons.Regular.Size24.PersonCircle())" />
+                    </span>
+                }
+                <span class="mobile-nav-account__name">@GetDisplayName(authenticationState.User)</span>
+                <button type="button" class="mobile-nav-account__action" @onclick="Logout" title="@LogoutLabel" aria-label="@LogoutLabel">
+                    <FluentIcon Value="@(new Icons.Regular.Size20.SignOut())" />
+                </button>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <button type="button" class="mobile-nav-account__signin" @onclick="Login">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Key())" />
+                <span>@LoginLabel</span>
+            </button>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code {
+    private bool IsThai => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "th";
+    private string PreferencesLabel => IsThai ? "การตั้งค่าธีมและภาษา" : "Theme and language preferences";
+    private string LoginLabel => IsThai ? "เข้าสู่ระบบ" : "Sign in";
+    private string LogoutLabel => IsThai ? "ออกจากระบบ" : "Sign out";
+
+    private static string GetDisplayName(ClaimsPrincipal user)
+    {
+        var givenName = user.FindFirst("given_name")?.Value?.Trim();
+        var familyName = user.FindFirst("family_name")?.Value?.Trim();
+        var fullName = string.Join(" ", new[] { givenName, familyName }.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+        return !string.IsNullOrWhiteSpace(fullName)
+            ? fullName
+            : user.FindFirst("display_name")?.Value?.Trim()
+                ?? user.Identity?.Name
+                ?? string.Empty;
+    }
+
+    private void Login()
+    {
+        if (!string.IsNullOrWhiteSpace(GlobalDesign.Value.LoginUrl))
+        {
+            NavigationManager.NavigateTo(GlobalDesign.Value.LoginUrl);
+        }
+    }
+
+    private void Logout()
+    {
+        NavigationManager.NavigateTo(GlobalDesign.Value.LogoutUrl, forceLoad: true);
+    }
+}
