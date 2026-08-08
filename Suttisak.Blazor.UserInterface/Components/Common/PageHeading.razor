@@ -6,10 +6,6 @@
         </span>
     }
     <div class="page-heading__copy">
-        @if (!string.IsNullOrWhiteSpace(Eyebrow))
-        {
-            <span class="page-heading__eyebrow">@Eyebrow</span>
-        }
         <h1>@Title</h1>
         @if (!string.IsNullOrWhiteSpace(Description))
         {
@@ -25,7 +21,6 @@
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Description { get; set; }
-    [Parameter] public string? Eyebrow { get; set; }
     [Parameter] public Icon? Icon { get; set; }
     [Parameter] public RenderFragment? Actions { get; set; }
     [Parameter] public string? CssClass { get; set; }

@@ -170,8 +170,34 @@ samp {
     display: none;
 }
 
+.app-page__intro {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: .35rem;
+    min-width: 0;
+    margin: calc(-1 * var(--app-page-padding-block)) calc(-1 * var(--app-page-padding-inline)) 0;
+    padding: .8rem var(--app-page-padding-inline) .9rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--app-border) 68%, transparent);
+    background:
+        linear-gradient(105deg,
+            color-mix(in srgb, var(--app-brand) 9%, var(--app-surface)) 0%,
+            color-mix(in srgb, var(--app-brand-secondary, var(--app-brand)) 8%, var(--app-surface)) 52%,
+            color-mix(in srgb, #d9ad57 11%, var(--app-surface)) 100%);
+}
+
 .app-page__breadcrumbs {
-    min-height: 1.5rem;
+    display: flex;
+    min-height: 1.75rem;
+    align-items: center;
+    font-family: var(--app-font-body);
+    font-size: .78rem;
+    line-height: 1.35;
+}
+
+.app-page__heading {
+    min-width: 0;
+    font-family: var(--app-font-body);
 }
 
 .app-page__body {
