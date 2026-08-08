@@ -62,8 +62,30 @@
 
 .nav-panel {
     display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
     flex-direction: column;
-    padding-left: 0.25rem;
+    overflow-y: auto;
+}
+
+.nav-panel__mobile-account {
+    display: none;
+}
+
+.nav-panel__primary,
+.nav-panel__account {
+    display: flex;
+    flex-direction: column;
+    padding-left: .25rem;
+}
+
+.nav-panel__primary {
+    order: 1;
+}
+
+.nav-panel__account {
+    order: 2;
+    border-top: 1px solid var(--color-glass-border, var(--app-border));
 }
 
 .nav-backdrop {
@@ -90,6 +112,22 @@
 
     .nav-toolbar {
         display: none;
+    }
+
+    .nav-panel__mobile-account {
+        display: block;
+        order: 0;
+    }
+
+    .nav-panel__account {
+        order: 1;
+        border-top: 0;
+        border-bottom: 1px solid var(--color-glass-border, var(--app-border));
+    }
+
+    .nav-panel__primary {
+        order: 2;
+        padding-top: .5rem;
     }
 
     .app-nav--mobile-open .nav-shell {

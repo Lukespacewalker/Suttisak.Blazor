@@ -1,0 +1,10 @@
+.header-user-controls {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 900px) {
+    .header-user-controls--mobile-hidden {
+        display: none;
+    }
+}
