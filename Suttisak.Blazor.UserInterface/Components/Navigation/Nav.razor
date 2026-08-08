@@ -19,7 +19,18 @@
             </div>
 
             <div class="nav-panel">
-                @ChildContent
+                <div class="nav-panel__mobile-account">
+                    <MobileNavigationAccount />
+                </div>
+                @if (AccountContent is not null)
+                {
+                    <AuthorizeView>
+                        <Authorized>
+                            <div class="nav-panel__account">@AccountContent</div>
+                        </Authorized>
+                    </AuthorizeView>
+                }
+                <div class="nav-panel__primary">@ChildContent</div>
             </div>
         </div>
 
@@ -39,6 +50,9 @@
 
     [Parameter]
     public RenderFragment? BrandContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? AccountContent { get; set; }
 
     public bool IsCollapsed => State?.IsCollapsed ?? false;
 

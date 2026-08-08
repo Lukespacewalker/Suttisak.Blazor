@@ -2,21 +2,23 @@
 @using Suttisak.Blazor.UserInterface.Helper
 @inject NavigationManager NavigationManager
 
-<PreferencesSelector />
-<FluentSpacer Width="6px" />
-<AuthorizeView>
-    <Authorized>
-        <ProfileMenu LoginText="@LoginText" LogoutText="@LogoutText" ProfileImageUrl="@ProfileImageUrl" />
-    </Authorized>
-    <NotAuthorized>
-        <FluentButton IconStart="@(new Icons.Regular.Size24.Key())"
-                      Appearance="ButtonAppearance.Primary"
-                      Style="border-radius: var(--borderRadiusCircular);"
-                      OnClick="@OnClickHandler">
-            @Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)
-        </FluentButton>
-    </NotAuthorized>
-</AuthorizeView>
+<div class="header-user-controls @(CompactOnMobile ? "header-user-controls--mobile-hidden" : null)">
+    <PreferencesSelector />
+    <FluentSpacer Width="6px" />
+    <AuthorizeView>
+        <Authorized>
+            <ProfileMenu LoginText="@LoginText" LogoutText="@LogoutText" ProfileImageUrl="@ProfileImageUrl" />
+        </Authorized>
+        <NotAuthorized>
+            <FluentButton IconStart="@(new Icons.Regular.Size24.Key())"
+                          Appearance="ButtonAppearance.Primary"
+                          Style="border-radius: var(--borderRadiusCircular);"
+                          OnClick="@OnClickHandler">
+                @Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)
+            </FluentButton>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
 
 @code {
     [Parameter] public string? LoginUrl { get; set; }
@@ -26,6 +28,8 @@
     [Parameter] public string? LogoutText { get; set; }
 
     [Parameter] public string? ProfileImageUrl { get; set; }
+
+    [Parameter] public bool CompactOnMobile { get; set; }
 
     private void OnClickHandler()
     {
