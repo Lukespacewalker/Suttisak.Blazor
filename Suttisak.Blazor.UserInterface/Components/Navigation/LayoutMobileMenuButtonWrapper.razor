@@ -1,15 +1,38 @@
+@implements IDisposable
+
 <span class="mobile-menu-button-container">
-    <FluentButton Class="nav-toolbar-button nav-toolbar-button--hamburger"
-                  IconStart="@(new Icons.Regular.Size20.Navigation())"
-                  OnClick="ToggleMobileMenu"
-                  aria-label="Toggle navigation menu" />
+    <button type="button"
+            class="mobile-menu-button @(IsMobileOpen ? "mobile-menu-button--open" : null)"
+            @onclick="ToggleMobileMenu"
+            aria-label="@(IsMobileOpen ? "Close navigation menu" : "Open navigation menu")"
+            aria-expanded="@IsMobileOpen">
+        <span class="mobile-menu-button__line"></span>
+        <span class="mobile-menu-button__line"></span>
+        <span class="mobile-menu-button__line"></span>
+    </button>
 </span>
 @code {
     [CascadingParameter] public NavComponentState? NavState { get; set; }
+
+    private bool IsMobileOpen => NavState?.IsMobileOpen ?? false;
+
+    protected override void OnInitialized()
+    {
+        NavState?.Changed += HandleStateChanged;
+    }
 
     private void ToggleMobileMenu()
     {
         NavState?.ToggleMobileOpen();
     }
 
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        NavState?.Changed -= HandleStateChanged;
+    }
 }
