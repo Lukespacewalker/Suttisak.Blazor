@@ -1,0 +1,31 @@
+@using System.Globalization
+
+<div class="preferences-selector">
+    <div class="preferences-selector__desktop">
+        <CultureSelector />
+        <ThemeSelector />
+    </div>
+
+    <details class="preferences-selector__mobile">
+        <summary aria-label="@PreferencesLabel" title="@PreferencesLabel">
+            <FluentIcon Value="@(new Icons.Regular.Size20.Settings())" />
+        </summary>
+        <div class="preferences-selector__popover">
+            <div class="preferences-selector__section">
+                <span class="preferences-selector__label">@LanguageLabel</span>
+                <CultureSelector />
+            </div>
+            <div class="preferences-selector__section">
+                <span class="preferences-selector__label">@ThemeLabel</span>
+                <ThemeSelector />
+            </div>
+        </div>
+    </details>
+</div>
+
+@code {
+    private bool IsThai => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "th";
+    private string PreferencesLabel => IsThai ? "การตั้งค่าภาษาและธีม" : "Language and theme preferences";
+    private string LanguageLabel => IsThai ? "ภาษา" : "Language";
+    private string ThemeLabel => IsThai ? "ธีม" : "Theme";
+}
