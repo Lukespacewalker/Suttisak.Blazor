@@ -3,13 +3,13 @@
     flex-wrap: wrap;
     min-width: 0;
     align-items: center;
-    gap: .75rem;
+    gap: .625rem;
 }
 
 .page-heading__icon {
     display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     place-items: center;
     flex: 0 0 auto;
     border-radius: .75rem;
@@ -28,8 +28,8 @@
 }
 
 .page-heading__copy h1 {
-    font-family: var(--app-font-heading);
-    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-family: var(--app-font-body);
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
     font-weight: 750;
     line-height: 1.2;
     letter-spacing: -.015em;
@@ -40,16 +40,6 @@
     color: var(--neutral-foreground-hint, var(--colorNeutralForeground3));
     font-size: .9rem;
     line-height: 1.5;
-}
-
-.page-heading__eyebrow {
-    display: block;
-    margin-bottom: .2rem;
-    color: var(--accent-fill-rest, var(--colorBrandForeground1));
-    font-size: .72rem;
-    font-weight: 750;
-    letter-spacing: .06em;
-    text-transform: uppercase;
 }
 
 .page-heading__actions {
@@ -65,8 +55,8 @@
     }
 
     .page-heading__icon {
-        width: 2.25rem;
-        height: 2.25rem;
+        width: 2rem;
+        height: 2rem;
     }
 
     .page-heading__actions {

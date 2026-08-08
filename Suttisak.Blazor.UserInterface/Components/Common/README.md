@@ -28,6 +28,11 @@ the occupational-health product family.
 </AsyncContent>
 ```
 
+`PageHeading` is rendered below the route-owned `PageBreadcrumbs` inside the
+shared gradient page intro. Keep breadcrumb labels and routes in the consuming
+application; the heading supplies only the page title, description, icon, and
+optional actions.
+
 Use `AsyncContentState.Loading`, `Ready`, `Empty`, and `Error` to give pages one
 predictable state model. Supply `LoadingContent`, `EmptyContent`, or
 `ErrorContent` only when a feature needs a richer custom state.

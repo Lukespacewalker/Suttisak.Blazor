@@ -26,15 +26,20 @@
                     {
                         <div class="app-page__feedback">@Feedback</div>
                     }
-                    @if (Breadcrumbs is not null)
+                    @if (Breadcrumbs is not null || Heading is not null)
                     {
-                        <nav class="app-page__breadcrumbs" aria-label="@BreadcrumbLabel">
-                            @Breadcrumbs
-                        </nav>
-                    }
-                    @if (Heading is not null)
-                    {
-                        <header class="app-page__heading">@Heading</header>
+                        <div class="app-page__intro">
+                            @if (Breadcrumbs is not null)
+                            {
+                                <nav class="app-page__breadcrumbs" aria-label="@BreadcrumbLabel">
+                                    @Breadcrumbs
+                                </nav>
+                            }
+                            @if (Heading is not null)
+                            {
+                                <header class="app-page__heading">@Heading</header>
+                            }
+                        </div>
                     }
                     <div class="app-page__body">@ChildContent</div>
                 </main>
