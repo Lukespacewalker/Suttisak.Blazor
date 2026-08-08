@@ -4,7 +4,7 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<Disable2fa<TUser>> Logger
-@inherits BreadcrumbPage
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.DisableTwoFactorAuthentication) })" />
 
 
 <PageTitle>@Manage_razor.DisableTwoFactorAuthentication</PageTitle>
@@ -45,7 +45,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<Disable2fa<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()

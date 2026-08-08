@@ -3,7 +3,7 @@
 @inject UserManager<TUser> UserManager
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject ILogger<GenerateRecoveryCodes<TUser>> Logger
-@inherits BreadcrumbPage
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.GenerateRecoveryCodes) })" />
 
 <PageTitle>@Manage_razor.GenerateRecoveryCodes</PageTitle>
 
@@ -53,7 +53,6 @@ else
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<GenerateRecoveryCodes<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()

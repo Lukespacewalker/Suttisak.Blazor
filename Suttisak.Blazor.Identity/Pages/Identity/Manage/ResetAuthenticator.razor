@@ -5,7 +5,7 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ResetAuthenticator<TUser>> Logger
-@inherits BreadcrumbPage
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.ResetAuthenticator) })" />
 
 <PageTitle>@Manage_razor.ResetAuthenticator</PageTitle>
 
@@ -43,7 +43,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AddPage<Manage>().AddPage<TwoFactorAuthentication<TUser>>().AddThisPageAndPopulate<ResetAuthenticator<TUser>>();
     }
 
     protected virtual async Task OnSubmitAsync()
