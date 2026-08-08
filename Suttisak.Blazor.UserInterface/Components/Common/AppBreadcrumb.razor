@@ -1,47 +1,38 @@
 @using Suttisak.Blazor.UserInterface.Models
-@using Microsoft.FluentUI.AspNetCore.Components
-
-@if (Items is { Count: > 0 })
+@if (_items.Length > 0)
 {
-    <nav class="app-breadcrumb" aria-label="Breadcrumb">
-        <ol>
-            @for (int i = 0; i < Items.Count; i++)
-            {
-                var item = Items[i];
-                bool isLast = i == Items.Count - 1;
+    <ol class="@CssClass">
+        @for (var index = 0; index < _items.Length; index++)
+        {
+            var item = _items[index];
+            var isCurrent = index == _items.Length - 1;
+            var href = isCurrent ? null : item.Url;
 
-                <li class="@(isLast ? "app-breadcrumb-item current" : "app-breadcrumb-item")">
-                    @if (!isLast && item.Url is not null)
+            <li class="app-breadcrumb__item">
+                <FluentBreadcrumbItem Href="@href" aria-current="@(isCurrent ? "page" : null)">
+                    @if (item.Icon is not null)
                     {
-                        <a href="@item.Url" class="app-breadcrumb-link">
-                            @if (item.Icon is not null)
-                            {
-                                <FluentIcon Value="@item.Icon" Width="14px" />
-                            }
-                            <span>@item.TitleKey</span>
-                        </a>
+                        <FluentIcon Value="@item.Icon" aria-hidden="true" />
                     }
-                    else
-                    {
-                        <span class="app-breadcrumb-current">
-                            @if (item.Icon is not null)
-                            {
-                                <FluentIcon Value="@item.Icon" Width="14px" />
-                            }
-                            <span>@item.TitleKey</span>
-                        </span>
-                    }
-
-                    @if (!isLast)
-                    {
-                        <span class="app-breadcrumb-sep" aria-hidden="true">/</span>
-                    }
-                </li>
-            }
-        </ol>
-    </nav>
+                    <span class="app-breadcrumb__label">@item.Title</span>
+                </FluentBreadcrumbItem>
+            </li>
+        }
+    </ol>
 }
 
 @code {
-    [Parameter] public List<Breadcrumb>? Items { get; set; }
+    private Breadcrumb[] _items = Array.Empty<Breadcrumb>();
+
+    [Parameter] public IEnumerable<Breadcrumb>? Items { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    private string CssClass => string.IsNullOrWhiteSpace(Class)
+        ? "app-breadcrumb"
+        : $"app-breadcrumb {Class}";
+
+    protected override void OnParametersSet()
+    {
+        _items = Items?.ToArray() ?? Array.Empty<Breadcrumb>();
+    }
 }

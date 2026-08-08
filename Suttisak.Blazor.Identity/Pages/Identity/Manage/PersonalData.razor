@@ -1,8 +1,8 @@
 @typeparam TUser where TUser : class
 @inject IdentityUserAccessor<TUser> UserAccessor
-@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.PersonalData</PageTitle>
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.PersonalData</h1>
@@ -40,7 +40,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AddPage<Manage>().AddThisPageAndPopulate<PersonalData<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()

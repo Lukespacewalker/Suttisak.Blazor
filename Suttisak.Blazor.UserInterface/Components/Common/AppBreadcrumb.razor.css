@@ -1,0 +1,48 @@
+.app-breadcrumb {
+    display: flex;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .25rem;
+    list-style: none;
+}
+
+.app-breadcrumb__item {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: .25rem;
+}
+
+.app-breadcrumb__item:not(:last-child)::after {
+    margin-inline: .125rem;
+    color: var(--app-foreground-muted);
+    content: "/";
+}
+
+.app-breadcrumb__item ::deep .fluent-breadcrumb-item {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: .35rem;
+}
+
+.app-breadcrumb__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-breadcrumb__item:last-child .app-breadcrumb__label {
+    font-weight: 650;
+}
+
+@media (max-width: 48rem) {
+    .app-breadcrumb {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+}

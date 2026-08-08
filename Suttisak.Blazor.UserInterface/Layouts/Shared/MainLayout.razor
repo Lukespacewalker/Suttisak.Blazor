@@ -2,14 +2,18 @@
 @using Microsoft.Extensions.Options
 @using Suttisak.Blazor.UserInterface.Models
 @using Suttisak.Blazor.UserInterface.Interfaces
+@using Microsoft.AspNetCore.Components.Routing
 @layout RootLayout
 @using Suttisak.Blazor.UserInterface.Components.Navigation
 @implements IBreadcrumbLayout
+@implements IDisposable
 @inject IOptions<BlazorUIOptions> GlobalDesign
+@inject NavigationManager NavigationManager
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-    <ApplicationShell>
+    <ApplicationShell BreadcrumbLabel="@GlobalDesign.Value.BreadcrumbLabel"
+                      SkipLinkText="@GlobalDesign.Value.SkipLinkText">
         <Header>
             <div class="app-shell-header">
                 <LayoutMobileMenuButtonWrapper @rendermode="HeaderRenderMode"/>
@@ -26,15 +30,9 @@
         <Navigation><SectionOutlet SectionId="NavigationSection"/></Navigation>
         <Feedback><SectionOutlet SectionId="MessageBarSection"/></Feedback>
         <Breadcrumbs>
-            <SectionOutlet SectionId="BreadcrumbSection"/>
-            @if (!UseCustomBreadcrumb && _breadcrumbs.Any())
+            @if (_breadcrumbs.Length > 0)
             {
-                <FluentBreadcrumb>
-                    @foreach (var breadcrumb in _breadcrumbs)
-                    {
-                        @breadcrumb
-                    }
-                </FluentBreadcrumb>
+                <AppBreadcrumb Items="@_breadcrumbs" />
             }
         </Breadcrumbs>
         <Heading><SectionOutlet SectionName="@CommonSections.PageTitle"/></Heading>
@@ -42,6 +40,7 @@
     </ApplicationShell>
 </CascadingValue>
 @code {
+    [Obsolete("Use the PageBreadcrumbs component. Breadcrumb rendering is owned by MainLayout.")]
     public static object BreadcrumbSection = new();
     public static object HeaderSection = new();
     public static object NavigationSection = new();
@@ -49,28 +48,55 @@
 
     [CascadingParameter] public NavComponentState? NavState { get; set; }
 
-    public bool UseCustomBreadcrumb { get; set; } = false;
-
-    private RenderFragment[] _breadcrumbs = Array.Empty<RenderFragment>();
+    private Breadcrumb[] _breadcrumbs = Array.Empty<Breadcrumb>();
 
     public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        base.OnInitialized();
+    }
+
     public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
     {
-        var breadcrumbItems = breadcrumbs.ToArray();
-        var result = breadcrumbItems.Select((breadcrumb, index) =>
+        var next = breadcrumbs.ToArray();
+        if (BreadcrumbsMatch(_breadcrumbs, next))
         {
-            var href = index == breadcrumbItems.Length - 1 ? null : breadcrumb.Url;
+            return;
+        }
 
-            RenderFragment frag = @<FluentBreadcrumbItem Href="@href">
-                <FluentIcon Slot="start" Value="@breadcrumb.Icon" />
-                @breadcrumb.TitleKey
-            </FluentBreadcrumbItem>
-    ;
-            return frag;
-        }).ToArray();
-        _breadcrumbs = result;
+        _breadcrumbs = next;
         StateHasChanged();
+    }
 
+    private static bool BreadcrumbsMatch(IReadOnlyList<Breadcrumb> current, IReadOnlyList<Breadcrumb> next)
+    {
+        if (current.Count != next.Count)
+        {
+            return false;
+        }
+
+        for (var index = 0; index < current.Count; index++)
+        {
+            if (!string.Equals(current[index].Title, next[index].Title, StringComparison.Ordinal)
+                || !string.Equals(current[index].Url, next[index].Url, StringComparison.Ordinal)
+                || current[index].Icon?.GetType() != next[index].Icon?.GetType())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs args)
+    {
+        _breadcrumbs = Array.Empty<Breadcrumb>();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 }

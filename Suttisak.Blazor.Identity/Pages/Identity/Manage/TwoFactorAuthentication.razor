@@ -6,9 +6,9 @@
 @inject SignInManager<TUser> SignInManager
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
-@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.TwoFactorAuthentication</PageTitle>
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.TwoFactorAuthentication) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.TwoFactorAuthentication</h1>
@@ -91,7 +91,6 @@ else
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AddPage<Manage>().AddThisPageAndPopulate<TwoFactorAuthentication<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()

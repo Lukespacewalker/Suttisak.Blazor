@@ -1,7 +1,6 @@
 @using Suttisak.Blazor.UserInterface.Components.Common
-@inherits BreadcrumbPage
-
 <PageTitle>@Manage_razor.Manage</PageTitle>
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(StaticPageIcon, null, Manage_razor.Manage) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.Manage</h1>
@@ -39,9 +38,4 @@
     public static string StaticPageUrl { get; } = IdentityRoutes.Account.Manage.Root;
     public static string StaticPageTitleKey { get; } = nameof(Manage_razor.Manage);
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        AddThisPageAndPopulate<Manage>();
-    }
 }

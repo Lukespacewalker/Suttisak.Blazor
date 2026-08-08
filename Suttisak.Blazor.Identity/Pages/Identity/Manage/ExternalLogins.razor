@@ -8,9 +8,9 @@
 @inject IUserStore<TUser> UserStore
 @inject IdentityRedirectManager RedirectManager
 @inject IExternalLoginProfileStore<TUser> ExternalLoginProfileStore
-@inherits BreadcrumbPage
 
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.ExternalLogins</h1>
@@ -103,7 +103,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        AddPage<Manage>().AddThisPageAndPopulate<ExternalLogins<TUser>>();
     }
 
     protected override async Task OnInitializedAsync()
