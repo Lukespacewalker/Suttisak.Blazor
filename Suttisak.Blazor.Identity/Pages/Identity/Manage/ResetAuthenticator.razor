@@ -5,13 +5,16 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ResetAuthenticator<TUser>> Logger
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.ResetAuthenticator) })" />
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.ResetAuthenticator) })" />
 
 <PageTitle>@Manage_razor.ResetAuthenticator</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.ResetAuthenticator</h1>
 </SectionContent>
+<IdentityManageShell Title="@Manage_razor.ResetAuthenticator" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon">
 
 <StatusMessage />
 
@@ -30,6 +33,8 @@
         <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary">@ResetAuthenticator_razor.SubmitButton</FluentButton>
     </form>
 </div>
+
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.ArrowCounterclockwise();

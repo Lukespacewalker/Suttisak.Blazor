@@ -5,7 +5,9 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<DeletePersonalData<TUser>> Logger
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(PersonalData<TUser>.StaticPageIcon, PersonalData<TUser>.StaticPageUrl, Manage_razor.PersonalData), new Breadcrumb(StaticPageIcon, null, Manage_razor.DeletePersonalData) })" />
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(PersonalData<TUser>.StaticPageIcon, PersonalData<TUser>.StaticPageUrl, Manage_razor.PersonalData), new Breadcrumb(StaticPageIcon, null, Manage_razor.DeletePersonalData) })" />
 
 <PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
@@ -13,11 +15,12 @@
     <h1>@Manage_razor.DeletePersonalData</h1>
 </SectionContent>
 
+<IdentityManageShell Title="@Manage_razor.DeletePersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.PersonalData" Icon="@StaticPageIcon">
 <StatusMessage Message="@_message" />
 
 <FluentGrid>
     <FluentGridItem sm="6">
-        <div class="alert alert-warning" role="alert">
+        <div class="alert alert-danger" role="alert">
             <p>
                 <strong>@DeletePersonalData_razor.WarningMessage</strong>
             </p>
@@ -31,10 +34,11 @@
                 @*<FluentValidationMessage For="() => Input.Password" class="text-danger" />*@
                 @* TODO: restore FluentValidationMessage later in RC3 *@
             }
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Class="identity-danger-button" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
+</IdentityManageShell>
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Delete();
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.DeletePersonalData;

@@ -7,14 +7,17 @@
 @inject IdentityRedirectManager RedirectManager
 @inject IEmailSender<TUser> EmailSender
 @inject NavigationManager NavigationManager
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.Email</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })" />
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.Email</h1>
 </SectionContent>
 
+<IdentityManageShell Title="@Manage_razor.Email" Description="@Text["EmailDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage Message="@_message" />
 <FluentGrid>
     <FluentGridItem xs="12" sm="6">
@@ -43,6 +46,7 @@
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Mail();

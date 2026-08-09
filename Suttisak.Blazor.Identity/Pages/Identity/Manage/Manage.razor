@@ -1,4 +1,9 @@
-@using Suttisak.Blazor.UserInterface.Components.Common
+@typeparam TUser where TUser : class
+@using Microsoft.Extensions.Localization
+@inject UserManager<TUser> UserManager
+@inject IdentityUserAccessor<TUser> UserAccessor
+@inject IStringLocalizer<IdentityManageShell> Text
+
 <PageTitle>@Manage_razor.Manage</PageTitle>
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(StaticPageIcon, null, Manage_razor.Manage) })" />
 
@@ -6,36 +11,76 @@
     <h1>@Manage_razor.Manage</h1>
 </SectionContent>
 
-<FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
-    <span>@Manage_razor.Account</span>
-    <CardMenu Url="@IdentityRoutes.Account.Manage.Profile"
-              Icon="@(new Icons.Regular.Size20.PersonAccounts())"
-              Title="@Manage_razor.Profile" />
-    <CardMenu Url="@IdentityRoutes.Account.Manage.Email"
-              Icon="@(new Icons.Regular.Size20.Mail())"
-              Title="@Manage_razor.Email" />
-    <CardMenu Url="@IdentityRoutes.Account.Manage.ChangePassword"
-              Icon="@(new Icons.Regular.Size20.Password())"
-              Title="@Manage_razor.ChangePassword" />
-    <span>@Manage_razor.Logins</span>
-    <CardMenu Url="@IdentityRoutes.Account.Manage.ExternalLogins"
-              Icon="@(new Icons.Regular.Size20.GlobeSurface())"
-              Title="@Manage_razor.ExternalLogins" />
-    <CardMenu Url="@IdentityRoutes.Account.Manage.TwoFactorAuthentication"
-              Icon="@(new Icons.Regular.Size20.KeyMultiple())"
-              Title="@Manage_razor.TwoFactorAuthentication" />
-    <CardMenu Url="@IdentityRoutes.Account.Manage.Passkeys"
-              Icon="@(new Icons.Regular.Size20.PersonPasskey())"
-              Title="@Manage_razor.Passkeys" />
-    <span>@Manage_razor.PersonalData</span>
-    <CardMenu Url="@IdentityRoutes.Account.Manage.PersonalData"
-              Icon="@(new Icons.Regular.Size20.DatabasePerson())"
-              Title="@Manage_razor.PersonalData" />
-</FluentStack>
+<IdentityManageShell Title="@Manage_razor.Manage"
+                     Description="@Text["OverviewDescription"]"
+                     ActiveUrl="@IdentityRoutes.Account.Manage.Root"
+                     Icon="@StaticPageIcon">
+    <StatusMessage />
+
+    <div class="identity-overview-grid">
+        <IdentitySettingCard Title="@Manage_razor.Email"
+                             Description="@Text["EmailDescription"]"
+                             Icon="@(new Icons.Regular.Size20.Mail())">
+            <Badge><IdentityStatusBadge Tone="@(_isEmailConfirmed ? "success" : "warning")">@(_isEmailConfirmed ? Text["Verified"] : Text["NotVerified"])</IdentityStatusBadge></Badge>
+            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.Email">@Text["ManageAction"]</a></Actions>
+        </IdentitySettingCard>
+
+        <IdentitySettingCard Title="@Manage_razor.ChangePassword"
+                             Description="@Text["PasswordDescription"]"
+                             Icon="@(new Icons.Regular.Size20.Password())">
+            <Badge><IdentityStatusBadge Tone="@(_hasPassword ? "success" : "warning")">@(_hasPassword ? Text["PasswordSet"] : Text["NoPassword"])</IdentityStatusBadge></Badge>
+            <Actions><a class="identity-card-action" href="@(_hasPassword ? IdentityRoutes.Account.Manage.ChangePassword : IdentityRoutes.Account.Manage.SetPassword)">@Text["ManageAction"]</a></Actions>
+        </IdentitySettingCard>
+
+        <IdentitySettingCard Title="@Manage_razor.TwoFactorAuthentication"
+                             Description="@Text["TwoFactorDescription"]"
+                             Icon="@(new Icons.Regular.Size20.KeyMultiple())">
+            <Badge><IdentityStatusBadge Tone="@(_is2FaEnabled ? "success" : "warning")">@(_is2FaEnabled ? Text["Enabled"] : Text["NotConfigured"])</IdentityStatusBadge></Badge>
+            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Text["ManageAction"]</a></Actions>
+        </IdentitySettingCard>
+
+        <IdentitySettingCard Title="@Manage_razor.Passkeys"
+                             Description="@Text["PasskeysDescription"]"
+                             Icon="@(new Icons.Regular.Size20.PersonPasskey())">
+            <Badge><IdentityStatusBadge Tone="@(_passkeyCount > 0 ? "success" : "neutral")">@string.Format(Text["PasskeyCount"], _passkeyCount)</IdentityStatusBadge></Badge>
+            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.Passkeys">@Text["ManageAction"]</a></Actions>
+        </IdentitySettingCard>
+
+        <IdentitySettingCard Title="@Manage_razor.ExternalLogins"
+                             Description="@Text["ExternalLoginsDescription"]"
+                             Icon="@(new Icons.Regular.Size20.GlobeSurface())">
+            <Badge><IdentityStatusBadge>@string.Format(Text["ExternalLoginCount"], _externalLoginCount)</IdentityStatusBadge></Badge>
+            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.ExternalLogins">@Text["ManageAction"]</a></Actions>
+        </IdentitySettingCard>
+
+        <IdentitySettingCard Title="@Manage_razor.PersonalData"
+                             Description="@Text["PersonalDataDescription"]"
+                             Icon="@(new Icons.Regular.Size20.DatabasePerson())">
+            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.PersonalData">@Text["ManageAction"]</a></Actions>
+        </IdentitySettingCard>
+    </div>
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; } = new Icons.Regular.Size20.PersonCircle();
     public static string StaticPageUrl { get; } = IdentityRoutes.Account.Manage.Root;
     public static string StaticPageTitleKey { get; } = nameof(Manage_razor.Manage);
 
+    private bool _isEmailConfirmed;
+    private bool _hasPassword;
+    private bool _is2FaEnabled;
+    private int _passkeyCount;
+    private int _externalLoginCount;
+
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+        _isEmailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
+        _hasPassword = await UserManager.HasPasswordAsync(user);
+        _is2FaEnabled = await UserManager.GetTwoFactorEnabledAsync(user);
+        _passkeyCount = (await UserManager.GetPasskeysAsync(user)).Count;
+        _externalLoginCount = (await UserManager.GetLoginsAsync(user)).Count;
+    }
 }

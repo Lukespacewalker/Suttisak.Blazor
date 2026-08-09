@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.Extensions.Localization
+@using Suttisak.Blazor.UserInterface.Layouts.Shared
+@inject IStringLocalizer<IdentityFlowPanel> Text
+
+<SectionContent SectionId="IdentityLayout.CardEyebrowSection">
+    @if (UiSlots?.Brand is not null) { @UiSlots.Brand } else { @Text["AccountSecurity"] }
+</SectionContent>
+<SectionContent SectionId="IdentityLayout.CardTitleSection">@Title</SectionContent>
+<SectionContent SectionId="IdentityLayout.CardIntroSection">@Description</SectionContent>
+@if (UiSlots?.LoginShowcase is not null)
+{
+    <SectionContent SectionId="IdentityLayout.ShowcaseSection">@UiSlots.LoginShowcase</SectionContent>
+}
+
+<section class="identity-flow-panel">
+    @ChildContent
+</section>
+
+@if (UiSlots?.IdentityFooter is not null)
+{
+    <footer class="identity-flow-footer">@UiSlots.IdentityFooter</footer>
+}
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [CascadingParameter] private IdentityUiSlots? UiSlots { get; set; }
+}

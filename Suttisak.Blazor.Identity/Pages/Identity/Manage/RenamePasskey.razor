@@ -4,13 +4,16 @@
 
 @inject UserManager<TUser> UserManager
 @inject IdentityRedirectManager<TUser> RedirectManager
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(Passkeys<TUser>.StaticPageIcon, Passkeys<TUser>.StaticPageUrl, Manage_razor.Passkeys), new Breadcrumb(StaticPageIcon, null, Manage_razor.RenamePasskey) })" />
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(Passkeys<TUser>.StaticPageIcon, Passkeys<TUser>.StaticPageUrl, Manage_razor.Passkeys), new Breadcrumb(StaticPageIcon, null, Manage_razor.RenamePasskey) })" />
 
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.RenamePasskey</h1>
 </SectionContent>
+<IdentityManageShell Title="@Manage_razor.RenamePasskey" Description="@Text["PasskeysDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.Passkeys" Icon="@StaticPageIcon">
 
 <EditForm Model="Input" OnValidSubmit="Rename" method="post">
     <DataAnnotationsValidator />
@@ -27,6 +30,8 @@
     <ValidationMessage For="() => Input!.Name" class="text-danger" />
     <FluentButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</FluentButton>
 </EditForm>
+
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Edit();

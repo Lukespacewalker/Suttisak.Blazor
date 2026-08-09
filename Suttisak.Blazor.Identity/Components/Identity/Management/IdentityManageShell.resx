@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="AccountNavigation" xml:space="preserve"><value>Account navigation</value></data>
+  <data name="AccountCenter" xml:space="preserve"><value>Account center</value></data>
+  <data name="AccountCenterCaption" xml:space="preserve"><value>Identity &amp; security</value></data>
+  <data name="Overview" xml:space="preserve"><value>Overview</value></data>
+  <data name="SignInAndSecurity" xml:space="preserve"><value>Sign-in &amp; security</value></data>
+  <data name="PrivacyAndData" xml:space="preserve"><value>Privacy &amp; data</value></data>
+  <data name="AccountSection" xml:space="preserve"><value>Account section</value></data>
+  <data name="OverviewDescription" xml:space="preserve"><value>Review your account details and strengthen the ways you sign in.</value></data>
+  <data name="ProfileDescription" xml:space="preserve"><value>Keep your personal contact details current.</value></data>
+  <data name="EmailDescription" xml:space="preserve"><value>Manage your sign-in email and verification status.</value></data>
+  <data name="PasswordDescription" xml:space="preserve"><value>Use a strong, unique password for this account.</value></data>
+  <data name="TwoFactorDescription" xml:space="preserve"><value>Add a second verification step to protect your account.</value></data>
+  <data name="PasskeysDescription" xml:space="preserve"><value>Sign in securely with your device, fingerprint, face, or PIN.</value></data>
+  <data name="ExternalLoginsDescription" xml:space="preserve"><value>Review the external services connected to your account.</value></data>
+  <data name="PersonalDataDescription" xml:space="preserve"><value>Download a copy of your data or permanently delete your account.</value></data>
+  <data name="Verified" xml:space="preserve"><value>Verified</value></data>
+  <data name="NotVerified" xml:space="preserve"><value>Not verified</value></data>
+  <data name="Enabled" xml:space="preserve"><value>Enabled</value></data>
+  <data name="NotConfigured" xml:space="preserve"><value>Not configured</value></data>
+  <data name="PasswordSet" xml:space="preserve"><value>Password set</value></data>
+  <data name="NoPassword" xml:space="preserve"><value>No password</value></data>
+  <data name="ManageAction" xml:space="preserve"><value>Manage</value></data>
+  <data name="PasskeyCount" xml:space="preserve"><value>{0} passkeys</value></data>
+  <data name="ExternalLoginCount" xml:space="preserve"><value>{0} connected services</value></data>
+</root>
