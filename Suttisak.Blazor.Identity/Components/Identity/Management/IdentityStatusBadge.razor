@@ -1,0 +1,8 @@
+<span class="identity-status-badge identity-status-badge--@Tone" role="status">
+    <span aria-hidden="true"></span>@ChildContent
+</span>
+
+@code {
+    [Parameter] public string Tone { get; set; } = "neutral";
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}

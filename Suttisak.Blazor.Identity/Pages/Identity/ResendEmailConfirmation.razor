@@ -11,6 +11,7 @@
 
 <PageTitle>@ResendEmailConfirmation_razor.PageTitle</PageTitle>
 
+<IdentityFlowPanel Title="@ResendEmailConfirmation_razor.Header" Description="@ResendEmailConfirmation_razor.EnterEmail">
 <span>@ResendEmailConfirmation_razor.Header</span>
 <span>@ResendEmailConfirmation_razor.EnterEmail</span>
 <hr />
@@ -27,6 +28,7 @@
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
+</IdentityFlowPanel>
 
 @code {
     private string? _message;

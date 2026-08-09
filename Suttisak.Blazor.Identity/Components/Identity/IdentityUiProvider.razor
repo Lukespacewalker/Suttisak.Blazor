@@ -1,11 +1,14 @@
-<CascadingValue Value="@Slots" IsFixed="true">
+<CascadingValue Value="@Slots">
     @ChildContent
 </CascadingValue>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Brand { get; set; }
     [Parameter] public RenderFragment? LoginShowcase { get; set; }
     [Parameter] public RenderFragment? LoginFooter { get; set; }
+    [Parameter] public RenderFragment? AccountHelp { get; set; }
+    [Parameter] public RenderFragment? IdentityFooter { get; set; }
 
-    private IdentityUiSlots Slots => new(LoginShowcase, LoginFooter);
+    private IdentityUiSlots Slots => new(Brand, LoginShowcase, LoginFooter, AccountHelp, IdentityFooter);
 }

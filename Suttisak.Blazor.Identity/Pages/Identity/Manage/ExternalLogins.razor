@@ -8,71 +8,59 @@
 @inject IUserStore<TUser> UserStore
 @inject IdentityRedirectManager RedirectManager
 @inject IExternalLoginProfileStore<TUser> ExternalLoginProfileStore
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })" />
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.ExternalLogins</h1>
 </SectionContent>
 
+<IdentityManageShell Title="@Manage_razor.ExternalLogins" Description="@Text["ExternalLoginsDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
 @if (_currentLogins?.Count > 0)
 {
-    <h3>@ExternalLogins_razor.RegisteredLogins</h3>
-    <table class="table">
-        <tbody>
-            @foreach (var login in _currentLogins)
-            {
-                var profile = GetProfile(login);
-                <tr>
-                    <td>
-                        <strong>@(profile?.DisplayName ?? login.ProviderDisplayName)</strong>
-                        @if (!string.IsNullOrWhiteSpace(profile?.Email) && !string.Equals(profile.Email, profile.DisplayName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            <small style="display: block; color: var(--neutral-foreground-hint);">@profile.Email</small>
-                        }
-                    </td>
-                    <td>
-                        @if (_showRemoveButton)
-                        {
-                            <form @formname="@($"remove-login-{login.LoginProvider}")" @onsubmit="OnSubmitAsync" method="post">
-                                <AntiforgeryToken />
-                                <div>
-                                    <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider" />
-                                    <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey" />
-                                    <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</FluentButton>
-                                </div>
-                            </form>
-                        }
-                        else
-                        {
-                            @: &nbsp;
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="identity-settings-list" aria-label="@ExternalLogins_razor.RegisteredLogins">
+        @foreach (var login in _currentLogins)
+        {
+            var profile = GetProfile(login);
+            <IdentitySettingCard Title="@(profile?.DisplayName ?? login.ProviderDisplayName)"
+                                 Description="@profile?.Email"
+                                 Icon="@(new Icons.Regular.Size20.GlobeSurface())">
+                <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
+                <Actions>
+                    @if (_showRemoveButton)
+                    {
+                        <form @formname="@($"remove-login-{login.LoginProvider}")" @onsubmit="OnSubmitAsync" method="post">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider" />
+                            <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey" />
+                            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</FluentButton>
+                        </form>
+                    }
+                </Actions>
+            </IdentitySettingCard>
+        }
+    </div>
 }
 @if (_otherLogins?.Count > 0)
 {
-    <h4>@ExternalLogins_razor.AddAnotherService</h4>
-    <hr />
-    <form class="form-horizontal" action="Account/Manage/LinkExternalLogin" method="post">
-        <AntiforgeryToken />
-        <div>
-            <p>
+    <FormSection Title="@ExternalLogins_razor.AddAnotherService">
+        <form class="identity-provider-actions" action="Account/Manage/LinkExternalLogin" method="post">
+            <AntiforgeryToken />
                 @foreach (var provider in _otherLogins)
                 {
-                    <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
+                    <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
                         @provider.DisplayName
                     </FluentButton>
                 }
-            </p>
-        </div>
-    </form>
+        </form>
+    </FormSection>
 }
+
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.GlobeSurface();

@@ -35,7 +35,7 @@ public sealed class IdentityRouteAdapterGenerator : IIncrementalGenerator
         new("EnableAuthenticator", "Suttisak.Blazor.Identity.Pages.Identity.Manage.EnableAuthenticator", "/Account/Manage/EnableAuthenticator", isManage: true),
         new("ExternalLogins", "Suttisak.Blazor.Identity.Pages.Identity.Manage.ExternalLogins", "/Account/Manage/ExternalLogins", isManage: true),
         new("GenerateRecoveryCodes", "Suttisak.Blazor.Identity.Pages.Identity.Manage.GenerateRecoveryCodes", "/Account/Manage/GenerateRecoveryCodes", isManage: true),
-        new("Manage", "Suttisak.Blazor.Identity.Pages.Identity.Manage.Manage", "/Account/Manage", false, true),
+        new("Manage", "Suttisak.Blazor.Identity.Pages.Identity.Manage.Manage", "/Account/Manage", true, true),
         new("Passkeys", "Suttisak.Blazor.Identity.Pages.Identity.Manage.Passkeys", "/Account/Manage/Passkeys", isManage: true),
         new("PersonalData", "Suttisak.Blazor.Identity.Pages.Identity.Manage.PersonalData", "/Account/Manage/PersonalData", isManage: true),
         new("Profile", "Suttisak.Blazor.Identity.Pages.Identity.Manage.Profile", "/Account/Manage/Manage", isManage: true),

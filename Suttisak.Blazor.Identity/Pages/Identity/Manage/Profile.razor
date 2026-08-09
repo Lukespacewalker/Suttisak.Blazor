@@ -4,14 +4,17 @@
 @inject SignInManager<TUser> SignInManager
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IdentityRedirectManager RedirectManager
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.Profile</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Profile) })" />
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Profile) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.Profile</h1>
 </SectionContent>
 
+<IdentityManageShell Title="@Manage_razor.Profile" Description="@Text["ProfileDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
 
 <FluentGrid>
@@ -26,6 +29,7 @@
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.PersonAccounts();

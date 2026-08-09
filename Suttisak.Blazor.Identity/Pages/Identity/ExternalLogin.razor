@@ -16,6 +16,7 @@
 
 <PageTitle>@ExternalLogin_razor.PageTitle</PageTitle>
 
+<IdentityFlowPanel Title="@ExternalLogin_razor.Header" Description="@string.Format(ExternalLogin_razor.AssociateAccount, ProviderDisplayName)">
 <StatusMessage Message="@_message" />
 <span>@ExternalLogin_razor.Header</span>
 <span>@string.Format(ExternalLogin_razor.AssociateAccount, ProviderDisplayName)</span>
@@ -37,6 +38,7 @@
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
+</IdentityFlowPanel>
 
 @code {
     public const string LoginCallbackAction = "LoginCallback";

@@ -1,0 +1,25 @@
+<section class="identity-setting-card @CssClass">
+    @if (Icon is not null)
+    {
+        <span class="identity-setting-card__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
+    }
+    <div class="identity-setting-card__copy">
+        <div class="identity-setting-card__title-row">
+            <h3>@Title</h3>
+            @if (Badge is not null) { @Badge }
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Description)) { <p>@Description</p> }
+        @if (ChildContent is not null) { <div class="identity-setting-card__details">@ChildContent</div> }
+    </div>
+    @if (Actions is not null) { <div class="identity-setting-card__actions">@Actions</div> }
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public RenderFragment? Badge { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public string? CssClass { get; set; }
+}

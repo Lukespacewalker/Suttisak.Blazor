@@ -9,6 +9,7 @@
 
 <PageTitle>@LoginWith2fa_razor.PageTitle</PageTitle>
 
+<IdentityFlowPanel Title="@LoginWith2fa_razor.Header" Description="@LoginWith2fa_razor.InfoMessage">
 <h1>@LoginWith2fa_razor.Header</h1>
 <hr />
 <StatusMessage Message="@_message" />
@@ -32,6 +33,8 @@
     @LoginWith2fa_razor.NoAccessText
     <a href="Account/LoginWithRecoveryCode?ReturnUrl=@ReturnUrl">@LoginWith2fa_razor.RecoveryCodeLink</a>.
 </p>
+
+</IdentityFlowPanel>
 
 @code {
     private string? _message;
