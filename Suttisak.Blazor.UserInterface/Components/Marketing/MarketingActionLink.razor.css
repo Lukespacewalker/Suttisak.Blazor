@@ -5,25 +5,28 @@
     min-height: 3rem;
     gap: 0.75rem;
     padding: 0.75rem 1.125rem;
-    border-radius: var(--borderRadiusCircular);
-    font-weight: 600;
+    border: 2px solid var(--app-editorial-border);
+    border-radius: 0.55rem;
+    font-weight: 700;
     text-decoration: none;
-    transition: box-shadow 180ms ease, background-color 180ms ease;
+    transition: box-shadow 140ms ease, transform 140ms ease, background-color 140ms ease;
 }
 
 .marketing-action--primary {
     color: var(--app-on-brand);
-    background: var(--app-brand-gradient);
+    background: var(--app-brand);
+    box-shadow: 0.22rem 0.22rem 0 var(--app-brand-secondary);
 }
 
 .marketing-action--secondary {
-    border: 1px solid var(--app-border);
-    background: var(--app-surface-muted);
-    color: var(--app-foreground);
+    background: var(--app-editorial-paper);
+    color: var(--app-editorial-ink);
+    box-shadow: 0.22rem 0.22rem 0 var(--app-editorial-hard-shadow);
 }
 
 .marketing-action:hover {
-    box-shadow: 0 0.75rem 1.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 50%, transparent);
+    transform: translate(-0.08rem, -0.08rem);
+    box-shadow: 0.34rem 0.34rem 0 var(--app-brand-secondary);
 }
 
 .marketing-action:focus-visible {

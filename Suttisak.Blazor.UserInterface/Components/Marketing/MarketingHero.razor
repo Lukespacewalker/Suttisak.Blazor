@@ -1,4 +1,4 @@
-<section class="marketing-hero @(Media is null ? "marketing-hero--without-media" : null) @Class"
+<section class="marketing-hero @VariantClass @(Media is null ? "marketing-hero--without-media" : null) @Class"
          id="@Id"
          aria-labelledby="@TitleId"
          @attributes="AdditionalAttributes">
@@ -46,7 +46,12 @@
     [Parameter] public RenderFragment? Actions { get; set; }
     [Parameter] public RenderFragment? Media { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public MarketingHeroVariant Variant { get; set; } = MarketingHeroVariant.Default;
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string VariantClass => Variant == MarketingHeroVariant.Editorial
+        ? "marketing-hero--editorial"
+        : "marketing-hero--default";
 }

@@ -1,0 +1,90 @@
+.editorial-product-stage {
+    position: relative;
+    margin: 0;
+    color: var(--app-editorial-ink);
+}
+
+.editorial-product-stage__art {
+    position: relative;
+    isolation: isolate;
+    min-height: 22rem;
+    overflow: hidden;
+    border: 2px solid var(--app-editorial-border);
+    border-radius: var(--app-editorial-radius);
+    background-color: var(--app-editorial-paper);
+    background-image: var(--app-editorial-grain);
+    box-shadow: var(--app-editorial-shadow-offset) var(--app-editorial-shadow-offset) 0 var(--app-editorial-hard-shadow);
+}
+
+.editorial-product-stage__content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    min-height: inherit;
+    place-items: center;
+    padding: clamp(var(--app-space-4), 3vw, var(--app-space-8));
+}
+
+.editorial-product-stage__content ::deep img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 34rem;
+    object-fit: contain;
+}
+
+.editorial-product-stage__shape {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+}
+
+.editorial-product-stage__shape--circle {
+    width: clamp(7rem, 18vw, 12rem);
+    aspect-ratio: 1;
+    top: -3.5rem;
+    right: -3rem;
+    border: 1.35rem solid var(--app-brand-secondary);
+    border-radius: 50%;
+    opacity: 0.82;
+}
+
+.editorial-product-stage__shape--bar {
+    width: clamp(7rem, 18vw, 12rem);
+    height: 1.15rem;
+    bottom: 1.5rem;
+    left: -2rem;
+    background: var(--app-brand);
+    transform: rotate(-8deg);
+}
+
+.editorial-product-stage__caption {
+    width: fit-content;
+    margin: calc(var(--app-editorial-shadow-offset) + var(--app-space-3)) 0 0 auto;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--app-editorial-border);
+    background: var(--app-editorial-paper);
+    color: var(--app-editorial-ink);
+    font-size: var(--app-type-sm);
+    font-weight: 700;
+    letter-spacing: 0.045em;
+}
+
+@media (max-width: 760px) {
+    .editorial-product-stage__art {
+        min-height: 16rem;
+    }
+
+    .editorial-product-stage__content {
+        padding: var(--app-space-3);
+    }
+}
+
+@media (forced-colors: active) {
+    .editorial-product-stage__art,
+    .editorial-product-stage__caption {
+        border-color: CanvasText;
+        box-shadow: none;
+    }
+}

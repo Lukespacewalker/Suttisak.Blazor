@@ -1,0 +1,28 @@
+<figure class="editorial-product-stage @Class" @attributes="AdditionalAttributes">
+    <div class="editorial-product-stage__art">
+        <span class="editorial-product-stage__shape editorial-product-stage__shape--circle" aria-hidden="true"></span>
+        <span class="editorial-product-stage__shape editorial-product-stage__shape--bar" aria-hidden="true"></span>
+        <div class="editorial-product-stage__content">@ChildContent</div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Label) || CaptionContent is not null)
+    {
+        <figcaption class="editorial-product-stage__caption">
+            @if (CaptionContent is not null)
+            {
+                @CaptionContent
+            }
+            else
+            {
+                @Label
+            }
+        </figcaption>
+    }
+</figure>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public RenderFragment? CaptionContent { get; set; }
+    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}
