@@ -17,6 +17,11 @@
 <IdentityManageShell Title="@Manage_razor.Profile" Description="@Text["ProfileDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
 
+@if (UiSlots?.ProfileContent is not null)
+{
+    <div class="identity-profile-extension">@UiSlots.ProfileContent</div>
+}
+
 <FluentGrid>
     <FluentGridItem xs="12" sm="6">
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
@@ -43,6 +48,9 @@
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
+
+    [CascadingParameter]
+    private IdentityUiSlots? UiSlots { get; set; }
 
     [SupplyParameterFromForm]
     private InputModel? Input { get; set; }

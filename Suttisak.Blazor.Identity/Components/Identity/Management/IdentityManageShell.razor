@@ -63,21 +63,20 @@
         }
     </aside>
 
-    <main class="identity-manage-content" id="identity-manage-content">
-        <header class="identity-manage-content__header">
+    <main class="identity-manage-content" id="identity-manage-content" aria-label="@Title">
+        @if (Icon is not null || !string.IsNullOrWhiteSpace(Description))
+        {
+        <header class="identity-manage-content__intro">
             @if (Icon is not null)
             {
                 <span class="identity-manage-content__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
             }
-            <div>
-                <p class="identity-manage-content__eyebrow">@Text["AccountCenter"]</p>
-                <h2>@Title</h2>
-                @if (!string.IsNullOrWhiteSpace(Description))
-                {
-                    <p class="identity-manage-content__description">@Description</p>
-                }
-            </div>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p class="identity-manage-content__description">@Description</p>
+            }
         </header>
+        }
         <div class="identity-manage-content__body">@ChildContent</div>
     </main>
 </div>
