@@ -52,6 +52,8 @@ text {
     gap: 1rem;
 }
 
+.login-footer { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--app-brand-divider); color: var(--login-text-soft); font-size: .82rem; line-height: 1.5; text-align: center; }
+
 .login-provider-block {
     display: grid;
     gap: 0.75rem;

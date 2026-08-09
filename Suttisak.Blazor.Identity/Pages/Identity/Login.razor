@@ -12,6 +12,10 @@
 
 <PageTitle>@Login_razor.Login</PageTitle>
 
+<SectionContent SectionId="IdentityLayout.CardEyebrowSection">
+    @if (UiSlots?.Brand is not null) { @UiSlots.Brand }
+</SectionContent>
+
 <SectionContent SectionId="IdentityLayout.CardTitleSection">
     @Login_razor.Login
 </SectionContent>
@@ -98,6 +102,15 @@
 				@Login_razor.ContinueWithPasskey
 			</PasskeySubmit>
 		</div>
+	}
+
+	@if (UiSlots?.LoginFooter is not null)
+	{
+		<footer class="login-footer">@UiSlots.LoginFooter</footer>
+	}
+	else if (UiSlots?.IdentityFooter is not null)
+	{
+		<footer class="login-footer">@UiSlots.IdentityFooter</footer>
 	}
 </text>
 @code {

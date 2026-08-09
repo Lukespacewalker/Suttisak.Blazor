@@ -1,32 +1,38 @@
 @typeparam TUser where TUser : class
 @inject IdentityUserAccessor<TUser> UserAccessor
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.PersonalData</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })" />
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.PersonalData</h1>
 </SectionContent>
+<IdentityManageShell Title="@Manage_razor.PersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
 
-<FluentGrid>
-    <FluentGridItem xs="12" sm="6">
-        <p>@PersonalData_razor.Description</p>
-        <p>
-            <strong>@PersonalData_razor.Warning</strong>
-        </p>
+<div class="identity-settings-list">
+    <IdentitySettingCard Title="@PersonalData_razor.DownloadButton"
+                         Description="@PersonalData_razor.Description"
+                         Icon="@(new Icons.Regular.Size20.ArrowDownload())">
+        <Actions>
         <form action="@IdentityRoutes.Api.DownloadPersonalData" method="post">
             <AntiforgeryToken />
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width:20%;">@PersonalData_razor.DownloadButton</FluentButton>
+            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@PersonalData_razor.DownloadButton</FluentButton>
         </form>
+        </Actions>
+    </IdentitySettingCard>
 
-        <hr />
+    <IdentitySettingCard Title="@PersonalData_razor.DeleteLink"
+                         Description="@PersonalData_razor.Warning"
+                         Icon="@(new Icons.Regular.Size20.Delete())"
+                         CssClass="identity-setting-card--danger">
+        <Actions><a class="identity-card-action identity-card-action--danger" href="@IdentityRoutes.Account.Manage.DeletePersonalData">@PersonalData_razor.DeleteLink</a></Actions>
+    </IdentitySettingCard>
+</div>
 
-        <p>
-            <FluentLink Href="@IdentityRoutes.Account.Manage.DeletePersonalData" Style="width:20%;">@PersonalData_razor.DeleteLink</FluentLink>
-        </p>
-    </FluentGridItem>
-</FluentGrid>
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.DatabasePerson();

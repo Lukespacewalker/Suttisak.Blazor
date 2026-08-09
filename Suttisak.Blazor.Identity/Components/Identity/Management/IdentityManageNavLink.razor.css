@@ -1,0 +1,30 @@
+.identity-manage-nav-link {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    min-height: 2.6rem;
+    padding: .55rem .7rem;
+    border: 1px solid transparent;
+    border-radius: .75rem;
+    color: var(--app-foreground-muted);
+    font-size: .88rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: color var(--app-duration-fast), background var(--app-duration-fast), border-color var(--app-duration-fast), transform var(--app-duration-fast);
+}
+
+.identity-manage-nav-link:hover {
+    color: var(--app-foreground);
+    background: var(--app-brand-fill-subtle);
+    transform: translateX(2px);
+}
+
+.identity-manage-nav-link.active {
+    color: var(--app-brand-text-strong);
+    border-color: var(--app-brand-border-soft);
+    background: var(--app-brand-fill-soft);
+}
+
+.identity-manage-nav-link:focus-visible { outline: 3px solid var(--app-brand-highlight-soft); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) { .identity-manage-nav-link { transition: none; } }

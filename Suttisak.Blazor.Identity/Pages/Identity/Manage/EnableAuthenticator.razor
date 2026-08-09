@@ -9,13 +9,16 @@
 @inject UrlEncoder UrlEncoder
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<EnableAuthenticator<TUser>> Logger
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.EnableAuthenticator) })" />
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.EnableAuthenticator) })" />
 
 <PageTitle>@Manage_razor.EnableAuthenticator</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.EnableAuthenticator</h1>
 </SectionContent>
+<IdentityManageShell Title="@Manage_razor.EnableAuthenticator" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon">
 
 @if (_recoveryCodes is not null)
 {
@@ -62,6 +65,8 @@ else
         </FluentGridItem>
     </FluentGrid>
 }
+
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.KeyMultiple();

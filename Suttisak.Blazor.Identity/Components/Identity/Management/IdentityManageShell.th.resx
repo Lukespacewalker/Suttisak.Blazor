@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="AccountNavigation" xml:space="preserve"><value>เมนูจัดการบัญชี</value></data>
+  <data name="AccountCenter" xml:space="preserve"><value>ศูนย์จัดการบัญชี</value></data>
+  <data name="AccountCenterCaption" xml:space="preserve"><value>ตัวตนและความปลอดภัย</value></data>
+  <data name="Overview" xml:space="preserve"><value>ภาพรวม</value></data>
+  <data name="SignInAndSecurity" xml:space="preserve"><value>การเข้าสู่ระบบและความปลอดภัย</value></data>
+  <data name="PrivacyAndData" xml:space="preserve"><value>ความเป็นส่วนตัวและข้อมูล</value></data>
+  <data name="AccountSection" xml:space="preserve"><value>ส่วนของบัญชี</value></data>
+  <data name="OverviewDescription" xml:space="preserve"><value>ตรวจสอบข้อมูลบัญชีและเสริมความปลอดภัยให้วิธีการเข้าสู่ระบบของคุณ</value></data>
+  <data name="ProfileDescription" xml:space="preserve"><value>ดูแลข้อมูลติดต่อส่วนตัวของคุณให้เป็นปัจจุบัน</value></data>
+  <data name="EmailDescription" xml:space="preserve"><value>จัดการอีเมลเข้าสู่ระบบและสถานะการยืนยัน</value></data>
+  <data name="PasswordDescription" xml:space="preserve"><value>ใช้รหัสผ่านที่รัดกุมและไม่ซ้ำกับบริการอื่น</value></data>
+  <data name="TwoFactorDescription" xml:space="preserve"><value>เพิ่มขั้นตอนยืนยันอีกชั้นเพื่อปกป้องบัญชีของคุณ</value></data>
+  <data name="PasskeysDescription" xml:space="preserve"><value>เข้าสู่ระบบอย่างปลอดภัยด้วยอุปกรณ์ ลายนิ้วมือ ใบหน้า หรือ PIN</value></data>
+  <data name="ExternalLoginsDescription" xml:space="preserve"><value>ตรวจสอบบริการภายนอกที่เชื่อมต่อกับบัญชีของคุณ</value></data>
+  <data name="PersonalDataDescription" xml:space="preserve"><value>ดาวน์โหลดสำเนาข้อมูลหรือลบบัญชีของคุณอย่างถาวร</value></data>
+  <data name="Verified" xml:space="preserve"><value>ยืนยันแล้ว</value></data>
+  <data name="NotVerified" xml:space="preserve"><value>ยังไม่ยืนยัน</value></data>
+  <data name="Enabled" xml:space="preserve"><value>เปิดใช้งาน</value></data>
+  <data name="NotConfigured" xml:space="preserve"><value>ยังไม่ได้ตั้งค่า</value></data>
+  <data name="PasswordSet" xml:space="preserve"><value>ตั้งรหัสผ่านแล้ว</value></data>
+  <data name="NoPassword" xml:space="preserve"><value>ไม่มีรหัสผ่าน</value></data>
+  <data name="ManageAction" xml:space="preserve"><value>จัดการ</value></data>
+  <data name="PasskeyCount" xml:space="preserve"><value>พาสคีย์ {0} รายการ</value></data>
+  <data name="ExternalLoginCount" xml:space="preserve"><value>บริการที่เชื่อมต่อ {0} รายการ</value></data>
+</root>

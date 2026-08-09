@@ -1,0 +1,101 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.Extensions.Localization
+@using Suttisak.Blazor.Identity.Pages.Identity.Manage
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<IdentityManageShell> Text
+
+<div class="identity-manage-shell">
+    <aside class="identity-manage-nav" aria-label="@Text["AccountNavigation"]">
+        <div class="identity-manage-nav__brand">
+            @if (UiSlots?.Brand is not null)
+            {
+                @UiSlots.Brand
+            }
+            else
+            {
+                <span class="identity-manage-nav__brand-mark" aria-hidden="true">
+                    <FluentIcon Value="@(new Icons.Regular.Size20.PersonCircle())" />
+                </span>
+                <span>
+                    <strong>@Text["AccountCenter"]</strong>
+                    <small>@Text["AccountCenterCaption"]</small>
+                </span>
+            }
+        </div>
+
+        <nav class="identity-manage-nav__desktop">
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Root"
+                                   Icon="@(new Icons.Regular.Size20.Home())"
+                                   ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Root)"
+                                   Match="NavLinkMatch.All">@Text["Overview"]</IdentityManageNavLink>
+
+            <p class="identity-manage-nav__label">@Manage_razor.Account</p>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Profile" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Profile)" Icon="@(new Icons.Regular.Size20.PersonAccounts())">@Manage_razor.Profile</IdentityManageNavLink>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Email" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Email)" Icon="@(new Icons.Regular.Size20.Mail())">@Manage_razor.Email</IdentityManageNavLink>
+
+            <p class="identity-manage-nav__label">@Text["SignInAndSecurity"]</p>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ChangePassword" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ChangePassword)" Icon="@(new Icons.Regular.Size20.Password())">@Manage_razor.ChangePassword</IdentityManageNavLink>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.TwoFactorAuthentication)" Icon="@(new Icons.Regular.Size20.KeyMultiple())">@Manage_razor.TwoFactorAuthentication</IdentityManageNavLink>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Passkeys" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Passkeys)" Icon="@(new Icons.Regular.Size20.PersonPasskey())">@Manage_razor.Passkeys</IdentityManageNavLink>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ExternalLogins" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ExternalLogins)" Icon="@(new Icons.Regular.Size20.GlobeSurface())">@Manage_razor.ExternalLogins</IdentityManageNavLink>
+
+            <p class="identity-manage-nav__label">@Text["PrivacyAndData"]</p>
+            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.PersonalData" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.PersonalData)" Icon="@(new Icons.Regular.Size20.DatabasePerson())">@Manage_razor.PersonalData</IdentityManageNavLink>
+        </nav>
+
+        <label class="identity-manage-nav__mobile">
+            <span>@Text["AccountSection"]</span>
+            <select value="@ActiveUrl" @onchange="NavigateToSection">
+                <option value="@IdentityRoutes.Account.Manage.Root">@Text["Overview"]</option>
+                <option value="@IdentityRoutes.Account.Manage.Profile">@Manage_razor.Profile</option>
+                <option value="@IdentityRoutes.Account.Manage.Email">@Manage_razor.Email</option>
+                <option value="@IdentityRoutes.Account.Manage.ChangePassword">@Manage_razor.ChangePassword</option>
+                <option value="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Manage_razor.TwoFactorAuthentication</option>
+                <option value="@IdentityRoutes.Account.Manage.Passkeys">@Manage_razor.Passkeys</option>
+                <option value="@IdentityRoutes.Account.Manage.ExternalLogins">@Manage_razor.ExternalLogins</option>
+                <option value="@IdentityRoutes.Account.Manage.PersonalData">@Manage_razor.PersonalData</option>
+            </select>
+        </label>
+
+        @if (UiSlots?.AccountHelp is not null)
+        {
+            <div class="identity-manage-nav__help">@UiSlots.AccountHelp</div>
+        }
+    </aside>
+
+    <main class="identity-manage-content" id="identity-manage-content">
+        <header class="identity-manage-content__header">
+            @if (Icon is not null)
+            {
+                <span class="identity-manage-content__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
+            }
+            <div>
+                <p class="identity-manage-content__eyebrow">@Text["AccountCenter"]</p>
+                <h2>@Title</h2>
+                @if (!string.IsNullOrWhiteSpace(Description))
+                {
+                    <p class="identity-manage-content__description">@Description</p>
+                }
+            </div>
+        </header>
+        <div class="identity-manage-content__body">@ChildContent</div>
+    </main>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? ActiveUrl { get; set; }
+    [Parameter] public Icon? Icon { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    [CascadingParameter] private IdentityUiSlots? UiSlots { get; set; }
+
+    private void NavigateToSection(ChangeEventArgs args)
+    {
+        if (args.Value is string href && !string.IsNullOrWhiteSpace(href))
+        {
+            NavigationManager.NavigateTo(href);
+        }
+    }
+}

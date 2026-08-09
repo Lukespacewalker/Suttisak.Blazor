@@ -9,6 +9,7 @@
 
 <PageTitle>@LoginWithRecoveryCode_razor.PageTitle</PageTitle>
 
+<IdentityFlowPanel Title="@LoginWithRecoveryCode_razor.Header" Description="@LoginWithRecoveryCode_razor.InfoMessage">
 <h1>@LoginWithRecoveryCode_razor.Header</h1>
 <hr />
 <StatusMessage Message="@_message" />
@@ -27,6 +28,8 @@
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
+</IdentityFlowPanel>
+
 @code {
     private string? _message;
     private TUser _user = null!;

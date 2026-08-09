@@ -9,6 +9,7 @@
 
 <PageTitle>@RegisterConfirmation_razor.PageTitle</PageTitle>
 
+<IdentityFlowPanel Title="@RegisterConfirmation_razor.Header" Description="@RegisterConfirmation_razor.Message">
 <h1>@RegisterConfirmation_razor.Header</h1>
 
 <StatusMessage Message="@_statusMessage" />
@@ -23,6 +24,7 @@ else
 {
     <p role="alert">@RegisterConfirmation_razor.Message</p>
 }
+</IdentityFlowPanel>
 
 @code {
     private string? _emailConfirmationLink;

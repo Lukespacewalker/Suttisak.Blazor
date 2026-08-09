@@ -6,14 +6,17 @@
 @inject UserManager<TUser> UserManager
 @inject SignInManager<TUser> SignInManager
 @inject IdentityRedirectManager<TUser> RedirectManager
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IdentityManageShell> Text
 
 
 <PageTitle>@Manage_razor.Passkeys</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage.StaticPageIcon, Manage.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Passkeys) })" />
+<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Passkeys) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
     <h1>@Manage_razor.Passkeys</h1>
 </SectionContent>
+<IdentityManageShell Title="@Manage_razor.Passkeys" Description="@Text["PasskeysDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
 
 @if (_currentPasskeys is not { Count: >= MaxPasskeyCount })
@@ -25,24 +28,22 @@
 
 @if (_currentPasskeys is { Count: > 0 })
 {
-    <div class="glass-container" style="overflow:auto;" tabindex="-1">
-        <FluentDataGrid Items="_currentPasskeys.AsQueryable()" TGridItem="UserPasskeyInfo" ItemKey="@(passkey => Base64Url.EncodeToString(passkey.CredentialId))">
-            <PropertyColumn Title="@Passkeys_razor.NameHeader" Property="@(passkey => passkey.Name ?? Passkeys_razor.UnnamedPasskey)" />
-            <TemplateColumn Title="@Passkeys_razor.ActionHeader">
-                @{
-                    var credentialId = Base64Url.EncodeToString(context.CredentialId);
-                }
-                <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
-                    <RenamePasskeyWrapper TUser="TUser" Passkey="context" @rendermode="@(new InteractiveServerRenderMode())" />
-
+    <div class="identity-settings-list">
+        @foreach (var passkey in _currentPasskeys)
+        {
+            var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
+            <IdentitySettingCard Title="@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)" Icon="@(new Icons.Regular.Size20.PersonPasskey())">
+                <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
+                <Actions>
+                    <RenamePasskeyWrapper TUser="TUser" Passkey="passkey" @rendermode="@(new InteractiveServerRenderMode())" />
                     <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="CredentialId" value="@credentialId" />
-                        <FluentButton Type="ButtonType.Submit" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStart="@(new Icons.Filled.Size20.Delete())">@Passkeys_razor.DeleteButton</FluentButton>
+                        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStart="@(new Icons.Filled.Size20.Delete())">@Passkeys_razor.DeleteButton</FluentButton>
                     </form>
-                </div>
-            </TemplateColumn>
-        </FluentDataGrid>
+                </Actions>
+            </IdentitySettingCard>
+        }
     </div>
 }
 else
@@ -54,6 +55,8 @@ else
 {
     <p class="text-danger">@Passkeys_razor.MaxPasskeysReached</p>
 }
+
+</IdentityManageShell>
 
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.PersonPasskey();
