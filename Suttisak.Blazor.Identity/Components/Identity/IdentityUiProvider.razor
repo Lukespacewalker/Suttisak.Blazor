@@ -9,6 +9,7 @@
     [Parameter] public RenderFragment? LoginFooter { get; set; }
     [Parameter] public RenderFragment? AccountHelp { get; set; }
     [Parameter] public RenderFragment? IdentityFooter { get; set; }
+    [Parameter] public RenderFragment? ProfileContent { get; set; }
 
-    private IdentityUiSlots Slots => new(Brand, LoginShowcase, LoginFooter, AccountHelp, IdentityFooter);
+    private IdentityUiSlots Slots => new(Brand, LoginShowcase, LoginFooter, AccountHelp, IdentityFooter, ProfileContent);
 }

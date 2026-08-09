@@ -1,1 +1,8 @@
-.identity-overview-grid { display: grid; gap: .8rem; }
+.identity-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    align-items: stretch;
+    gap: var(--app-space-3, .75rem);
+}
+
+.identity-overview-grid ::deep .identity-setting-card { height: 100%; }

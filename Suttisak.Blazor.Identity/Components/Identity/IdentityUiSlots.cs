@@ -10,4 +10,5 @@ public sealed record IdentityUiSlots(
     RenderFragment? LoginShowcase = null,
     RenderFragment? LoginFooter = null,
     RenderFragment? AccountHelp = null,
-    RenderFragment? IdentityFooter = null);
+    RenderFragment? IdentityFooter = null,
+    RenderFragment? ProfileContent = null);
