@@ -4,11 +4,10 @@
     justify-content: space-between;
     gap: var(--app-space-8);
     padding: clamp(var(--app-space-8), 5vw, var(--app-space-18));
-    border: 2px solid var(--app-editorial-border);
-    border-radius: var(--app-editorial-radius);
-    background-color: var(--app-editorial-paper-muted);
-    background-image: var(--app-editorial-grain);
-    box-shadow: var(--app-editorial-shadow-offset) var(--app-editorial-shadow-offset) 0 var(--app-editorial-hard-shadow);
+    border: 1px solid var(--app-border);
+    border-radius: 2rem;
+    background: var(--app-surface-muted);
+    box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--app-foreground) 6%, transparent);
 }
 
 .marketing-call-to-action__content ::deep h2 {
@@ -30,7 +29,7 @@
     .marketing-call-to-action {
         align-items: flex-start;
         flex-direction: column;
-        border-radius: var(--app-editorial-radius);
+        border-radius: 1.5rem;
     }
 
     .marketing-call-to-action__actions,

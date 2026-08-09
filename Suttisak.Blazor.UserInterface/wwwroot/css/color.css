@@ -63,18 +63,6 @@ body {
     --app-secondary-highlight: var(--app-brand-secondary);
     --app-secondary-highlight-soft: color-mix(in srgb, var(--app-brand-secondary) 15%, transparent);
     --app-secondary-gradient: linear-gradient(135deg, var(--app-brand-secondary), color-mix(in srgb, var(--app-brand-secondary) 52%, var(--app-brand)));
-
-    /* Editorial marketing surfaces: opaque paper, crisp ink, and hard print-era depth. */
-    --app-editorial-paper: light-dark(#f8f0df, #24211c);
-    --app-editorial-paper-muted: light-dark(#efe2ca, #1c1a17);
-    --app-editorial-ink: light-dark(#252621, #f7efe0);
-    --app-editorial-border: color-mix(in srgb, var(--app-editorial-ink) 78%, transparent);
-    --app-editorial-hard-shadow: light-dark(#252621, #050505);
-    --app-editorial-radius: 0.9rem;
-    --app-editorial-shadow-offset: 0.48rem;
-    --app-editorial-font-display: Fraunces, Georgia, "Times New Roman", serif;
-    --app-editorial-grain-opacity: 0.045;
-    --app-editorial-grain: radial-gradient(circle at 18% 24%, rgb(37 38 33 / var(--app-editorial-grain-opacity)) 0 0.65px, transparent 0.8px), radial-gradient(circle at 72% 68%, rgb(37 38 33 / var(--app-editorial-grain-opacity)) 0 0.55px, transparent 0.75px);
 }
 
 .gradient-brand {

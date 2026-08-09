@@ -75,20 +75,6 @@ classes for older pages. Applications should define product colors through
 `--app-brand`, `--app-brand-secondary`, `--app-brand-secondary`, and
 `--app-brand` rather than replacing the shared component styles.
 
-## Company attribution
-
-Use `CompanyFooter` in an application's top-level layouts so ownership remains
-visible on landing, authenticated, and identity pages:
-
-```razor
-<CompanyFooter CompanyName="Quack and Honk"
-               CompanyUrl="https://quackandhonk.com/"
-               CreatorName="Suttisak Denduangchai" />
-```
-
-The component provides responsive wrapping, keyboard focus styling, and theme-aware
-colors. Applications own the company name, URL, creator name, and localized prefix.
-
 ## Theme bootstrap
 
 Load the bootstrap script in the document `<head>` before application styles:
