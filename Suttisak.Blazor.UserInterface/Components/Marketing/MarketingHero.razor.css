@@ -111,12 +111,81 @@
     object-fit: contain;
 }
 
+.marketing-hero--editorial {
+    min-height: min(50rem, calc(100svh - 3rem));
+    border-bottom: 2px solid var(--app-editorial-border);
+    background-color: var(--app-editorial-paper-muted);
+    background-image: var(--app-editorial-grain);
+    color: var(--app-editorial-ink);
+}
+
+.marketing-hero--editorial .marketing-hero__orb--start {
+    width: clamp(9rem, 23vw, 18rem);
+    height: clamp(9rem, 23vw, 18rem);
+    top: -5rem;
+    right: -3rem;
+    border: clamp(1.4rem, 3vw, 2.5rem) solid var(--app-brand-secondary);
+    border-radius: 50%;
+    background: transparent;
+    filter: none;
+    opacity: 0.72;
+}
+
+.marketing-hero--editorial .marketing-hero__orb--end {
+    position: absolute;
+    display: block;
+    width: clamp(12rem, 30vw, 26rem);
+    height: clamp(1.2rem, 2vw, 2rem);
+    bottom: 9%;
+    left: -6rem;
+    background: var(--app-brand);
+    opacity: 0.84;
+    transform: rotate(-7deg);
+}
+
+.marketing-hero--editorial .marketing-hero__grid {
+    position: absolute;
+    right: 5%;
+    bottom: 8%;
+    display: block;
+    width: 5.5rem;
+    aspect-ratio: 1;
+    background-image: radial-gradient(circle, var(--app-editorial-ink) 1.4px, transparent 1.6px);
+    background-size: 0.8rem 0.8rem;
+    opacity: 0.2;
+}
+
+.marketing-hero--editorial .marketing-hero__container-scope ::deep .marketing-hero__container {
+    grid-template-columns: minmax(0, 0.82fr) minmax(28rem, 1.18fr);
+}
+
+.marketing-hero--editorial .marketing-hero__copy h1 {
+    max-width: 13ch;
+    font-family: var(--app-editorial-font-display);
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.045em;
+}
+
+.marketing-hero--editorial .marketing-hero__copy h1:lang(th) {
+    font-family: var(--app-font-heading);
+    line-height: 1.15;
+}
+
+.marketing-hero--editorial .marketing-hero__description {
+    color: color-mix(in srgb, var(--app-editorial-ink) 74%, transparent);
+}
+
 @media (max-width: 980px) {
     .marketing-hero {
         min-height: auto;
     }
 
     .marketing-hero__container-scope ::deep .marketing-hero__container {
+        grid-template-columns: 1fr;
+    }
+
+    .marketing-hero--editorial .marketing-hero__container-scope ::deep .marketing-hero__container {
         grid-template-columns: 1fr;
     }
 

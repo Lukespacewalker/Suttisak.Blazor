@@ -30,7 +30,7 @@ Centers content and applies the shared maximum width and responsive gutter.
 
 ### `MarketingHero`
 
-Provides the responsive hero composition and decorative backdrop. Keep authorization and routes in the `Actions` slot, and product imagery in the `Media` slot.
+Provides the responsive hero composition and decorative backdrop. Keep authorization and routes in the `Actions` slot, and product imagery in the `Media` slot. Set `Variant="MarketingHeroVariant.Editorial"` for an opaque, print-inspired composition with crisp geometric decoration.
 
 ```razor
 <MarketingHero Title="A focused product message"
@@ -46,6 +46,23 @@ Provides the responsive hero composition and decorative backdrop. Keep authoriza
     </Media>
 </MarketingHero>
 ```
+
+For the editorial treatment, pair the hero with `EditorialProductStage`:
+
+```razor
+<MarketingHero Title="A focused product message"
+               Variant="MarketingHeroVariant.Editorial">
+    <Media>
+        <EditorialProductStage Label="Product workflow illustration">
+            <img src="/assets/editorial-product.png" alt="The product workflow" />
+        </EditorialProductStage>
+    </Media>
+</MarketingHero>
+```
+
+### `EditorialProductStage`
+
+Presents transparent product artwork on an opaque paper surface with a firm border, offset shadow, and restrained geometric accents. Use `CaptionContent` when the caption needs richer markup; otherwise set `Label`.
 
 ### `MarketingProductFrame`
 

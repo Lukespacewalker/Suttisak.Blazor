@@ -2,20 +2,21 @@
     min-width: 0;
     min-height: 15.5rem;
     padding: var(--app-space-6);
-    border: 1px solid var(--app-border);
-    border-radius: 1.5rem;
-    background: var(--app-surface);
-    box-shadow: 0 0.7rem 1.8rem color-mix(in srgb, var(--app-foreground) 5%, transparent);
+    border: 2px solid var(--app-editorial-border);
+    border-radius: var(--app-editorial-radius);
+    background-color: var(--app-editorial-paper);
+    background-image: var(--app-editorial-grain);
+    box-shadow: 0.28rem 0.28rem 0 var(--app-editorial-hard-shadow);
 }
 
 .marketing-card--featured {
-    border-color: var(--app-border);
-    background: var(--app-surface-muted);
+    border-color: var(--app-editorial-border);
+    background-color: color-mix(in srgb, var(--app-brand) 12%, var(--app-editorial-paper));
 }
 
 .marketing-card--compact {
     min-height: 12.5rem;
-    border-radius: 1.25rem;
+    border-radius: calc(var(--app-editorial-radius) * 0.8);
 }
 
 .marketing-card h3 {
