@@ -1,22 +1,42 @@
 @using Microsoft.JSInterop
+@using Microsoft.Extensions.Logging
 @using Suttisak.Blazor.UserInterface.Providers
+@inject ILogger<InitializeTimeZone> Logger
 @code {
     [Inject(Key = nameof(BrowserTimeProvider))] public TimeProvider TimeProvider { get; set; } = null!;
     [Inject] public IJSRuntime JsRuntime { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && TimeProvider is BrowserTimeProvider { IsLocalTimeZoneSet: false } browserTimeProvider)
+        if (!firstRender
+            || TimeProvider is not BrowserTimeProvider browserTimeProvider
+            || !browserTimeProvider.TryBeginInitialization())
         {
-            try
+            return;
+        }
+
+        try
+        {
+            await using var module = await JsRuntime.InvokeAsync<IJSObjectReference>(
+                "import",
+                Assets["./_content/Suttisak.Blazor.UserInterface/Components/Timezone/InitializeTimeZone.razor.js"]);
+            var timeZone = await module.InvokeAsync<string>("getBrowserTimeZone");
+            if (!browserTimeProvider.SetBrowserTimeZone(timeZone))
             {
-                await using var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", Assets["./_content/Suttisak.Blazor.UserInterface/Components/Timezone/InitializeTimeZone.razor.js"]);
-                var timeZone = await module.InvokeAsync<string>("getBrowserTimeZone");
-                browserTimeProvider.SetBrowserTimeZone(timeZone);
+                Logger.LogWarning("The browser time zone {TimeZoneId} is not available on this runtime.", timeZone);
             }
-            catch (JSDisconnectedException)
-            {
-            }
+        }
+        catch (JSDisconnectedException exception)
+        {
+            Logger.LogDebug(exception, "The browser disconnected before its time zone could be detected.");
+        }
+        catch (JSException exception)
+        {
+            Logger.LogWarning(exception, "The browser time zone could not be detected.");
+        }
+        finally
+        {
+            browserTimeProvider.CompleteInitialization();
         }
     }
 }
