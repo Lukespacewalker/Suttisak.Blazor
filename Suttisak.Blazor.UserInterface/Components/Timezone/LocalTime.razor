@@ -1,15 +1,29 @@
+@using System.Globalization
 @using Suttisak.Blazor.UserInterface.Providers
-@if (DateTime is not null)
+@implements IDisposable
+<InitializeTimeZone />
+@if (Instant is not null)
 {
-    @TimeProvider.ToLocalDateTime(DateTime.Value)
+    var local = TimeProvider.ToLocalDateTimeOffset(Instant.Value);
+    <time datetime="@Instant.Value.UtcDateTime.ToString("O", CultureInfo.InvariantCulture)">@local.ToString(Format, Culture)</time>
 }
 
 @code {
     [Inject(Key = nameof(BrowserTimeProvider))]
     public TimeProvider TimeProvider { get; set; } = null!;
 
-    [Parameter]
-    public DateTime? DateTime { get; set; }
+    [Parameter] public DateTimeOffset? Value { get; set; }
+    [Parameter] public DateTime? DateTime { get; set; }
+    [Parameter] public string Format { get; set; } = "yyyy-MM-dd HH:mm:ss";
+    [Parameter] public IFormatProvider Culture { get; set; } = CultureInfo.CurrentCulture;
+
+    private DateTimeOffset? Instant => Value ?? DateTime switch
+    {
+        null => null,
+        { Kind: DateTimeKind.Utc } utc => new DateTimeOffset(utc),
+        { Kind: DateTimeKind.Local } local => new DateTimeOffset(local).ToUniversalTime(),
+        _ => throw new InvalidOperationException("Unable to display an unspecified DateTime as an instant.")
+    };
 
     protected override void OnInitialized()
     {
