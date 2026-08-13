@@ -1,4 +1,11 @@
+.header-footer-shell { min-height: 100dvh; }
+.header-footer-header { position: sticky; z-index: 100; top: 0; display: flex; min-height: 4rem; box-sizing: border-box; align-items: center; gap: .5rem; padding: .75rem 1rem; border-bottom: 1px solid var(--app-border); background: var(--app-glass-surface-strong); backdrop-filter: blur(18px); }
+.header-footer-logo { width: 2rem; height: 2rem; flex: 0 0 auto; object-fit: contain; }
+.header-footer-spacer { flex: 1 1 auto; }
+
 .header-footer-content {
+    min-width: 0;
+    min-height: calc(100dvh - 4rem);
     width: 100%;
     background: url(/assets/backgrounds/gradient.svg);
     display: flex;
@@ -6,5 +13,5 @@
 }
 
 body[data-color-scheme="dark"] .header-footer-content {
-    background: url(/assets/backgrounds/gradient-dark.svg)
+    background: url(/assets/backgrounds/gradient-dark.svg);
 }
