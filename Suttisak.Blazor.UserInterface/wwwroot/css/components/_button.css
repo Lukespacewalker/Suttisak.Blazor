@@ -3,18 +3,12 @@ fluent-button[appearance='primary'] {
 }
 
 fluent-button[appearance='primary']:enabled {
-    --gradient-brand-start: var(--app-brand);
-    --gradient-brand-end: var(--app-brand-secondary);
-    background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
+    background: var(--app-brand);
+    color: var(--app-on-brand);
 }
 
 fluent-button[appearance='primary']:enabled:hover {
-    --gradient-brand-start: oklch(from var(--app-brand) calc(l + 0.1) c h);
-    --gradient-brand-end: oklch(from var(--app-brand-secondary) calc(l + 0.1) c h);
-}
-
-fluent-button {
-    transition: --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
+    background: var(--colorBrandBackgroundHover, var(--app-brand));
 }
 
 /* Theme Selector and Culture Selector*/
@@ -22,7 +16,7 @@ fluent-button {
 .theme-selector,
 .culture-selector {
     border-radius: var(--borderRadiusCircular);
-    border: 1px solid var(--color-glass-border);
+    border: 1px solid var(--app-glass-border);
     display: flex;
     overflow: hidden;
 }
@@ -43,17 +37,14 @@ fluent-button {
     align-items: center;
     justify-content: center;
 
-    transition: all var(--transition), --gradient-brand-start var(--transition), --gradient-brand-end var(--transition);
+    transition: color var(--transition), background-color var(--transition), border-color var(--transition);
 
 }
 
 .theme-selector button.active,
 .culture-selector button.active {
-    --gradient-brand-start: var(--app-brand);
-    --gradient-brand-end: var(--app-brand-secondary);
     color: var(--app-on-brand);
-
-    background: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-end) 100%);
+    background: var(--app-brand);
 }
 
 .theme-selector button:hover:not(.active),
@@ -63,6 +54,5 @@ fluent-button {
 
 .theme-selector button.active:hover,
 .culture-selector button.active:hover {
-    --gradient-brand-start: oklch(from var(--app-brand) calc(l + 0.1) c h);
-    --gradient-brand-end: oklch(from var(--app-brand-secondary) calc(l + 0.1) c h);
+    background: var(--colorBrandBackgroundHover, var(--app-brand));
 }

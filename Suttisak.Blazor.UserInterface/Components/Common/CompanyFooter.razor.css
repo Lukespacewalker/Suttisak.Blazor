@@ -4,7 +4,7 @@
     justify-content: center;
     gap: .35rem;
     padding: 1.25rem 1rem;
-    border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    border-top: 1px solid var(--app-border);
     color: var(--neutral-foreground-hint-rest, #616161);
     font-size: .8125rem;
     letter-spacing: .01em;

@@ -21,10 +21,10 @@
 }
 
 ::deep .app-page {
-    background: color-mix(in srgb, var(--colorNeutralBackground2) 56%, transparent);
-    border: 1px solid color-mix(in srgb, var(--colorNeutralStroke2) 45%, transparent);
+    background: var(--app-glass-surface);
+    border: 1px solid var(--app-glass-border);
     border-radius: var(--borderRadiusXLarge);
-    box-shadow: 0 12px 36px var(--color-glass-shadow);
+    box-shadow: 0 12px 36px var(--app-glass-shadow);
     backdrop-filter: blur(18px) saturate(160%);
     -webkit-backdrop-filter: blur(18px) saturate(160%);
 }

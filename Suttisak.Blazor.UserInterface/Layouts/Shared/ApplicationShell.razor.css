@@ -24,7 +24,7 @@
     height: min(42rem, 75vw);
     top: -22rem;
     right: -10rem;
-    background: radial-gradient(circle, var(--app-brand-overlay, rgba(15, 108, 189, .12)), transparent 70%);
+    background: radial-gradient(circle, var(--app-brand-soft), transparent 70%);
 }
 
 .app-shell__orb--secondary {

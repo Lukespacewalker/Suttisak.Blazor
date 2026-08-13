@@ -26,7 +26,7 @@
     z-index: 4;
     bottom: 0;
     padding: .85rem;
-    background: color-mix(in srgb, var(--app-surface) 92%, transparent);
+    background: var(--app-glass-surface-strong);
     backdrop-filter: blur(16px);
 }
 

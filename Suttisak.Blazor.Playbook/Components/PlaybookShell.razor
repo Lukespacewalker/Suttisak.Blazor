@@ -1,0 +1,73 @@
+@inject PlaybookState State
+@inject IThemeService FluentThemeService
+@inject IJSRuntime JsRuntime
+
+<div class="playbook theme-@State.Theme" data-viewport="@State.Viewport" style="color-scheme: @State.Mode;">
+    <header class="playbook-bar">
+        <NavLink class="playbook-brand" href="" Match="NavLinkMatch.All" aria-label="UI Playbook component gallery">
+            <span>SB</span>
+            <strong>UI Playbook</strong>
+        </NavLink>
+
+        <nav class="playbook-nav" aria-label="Playbook pages">
+            <NavLink href="" Match="NavLinkMatch.All">Components</NavLink>
+            <NavLink href="landing">Landing page</NavLink>
+        </nav>
+
+        <div class="playbook-control">
+            <label for="theme-select">Application</label>
+            <select id="theme-select" value="@State.Theme" @onchange="ChangeThemeAsync">
+                @foreach (var theme in PlaybookCatalog.Themes)
+                {
+                    <option value="@theme.Key">@theme.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="playbook-segment" aria-label="Color scheme">
+            <button class="@Active(State.Mode, "light")" @onclick='() => ChangeModeAsync("light")'>Light</button>
+            <button class="@Active(State.Mode, "dark")" @onclick='() => ChangeModeAsync("dark")'>Dark</button>
+        </div>
+
+        <div class="playbook-segment playbook-segment--viewport" aria-label="Preview width">
+            <button class="@Active(State.Viewport, "wide")" @onclick='() => State.Viewport = "wide"'>Wide</button>
+            <button class="@Active(State.Viewport, "narrow")" @onclick='() => State.Viewport = "narrow"'>Narrow</button>
+        </div>
+    </header>
+
+    @ChildContent
+</div>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private static string Active(string value, string candidate) =>
+        value == candidate ? "is-active" : string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ApplyFluentThemeAsync();
+        }
+    }
+
+    private async Task ChangeThemeAsync(ChangeEventArgs args)
+    {
+        State.Theme = args.Value?.ToString() ?? State.Theme;
+        await ApplyFluentThemeAsync();
+    }
+
+    private async Task ChangeModeAsync(string mode)
+    {
+        State.Mode = mode;
+        await ApplyFluentThemeAsync();
+    }
+
+    private async Task ApplyFluentThemeAsync()
+    {
+        var theme = PlaybookCatalog.Themes.First(value => value.Key == State.Theme);
+        await JsRuntime.InvokeVoidAsync("playbookTheme.setPrimaryColor", theme.PrimaryColor);
+        await FluentThemeService.SetThemeAsync(theme.PrimaryColor, State.Mode == "dark");
+    }
+}

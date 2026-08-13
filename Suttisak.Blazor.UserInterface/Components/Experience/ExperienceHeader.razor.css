@@ -1,0 +1,204 @@
+.experience-header {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(13.75rem, .6fr);
+    min-height: 20.625rem;
+    padding: clamp(1.75rem, 5vw, 4.25rem);
+    border: 1px solid var(--app-accent-border);
+    border-radius: .25rem 2.625rem .25rem 2.625rem;
+    background:
+        radial-gradient(circle at 78% 25%, var(--app-brand-secondary-soft), transparent 32%),
+        var(--app-brand);
+    color: var(--app-on-brand);
+    box-shadow: 0 1.75rem 4.375rem var(--app-shadow-color);
+}
+
+.experience-header::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    opacity: .09;
+    background-image:
+        linear-gradient(var(--app-on-brand) 1px, transparent 1px),
+        linear-gradient(90deg, var(--app-on-brand) 1px, transparent 1px);
+    background-size: 2.625rem 2.625rem;
+    mask-image: linear-gradient(90deg, transparent 5%, #000 90%);
+}
+
+.experience-header__copy {
+    position: relative;
+    z-index: 2;
+    align-self: center;
+    max-width: 47.5rem;
+}
+
+.experience-header__eyebrow {
+    color: var(--app-on-brand);
+    opacity: .78;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.experience-header h1 {
+    max-width: 14ch;
+    margin: .7rem 0 1rem;
+    color: inherit;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: .88;
+    letter-spacing: -.045em;
+}
+
+.experience-header h1 em {
+    color: inherit;
+    opacity: .72;
+    font-style: normal;
+}
+
+.experience-header__lead {
+    max-width: 58ch;
+    margin: 0;
+    color: inherit;
+    opacity: .76;
+    font-size: 1.04rem;
+    line-height: 1.65;
+}
+
+.experience-header__details {
+    margin-top: 1.5rem;
+}
+
+.experience-header__visual {
+    position: relative;
+    min-height: 13.125rem;
+}
+
+.experience-header__orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14.375rem;
+    height: 14.375rem;
+    border: 1px solid var(--app-on-brand);
+    border-radius: 50%;
+    opacity: .24;
+    transform: translate(-50%, -50%);
+}
+
+.experience-header__orbit::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    left: 1%;
+    width: .75rem;
+    height: .75rem;
+    border-radius: 50%;
+    background: var(--app-on-brand);
+    box-shadow: 0 0 0 .45rem var(--app-accent-soft);
+}
+
+.experience-header__orbit--two {
+    width: 9.375rem;
+    height: 9.375rem;
+    border-style: dashed;
+    transform: translate(-50%, -50%) rotate(25deg);
+}
+
+.experience-header__orbit--two::after {
+    inset: auto 7% 11% auto;
+    width: .5rem;
+    height: .5rem;
+}
+
+.experience-header__watermark {
+    position: absolute;
+    z-index: -1;
+    right: -1rem;
+    bottom: -2.2rem;
+    color: var(--app-on-brand);
+    opacity: .045;
+    font-size: clamp(5rem, 13vw, 10rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.06em;
+    white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .experience-header__copy {
+        animation: experience-enter .65s cubic-bezier(.2, .75, .25, 1) both;
+    }
+
+    .experience-header__visual {
+        animation: experience-enter .65s .12s cubic-bezier(.2, .75, .25, 1) both;
+    }
+
+    .experience-header__orbit--one {
+        animation: experience-orbit 18s linear infinite;
+    }
+
+    .experience-header__orbit--two {
+        animation: experience-orbit-small 12s linear infinite reverse;
+    }
+}
+
+@keyframes experience-enter {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes experience-orbit {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes experience-orbit-small {
+    from { transform: translate(-50%, -50%) rotate(25deg); }
+    to { transform: translate(-50%, -50%) rotate(385deg); }
+}
+
+@media (max-width: 48.75rem) {
+    .experience-header {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-bottom: 2.25rem;
+        border-radius: .25rem 1.75rem .25rem 1.75rem;
+    }
+
+    .experience-header__visual {
+        position: absolute;
+        inset: auto -4.375rem -4.7rem auto;
+        width: 14.375rem;
+        opacity: .7;
+    }
+
+    .experience-header__copy {
+        padding-right: 1rem;
+    }
+
+    .experience-header h1 {
+        font-size: clamp(2.65rem, 12vw, 4rem);
+    }
+}
+
+@media (max-width: 32.5rem) {
+    .experience-header {
+        padding: 1.5rem;
+    }
+
+    .experience-header__lead {
+        font-size: .93rem;
+    }
+}
+
+@media (forced-colors: active) {
+    .experience-header {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+}

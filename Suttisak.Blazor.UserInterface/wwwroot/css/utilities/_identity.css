@@ -23,7 +23,7 @@
     padding: 1rem;
     border-radius: 22px;
     border: 1px solid var(--identity-border);
-    background: color-mix(in srgb, var(--app-brand-surface-strong) 52%, transparent);
+    background: var(--app-brand-soft);
 }
 
 .identity-showcase-point-title {

@@ -2,5 +2,6 @@
   <Project Path="Suttisak.Blazor.Identity.Core/Suttisak.Blazor.Identity.Core.csproj" Id="2e4c4baf-5fe8-4506-b656-f050003bb0fe" />
   <Project Path="Suttisak.Blazor.Identity.Generator/Suttisak.Blazor.Identity.Generator.csproj" />
   <Project Path="Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj" />
+  <Project Path="Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj" />
   <Project Path="Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.csproj" />
 </Solution>

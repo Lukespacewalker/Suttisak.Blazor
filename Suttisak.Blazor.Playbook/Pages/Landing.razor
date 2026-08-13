@@ -1,0 +1,88 @@
+@page "/landing"
+@inject PlaybookState State
+
+<PageTitle>Landing Page Sandbox · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <div class="landing-workbench">
+        <header class="landing-workbench__note">
+            <div><span class="playbook-kicker">Live composition</span><strong>@CurrentTheme.Name landing page</strong></div>
+            <p>Built entirely from shared Marketing components. Edit this route to prototype a product landing page without touching an application.</p>
+            <span class="landing-workbench__badge">@State.Mode · @State.Viewport</span>
+        </header>
+
+        <div class="landing-preview">
+            <MarketingPage Id="landing-demo" SkipTarget="landing-features" SkipText="Skip to features">
+                <MarketingHero Title="Understand the signal. Act with confidence."
+                               Description="@($"{CurrentTheme.Name} turns complex information into a focused next step for every person who needs it.")">
+                    <Eyebrow><span class="landing-eyebrow"><i></i>@CurrentTheme.ShortName · DESIGNED FOR CLARITY</span></Eyebrow>
+                    <Actions>
+                        <MarketingActionLink Href="#landing-features">Explore the product</MarketingActionLink>
+                        <MarketingActionLink Href="#landing-how" Variant="MarketingActionVariant.Secondary">See how it works</MarketingActionLink>
+                    </Actions>
+                    <Media>
+                        <MarketingProductFrame Label="LIVE PRODUCT PREVIEW">
+                            <div class="landing-dashboard">
+                                <div class="landing-dashboard__top"><span></span><span></span><span></span><b>@CurrentTheme.ShortName</b></div>
+                                <div class="landing-dashboard__body">
+                                    <div class="landing-dashboard__score"><strong>82</strong><span>On track</span></div>
+                                    <div class="landing-dashboard__copy"><small>LATEST INSIGHT</small><h3>Your result, explained clearly</h3><p>Three focused recommendations are ready to review.</p></div>
+                                </div>
+                                <div class="landing-dashboard__bars"><i></i><i></i><i></i><i></i><i></i></div>
+                            </div>
+                        </MarketingProductFrame>
+                    </Media>
+                </MarketingHero>
+
+                <MarketingProofStrip AriaLabel="Product highlights">
+                    <MarketingProofItem Value="01" Title="One clear source" Description="Shared language across every role." />
+                    <MarketingProofItem Value="24/7" Title="Ready when needed" Description="Responsive from desk to phone." />
+                    <MarketingProofItem Value="AA" Title="Accessible foundation" Description="Contrast and focus built into the system." />
+                </MarketingProofStrip>
+
+                <section class="landing-section" id="landing-features" aria-labelledby="landing-features-title">
+                    <MarketingContainer>
+                        <MarketingSectionHeader HeadingId="landing-features-title" Title="Useful detail, without the noise" Description="A complete product story composed from reusable blocks. Swap the app theme above and the identity changes without changing the page structure.">
+                            <Eyebrow><span class="landing-section__eyebrow">WHY @CurrentTheme.ShortName</span></Eyebrow>
+                        </MarketingSectionHeader>
+                        <MarketingFeatureGrid>
+                            <MarketingCard Title="A guided next step" Featured="true"><Visual><span class="landing-card-number">01</span></Visual><ChildContent><p>Lead with the action that matters now, then reveal detail when the reader asks for it.</p></ChildContent></MarketingCard>
+                            <MarketingCard Title="Evidence in context"><Visual><span class="landing-card-number">02</span></Visual><ChildContent><p>Keep scores, trends, and explanations together so decisions are easier to trust.</p></ChildContent></MarketingCard>
+                            <MarketingCard Title="One system, every screen"><Visual><span class="landing-card-number">03</span></Visual><ChildContent><p>Move from an overview to administration without losing the product’s visual voice.</p></ChildContent></MarketingCard>
+                        </MarketingFeatureGrid>
+                    </MarketingContainer>
+                </section>
+
+                <section class="landing-section landing-section--muted" id="landing-how" aria-labelledby="landing-how-title">
+                    <MarketingContainer>
+                        <div class="landing-split">
+                            <MarketingSectionHeader HeadingId="landing-how-title" Title="From information to action" Description="A short, visible path helps a general audience understand what happens next." Compact="true">
+                                <Eyebrow><span class="landing-section__eyebrow">HOW IT WORKS</span></Eyebrow>
+                            </MarketingSectionHeader>
+                            <MarketingStepList>
+                                <MarketingStep Number="01" Title="Bring the signal together" Description="Collect only the information needed for this decision." />
+                                <MarketingStep Number="02" Title="Explain what it means" Description="Use reader-first language and progressive disclosure." />
+                                <MarketingStep Number="03" Title="Offer a practical next step" Description="Turn the result into an action someone can complete." />
+                            </MarketingStepList>
+                        </div>
+                    </MarketingContainer>
+                </section>
+
+                <section class="landing-section landing-section--cta">
+                    <MarketingContainer>
+                        <MarketingCallToAction>
+                            <Content><span class="landing-section__eyebrow">READY TO BEGIN?</span><h2>Make the next decision feel simple.</h2><p>This is a sandbox CTA—safe to reshape while refining the shared component system.</p></Content>
+                            <Actions><MarketingActionLink Href="#landing-demo">Start with @CurrentTheme.Name</MarketingActionLink></Actions>
+                        </MarketingCallToAction>
+                    </MarketingContainer>
+                </section>
+
+                <footer class="landing-footer"><MarketingContainer><strong>@CurrentTheme.Name</strong><span>Rendered in the Suttisak.Blazor Playbook</span></MarketingContainer></footer>
+            </MarketingPage>
+        </div>
+    </div>
+</PlaybookShell>
+
+@code {
+    private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+}

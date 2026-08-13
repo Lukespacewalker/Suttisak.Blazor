@@ -13,7 +13,7 @@
 
 .marketing-action--primary {
     color: var(--app-on-brand);
-    background: var(--app-brand-gradient);
+    background: linear-gradient(135deg, var(--app-brand), var(--app-brand-secondary));
 }
 
 .marketing-action--secondary {
@@ -23,11 +23,11 @@
 }
 
 .marketing-action:hover {
-    box-shadow: 0 0.75rem 1.5rem color-mix(in srgb, var(--app-brand-shadow-soft) 50%, transparent);
+    box-shadow: 0 0.75rem 1.5rem var(--app-shadow-color);
 }
 
 .marketing-action:focus-visible {
-    outline: 3px solid var(--app-secondary-highlight);
+    outline: 3px solid var(--app-brand-secondary);
     outline-offset: 3px;
 }
 
