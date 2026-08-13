@@ -1,0 +1,21 @@
+@using Suttisak.Blazor.UserInterface.Components
+@using Suttisak.Blazor.UserInterface.Helper
+
+<AuthorizeView>
+    <Authorized>
+        <ProfileMenu LoginText="@LoginText" LogoutText="@LogoutText" ProfileImageUrl="@ProfileImageUrl" />
+    </Authorized>
+    <NotAuthorized>
+        <a class="shell-profile-login" href="@LoginUrl">
+            <FluentIcon Value="@(new Icons.Regular.Size20.Key())" />
+            <span>@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)</span>
+        </a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter] public string LoginUrl { get; set; } = "Account/Login";
+    [Parameter] public string? LoginText { get; set; }
+    [Parameter] public string? LogoutText { get; set; }
+    [Parameter] public string? ProfileImageUrl { get; set; }
+}

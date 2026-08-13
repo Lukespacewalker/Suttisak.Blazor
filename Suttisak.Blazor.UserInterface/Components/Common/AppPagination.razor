@@ -1,0 +1,47 @@
+<div class="app-pagination" style="@Style" @attributes="AdditionalAttributes">
+    @if (SummaryTemplate is not null)
+    {
+        <FluentPaginator State="State" CurrentPageIndexChanged="CurrentPageIndexChanged">
+            <PaginationTextTemplate>
+                <span class="app-pagination__page-label">Page</span>
+                <FluentNumberInput TValue="int" Min="@MinimumPage" Max="@MaximumPage" Style="@NumberFieldStyle"
+                                   Value="@(State.CurrentPageIndex + 1)" ValueChanged="SetCurrentPageIndexAsync"
+                                   ValueExpression="() => State.CurrentPageIndex" />
+                <span>of <strong>@MaximumPage</strong></span>
+            </PaginationTextTemplate>
+            <SummaryTemplate>@SummaryTemplate</SummaryTemplate>
+        </FluentPaginator>
+    }
+    else
+    {
+        <FluentPaginator State="State" CurrentPageIndexChanged="CurrentPageIndexChanged">
+            <PaginationTextTemplate>
+                <span class="app-pagination__page-label">Page</span>
+                <FluentNumberInput TValue="int" Min="@MinimumPage" Max="@MaximumPage" Style="@NumberFieldStyle"
+                                   Value="@(State.CurrentPageIndex + 1)" ValueChanged="SetCurrentPageIndexAsync"
+                                   ValueExpression="() => State.CurrentPageIndex" />
+                <span>of <strong>@MaximumPage</strong></span>
+            </PaginationTextTemplate>
+        </FluentPaginator>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public PaginationState State { get; set; } = null!;
+    [Parameter] public RenderFragment? SummaryTemplate { get; set; }
+    [Parameter] public EventCallback<int> CurrentPageIndexChanged { get; set; }
+    [Parameter] public string NumberFieldStyle { get; set; } = "width: 4.5rem";
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private int MaximumPage => Math.Max(1, (State.LastPageIndex ?? 0) + 1);
+    private int MinimumPage => Math.Min(1, MaximumPage);
+
+    private async Task SetCurrentPageIndexAsync(int page)
+    {
+        var index = page - 1;
+        if (index < 0 || index >= MaximumPage) return;
+        await State.SetCurrentPageIndexAsync(index);
+    }
+}

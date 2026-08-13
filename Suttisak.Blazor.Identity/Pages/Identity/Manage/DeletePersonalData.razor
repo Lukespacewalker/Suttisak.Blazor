@@ -12,14 +12,14 @@
 <PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.DeletePersonalData</h1>
+    <PageHeading Title="@Manage_razor.DeletePersonalData" />
 </SectionContent>
 
 <IdentityManageShell Title="@Manage_razor.DeletePersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.PersonalData" Icon="@StaticPageIcon">
 <StatusMessage Message="@_message" />
 
-<FluentGrid>
-    <FluentGridItem sm="6">
+<FormGrid Columns="1">
+    <div>
         <div class="alert alert-danger" role="alert">
             <p>
                 <strong>@DeletePersonalData_razor.WarningMessage</strong>
@@ -34,10 +34,10 @@
                 @*<FluentValidationMessage For="() => Input.Password" class="text-danger" />*@
                 @* TODO: restore FluentValidationMessage later in RC3 *@
             }
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Class="identity-danger-button" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</FluentButton>
+            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Class="identity-danger-button" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</AppButton>
         </EditForm>
-    </FluentGridItem>
-</FluentGrid>
+    </div>
+</FormGrid>
 </IdentityManageShell>
 @code {
     public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Delete();

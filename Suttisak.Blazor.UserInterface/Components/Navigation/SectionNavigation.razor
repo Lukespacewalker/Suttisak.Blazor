@@ -1,0 +1,97 @@
+@implements IDisposable
+@inject NavigationManager NavigationManager
+
+<nav class="@CssClassValue" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    @if (Context is not null)
+    {
+        <div class="section-navigation__context">@Context</div>
+    }
+
+    <div class="section-navigation__desktop">
+        <div class="section-navigation__items">@ChildContent</div>
+        @if (Overflow is not null)
+        {
+            <div class="section-navigation__overflow">
+                <button class="section-navigation__overflow-trigger @(OverflowActive ? "is-active" : null)"
+                        type="button"
+                        aria-expanded="@_overflowOpen.ToString().ToLowerInvariant()"
+                        @onclick="ToggleOverflow">
+                    <span class="section-navigation__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                    <span>@OverflowLabel</span>
+                    <i class="section-navigation__chevron" aria-hidden="true"></i>
+                </button>
+                @if (_overflowOpen)
+                {
+                    <div class="section-navigation__overflow-panel" @onclick="CloseMenus">@Overflow</div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="section-navigation__mobile">
+        <button class="section-navigation__mobile-trigger"
+                type="button"
+                aria-expanded="@_mobileOpen.ToString().ToLowerInvariant()"
+                @onclick="ToggleMobile">
+            <span><small>@MobileLabel</small><strong>@CurrentSectionLabel</strong></span>
+            <i class="section-navigation__chevron" aria-hidden="true"></i>
+        </button>
+        @if (_mobileOpen)
+        {
+            <div class="section-navigation__mobile-panel" @onclick="CloseMenus">
+                @ChildContent
+                @Overflow
+            </div>
+        }
+    </div>
+
+    @if (Actions is not null)
+    {
+        <div class="section-navigation__actions">@Actions</div>
+    }
+</nav>
+
+@code {
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? Context { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public RenderFragment? Overflow { get; set; }
+    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public string OverflowLabel { get; set; } = "More";
+    [Parameter] public bool OverflowActive { get; set; }
+    [Parameter] public string MobileLabel { get; set; } = "Current section";
+    [Parameter] public string CurrentSectionLabel { get; set; } = "Overview";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _overflowOpen;
+    private bool _mobileOpen;
+
+    private string CssClassValue => string.Join(' ', new[]
+    {
+        "section-navigation",
+        Context is null ? "section-navigation--without-context" : null,
+        Actions is null ? "section-navigation--without-actions" : null,
+        Class
+    }.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+    protected override void OnInitialized() => NavigationManager.LocationChanged += HandleLocationChanged;
+
+    private void ToggleOverflow() => _overflowOpen = !_overflowOpen;
+    private void ToggleMobile() => _mobileOpen = !_mobileOpen;
+
+    private void CloseMenus()
+    {
+        _overflowOpen = false;
+        _mobileOpen = false;
+    }
+
+    private void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs args)
+    {
+        CloseMenus();
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose() => NavigationManager.LocationChanged -= HandleLocationChanged;
+}

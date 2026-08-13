@@ -1,0 +1,32 @@
+<div class="page-action-toolbar @Class" role="@Role" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    <div class="page-action-toolbar__supporting">@SupportingActions</div>
+    <div class="page-action-toolbar__primary">@PrimaryAction</div>
+    @if (SupportingActions is not null || OverflowActions is not null)
+    {
+        <details class="page-action-toolbar__more">
+            <summary aria-label="@MoreLabel" title="@MoreLabel">
+                <span aria-hidden="true"><i></i><i></i><i></i></span>
+                <b>@MoreLabel</b>
+            </summary>
+            <div class="page-action-toolbar__menu">
+                @if (SupportingActions is not null)
+                {
+                    <div class="page-action-toolbar__mobile-supporting">@SupportingActions</div>
+                }
+                @OverflowActions
+            </div>
+        </details>
+    }
+</div>
+
+@code {
+    [Parameter] public RenderFragment? PrimaryAction { get; set; }
+    [Parameter] public RenderFragment? SupportingActions { get; set; }
+    [Parameter] public RenderFragment? OverflowActions { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Page actions";
+    [Parameter] public string Role { get; set; } = "toolbar";
+    [Parameter] public string MoreLabel { get; set; } = "More actions";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

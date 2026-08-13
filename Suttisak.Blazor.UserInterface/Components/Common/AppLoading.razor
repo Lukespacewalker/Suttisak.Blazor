@@ -1,0 +1,15 @@
+<StatusPanel Compact="@Compact"
+             Loading="true"
+             Title="@Title"
+             Message="@Message"
+             Role="status"
+             AriaLive="polite"
+             @attributes="AdditionalAttributes" />
+
+@code {
+    [Parameter] public string Title { get; set; } = "Loading";
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public bool Compact { get; set; } = true;
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

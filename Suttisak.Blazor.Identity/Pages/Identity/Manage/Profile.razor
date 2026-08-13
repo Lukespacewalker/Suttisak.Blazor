@@ -11,7 +11,7 @@
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Profile) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.Profile</h1>
+    <PageHeading Title="@Manage_razor.Profile" />
 </SectionContent>
 
 <IdentityManageShell Title="@Manage_razor.Profile" Description="@Text["ProfileDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
@@ -22,18 +22,18 @@
     <div class="identity-profile-extension">@UiSlots.ProfileContent</div>
 }
 
-<FluentGrid>
-    <FluentGridItem xs="12" sm="6">
+<FormGrid Columns="1">
+    <div>
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
             <FluentTextInput Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
             <FluentTextInput Name="Input.PhoneNumber" @bind-Value="Input!.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
             <!-- TODO : Restore Fluent Validation Message Later-->
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Profile_razor.SaveButton</FluentButton>
+            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Profile_razor.SaveButton</AppButton>
         </EditForm>
-    </FluentGridItem>
-</FluentGrid>
+    </div>
+</FormGrid>
 </IdentityManageShell>
 
 @code {

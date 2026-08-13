@@ -1,0 +1,19 @@
+@page "/access/server-error"
+
+<PageTitle>500 pattern · UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <AccessPageFrame Title="500 unexpected error state">
+        <StatusPattern Code="500"
+                       Variant="error"
+                       Eyebrow="SYSTEM INTERRUPTION"
+                       Title="Something stopped unexpectedly."
+                       Description="Your work has not been intentionally changed. Try again in a moment, or return to the workspace while the service recovers."
+                       FooterText="Incident reference: DEMO-500">
+            <Actions>
+                <button class="access-primary-action" type="button">Try again</button>
+                <a class="access-secondary-link" href="application-shell">Return to workspace</a>
+            </Actions>
+        </StatusPattern>
+    </AccessPageFrame>
+</PlaybookShell>

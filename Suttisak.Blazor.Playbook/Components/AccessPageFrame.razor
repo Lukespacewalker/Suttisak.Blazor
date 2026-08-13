@@ -1,0 +1,28 @@
+@inject PlaybookState State
+
+<div class="access-workbench">
+    <header class="access-workbench__note">
+        <div>
+            <span class="playbook-kicker">Access &amp; status patterns</span>
+            <strong>@Title</strong>
+        </div>
+        <nav aria-label="Access page examples">
+            <NavLink href="access/login">Login</NavLink>
+            <NavLink href="access/register">Register</NavLink>
+            <NavLink href="access/not-found">404</NavLink>
+            <NavLink href="access/forbidden">403</NavLink>
+            <NavLink href="access/server-error">500</NavLink>
+            <NavLink href="access/custom-error">Custom</NavLink>
+        </nav>
+        <span class="landing-workbench__badge">@State.Mode · @State.Viewport</span>
+    </header>
+
+    <div class="access-preview">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}

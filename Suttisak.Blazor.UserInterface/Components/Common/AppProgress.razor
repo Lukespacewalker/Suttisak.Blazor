@@ -1,0 +1,11 @@
+<div class="app-progress" role="progressbar" aria-label="@AriaLabel" aria-valuemin="@Min" aria-valuemax="@Max" aria-valuenow="@Value">
+    <span style="inline-size:@Percentage%"></span>
+</div>
+
+@code {
+    [Parameter] public double Min { get; set; }
+    [Parameter] public double Max { get; set; } = 100;
+    [Parameter] public double Value { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Progress";
+    private double Percentage => Max <= Min ? 0 : Math.Clamp((Value - Min) / (Max - Min) * 100, 0, 100);
+}

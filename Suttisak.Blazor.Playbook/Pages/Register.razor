@@ -1,0 +1,45 @@
+@page "/access/register"
+<PageTitle>Register pattern · UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <AccessPageFrame Title="New account registration">
+        <main class="access-page access-page--register" aria-labelledby="register-title">
+            <section class="access-form-panel">
+                <AccessBrand />
+                <div class="access-form-panel__body">
+                    <div class="access-heading">
+                        <span>GET STARTED</span>
+                        <h1 id="register-title">Create your account</h1>
+                        <p>Set up your profile. Your organization may ask for more information later.</p>
+                    </div>
+                    <form class="access-form" @onsubmit="PreventSubmit" @onsubmit:preventDefault>
+                        <div class="access-form__row">
+                            <label><span>First name</span><input type="text" autocomplete="given-name" placeholder="First name" /></label>
+                            <label><span>Last name</span><input type="text" autocomplete="family-name" placeholder="Last name" /></label>
+                        </div>
+                        <label><span>Work email</span><input type="email" autocomplete="email" placeholder="name@company.com" /></label>
+                        <label><span>Password</span><input type="password" autocomplete="new-password" placeholder="At least 8 characters" /></label>
+                        <label><span>Confirm password</span><input type="password" autocomplete="new-password" placeholder="Enter password again" /></label>
+                        <label class="access-check access-check--terms"><input type="checkbox" /><span>I agree to the terms of use and privacy notice.</span></label>
+                        <button class="access-primary-action" type="submit">Create account</button>
+                    </form>
+                    <p class="access-switch">Already have an account? <a href="access/login">Sign in</a></p>
+                    <p class="access-demo-note">Playbook preview — registration is intentionally disabled.</p>
+                </div>
+            </section>
+            <aside class="access-story" aria-label="Registration benefits">
+                <div class="access-story__grid" aria-hidden="true"></div>
+                <span class="access-story__index">YOUR WORKSPACE / 02</span>
+                <div>
+                    <blockquote>Start focused. Stay connected.</blockquote>
+                    <p>Your profile keeps preferences, activity, and access together across every device.</p>
+                </div>
+                <ol class="access-story__steps"><li><b>01</b><span>Create your identity</span></li><li><b>02</b><span>Verify your organization</span></li><li><b>03</b><span>Enter your workspace</span></li></ol>
+            </aside>
+        </main>
+    </AccessPageFrame>
+</PlaybookShell>
+
+@code {
+    private static void PreventSubmit() { }
+}

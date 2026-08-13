@@ -53,7 +53,10 @@
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private string HeadingIdValue => HeadingId ?? _generatedHeadingId;
-    private string CssClassValue => string.IsNullOrWhiteSpace(Class)
-        ? "experience-header"
-        : $"experience-header {Class}";
+    private string CssClassValue => string.Join(' ', new[]
+    {
+        "experience-header",
+        !VisualIsDecorative && Visual is not null ? "experience-header--visual-content" : null,
+        Class
+    }.Where(value => !string.IsNullOrWhiteSpace(value)));
 }

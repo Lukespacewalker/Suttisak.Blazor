@@ -1,0 +1,3 @@
+.app-progress { width: 100%; height: .45rem; overflow: hidden; border-radius: 99rem; background: var(--app-surface-muted); }
+.app-progress span { display: block; height: 100%; border-radius: inherit; background: var(--app-accent); transition: inline-size .2s ease; }
+@media (prefers-reduced-motion: reduce) { .app-progress span { transition: none; } }

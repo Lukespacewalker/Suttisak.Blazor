@@ -111,7 +111,7 @@
     object-fit: contain;
 }
 
-@media (max-width: 980px) {
+@container marketing-page (max-width: 980px) {
     .marketing-hero {
         min-height: auto;
     }
@@ -133,7 +133,7 @@
     }
 }
 
-@media (max-width: 760px) {
+@container marketing-page (max-width: 760px) {
     .marketing-hero {
         padding-block: var(--app-space-12) var(--app-space-16);
     }

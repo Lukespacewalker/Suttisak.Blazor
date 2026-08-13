@@ -1,0 +1,31 @@
+.main-layout-v2__brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: .65rem;
+    color: var(--app-foreground);
+    text-decoration: none;
+}
+
+.main-layout-v2__brand img {
+    width: 2.2rem;
+    height: 2.2rem;
+    flex: 0 0 auto;
+    object-fit: contain;
+}
+
+.main-layout-v2__brand span {
+    min-width: 0;
+    overflow: hidden;
+    font-size: .9rem;
+    font-weight: 780;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.main-layout-v2__breadcrumbs { margin-bottom: .65rem; }
+
+@container app-shell-v2 (max-width: 30rem) {
+    .main-layout-v2__brand span { max-width: 8.5rem; font-size: .78rem; }
+    .main-layout-v2__brand img { width: 1.9rem; height: 1.9rem; }
+}

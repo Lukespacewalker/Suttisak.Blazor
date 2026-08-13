@@ -1,0 +1,90 @@
+@inject PlaybookState State
+@inject IThemeService FluentThemeService
+@inject IJSRuntime JsRuntime
+
+<ApplicationShellV2 MainContentId="demo-application-main"
+                    NavigationLabel="Demo application navigation"
+                    MenuButtonLabel="Open demo navigation"
+                    CloseMenuLabel="Close demo navigation">
+    <Brand>
+        <NavLink class="demo-app-brand" href="application-shell" Match="NavLinkMatch.All">
+            <span aria-hidden="true"><img src="@CurrentTheme.LogoPath" alt="" /></span>
+            <div><strong>@CurrentTheme.Name</strong><small>Operations workspace</small></div>
+        </NavLink>
+    </Brand>
+    <HeaderActions>
+        <span class="demo-app-environment">Playbook / V2</span>
+    </HeaderActions>
+    <ThemeSwitcher>
+        <div class="demo-header-segment" aria-label="Theme">
+            <button class="@(State.Mode == "light" ? "is-active" : null)" type="button" aria-label="Use light theme" aria-pressed="@(State.Mode == "light" ? "true" : "false")" @onclick='() => ChangeModeAsync("light")'>☼</button>
+            <button class="@(State.Mode == "dark" ? "is-active" : null)" type="button" aria-label="Use dark theme" aria-pressed="@(State.Mode == "dark" ? "true" : "false")" @onclick='() => ChangeModeAsync("dark")'>◐</button>
+            <button class="@(State.Mode == "auto" ? "is-active" : null)" type="button" aria-label="Use system theme" aria-pressed="@(State.Mode == "auto" ? "true" : "false")" @onclick='() => ChangeModeAsync("auto")'>A</button>
+        </div>
+    </ThemeSwitcher>
+    <LanguageSwitcher>
+        <div class="demo-header-segment" aria-label="Language">
+            <button class="@(State.Language == "en" ? "is-active" : null)" type="button" aria-pressed="@(State.Language == "en" ? "true" : "false")" @onclick='() => State.Language = "en"'>EN</button>
+            <button class="@(State.Language == "th" ? "is-active" : null)" type="button" aria-pressed="@(State.Language == "th" ? "true" : "false")" @onclick='() => State.Language = "th"'>ไทย</button>
+        </div>
+    </LanguageSwitcher>
+    <Profile>
+        <details class="demo-profile">
+            <summary aria-label="Open profile menu"><span>KS</span><b>Kanda</b><FluentIcon Value="@(new Icons.Regular.Size16.ChevronDown())" /></summary>
+            <div class="demo-profile__menu">
+                <div><span>KS</span><p><strong>Kanda S.</strong><small>Workspace administrator</small></p></div>
+                <a href="#demo-profile"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> Profile</a>
+                <a href="#demo-signout"><FluentIcon Value="@(new Icons.Regular.Size20.SignOut())" /> Sign out</a>
+            </div>
+        </details>
+    </Profile>
+    <Navigation>
+        <div class="demo-app-nav-group">
+            <span>@(IsThai ? "พื้นที่ทำงาน" : "Workspace")</span>
+            <NavLink href="application-shell" Match="NavLinkMatch.All">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Home())" /> @(IsThai ? "ภาพรวม" : "Overview")
+            </NavLink>
+            <NavLink href="application-shell/records">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Table())" /> @(IsThai ? "รายการ" : "Records")
+                <small>@RecordCount</small>
+            </NavLink>
+            <NavLink href="application-shell/person">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> @(IsThai ? "สุขภาพรายบุคคล" : "Individual health")
+            </NavLink>
+        </div>
+        <div class="demo-app-nav-group">
+            <span>@(IsThai ? "จัดการ" : "Manage")</span>
+            <NavSubmenu Label="@(IsThai ? "การดูแลระบบ" : "Administration")"
+                        Icon="@(new Icons.Regular.Size20.Settings())"
+                        Badge="3">
+                <a href="#demo-team"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /> @(IsThai ? "ทีม" : "Team")</a>
+                <a href="#demo-permissions"><FluentIcon Value="@(new Icons.Regular.Size20.PersonLock())" /> @(IsThai ? "สิทธิ์" : "Permissions")</a>
+                <a href="#demo-settings"><FluentIcon Value="@(new Icons.Regular.Size20.Settings())" /> @(IsThai ? "การตั้งค่า" : "Settings")</a>
+            </NavSubmenu>
+        </div>
+    </Navigation>
+    <NavigationFooter>
+        <div class="demo-app-nav-footer"><i></i><span><strong>@(IsThai ? "ระบบพร้อมใช้งาน" : "All systems ready")</strong><small>@(IsThai ? "ตรวจสอบเมื่อสักครู่" : "Last checked just now")</small></span></div>
+    </NavigationFooter>
+    <PageHeader>@PageHeader</PageHeader>
+    <ChildContent>@ChildContent</ChildContent>
+</ApplicationShellV2>
+
+@code {
+    [Inject] private DemoRecordStore Store { get; set; } = default!;
+    [Parameter] public RenderFragment? PageHeader { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+    private int RecordCount => Store.Records.Count;
+    private bool IsThai => State.Language == "th";
+
+    private async Task ChangeModeAsync(string mode)
+    {
+        State.Mode = mode;
+        var isDark = mode == "dark"
+            || mode == "auto" && await JsRuntime.InvokeAsync<bool>("playbookTheme.prefersDark");
+        await FluentThemeService.SetThemeAsync(CurrentTheme.PrimaryColor, isDark);
+        await JsRuntime.InvokeVoidAsync("playbookTheme.setPrimaryColor", CurrentTheme.PrimaryColor);
+    }
+}

@@ -5,6 +5,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(13.75rem, .6fr);
     min-height: 20.625rem;
+    margin: 0;
     padding: clamp(1.75rem, 5vw, 4.25rem);
     border: 1px solid var(--app-accent-border);
     border-radius: .25rem 2.625rem .25rem 2.625rem;
@@ -183,6 +184,17 @@
     .experience-header h1 {
         font-size: clamp(2.65rem, 12vw, 4rem);
     }
+
+    .experience-header--visual-content .experience-header__copy { padding-right: 0; }
+
+    .experience-header--visual-content .experience-header__visual {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        min-height: 10rem;
+        margin-top: .75rem;
+        opacity: 1;
+    }
 }
 
 @media (max-width: 32.5rem) {
@@ -193,6 +205,8 @@
     .experience-header__lead {
         font-size: .93rem;
     }
+
+    .experience-header--visual-content .experience-header__visual { min-height: 8.75rem; }
 }
 
 @media (forced-colors: active) {

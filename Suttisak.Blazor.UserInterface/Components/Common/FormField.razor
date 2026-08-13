@@ -1,0 +1,10 @@
+<div class="form-field" style="@FieldStyle" @attributes="AdditionalAttributes">@ChildContent</div>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public int ColumnSpan { get; set; } = 1;
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string FieldStyle => $"--form-field-span: {Math.Clamp(ColumnSpan, 1, 4)}; {Style}";
+}

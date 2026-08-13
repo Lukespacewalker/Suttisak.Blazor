@@ -48,7 +48,7 @@
     height: auto;
 }
 
-@media (max-width: 760px) {
+@container marketing-page (max-width: 760px) {
     .marketing-product-frame__content {
         min-height: 13rem;
     }

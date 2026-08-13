@@ -1,0 +1,118 @@
+<a class="app-shell-v2__skip-link" href="#@MainContentId">@SkipLinkText</a>
+
+<div class="@CssClassValue" data-app-shell-v2 @attributes="AdditionalAttributes">
+    <header class="app-shell-v2__header">
+        <button class="app-shell-v2__menu-button app-shell-v2__menu-button--desktop is-open"
+                type="button"
+                aria-label="@CollapseNavigationLabel"
+                data-shell-action="desktop"
+                data-label-open="@CollapseNavigationLabel"
+                data-label-closed="@ExpandNavigationLabel"
+                aria-controls="@NavigationIdValue"
+                aria-expanded="true">
+            <span></span><span></span><span></span>
+        </button>
+
+        <button class="app-shell-v2__menu-button app-shell-v2__menu-button--mobile"
+                type="button"
+                aria-label="@MenuButtonLabel"
+                data-shell-action="mobile"
+                data-label-open="@CloseMenuLabel"
+                data-label-closed="@MenuButtonLabel"
+                aria-controls="@NavigationIdValue"
+                aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="app-shell-v2__brand">@Brand</div>
+
+        @if (HeaderActions is not null)
+        {
+            <div class="app-shell-v2__header-actions">@HeaderActions</div>
+        }
+        <div class="app-shell-v2__preferences">
+            @if (ThemeSwitcher is not null)
+            {
+                <div class="app-shell-v2__preference app-shell-v2__preference--theme">@ThemeSwitcher</div>
+            }
+            @if (LanguageSwitcher is not null)
+            {
+                <div class="app-shell-v2__preference app-shell-v2__preference--language">@LanguageSwitcher</div>
+            }
+        </div>
+        @if (Profile is not null)
+        {
+            <div class="app-shell-v2__profile">@Profile</div>
+        }
+    </header>
+
+    <div class="app-shell-v2__frame">
+        <aside id="@NavigationIdValue"
+               class="app-shell-v2__navigation"
+               aria-label="@NavigationLabel">
+            <div class="app-shell-v2__navigation-scroll">
+                <div class="app-shell-v2__navigation-preferences" aria-label="@MobilePreferencesLabel">
+                    <div>
+                        <span>@MobileThemeLabel</span>
+                        @ThemeSwitcher
+                    </div>
+                    <div>
+                        <span>@MobileLanguageLabel</span>
+                        @LanguageSwitcher
+                    </div>
+                </div>
+                @Navigation
+            </div>
+            @if (NavigationFooter is not null)
+            {
+                <div class="app-shell-v2__navigation-footer">@NavigationFooter</div>
+            }
+        </aside>
+
+        <button class="app-shell-v2__scrim"
+                type="button"
+                data-shell-action="close"
+                aria-label="@CloseMenuLabel"></button>
+
+        <main id="@MainContentId" class="app-shell-v2__main" tabindex="-1">
+            @if (PageHeader is not null)
+            {
+                <div class="app-shell-v2__page-header">@PageHeader</div>
+            }
+            <div class="app-shell-v2__content">@ChildContent</div>
+        </main>
+    </div>
+</div>
+
+@code {
+    private readonly string _generatedNavigationId = $"app-shell-v2-navigation-{Guid.NewGuid():N}";
+    [Parameter, EditorRequired] public RenderFragment Brand { get; set; } = default!;
+    [Parameter, EditorRequired] public RenderFragment Navigation { get; set; } = default!;
+    [Parameter] public RenderFragment? HeaderActions { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ThemeSwitcher { get; set; } = default!;
+    [Parameter, EditorRequired] public RenderFragment LanguageSwitcher { get; set; } = default!;
+    [Parameter, EditorRequired] public RenderFragment Profile { get; set; } = default!;
+    [Parameter] public RenderFragment? NavigationFooter { get; set; }
+    [Parameter] public RenderFragment? PageHeader { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public string MainContentId { get; set; } = "app-shell-v2-main";
+    [Parameter] public string? NavigationId { get; set; }
+    [Parameter] public string SkipLinkText { get; set; } = "Skip to main content";
+    [Parameter] public string NavigationLabel { get; set; } = "Primary navigation";
+    [Parameter] public string MenuButtonLabel { get; set; } = "Open navigation";
+    [Parameter] public string CloseMenuLabel { get; set; } = "Close navigation";
+    [Parameter] public string CollapseNavigationLabel { get; set; } = "Collapse navigation";
+    [Parameter] public string ExpandNavigationLabel { get; set; } = "Expand navigation";
+    [Parameter] public string MobilePreferencesLabel { get; set; } = "Application preferences";
+    [Parameter] public string MobileThemeLabel { get; set; } = "Theme";
+    [Parameter] public string MobileLanguageLabel { get; set; } = "Language";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string NavigationIdValue => NavigationId ?? _generatedNavigationId;
+    private string CssClassValue => string.IsNullOrWhiteSpace(Class)
+        ? "app-shell-v2"
+        : $"app-shell-v2 {Class}";
+
+}
