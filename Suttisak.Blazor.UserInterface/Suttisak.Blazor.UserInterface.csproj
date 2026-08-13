@@ -9,7 +9,7 @@
 		<Description>A collection of useful components for Blazor</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>0.18.0</AssemblyVersion>
+		<AssemblyVersion>0.18.1</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>

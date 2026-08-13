@@ -16,16 +16,16 @@
         <span class="demo-app-environment">Playbook / V2</span>
     </HeaderActions>
     <ThemeSwitcher>
-        <div class="demo-header-segment" aria-label="Theme">
-            <button class="@(State.Mode == "light" ? "is-active" : null)" type="button" aria-label="Use light theme" aria-pressed="@(State.Mode == "light" ? "true" : "false")" @onclick='() => ChangeModeAsync("light")'>☼</button>
-            <button class="@(State.Mode == "dark" ? "is-active" : null)" type="button" aria-label="Use dark theme" aria-pressed="@(State.Mode == "dark" ? "true" : "false")" @onclick='() => ChangeModeAsync("dark")'>◐</button>
-            <button class="@(State.Mode == "auto" ? "is-active" : null)" type="button" aria-label="Use system theme" aria-pressed="@(State.Mode == "auto" ? "true" : "false")" @onclick='() => ChangeModeAsync("auto")'>A</button>
+        <div class="theme-selector" aria-label="Theme">
+            <button class="@(State.Mode == "light" ? "active" : null)" type="button" aria-label="Use light theme" aria-pressed="@(State.Mode == "light" ? "true" : "false")" @onclick='() => ChangeModeAsync("light")'>☼</button>
+            <button class="@(State.Mode == "dark" ? "active" : null)" type="button" aria-label="Use dark theme" aria-pressed="@(State.Mode == "dark" ? "true" : "false")" @onclick='() => ChangeModeAsync("dark")'>◐</button>
+            <button class="@(State.Mode == "auto" ? "active" : null)" type="button" aria-label="Use system theme" aria-pressed="@(State.Mode == "auto" ? "true" : "false")" @onclick='() => ChangeModeAsync("auto")'>A</button>
         </div>
     </ThemeSwitcher>
     <LanguageSwitcher>
-        <div class="demo-header-segment" aria-label="Language">
-            <button class="@(State.Language == "en" ? "is-active" : null)" type="button" aria-pressed="@(State.Language == "en" ? "true" : "false")" @onclick='() => State.Language = "en"'>EN</button>
-            <button class="@(State.Language == "th" ? "is-active" : null)" type="button" aria-pressed="@(State.Language == "th" ? "true" : "false")" @onclick='() => State.Language = "th"'>ไทย</button>
+        <div class="culture-selector" aria-label="Language">
+            <button class="@(State.Language == "en" ? "active" : null)" type="button" aria-pressed="@(State.Language == "en" ? "true" : "false")" @onclick='() => State.Language = "en"'>EN</button>
+            <button class="@(State.Language == "th" ? "active" : null)" type="button" aria-pressed="@(State.Language == "th" ? "true" : "false")" @onclick='() => State.Language = "th"'>ไทย</button>
         </div>
     </LanguageSwitcher>
     <Profile>

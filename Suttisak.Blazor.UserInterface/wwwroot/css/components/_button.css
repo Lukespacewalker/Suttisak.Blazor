@@ -3,7 +3,6 @@
 .theme-selector,
 .culture-selector {
     display: inline-flex;
-    gap: .08rem;
     padding: .16rem;
     border: 1px solid var(--app-border);
     border-radius: .58rem;
@@ -12,9 +11,8 @@
 
 .theme-selector button,
 .culture-selector button {
-    outline: none;
     border-radius: .4rem;
-    border: none;
+    border: 0;
 
     color: var(--app-foreground-muted);
     background: transparent;
@@ -51,4 +49,10 @@
 .theme-selector button.active:hover,
 .culture-selector button.active:hover {
     background: var(--app-surface);
+}
+
+.theme-selector button:focus-visible,
+.culture-selector button:focus-visible {
+    outline: 2px solid var(--app-accent);
+    outline-offset: 2px;
 }
