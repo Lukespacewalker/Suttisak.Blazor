@@ -24,8 +24,7 @@ public sealed class BrowserTimeProvider : TimeProvider
 
     public bool SetBrowserTimeZone(string? timeZoneId)
     {
-        if (string.IsNullOrWhiteSpace(timeZoneId)
-            || !TryFindTimeZone(timeZoneId, out var timeZoneInfo))
+        if (!BrowserTimeZone.TryFind(timeZoneId, out var timeZoneInfo))
         {
             return false;
         }
@@ -37,22 +36,5 @@ public sealed class BrowserTimeProvider : TimeProvider
         }
 
         return true;
-    }
-
-    private static bool TryFindTimeZone(string timeZoneId, out TimeZoneInfo timeZoneInfo)
-    {
-        if (TimeZoneInfo.TryFindSystemTimeZoneById(timeZoneId, out timeZoneInfo!))
-        {
-            return true;
-        }
-
-        if (TimeZoneInfo.TryConvertIanaIdToWindowsId(timeZoneId, out var windowsId)
-            && TimeZoneInfo.TryFindSystemTimeZoneById(windowsId, out timeZoneInfo!))
-        {
-            return true;
-        }
-
-        timeZoneInfo = null!;
-        return false;
     }
 }

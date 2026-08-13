@@ -1,0 +1,104 @@
+@page "/form-controls"
+
+<PageTitle>Form controls · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="form-playbook">
+        <header class="form-playbook__intro">
+            <div>
+                <span class="playbook-kicker">Native first · timezone safe</span>
+                <h1>Form controls that work<br /><em>before Blazor wakes up.</em></h1>
+            </div>
+            <p>Each control renders semantic HTML. Calendar and time work with no JavaScript; date + time adds a tiny browser enhancement that posts the local value, IANA time zone, UTC offset, and verified UTC instant.</p>
+        </header>
+
+        <section class="form-playbook__section" aria-labelledby="interactive-title">
+            <div class="form-playbook__section-heading">
+                <span>01</span>
+                <div><h2 id="interactive-title">Interactive binding</h2><p>Two-way Razor binding with the same native controls used by static forms.</p></div>
+                <strong class="form-playbook__mode">Interactive</strong>
+            </div>
+
+            <div class="form-playbook__stage">
+                <div class="form-playbook__controls">
+                    <AppCalendarPicker Label="Appointment date"
+                                       Description="Uses the browser's native calendar UI."
+                                       Min="@DateOnly.FromDateTime(DateTime.Today)"
+                                       @bind-Value="_date" />
+                    <AppTimePicker Label="Start time"
+                                   Description="15-minute steps, represented as local wall time."
+                                   MinuteStep="15"
+                                   @bind-Value="_time" />
+                    <AppDateTimePicker Label="Follow-up date and time"
+                                       Description="The browser time zone—not the server time zone—owns this value."
+                                       MinuteStep="5"
+                                       @bind-Value="_dateTime" />
+                </div>
+
+                <aside class="form-playbook__receipt" aria-live="polite">
+                    <span>Current Razor values</span>
+                    <dl>
+                        <div><dt>Date</dt><dd>@(_date?.ToString("yyyy-MM-dd") ?? "Not selected")</dd></div>
+                        <div><dt>Time</dt><dd>@(_time?.ToString("HH:mm") ?? "Not selected")</dd></div>
+                        <div><dt>Local date + time</dt><dd>@(_dateTime?.ToString("yyyy-MM-dd HH:mm") ?? "Not selected")</dd></div>
+                    </dl>
+                    <p>The combined control also keeps hidden UTC and time-zone fields synchronized for a normal HTML form submission.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="form-playbook__section" aria-labelledby="static-title">
+            <div class="form-playbook__section-heading">
+                <span>02</span>
+                <div><h2 id="static-title">Static rendering contract</h2><p>No EditForm, event callback, circuit, or Fluent popup is required.</p></div>
+                <strong class="form-playbook__mode form-playbook__mode--static">Static SSR ready</strong>
+            </div>
+
+            <form class="form-playbook__static-form" method="get" action="form-controls">
+                <FormGrid Columns="2">
+                    <FormField>
+                        <AppCalendarPicker Label="Date of birth"
+                                           Description="Posts directly as Registration.BirthDate."
+                                           Name="Registration.BirthDate"
+                                           Required="true" />
+                    </FormField>
+                    <FormField>
+                        <AppTimePicker Label="Preferred contact time"
+                                       Description="A plain native time value."
+                                       Name="Registration.ContactTime"
+                                       MinuteStep="15" />
+                    </FormField>
+                    <FormField ColumnSpan="2">
+                        <AppDateTimePicker Label="Consent recorded at"
+                                           Description="Posts LocalDateTime, UtcDateTime, TimeZoneId, and UtcOffsetMinutes under Registration.ConsentAt."
+                                           Name="Registration.ConsentAt"
+                                           Required="true" />
+                    </FormField>
+                </FormGrid>
+                <div class="form-playbook__submit-row">
+                    <AppButton Type="ButtonType.Submit" Variant="AppButtonVariant.Primary">Submit as a normal HTML form</AppButton>
+                    <span>In this Playbook the form uses GET so its payload can be inspected safely in the address bar.</span>
+                </div>
+            </form>
+        </section>
+
+        <section class="form-playbook__architecture" aria-labelledby="timezone-title">
+            <div>
+                <span class="playbook-kicker">Server-safe conversion</span>
+                <h2 id="timezone-title">Never infer user time from the server clock.</h2>
+            </div>
+            <ol>
+                <li><strong>Render</strong><span>Native inputs are present in the initial HTML.</span></li>
+                <li><strong>Enhance</strong><span>The library reads the browser IANA time zone without starting a Blazor circuit.</span></li>
+                <li><strong>Validate</strong><span>DST gaps and repeated times are rejected instead of silently shifting an appointment.</span></li>
+                <li><strong>Convert</strong><span><code>BrowserDateTimeFormValue</code> recomputes UTC on the server from local time + time-zone ID.</span></li>
+            </ol>
+        </section>
+    </main>
+</PlaybookShell>
+
+@code {
+    private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
+    private TimeOnly? _time = new(9, 30);
+    private DateTime? _dateTime = DateTime.SpecifyKind(DateTime.Today.AddDays(7).AddHours(10), DateTimeKind.Unspecified);
+}

@@ -34,15 +34,18 @@
 .nav-submenu__items {
     display: grid;
     gap: .12rem;
-    margin: .15rem 0 .35rem 1.2rem;
-    padding-inline-start: .65rem;
-    border-inline-start: 1px solid var(--app-border);
+    margin: .25rem 0 .45rem 1.05rem;
+    padding: .35rem 0 .35rem .75rem;
+    border-inline-start: 2px solid var(--app-accent-border);
 }
 
 .nav-submenu__items ::deep a,
 .nav-submenu__items ::deep fluent-nav-link {
     min-width: 0;
 }
+.nav-submenu__items ::deep a { display: grid; grid-template-columns: 1.15rem minmax(0, 1fr); align-items: center; gap: .5rem; padding: .5rem .55rem; border-radius: .45rem; color: var(--app-foreground-muted); font-size: .74rem; font-weight: 650; text-decoration: none; }
+.nav-submenu__items ::deep a:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
+.nav-submenu__items ::deep a.active { background: var(--app-accent-soft); color: var(--app-accent); }
 
 @media (prefers-reduced-motion: reduce) {
     .nav-submenu__trigger,

@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 
 <a style="@Style" class="nav-item @(IsActive ? "nav-item--active" : string.Empty)"
+   aria-current="@(IsActive ? "page" : null)"
    href="@Href"
    @onclick="HandleClick">
     <span class="nav-item__icon">
@@ -30,6 +31,7 @@
 
     [Parameter]
     public string Href { get; set; } = string.Empty;
+    [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
 
     [Parameter]
     public Icon? IconRest { get; set; }
@@ -45,7 +47,18 @@
 
     private Icon? DisplayIcon => IsActive ? IconActive ?? IconRest : IconRest;
 
-    private bool IsActive => NavigationManager.Uri.Contains(NavigationManager.ToAbsoluteUri(Href).PathAndQuery, StringComparison.OrdinalIgnoreCase);
+    private bool IsActive
+    {
+        get
+        {
+            var current = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath.TrimEnd('/');
+            var target = NavigationManager.ToAbsoluteUri(Href).AbsolutePath.TrimEnd('/');
+            if (string.IsNullOrEmpty(current)) current = "/";
+            if (string.IsNullOrEmpty(target)) target = "/";
+            return string.Equals(current, target, StringComparison.OrdinalIgnoreCase)
+                || Match == NavLinkMatch.Prefix && target != "/" && current.StartsWith(target + "/", StringComparison.OrdinalIgnoreCase);
+        }
+    }
 
     protected override void OnInitialized()
     {

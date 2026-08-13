@@ -2,78 +2,59 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div style="display:flex;flex-direction:row;gap:0.5rem;align-items:center;">
-	<AuthorizeView>
-		<Authorized>
-			<details style="position:relative;">
-				<summary style="list-style:none;cursor:pointer;display:flex;align-items:center;">
-					<FluentButton Appearance="ButtonAppearance.Transparent" IconEnd="@(new Icons.Regular.Size20.ChevronDown())">
-						@if (!string.IsNullOrWhiteSpace(ProfileImageUrl))
-						{
-							<img src="@ProfileImageUrl" alt="" aria-hidden="true" style="width:1.5rem;height:1.5rem;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:0.375rem;" />
-						}
-						else
-						{
-							<FluentIcon Value="@(new Icons.Regular.Size20.PersonCircle())" style="vertical-align:middle;margin-right:0.375rem;" />
-						}
-						<span>@_username</span>
-					</FluentButton>
-				</summary>
-				<div class="glass-card" style="position:absolute;right:0;top:calc(100% + 0.5rem);min-width:18rem;padding:1rem;z-index:1000;">
-					<FluentStack Orientation="Orientation.Vertical" VerticalGap="8">
-						<span Style="font-weight:600;">@_username</span>
-						<FluentButton Appearance="ButtonAppearance.Transparent"
-								  Style="justify-content:flex-start;"
-								  IconStart="@(new Icons.Regular.Size20.PersonAccounts())"
-								  OnClick="NavigateToManageAccount">
-							@ProfileMenu_razor.ManageAccount
-						</FluentButton>
-						<FluentButton Appearance="ButtonAppearance.Transparent"
-								  Style="justify-content:flex-start;"
-								  IconStart="@(new Icons.Regular.Size20.SignOut())"
-								  OnClick="Logout">
-							@Helper.TryGetCustomStringThenFallbackToResource(LogoutText, ProfileMenu_razor.Logout)
-						</FluentButton>
-					</FluentStack>
-				</div>
-			</details>
-		</Authorized>
-		<NotAuthorized>
-			<FluentNavItem Href="Account/Login" >@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login) </FluentNavItem>
-		</NotAuthorized>
-	</AuthorizeView>
+<div class="profile-menu-control">
+    <AuthorizeView>
+        <Authorized>
+            <details class="profile-menu">
+                <summary aria-label="Open profile menu">
+                    @if (!string.IsNullOrWhiteSpace(ProfileImageUrl))
+                    {
+                        <img class="profile-menu__avatar" src="@ProfileImageUrl" alt="" aria-hidden="true" />
+                    }
+                    else
+                    {
+                        <span class="profile-menu__avatar" aria-hidden="true">@Initials</span>
+                    }
+                    <strong>@DisplayName</strong>
+                    <svg class="profile-menu__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
+                </summary>
+                <div class="profile-menu__panel">
+                    <div class="profile-menu__identity">
+                        <span class="profile-menu__avatar" aria-hidden="true">@Initials</span>
+                        <p><strong>@DisplayName</strong><small>Signed in</small></p>
+                    </div>
+                    <button type="button" @onclick="NavigateToManageAccount">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3" /><path d="M5 20c.6-4 3-6 7-6s6.4 2 7 6" /></svg>
+                        <span>@ProfileMenu_razor.ManageAccount</span>
+                    </button>
+                    <button type="button" @onclick="Logout">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H5v16h5M14 8l4 4-4 4M8 12h10" /></svg>
+                        <span>@Helper.TryGetCustomStringThenFallbackToResource(LogoutText, ProfileMenu_razor.Logout)</span>
+                    </button>
+                </div>
+            </details>
+        </Authorized>
+        <NotAuthorized>
+            <a class="profile-menu__login" href="Account/Login">@Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)</a>
+        </NotAuthorized>
+    </AuthorizeView>
 </div>
+
 @code {
+    private string? _username;
+    [Parameter] public string? LoginText { get; set; }
+    [Parameter] public string? LogoutText { get; set; }
+    [Parameter] public string? ProfileImageUrl { get; set; }
+    private string DisplayName => string.IsNullOrWhiteSpace(_username) ? "Account" : _username;
+    private string Initials => string.Concat(DisplayName.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(value => char.ToUpperInvariant(value[0])));
 
-	private string? _username;
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity?.IsAuthenticated ?? false)
+            _username = authState.User.FindFirst("display_name")?.Value ?? authState.User.Identity.Name;
+    }
 
-	[Parameter] public string? LoginText { get; set; }
-	[Parameter] public string? LogoutText { get; set; }
-	[Parameter] public string? ProfileImageUrl { get; set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-		if (authState.User.Identity?.IsAuthenticated ?? false)
-		{
-			_username = authState.User.FindFirst("display_name")?.Value;
-			if (string.IsNullOrWhiteSpace(_username))
-			{
-				_username = authState.User.Identity.Name;
-			}
-
-		}
-
-		await base.OnInitializedAsync();
-	}
-
-	private void NavigateToManageAccount()
-	{
-		NavigationManager.NavigateTo("Account/Manage");
-	}
-
-	private void Logout()
-	{
-		NavigationManager.NavigateTo("Account/Logout?ReturnUrl=", forceLoad: true);
-	}
+    private void NavigateToManageAccount() => NavigationManager.NavigateTo("Account/Manage");
+    private void Logout() => NavigationManager.NavigateTo("Account/Logout?ReturnUrl=", forceLoad: true);
 }

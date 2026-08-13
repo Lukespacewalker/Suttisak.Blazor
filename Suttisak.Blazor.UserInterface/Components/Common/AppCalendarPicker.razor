@@ -1,0 +1,61 @@
+@using System.Globalization
+
+<div class="app-form-control @Class" @attributes="ContainerAttributes">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="app-form-control__label" for="@InputId">@Label</label>
+    }
+    <div class="app-form-control__input-wrap">
+        <svg class="app-form-control__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" />
+        </svg>
+        <input id="@InputId"
+               class="app-form-control__input"
+               type="date"
+               name="@Name"
+               value="@FormattedValue"
+               min="@Format(Min)"
+               max="@Format(Max)"
+               required="@Required"
+               disabled="@Disabled"
+               aria-describedby="@DescriptionId"
+               @onchange="HandleChangeAsync"
+               @attributes="InputAttributes" />
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <small id="@DescriptionId" class="app-form-control__description">@Description</small>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public DateOnly? Value { get; set; }
+    [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public DateOnly? Min { get; set; }
+    [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
+
+    private readonly string _generatedId = $"app-date-{Guid.NewGuid():N}";
+    private string InputId => Id ?? _generatedId;
+    private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+    private string? FormattedValue => Format(Value);
+
+    private static string? Format(DateOnly? value) => value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+    private Task HandleChangeAsync(ChangeEventArgs args)
+    {
+        var text = args.Value?.ToString();
+        var value = DateOnly.TryParseExact(text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
+            ? parsed
+            : (DateOnly?)null;
+        return ValueChanged.InvokeAsync(value);
+    }
+}
