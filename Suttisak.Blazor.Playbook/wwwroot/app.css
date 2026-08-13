@@ -423,9 +423,6 @@ select { font: inherit; }
 .demo-app-brand strong { overflow: hidden; font-family: var(--app-font-heading); font-size: .95rem; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap; }
 .demo-app-brand small { color: var(--app-foreground-muted); font-size: .65rem; line-height: 1.2; }
 .demo-app-environment { padding: .3rem .52rem; border: 1px solid var(--app-accent-border); border-radius: 99rem; background: var(--app-accent-soft); color: var(--app-accent); font-size: .63rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
-.demo-header-segment { display: inline-flex; padding: .16rem; border: 1px solid var(--app-border); border-radius: .58rem; background: var(--app-surface-muted); }
-.demo-header-segment button { min-width: 1.85rem; height: 1.75rem; padding: .2rem .38rem; border: 0; border-radius: .4rem; background: transparent; color: var(--app-foreground-muted); font-size: .66rem; font-weight: 780; cursor: pointer; }
-.demo-header-segment button.is-active { background: var(--app-surface); color: var(--app-accent); box-shadow: 0 .15rem .45rem var(--app-shadow-color); }
 .demo-profile { position: relative; }
 .demo-profile summary { display: flex; align-items: center; gap: .4rem; padding: .2rem .3rem .2rem .2rem; border: 1px solid var(--app-border); border-radius: 99rem; background: var(--app-surface); cursor: pointer; list-style: none; }
 .demo-profile summary::-webkit-details-marker { display: none; }
