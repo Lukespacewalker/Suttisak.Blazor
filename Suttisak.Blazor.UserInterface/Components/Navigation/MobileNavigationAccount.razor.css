@@ -81,7 +81,7 @@
         gap: .5rem;
         border: 0;
         border-radius: var(--app-radius-md);
-        background: linear-gradient(135deg, var(--app-brand), var(--app-brand-secondary));
+        background: var(--app-brand);
         color: var(--app-on-brand);
         font-weight: 700;
         cursor: pointer;

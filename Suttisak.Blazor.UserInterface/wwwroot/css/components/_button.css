@@ -1,16 +1,3 @@
-fluent-button[appearance='primary'] {
-    border: none;
-}
-
-fluent-button[appearance='primary']:enabled {
-    background: var(--app-brand);
-    color: var(--app-on-brand);
-}
-
-fluent-button[appearance='primary']:enabled:hover {
-    background: var(--colorBrandBackgroundHover, var(--app-brand));
-}
-
 /* Theme Selector and Culture Selector*/
 
 .theme-selector,
