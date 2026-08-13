@@ -22,29 +22,6 @@
             </PageHeader>
 
             <ChildContent>
-            @if (_draft is not null)
-            {
-                <section class="demo-editor" aria-labelledby="demo-editor-title">
-                    <div class="demo-editor__heading">
-                        <div><span>@(_draft.Id is null ? "CREATE" : "UPDATE")</span><h2 id="demo-editor-title">@(_draft.Id is null ? "New program record" : $"Edit record #{_draft.Id}")</h2></div>
-                        <AppButton IconOnly="true" Variant="AppButtonVariant.Subtle" AriaLabel="Close editor" OnClick="@(_ => CloseEditor())">×</AppButton>
-                    </div>
-                    <FormGrid Columns="2">
-                        <FormField><label>Record name<input @bind="_draft.Name" @bind:event="oninput" /></label></FormField>
-                        <FormField><label>Program<input @bind="_draft.Program" @bind:event="oninput" /></label></FormField>
-                        <FormField><label>Owner<input @bind="_draft.Owner" @bind:event="oninput" /></label></FormField>
-                        <FormField><label>Status<select @bind="_draft.Status"><option>Draft</option><option>Active</option><option>In review</option><option>Complete</option></select></label></FormField>
-                    </FormGrid>
-                    <FormActions>
-                        <AppButton Variant="AppButtonVariant.Primary" Disabled="@(!CanSave)" OnClick="@(_ => SaveRecord())">
-                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Save())" /></IconStartContent>
-                            <ChildContent>Save record</ChildContent>
-                        </AppButton>
-                        <AppButton OnClick="@(_ => CloseEditor())">Cancel</AppButton>
-                    </FormActions>
-                </section>
-            }
-
             <section class="demo-data-panel" aria-labelledby="record-table-title">
                 <div class="demo-data-panel__heading"><div><span>LIVE DATA</span><h2 id="record-table-title">All records</h2></div></div>
                 <AppDataGrid AriaLabel="Program records">
@@ -71,46 +48,81 @@
                         </div>
                     </Filters>
                     <ChildContent>
-                    <FluentDataGrid Items="@FilteredRecords" Pagination="_pagination" GridTemplateColumns="minmax(13rem, 1.5fr) minmax(9rem, .9fr) minmax(8rem, .8fr) 7rem 7rem 8rem">
-                        <TemplateColumn Title="Record" Sortable="true" SortBy="@SortByName">
+                    <AppQuickGrid TGridItem="DemoRecord" Items="@FilteredRecords" Pagination="_pagination" AriaLabel="Program records" ItemKey="@(record => record.Id)">
+                        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn TGridItem="DemoRecord" Title="Record" Sortable="true" SortBy="@SortByName">
                             <a class="demo-record-link" href="@($"application-shell/records/{context.Id}")"><strong>@context.Name</strong><small>#@context.Id</small></a>
-                        </TemplateColumn>
-                        <PropertyColumn Property="@(record => record.Program)" Title="Program" Sortable="true" />
-                        <PropertyColumn Property="@(record => record.Owner)" Title="Owner" Sortable="true" />
-                        <TemplateColumn Title="Status" Sortable="true" SortBy="@SortByStatus"><span class="demo-status demo-status--@Slug(context.Status)">@context.Status</span></TemplateColumn>
-                        <TemplateColumn Title="Updated"
+                        </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                        <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn TGridItem="DemoRecord" TProp="string" Property="@(record => record.Program)" Title="Program" Sortable="true" />
+                        <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn TGridItem="DemoRecord" TProp="string" Property="@(record => record.Owner)" Title="Owner" Sortable="true" />
+                        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortBy="@SortByStatus"><span class="demo-status demo-status--@Slug(context.Status)">@context.Status</span></Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn TGridItem="DemoRecord" Title="Updated"
                                         Sortable="true"
                                         SortBy="@SortByUpdated"
                                         IsDefaultSortColumn="true"
-                                        InitialSortDirection="DataGridSortDirection.Descending">@context.UpdatedOn.ToString("dd MMM")</TemplateColumn>
-                        <TemplateColumn Title="Actions">
+                                        InitialSortDirection="Microsoft.AspNetCore.Components.QuickGrid.SortDirection.Descending">@context.UpdatedOn.ToString("dd MMM")</Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn TGridItem="DemoRecord" Title="Actions">
                             <div class="demo-row-actions">
                                 <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Edit {context.Name}")" OnClick="@(_ => EditRecord(context))">
                                     <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Edit())" /></IconStartContent>
                                 </AppButton>
-                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Delete {context.Name}")" OnClick="@(_ => DeleteRecord(context.Id))">
+                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Delete {context.Name}")" OnClick="@(_ => DeleteRecord(context))">
                                     <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Delete())" /></IconStartContent>
                                 </AppButton>
                             </div>
-                        </TemplateColumn>
-                    </FluentDataGrid>
+                        </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                    </AppQuickGrid>
                     </ChildContent>
-                    <Pagination><AppPagination State="_pagination" /></Pagination>
+                    <Pagination><AppQuickPaginator State="_pagination" /></Pagination>
                 </AppDataGrid>
             </section>
             </ChildContent>
         </DemoApplicationShell>
     </div>
+
+    <AppDrawer TInput="DemoRecordDraft" TResult="DemoRecordDraft" @ref="_recordDrawer"
+               Title="Record editor" Description="Changes are returned to the page only after Save is selected."
+               Position="AppDrawerPosition.End" Size="AppDrawerSize.Standard">
+        <Body Context="drawer">
+            <FormGrid Columns="1">
+                <FormField><AppTextBox Label="Record name" @bind-Value="drawer.Value.Name" /></FormField>
+                <FormField><AppTextBox Label="Program" @bind-Value="drawer.Value.Program" /></FormField>
+                <FormField><AppTextBox Label="Owner" @bind-Value="drawer.Value.Owner" /></FormField>
+                <FormField><AppSelect TValue="string" Label="Status" Options="@StatusOptions" @bind-Value="drawer.Value.Status" /></FormField>
+            </FormGrid>
+        </Body>
+        <Footer Context="drawer">
+            <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
+            <AppButton Variant="AppButtonVariant.Primary" Disabled="@(!CanSave(drawer.Value))" OnClick="@(_ => drawer.CloseAsync(drawer.Value))">Save record</AppButton>
+        </Footer>
+    </AppDrawer>
+
+    <AppDialog TInput="DemoRecord" TResult="DemoRecord" @ref="_deleteDialog"
+               Title="Delete this record?" Description="This action permanently removes the record from the playbook store."
+               Dangerous="true">
+        <Body Context="dialog"><p><strong>@dialog.Value.Name</strong> and its current status will be removed.</p></Body>
+        <Footer Context="dialog">
+            <AppButton OnClick="@(_ => dialog.CancelAsync())">Keep record</AppButton>
+            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => dialog.CloseAsync(dialog.Value))">Delete record</AppButton>
+        </Footer>
+    </AppDialog>
 </PlaybookShell>
 
 @code {
-    private DemoRecordDraft? _draft;
+    private AppDrawer<DemoRecordDraft, DemoRecordDraft>? _recordDrawer;
+    private AppDialog<DemoRecord, DemoRecord>? _deleteDialog;
     private string _searchText = string.Empty;
-    private readonly PaginationState _pagination = new() { ItemsPerPage = 4 };
+    private readonly Microsoft.AspNetCore.Components.QuickGrid.PaginationState _pagination = new() { ItemsPerPage = 4 };
 
-    private static readonly IGridSort<DemoRecord> SortByName = GridSort<DemoRecord>.ByAscending(record => record.Name);
-    private static readonly IGridSort<DemoRecord> SortByStatus = GridSort<DemoRecord>.ByAscending(record => record.Status);
-    private static readonly IGridSort<DemoRecord> SortByUpdated = GridSort<DemoRecord>.ByAscending(record => record.UpdatedOn);
+    private static readonly Microsoft.AspNetCore.Components.QuickGrid.GridSort<DemoRecord> SortByName = Microsoft.AspNetCore.Components.QuickGrid.GridSort<DemoRecord>.ByAscending(record => record.Name);
+    private static readonly Microsoft.AspNetCore.Components.QuickGrid.GridSort<DemoRecord> SortByStatus = Microsoft.AspNetCore.Components.QuickGrid.GridSort<DemoRecord>.ByAscending(record => record.Status);
+    private static readonly Microsoft.AspNetCore.Components.QuickGrid.GridSort<DemoRecord> SortByUpdated = Microsoft.AspNetCore.Components.QuickGrid.GridSort<DemoRecord>.ByAscending(record => record.UpdatedOn);
+    private static readonly AppSelectOption<string>[] StatusOptions =
+    [
+        new("Draft", "Draft"),
+        new("Active", "Active"),
+        new("In review", "In review"),
+        new("Complete", "Complete")
+    ];
 
     private readonly Breadcrumb[] RecordBreadcrumbs =
     [
@@ -118,10 +130,9 @@
         new(null, null, "Records")
     ];
 
-    private bool CanSave => _draft is not null
-        && !string.IsNullOrWhiteSpace(_draft.Name)
-        && !string.IsNullOrWhiteSpace(_draft.Program)
-        && !string.IsNullOrWhiteSpace(_draft.Owner);
+    private static bool CanSave(DemoRecordDraft draft) => !string.IsNullOrWhiteSpace(draft.Name)
+        && !string.IsNullOrWhiteSpace(draft.Program)
+        && !string.IsNullOrWhiteSpace(draft.Owner);
 
     private IQueryable<DemoRecord> FilteredRecords => Store.Records
         .Where(MatchesSearch)
@@ -131,31 +142,31 @@
         ? $"{Store.Records.Count} records"
         : $"{FilteredRecords.Count()} of {Store.Records.Count} records";
 
-    private void CreateRecord() => _draft = new DemoRecordDraft();
-
-    private void EditRecord(DemoRecord record) => _draft = new DemoRecordDraft
+    private async Task CreateRecord()
     {
-        Id = record.Id,
-        Name = record.Name,
-        Program = record.Program,
-        Owner = record.Owner,
-        Status = record.Status
-    };
-
-    private void SaveRecord()
-    {
-        if (!CanSave || _draft is null) return;
-        Store.Save(_draft);
-        _draft = null;
+        var result = await _recordDrawer!.ShowAsync(new DemoRecordDraft());
+        if (result is { HasValue: true, Value: not null }) Store.Save(result.Value);
     }
 
-    private void DeleteRecord(int id)
+    private async Task EditRecord(DemoRecord record)
     {
-        Store.Delete(id);
-        if (_draft?.Id == id) _draft = null;
+        var result = await _recordDrawer!.ShowAsync(new DemoRecordDraft
+        {
+            Id = record.Id,
+            Name = record.Name,
+            Program = record.Program,
+            Owner = record.Owner,
+            Status = record.Status
+        });
+        if (result is { HasValue: true, Value: not null }) Store.Save(result.Value);
     }
 
-    private void CloseEditor() => _draft = null;
+    private async Task DeleteRecord(DemoRecord record)
+    {
+        var result = await _deleteDialog!.ShowAsync(record);
+        if (result is { HasValue: true, Value: not null }) Store.Delete(result.Value.Id);
+    }
+
     private void ClearSearch() => _searchText = string.Empty;
 
     private bool MatchesSearch(DemoRecord record)

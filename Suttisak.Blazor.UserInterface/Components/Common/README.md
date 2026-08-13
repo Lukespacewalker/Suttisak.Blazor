@@ -3,17 +3,65 @@
 ## Cards and data grids
 
 Use `AppCard` for standard application surfaces. It provides optional header,
-description, actions, body, and footer regions. Wrap every `FluentDataGrid` in
-`AppDataGrid`; Fluent remains the sorting and virtualization engine while the
-shared wrapper owns responsive overflow and optional toolbar/footer regions.
+description, actions, body, and footer regions. `AppQuickGrid<TGridItem>` is the
+preferred sorting, paging, and virtualization engine. It wraps Microsoft's
+official Blazor QuickGrid with the shared visual contract and does not depend on
+Fluent DataGrid. `AppDataGrid` remains the responsive command-bar and state
+container, so existing Fluent grids can be migrated one screen at a time.
 
 ```razor
 <AppDataGrid AriaLabel="People">
-    <FluentDataGrid Items="@People.AsQueryable()">
-        <PropertyColumn Property="@(person => person.Name)" Sortable="true" />
-    </FluentDataGrid>
+    <AppQuickGrid TGridItem="Person" Items="@People.AsQueryable()" Pagination="@pagination">
+        <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn TGridItem="Person" TProp="string"
+            Property="@(person => person.Name)" Sortable="true" />
+    </AppQuickGrid>
+    <Pagination><AppQuickPaginator State="@pagination" /></Pagination>
 </AppDataGrid>
 ```
+
+Supply exactly one of `Items` or `ItemsProvider`. When `Virtualize` is enabled,
+all rows must have the fixed height supplied by `ItemSize`. Use `ItemKey` for a
+stable primary key so Blazor retains row identity across sorting and refreshes.
+
+## Dialogs and drawers
+
+`AppDialog<TInput, TResult>` and `AppDrawer<TInput, TResult>` accept a value in
+`ShowAsync` and return `AppOverlayResult<TResult>`. Cancelling with Escape, the
+backdrop, the close button, or `CancelAsync` returns `IsCancelled = true`.
+Set `Dismissible="false"` when the user must explicitly choose a footer action.
+Set `Dangerous="true"` for destructive confirmation and pair it with a danger
+button. Drawers can open from either side and have narrow, standard, and wide
+sizes.
+
+```razor
+<AppDialog TInput="Person" TResult="Person" @ref="deleteDialog"
+           Title="Delete this person?" Dangerous="true">
+    <Body Context="dialog"><p>@dialog.Value.Name will be removed.</p></Body>
+    <Footer Context="dialog">
+        <AppButton OnClick="@(_ => dialog.CancelAsync())">Cancel</AppButton>
+        <AppButton Variant="AppButtonVariant.Danger"
+                   OnClick="@(_ => dialog.CloseAsync(dialog.Value))">Delete</AppButton>
+    </Footer>
+</AppDialog>
+
+@code {
+    private AppDialog<Person, Person>? deleteDialog;
+
+    private async Task DeleteAsync(Person person)
+    {
+        var result = await deleteDialog!.ShowAsync(person);
+        if (result is { HasValue: true, Value: not null })
+            await Repository.DeleteAsync(result.Value.Id);
+    }
+}
+```
+
+The same body/footer context contract applies to `AppDrawer`. Treat reference
+type inputs as editable drafts when cancellation must leave the original model
+unchanged; `ShowAsync` passes the supplied object reference rather than cloning
+it. Opening, paging, sorting, and virtualization require an interactive render
+mode; the components can render during static SSR but cannot open or update
+until Blazor becomes interactive.
 
 `Suttisak.Blazor.UserInterface` supplies the shared application contract used by
 the occupational-health product family.
@@ -77,8 +125,11 @@ menu. Put destructive actions last.
               ErrorMessage="@errorMessage"
               OnRetry="LoadAsync">
     <AppDataGrid>
-        <FluentDataGrid Items="@participants.AsQueryable()" Pagination="pagination" />
-        <Pagination><AppPagination State="pagination" /></Pagination>
+        <AppQuickGrid TGridItem="Participant" Items="@participants.AsQueryable()" Pagination="pagination">
+            <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn TGridItem="Participant" TProp="string"
+                Property="@(participant => participant.Name)" />
+        </AppQuickGrid>
+        <Pagination><AppQuickPaginator State="pagination" /></Pagination>
     </AppDataGrid>
 </AsyncContent>
 ```
