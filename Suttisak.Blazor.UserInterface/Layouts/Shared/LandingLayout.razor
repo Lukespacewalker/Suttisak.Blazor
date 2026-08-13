@@ -4,32 +4,29 @@
 @inject IOptions<BlazorUIOptions> GlobalDesign
 @inherits LayoutComponentBase
 <CascadingValue Value="this">
-    <div class="root" style="position:relative">
-        <FluentLayout GlobalScrollbar="true">
-            <FluentLayoutItem Area="LayoutArea.Header">
-                <div class="header-container">
-                    <img src="@GlobalDesign.Value.LogoAssetPath" class="logo" />
-                    <SectionOutlet SectionId="HeaderSection" />
-                    <FluentSpacer />
-                    <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
-                                           ProfileImageUrl="@GlobalDesign.Value.ProfileImageUrl"
-                                           @rendermode="HeaderRenderMode" />
-                </div>
-            </FluentLayoutItem>
-            <FluentLayoutItem Area="LayoutArea.Content">
-                <FluentStack Class="main-stack"
-                             Orientation="Orientation.Horizontal"
-                             Width="100%" HorizontalGap="0" VerticalGap="0">
-                    <div class="landing-page-content">
-                        @Body
-                    </div>
-                </FluentStack>
-            </FluentLayoutItem>
-        </FluentLayout>
+    <div class="landing-layout">
+        <header class="landing-layout__header">
+            <div class="landing-layout__header-inner">
+                <a class="landing-layout__brand" href="/" aria-label="Home">
+                    <img src="@GlobalDesign.Value.LogoAssetPath" alt="" />
+                    <strong><SectionOutlet SectionId="HeaderSection" /></strong>
+                </a>
+                <nav class="landing-layout__navigation" aria-label="Landing page sections">
+                    <SectionOutlet SectionId="NavigationSection" />
+                </nav>
+                <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
+                                       ProfileImageUrl="@GlobalDesign.Value.ProfileImageUrl"
+                                       @rendermode="HeaderRenderMode" />
+            </div>
+        </header>
+        <div class="landing-page-content">
+            @Body
+        </div>
     </div>
 </CascadingValue>
 @code {
     public static object HeaderSection = new();
+    public static object NavigationSection = new();
 
     public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 }

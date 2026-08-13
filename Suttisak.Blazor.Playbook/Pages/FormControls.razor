@@ -1,4 +1,5 @@
 @page "/form-controls"
+@using System.ComponentModel.DataAnnotations
 
 <PageTitle>Form controls · Suttisak.Blazor UI Playbook</PageTitle>
 
@@ -9,7 +10,7 @@
                 <span class="playbook-kicker">Native first · timezone safe</span>
                 <h1>Form controls that work<br /><em>before Blazor wakes up.</em></h1>
             </div>
-            <p>Each control renders semantic HTML. Calendar and time work with no JavaScript; date + time adds a tiny browser enhancement that posts the local value, IANA time zone, UTC offset, and verified UTC instant.</p>
+            <p>Each control renders semantic HTML first. Calendar upgrades to our themed popup without starting a Blazor circuit, while date + time posts the local value, IANA time zone, UTC offset, and verified UTC instant.</p>
         </header>
 
         <section class="form-playbook__section" aria-labelledby="interactive-title">
@@ -22,7 +23,7 @@
             <div class="form-playbook__stage">
                 <div class="form-playbook__controls">
                     <AppCalendarPicker Label="Appointment date"
-                                       Description="Uses the browser's native calendar UI."
+                                       Description="Uses the shared calendar popup, with the native picker as its no-JavaScript fallback."
                                        Min="@DateOnly.FromDateTime(DateTime.Today)"
                                        @bind-Value="_date" />
                     <AppTimePicker Label="Start time"
@@ -47,9 +48,45 @@
             </div>
         </section>
 
-        <section class="form-playbook__section" aria-labelledby="static-title">
+        <section class="form-playbook__section" aria-labelledby="edit-form-title">
             <div class="form-playbook__section-heading">
                 <span>02</span>
+                <div><h2 id="edit-form-title">EditForm + validation</h2><p>Shared visual states driven directly by Blazor's EditContext.</p></div>
+                <strong class="form-playbook__mode">InputBase&lt;T&gt;</strong>
+            </div>
+
+            <EditForm EditContext="@_editContext" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <div class="form-playbook__validated-form">
+                    <FormGrid Columns="2">
+                        <FormField>
+                            <AppTextBox Label="Display name" Description="Shown to people in this workspace." Placeholder="e.g. Kanda S." @bind-Value="_profile.DisplayName" />
+                        </FormField>
+                        <FormField>
+                            <AppSelect TValue="string" Label="Department" Description="Select one operational area." Placeholder="Choose a department" Options="@DepartmentOptions" @bind-Value="_profile.Department" />
+                        </FormField>
+                        <FormField ColumnSpan="2">
+                            <AppTextArea Label="About this person" Description="A short note for the care team." Placeholder="Add useful context…" Rows="4" MaxLength="160" @bind-Value="_profile.Note" />
+                        </FormField>
+                        <FormField ColumnSpan="2">
+                            <AppRadioGroup TValue="string" Label="Preferred contact channel" Description="Used for non-urgent follow-up." Orientation="Horizontal" Options="@ContactOptions" @bind-Value="_profile.ContactChannel" />
+                        </FormField>
+                        <FormField ColumnSpan="2">
+                            <AppCheckbox Label="I confirm the information is correct" Description="Required before this form can be submitted." @bind-Value="_profile.Confirmed" />
+                        </FormField>
+                    </FormGrid>
+                    <div class="form-playbook__submit-row">
+                        <AppButton Type="ButtonType.Submit" Variant="AppButtonVariant.Primary">Validate and save</AppButton>
+                        @if (_saved) { <span class="form-playbook__saved">All fields are valid.</span> }
+                        else { <span>Validation text is owned by EditContext and rendered inside each component.</span> }
+                    </div>
+                </div>
+            </EditForm>
+        </section>
+
+        <section class="form-playbook__section" aria-labelledby="static-title">
+            <div class="form-playbook__section-heading">
+                <span>03</span>
                 <div><h2 id="static-title">Static rendering contract</h2><p>No EditForm, event callback, circuit, or Fluent popup is required.</p></div>
                 <strong class="form-playbook__mode form-playbook__mode--static">Static SSR ready</strong>
             </div>
@@ -101,4 +138,48 @@
     private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
     private TimeOnly? _time = new(9, 30);
     private DateTime? _dateTime = DateTime.SpecifyKind(DateTime.Today.AddDays(7).AddHours(10), DateTimeKind.Unspecified);
+    private readonly ProfileFormModel _profile = new() { DisplayName = "Ka" };
+    private EditContext _editContext = default!;
+    private bool _saved;
+
+    private static readonly AppSelectOption<string>[] DepartmentOptions =
+    [
+        new("Airside", "Airside operations"), new("Clinical", "Clinical services"), new("People", "People and culture")
+    ];
+    private static readonly AppSelectOption<string>[] ContactOptions =
+    [
+        new("Email", "Email"), new("Phone", "Phone"), new("App", "In-app message")
+    ];
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(_profile);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender) return;
+        _editContext.Validate();
+        StateHasChanged();
+    }
+
+    private void HandleValidSubmit() => _saved = true;
+
+    private sealed class ProfileFormModel
+    {
+        [Required, MinLength(3, ErrorMessage = "Enter at least 3 characters.")]
+        public string? DisplayName { get; set; }
+
+        [Required(ErrorMessage = "Choose a department.")]
+        public string? Department { get; set; }
+
+        [Required, MinLength(12, ErrorMessage = "Add at least 12 characters of useful context.")]
+        public string? Note { get; set; }
+
+        [Required(ErrorMessage = "Choose a contact channel.")]
+        public string? ContactChannel { get; set; }
+
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Confirm the information before saving.")]
+        public bool Confirmed { get; set; }
+    }
 }

@@ -1,0 +1,20 @@
+@inherits AppInputBase<string?>
+
+<div class="@ContainerClass">
+    @if (!string.IsNullOrWhiteSpace(Label)) { <label class="app-form-control__label" for="@InputId">@Label</label> }
+    <div class="app-form-control__input-wrap">
+        <input id="@InputId" class="@InputClass" type="@Type" name="@NameAttributeValue"
+               value="@CurrentValueAsString" placeholder="@Placeholder" autocomplete="@Autocomplete"
+               required="@Required" disabled="@Disabled" aria-invalid="@HasValidationError"
+               aria-describedby="@DescribedBy" @oninput="HandleInput" @attributes="AdditionalAttributes" />
+    </div>
+    <AppInputSupport Description="@Description" DescriptionId="@DescriptionId" ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
+</div>
+
+@code {
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Autocomplete { get; set; }
+    private void HandleInput(ChangeEventArgs args) => CurrentValueAsString = args.Value?.ToString();
+    protected override bool TryParseValueFromString(string? value, out string? result, out string validationErrorMessage) { result = value; validationErrorMessage = null!; return true; }
+}
