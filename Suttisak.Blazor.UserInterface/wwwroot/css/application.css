@@ -1,3 +1,72 @@
+/* Application baseline. This deliberately replaces a framework-owned reboot so
+   shared layouts have a predictable document scroll and form inheritance. */
+html {
+    box-sizing: border-box;
+    min-height: 100%;
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+ul[role="list"],
+ol[role="list"] {
+    padding: 0;
+    list-style: none;
+}
+
+img,
+picture,
+svg,
+canvas {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+    margin: 0;
+    color: inherit;
+    font: inherit;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    appearance: button;
+}
+
+textarea {
+    resize: vertical;
+}
+
 :root {
     /* Primitive tokens: shared across every consuming application. */
     --app-font-body: "Source Sans 3", "Sarabun", "Segoe UI Variable", "Segoe UI", sans-serif;

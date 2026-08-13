@@ -1,5 +1,9 @@
 .landing-layout {
+    display: flex;
+    flex-direction: column;
     min-height: 100dvh;
+    height: auto;
+    overflow: visible;
     background: var(--app-background);
 }
 
@@ -84,8 +88,10 @@
 }
 
 .landing-page-content {
+    flex: 0 0 auto;
     width: 100%;
     min-width: 0;
+    overflow: visible;
 }
 
 @media (max-width: 64rem) {
