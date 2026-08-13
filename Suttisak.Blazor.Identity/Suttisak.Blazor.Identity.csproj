@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.6.0</AssemblyVersion>
+		<AssemblyVersion>0.7.0</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
