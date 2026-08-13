@@ -4,10 +4,12 @@
 @inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.PersonalData</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })" />
+
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <PageHeading Title="@Manage_razor.PersonalData" />
+<PageHeading Title="@Manage_razor.PersonalData">
+        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })" /></Breadcrumbs>
+    </PageHeading>
 </SectionContent>
 <IdentityManageShell Title="@Manage_razor.PersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
