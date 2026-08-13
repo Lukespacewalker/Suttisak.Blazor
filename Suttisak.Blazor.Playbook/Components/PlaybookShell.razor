@@ -28,10 +28,10 @@
             </select>
         </div>
 
-        <div class="playbook-segment" aria-label="Color scheme">
-            <button class="@Active(State.Mode, "light")" @onclick='() => ChangeModeAsync("light")'>Light</button>
-            <button class="@Active(State.Mode, "dark")" @onclick='() => ChangeModeAsync("dark")'>Dark</button>
-            <button class="@Active(State.Mode, "auto")" @onclick='() => ChangeModeAsync("auto")'>Auto</button>
+        <div class="playbook-segment playbook-segment--theme" aria-label="Color scheme">
+            <button class="@Active(State.Mode, "light")" aria-label="Use light theme" title="Light" @onclick='() => ChangeModeAsync("light")'><span aria-hidden="true">☼</span></button>
+            <button class="@Active(State.Mode, "dark")" aria-label="Use dark theme" title="Dark" @onclick='() => ChangeModeAsync("dark")'><span aria-hidden="true">◐</span></button>
+            <button class="@Active(State.Mode, "auto")" aria-label="Use system theme" title="Auto" @onclick='() => ChangeModeAsync("auto")'><span aria-hidden="true">A</span></button>
         </div>
 
         <div class="playbook-segment playbook-segment--viewport" aria-label="Preview width">
