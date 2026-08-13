@@ -117,6 +117,7 @@ select { font: inherit; }
 
 .playbook-segment { display: inline-flex; padding: .2rem; border: 1px solid var(--app-border); border-radius: .65rem; background: var(--app-surface-muted); }
 .playbook-segment button { padding: .38rem .68rem; border: 0; border-radius: .45rem; background: transparent; color: var(--app-foreground-muted); cursor: pointer; }
+.playbook-segment--theme button { min-width: 1.85rem; padding-inline: .38rem; }
 .playbook-segment button.is-active { background: var(--app-surface); color: var(--app-accent); box-shadow: 0 .15rem .5rem var(--app-shadow-color); font-weight: 750; }
 
 .playbook-canvas { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); max-width: 98rem; margin: 0 auto; padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 4vw, 4rem) 8rem; }
