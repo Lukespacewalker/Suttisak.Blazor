@@ -6,26 +6,21 @@
 
 <CascadingValue Value="this">
     <div class="root" style="position:relative">
-        <FluentLayout>
-            <FluentLayoutItem Area="LayoutArea.Header">
+        <div class="header-footer-shell">
+            <header class="header-footer-header">
                 <img src="@GlobalDesign.Value.LogoAssetPath" 
-                     style="width:2rem; height:2rem;margin-right:0.5rem;" />
+                     alt=""
+                     class="header-footer-logo" />
                 <SectionOutlet SectionId="HeaderSection" />
-                <FluentSpacer />
+                <span class="header-footer-spacer" aria-hidden="true"></span>
                 <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
                                        ProfileImageUrl="@GlobalDesign.Value.ProfileImageUrl"
                                        @rendermode="HeaderRenderMode" />
-            </FluentLayoutItem>
-            <FluentLayoutItem Area="LayoutArea.Content">
-                <FluentStack Class="main" 
-                             Orientation="Orientation.Horizontal" 
-                             Width="100%" HorizontalGap="0" VerticalGap="0">
-                    <main class="header-footer-content">
-                        @Body
-                    </main>
-                </FluentStack>
-            </FluentLayoutItem>
-        </FluentLayout>
+            </header>
+            <main class="header-footer-content">
+                @Body
+            </main>
+        </div>
     </div>
 </CascadingValue>
 @code {
