@@ -1,4 +1,3 @@
-@using Suttisak.Blazor.UserInterface.Layouts.Shared
 @implements IDisposable
 
 <CascadingValue Value="this">
@@ -18,7 +17,7 @@
     }
     else
     {
-    <FluentLayoutItem Area="LayoutArea.Navigation" Class="@($"app-nav {CollapsedClass} {MobileOpenClass}")">
+    <div class="@($"app-nav {CollapsedClass} {MobileOpenClass}")">
         <div class="nav-shell">
             <div class="nav-toolbar">
                 <button class="nav-toolbar-button nav-toolbar-button--collapse"
@@ -55,7 +54,7 @@
                 @onclick="CloseMobileMenu"
                 aria-label="Close navigation menu"
                 tabindex="@(IsMobileOpen ? 0 : -1)"></button>
-    </FluentLayoutItem>
+    </div>
     }
 </CascadingValue>
 
