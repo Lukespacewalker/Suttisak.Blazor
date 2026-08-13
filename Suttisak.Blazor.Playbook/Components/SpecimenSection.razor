@@ -1,0 +1,18 @@
+<section id="@Id" class="specimen-section" aria-labelledby="@($"{Id}-title")">
+    <header class="specimen-section__header">
+        <span>@Number</span>
+        <div>
+            <h2 id="@($"{Id}-title")">@Title</h2>
+            <p>@Description</p>
+        </div>
+    </header>
+    <div class="specimen-section__stage">@ChildContent</div>
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Id { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Number { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}

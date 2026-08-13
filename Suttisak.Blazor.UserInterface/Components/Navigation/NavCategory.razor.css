@@ -31,13 +31,13 @@
 }
 
 .nav-category__header:hover {
-    background: color-mix(in srgb, var(--colorBrandBackground), transparent 82%);
+    background: var(--app-accent-soft);
     transform: translateX(2px);
 }
 
 .nav-category--active .nav-category__header {
     color: var(--colorBrandBackground);
-    background: var(--color-glass-layer1-bg);
+    background: var(--app-glass-surface);
 }
 
 .nav-category--selected .nav-category__header {
@@ -46,7 +46,7 @@
 
 .nav-category--active .nav-category__toggle {
     color: var(--colorBrandBackground);
-    background: var(--color-glass-layer1-bg);
+    background: var(--app-glass-surface);
 }
 
 .nav-category__toggle {
@@ -63,7 +63,7 @@
 }
 
     .nav-category__toggle:hover {
-        background: color-mix(in srgb, var(--colorBrandBackground), transparent 82%);
+        background: var(--app-accent-soft);
         transform: translateX(2px);
     }
 

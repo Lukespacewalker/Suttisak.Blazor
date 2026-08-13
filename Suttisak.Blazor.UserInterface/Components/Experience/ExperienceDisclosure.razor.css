@@ -1,0 +1,160 @@
+.experience-disclosure {
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: 1rem;
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.experience-disclosure summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: .75rem;
+    min-height: 3.75rem;
+    padding: .75rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 750;
+    line-height: 1.4;
+    user-select: none;
+}
+
+.experience-disclosure summary::-webkit-details-marker {
+    display: none;
+}
+
+.experience-disclosure summary:focus-visible {
+    outline: .1875rem solid var(--app-focus-ring, var(--app-brand));
+    outline-offset: -.1875rem;
+}
+
+.experience-disclosure__marker {
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--app-brand-soft);
+}
+
+.experience-disclosure__marker::before,
+.experience-disclosure__marker::after {
+    content: "";
+    grid-area: 1 / 1;
+    width: .6875rem;
+    height: .125rem;
+    border-radius: 999px;
+    background: var(--app-brand);
+    transition: transform .2s ease;
+}
+
+.experience-disclosure__marker::after {
+    transform: rotate(90deg);
+}
+
+.experience-disclosure[open] .experience-disclosure__marker::after {
+    transform: rotate(0);
+}
+
+.experience-disclosure__badge {
+    padding: .2rem .6rem;
+    border: 1px solid var(--app-accent-border);
+    border-radius: 999px;
+    background: var(--app-accent-soft);
+    color: var(--app-brand);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .035em;
+}
+
+.experience-disclosure__chevron {
+    width: .55rem;
+    height: .55rem;
+    border-right: .125rem solid currentColor;
+    border-bottom: .125rem solid currentColor;
+    opacity: .58;
+    transform: rotate(45deg) translate(-.125rem, -.125rem);
+    transition: transform .2s ease;
+}
+
+.experience-disclosure[open] .experience-disclosure__chevron {
+    transform: rotate(225deg) translate(-.125rem, -.125rem);
+}
+
+.experience-disclosure__body {
+    padding: 1rem 1rem 1.25rem 3.5rem;
+    border-top: 1px solid var(--app-border);
+    background: var(--app-surface-muted);
+}
+
+.experience-disclosure--recommended {
+    border-color: var(--app-accent-border);
+    box-shadow: 0 .625rem 1.75rem var(--app-shadow-color);
+}
+
+.experience-disclosure--recommended > summary {
+    background: linear-gradient(100deg, var(--app-accent-soft), transparent 72%);
+}
+
+@media (hover: hover) {
+    .experience-disclosure > summary:hover {
+        background-color: var(--app-surface-hover);
+    }
+
+    .experience-disclosure--recommended > summary:hover {
+        background: linear-gradient(100deg, var(--app-accent-soft), var(--app-surface-hover));
+    }
+}
+
+@media (max-width: 32.5rem) {
+    .experience-disclosure summary {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: .625rem;
+        padding-inline: .75rem;
+    }
+
+    .experience-disclosure__badge {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .experience-disclosure__chevron {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+    }
+
+    .experience-disclosure__body {
+        padding: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .experience-disclosure,
+    .experience-disclosure__marker::before,
+    .experience-disclosure__marker::after,
+    .experience-disclosure__chevron {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .experience-disclosure,
+    .experience-disclosure--recommended {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+    }
+
+    .experience-disclosure__marker::before,
+    .experience-disclosure__marker::after {
+        background: CanvasText;
+    }
+
+    .experience-disclosure__badge {
+        border-color: CanvasText;
+        color: CanvasText;
+    }
+}

@@ -11,13 +11,13 @@
 }
 
     .nav-item:hover {
-        background: var(--color-glass-layer1-bg);
+        background: var(--app-glass-surface);
         transform: translateX(3px);
     }
 
 .nav-item--active {
     color: var(--colorBrandBackground);
-    background: var(--color-glass-layer1-bg);
+    background: var(--app-glass-surface);
     border-left: 12px solid var(--colorBrandBackground);
 }
 

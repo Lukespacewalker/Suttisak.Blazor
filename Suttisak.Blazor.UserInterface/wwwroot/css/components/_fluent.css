@@ -13,9 +13,9 @@ fluent-text-input {
 
 /* Fluent Layout */
 .fluent-layout-item[area=header] {
-    background: var(--color-glass-layer1-bg) !important;
+    background: var(--app-glass-surface) !important;
     backdrop-filter: blur(10px) saturate(200%);
-    border-bottom: 2px solid var(--color-glass-border) !important;
+    border-bottom: 2px solid var(--app-glass-border) !important;
     color: var(--colorNeutralForeground1) !important;
     overflow: unset !important;
 }

@@ -7,7 +7,7 @@
     border: 1px solid var(--app-border);
     border-radius: 2rem;
     background: var(--app-surface-muted);
-    box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--app-foreground) 6%, transparent);
+    box-shadow: 0 1rem 2.5rem var(--app-shadow-color);
 }
 
 .marketing-call-to-action__content ::deep h2 {

@@ -1,6 +1,6 @@
 .app-page {
     border-top-left-radius: 20px;
-    background: var(--color-glass-layer1-bg) !important;
-    border-left: 2px solid var(--color-glass-border);
+    background: var(--app-glass-surface) !important;
+    border-left: 2px solid var(--app-glass-border);
     backdrop-filter: blur(16px) saturate(250%);
 }

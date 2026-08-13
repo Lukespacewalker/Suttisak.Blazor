@@ -7,7 +7,7 @@
         display: grid;
         gap: .75rem;
         padding: .875rem .75rem;
-        border-bottom: 1px solid var(--color-glass-border, var(--app-border));
+        border-bottom: 1px solid var(--app-glass-border);
     }
 
     .mobile-nav-account__preferences,
@@ -26,9 +26,9 @@
         min-width: 0;
         gap: .625rem;
         padding: .625rem;
-        border: 1px solid var(--color-glass-border, var(--app-border));
+        border: 1px solid var(--app-glass-border);
         border-radius: var(--app-radius-md);
-        background: color-mix(in srgb, var(--app-surface) 76%, transparent);
+        background: var(--app-glass-surface-strong);
     }
 
     .mobile-nav-account__avatar {

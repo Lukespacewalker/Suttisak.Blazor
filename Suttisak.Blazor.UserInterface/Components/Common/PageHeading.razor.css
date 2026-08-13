@@ -13,8 +13,8 @@
     place-items: center;
     flex: 0 0 auto;
     border-radius: .75rem;
-    background: color-mix(in srgb, var(--accent-fill-rest, var(--colorBrandBackground)) 12%, transparent);
-    color: var(--accent-fill-rest, var(--colorBrandForeground1));
+    background: var(--app-accent-soft);
+    color: var(--app-accent);
 }
 
 .page-heading__copy {
@@ -37,7 +37,7 @@
 
 .page-heading__copy p {
     margin-top: .25rem;
-    color: var(--neutral-foreground-hint, var(--colorNeutralForeground3));
+    color: var(--app-foreground-muted);
     font-size: .9rem;
     line-height: 1.5;
 }

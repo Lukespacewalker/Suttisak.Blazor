@@ -1,0 +1,119 @@
+@page "/"
+@inject PlaybookState State
+
+<PageTitle>Components · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main id="top" class="playbook-canvas">
+        <aside class="playbook-index" aria-label="Component categories">
+            <span>Live gallery / 05</span>
+            <a href="#experience">01 Experience</a>
+            <a href="#workflow">02 Workflow</a>
+            <a href="#feedback">03 Feedback</a>
+            <a href="#marketing">04 Marketing</a>
+            <a href="#tokens">05 Color contract</a>
+        </aside>
+
+        <div class="playbook-sheet">
+            <section class="playbook-intro">
+                <div>
+                    <span class="playbook-kicker">Component gallery · @CurrentTheme.Name</span>
+                    <h1>Real components.<br /><em>Every product voice.</em></h1>
+                </div>
+                <p>These are live Razor components from the shared library—not screenshots. Switch application, scheme, or preview width to exercise the same contract in place.</p>
+            </section>
+
+            <SpecimenSection Id="experience" Number="01" Title="Experience" Description="Reader-first components for results, reports, education, and guidance.">
+                <div class="playbook-stack playbook-stack--loose">
+                    <ExperienceHeader Eyebrow="ANNUAL WELLBEING REVIEW"
+                                      Title="Your result"
+                                      Emphasis="in plain language"
+                                      Description="A reader-first summary that gives the outcome context before showing detailed measurements."
+                                      Watermark="@CurrentTheme.ShortName">
+                        <Details><div class="playbook-meta"><span>12 Aug 2026</span><span>8 measures complete</span></div></Details>
+                        <Visual><div class="playbook-score"><span>82</span><strong>On track</strong><small>overall score</small></div></Visual>
+                    </ExperienceHeader>
+
+                    <div class="playbook-card-grid">
+                        <ExperienceCard Elevated="true"><h3>What this means</h3><p>Your latest result is within the expected range for this review.</p></ExperienceCard>
+                        <ExperienceCard Accent="false" Interactive="true"><h3>Your next action</h3><p>Review the recommendations and choose one practical change.</p></ExperienceCard>
+                    </div>
+
+                    <ExperienceDisclosureGroup>
+                        <ExperienceDisclosure Heading="Recommended next step" Recommended="true" BadgeText="Start here" Expanded="true"><p>Turn the result into one clear action that can be completed this week.</p></ExperienceDisclosure>
+                        <ExperienceDisclosure Heading="How the score was calculated"><p>The score combines completed measures using the application’s published rules.</p></ExperienceDisclosure>
+                    </ExperienceDisclosureGroup>
+                </div>
+            </SpecimenSection>
+
+            <SpecimenSection Id="workflow" Number="02" Title="Workflow & forms" Description="Compact hierarchy and actions for CRUD and administration screens.">
+                <div class="playbook-stack">
+                    <PageHeading Title="Assessment periods" Description="Create, publish, and archive assessment windows.">
+                        <Actions><button class="playbook-button playbook-button--primary">New period</button></Actions>
+                    </PageHeading>
+                    <Toolbar AriaLabel="Assessment actions">
+                        <FluentButton Appearance="ButtonAppearance.Primary">Primary Fluent action</FluentButton>
+                        <button class="playbook-button">Filter</button>
+                        <button class="playbook-button">Export</button>
+                        <span class="playbook-toolbar-spacer"></span>
+                        <Pill>12 active</Pill>
+                    </Toolbar>
+                    <div class="playbook-preferences" aria-label="Preference selector specimens">
+                        <span>Theme</span><ThemeSelector />
+                        <span>Language</span><CultureSelector />
+                    </div>
+                    <FormSection Title="Period details" Description="A shared form section and responsive grid.">
+                        <FormGrid Columns="2">
+                            <label class="playbook-field">Name<input value="Annual review 2026" /></label>
+                            <label class="playbook-field">Status<select><option>Draft</option><option>Published</option></select></label>
+                        </FormGrid>
+                    </FormSection>
+                    <div class="playbook-card-grid">
+                        <GlassCard Title="Bangkok" Subtitle="7 completed · 2 in progress" IsActive="true"><p>Current reporting period</p></GlassCard>
+                        <GlassCard Title="Rayong" Subtitle="4 completed · 1 in progress"><p>Ready for review</p></GlassCard>
+                    </div>
+                </div>
+            </SpecimenSection>
+
+            <SpecimenSection Id="feedback" Number="03" Title="Feedback & status" Description="Semantic states stay stable across all product identities.">
+                <div class="playbook-feedback-grid">
+                    <FeedbackBanner Intent="FeedbackIntent.Info" Title="Draft saved" Message="Changes are visible only to administrators." />
+                    <FeedbackBanner Intent="FeedbackIntent.Success" Title="Published" Message="Participants can now view this result." />
+                    <FeedbackBanner Intent="FeedbackIntent.Warning" Title="Needs review" Message="Two measurements are outside the expected range." />
+                    <FeedbackBanner Intent="FeedbackIntent.Error" Title="Could not sync" Message="Try again after checking the connection." />
+                    <StatusPanel Title="Nothing to review yet" Message="Completed submissions will appear here." Variant="empty">
+                        <Actions><button class="playbook-button">Refresh</button></Actions>
+                    </StatusPanel>
+                </div>
+            </SpecimenSection>
+
+            <SpecimenSection Id="marketing" Number="04" Title="Marketing" Description="Composable primitives used by the Landing Page Sandbox.">
+                <MarketingSectionHeader Title="A product story with shared structure" Description="Cards, proof, steps, actions, product frames, and calls to action use the same app palette." Compact="true">
+                    <Eyebrow><span class="playbook-kicker">MARKETING PRIMITIVES</span></Eyebrow>
+                </MarketingSectionHeader>
+                <div class="playbook-marketing-grid">
+                    <MarketingCard Title="Guided workflow" Featured="true"><ChildContent><p>Give each role the next action and enough context to complete it.</p></ChildContent></MarketingCard>
+                    <MarketingCard Title="Readable results"><ChildContent><p>Translate measurements into a useful, personal explanation.</p></ChildContent></MarketingCard>
+                    <MarketingCard Title="Accessible by default"><ChildContent><p>Keep focus, contrast, motion, and narrow screens in the contract.</p></ChildContent></MarketingCard>
+                </div>
+                <div class="playbook-action-row">
+                    <MarketingActionLink Href="landing">Open the landing sandbox</MarketingActionLink>
+                    <MarketingActionLink Href="#tokens" Variant="MarketingActionVariant.Secondary">Inspect tokens</MarketingActionLink>
+                </div>
+            </SpecimenSection>
+
+            <SpecimenSection Id="tokens" Number="05" Title="Color contract" Description="Only semantic roles consumed by the shared library remain.">
+                <div class="token-grid">
+                    @foreach (var token in PlaybookCatalog.ColorTokens)
+                    {
+                        <article class="token-card"><span class="token-swatch" style="background: var(@token);"></span><code>@token</code></article>
+                    }
+                </div>
+            </SpecimenSection>
+        </div>
+    </main>
+</PlaybookShell>
+
+@code {
+    private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+}

@@ -2,7 +2,7 @@
     padding: .75rem 1rem;
     border-inline-start: .25rem solid var(--app-danger);
     border-radius: .5rem;
-    background: color-mix(in srgb, var(--app-danger) 7%, var(--app-surface));
+    background: var(--app-danger-soft);
     color: var(--app-danger);
 }
 

@@ -1,0 +1,47 @@
+<details @attributes="AdditionalAttributes"
+         class="@CssClassValue"
+         open="@Expanded">
+    <summary>
+        <span class="experience-disclosure__marker" aria-hidden="true"></span>
+        <span class="experience-disclosure__heading">@Heading</span>
+        @if (Recommended && !string.IsNullOrWhiteSpace(BadgeText))
+        {
+            <span class="experience-disclosure__badge">@BadgeText</span>
+        }
+        <span class="experience-disclosure__chevron" aria-hidden="true"></span>
+    </summary>
+    <div class="experience-disclosure__body">
+        @ChildContent
+    </div>
+</details>
+
+@code {
+    [Parameter, EditorRequired] public string Heading { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Expanded { get; set; }
+    [Parameter] public bool Recommended { get; set; }
+    [Parameter] public string? BadgeText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue
+    {
+        get
+        {
+            var classes = new List<string> { "experience-disclosure" };
+
+            if (Recommended)
+            {
+                classes.Add("experience-disclosure--recommended");
+            }
+
+            if (!string.IsNullOrWhiteSpace(Class))
+            {
+                classes.Add(Class);
+            }
+
+            return string.Join(' ', classes);
+        }
+    }
+}

@@ -11,33 +11,7 @@
 :root {
     color-scheme: light dark;
     --design-unit: 4;
-    --nav-bg-color: transparent;
-    --glass-blur: blur(20px);
-
-    /* Light Theme Variables */
-    --light-color-glass-layer0-bg: rgba(255, 255, 255, 0.2);
-    --light-color-glass-layer1-bg: rgba(255, 255, 255, 0.5);
-    --light-color-glass-layer2-bg: rgba(255, 255, 255, 0.7);
-    --light-color-glass-border: rgba(78, 96, 74, .14);
-    --light-color-glass-shadow: rgba(148, 163, 184, 0.15);
-    --light-color-card-hover: rgba(245, 245, 245, 0.8);
-    /* Dark Theme Variables */
-    --dark-color-glass-nav-bg: rgba(15, 23, 42, 0.15);
-    --dark-color-glass-layer1-bg: rgba(15, 23, 42, 0.45);
-    --dark-color-glass-layer2-bg: rgba(15, 23, 42, 0.6);
-    --dark-color-glass-border: rgba(159, 180, 140, .18);
-    --dark-color-glass-shadow: rgba(0, 0, 0, 0.4);
-    --dark-color-card-hover: rgba(30, 41, 59, 0.7);
-    /* Theme Variables */
-    --color-glass-layer0-bg: light-dark(var(--light-color-glass-layer0-bg), var(--dark-color-glass-layer0-bg));
-    --color-glass-layer1-bg: light-dark(var(--light-color-glass-layer1-bg), var(--dark-color-glass-layer1-bg));
-    --color-glass-layer2-bg: light-dark(var(--light-color-glass-layer2-bg), var(--dark-color-glass-layer2-bg));
-    --color-glass-border: light-dark(var(--light-color-glass-border), var(--dark-color-glass-border));
-    --color-glass-shadow: light-dark(var(--light-color-glass-shadow), var(--dark-color-glass-shadow));
-    --color-card-hover: light-dark(var(--light-color-card-hover), var(--dark-color-card-hover));
-
     --transition: .22s cubic-bezier(.4, 0, .2, 1);
-    --transition-slow: .42s cubic-bezier(.4, 0, .2, 1);
 }
 
 html {

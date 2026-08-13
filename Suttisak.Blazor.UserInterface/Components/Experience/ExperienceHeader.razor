@@ -1,0 +1,59 @@
+<header @attributes="AdditionalAttributes"
+        class="@CssClassValue"
+        aria-labelledby="@HeadingIdValue">
+    <div class="experience-header__copy">
+        @if (!string.IsNullOrWhiteSpace(Eyebrow))
+        {
+            <span class="experience-header__eyebrow">@Eyebrow</span>
+        }
+        <h1 id="@HeadingIdValue">
+            @Title
+            @if (!string.IsNullOrWhiteSpace(Emphasis))
+            {
+                <br />
+                <em>@Emphasis</em>
+            }
+        </h1>
+        @if (!string.IsNullOrWhiteSpace(Description))
+        {
+            <p class="experience-header__lead">@Description</p>
+        }
+        @if (Details is not null)
+        {
+            <div class="experience-header__details">@Details</div>
+        }
+    </div>
+
+    <div class="experience-header__visual" aria-hidden="@VisualIsDecorative.ToString().ToLowerInvariant()">
+        <span class="experience-header__orbit experience-header__orbit--one"></span>
+        <span class="experience-header__orbit experience-header__orbit--two"></span>
+        @Visual
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Watermark))
+    {
+        <span class="experience-header__watermark" aria-hidden="true">@Watermark</span>
+    }
+</header>
+
+@code {
+    private readonly string _generatedHeadingId = $"experience-header-{Guid.NewGuid():N}";
+
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Eyebrow { get; set; }
+    [Parameter] public string? Emphasis { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Watermark { get; set; }
+    [Parameter] public string? HeadingId { get; set; }
+    [Parameter] public RenderFragment? Details { get; set; }
+    [Parameter] public RenderFragment? Visual { get; set; }
+    [Parameter] public bool VisualIsDecorative { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string HeadingIdValue => HeadingId ?? _generatedHeadingId;
+    private string CssClassValue => string.IsNullOrWhiteSpace(Class)
+        ? "experience-header"
+        : $"experience-header {Class}";
+}

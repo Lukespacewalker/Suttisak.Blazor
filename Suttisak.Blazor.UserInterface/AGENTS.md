@@ -5,6 +5,7 @@ This project is a reusable Razor Class Library. Components must remain independe
 ## Component areas
 
 - `Components/Common`: small primitives that are useful in unrelated contexts, such as `Pill`, `Toolbar`, and `GlassCard`.
+- `Components/Experience`: reader-facing result, report, education, and guidance components.
 - `Components/Marketing`: composable presentation blocks for landing, product, about, and contact pages.
 - `Components/Navigation`: application navigation components.
 - `Layouts`: page-level layout shells.
@@ -28,4 +29,3 @@ After changing public components:
 1. Run `dotnet build Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.csproj`.
 2. Build at least one consuming application through its Debug project reference.
 3. Check desktop and mobile layouts, light/dark themes, focus visibility, heading order, and reduced-motion behavior.
-
