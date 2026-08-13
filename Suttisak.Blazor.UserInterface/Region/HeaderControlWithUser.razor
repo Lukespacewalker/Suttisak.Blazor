@@ -10,12 +10,11 @@
             <ProfileMenu LoginText="@LoginText" LogoutText="@LogoutText" ProfileImageUrl="@ProfileImageUrl" />
         </Authorized>
         <NotAuthorized>
-            <FluentButton IconStart="@(new Icons.Regular.Size24.Key())"
-                          Appearance="ButtonAppearance.Primary"
-                          Style="border-radius: var(--borderRadiusCircular);"
-                          OnClick="@OnClickHandler">
+            <AppButton IconStart="@(new Icons.Regular.Size24.Key())"
+                       Variant="AppButtonVariant.Primary"
+                       OnClick="@(_ => OnClickHandler())">
                 @Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)
-            </FluentButton>
+            </AppButton>
         </NotAuthorized>
     </AuthorizeView>
 </div>

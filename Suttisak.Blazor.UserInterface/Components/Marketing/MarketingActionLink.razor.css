@@ -13,7 +13,11 @@
 
 .marketing-action--primary {
     color: var(--app-on-brand);
-    background: linear-gradient(135deg, var(--app-brand), var(--app-brand-secondary));
+    background: var(--app-brand);
+}
+
+.marketing-action--primary:hover {
+    background: var(--colorBrandBackgroundHover, var(--app-brand));
 }
 
 .marketing-action--secondary {
