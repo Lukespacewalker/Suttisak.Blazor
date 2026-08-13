@@ -1,0 +1,253 @@
+@page "/application-shell/person"
+@page "/application-shell/person/{Section}"
+
+<PageTitle>@SectionTitle · Individual workspace · UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <div class="application-shell-workbench">
+        <DemoApplicationShell>
+            <PageHeader>
+                <PageHeading Title="Worapat Sukjai"
+                             Eyebrow="HN 004829 · 42 years"
+                             Description="One participant context with clear sibling views for checkup work, interpreted results, and documents."
+                             Icon="@(new Icons.Regular.Size24.Person())">
+                    <Breadcrumbs><AppBreadcrumb Items="@PersonBreadcrumbs" /></Breadcrumbs>
+                    <Toolbar>
+                        <PageActionToolbar Role="group" AriaLabel="Participant actions">
+                            <PrimaryAction>
+                                <AppButton Variant="AppButtonVariant.Primary">
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Save())" /></IconStartContent>
+                                    <ChildContent>Save changes</ChildContent>
+                                </AppButton>
+                            </PrimaryAction>
+                            <SupportingActions>
+                                <AppButton Href="application-shell/records">
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.ArrowLeft())" /></IconStartContent>
+                                    <ChildContent>Back</ChildContent>
+                                </AppButton>
+                                <AppButton>
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Print())" /></IconStartContent>
+                                    <ChildContent>Print</ChildContent>
+                                </AppButton>
+                            </SupportingActions>
+                            <OverflowActions>
+                                <AppButton Variant="AppButtonVariant.Subtle">
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Archive())" /></IconStartContent>
+                                    <ChildContent>Archive record</ChildContent>
+                                </AppButton>
+                                <AppButton Variant="AppButtonVariant.Danger">
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Delete())" /></IconStartContent>
+                                    <ChildContent>Delete record</ChildContent>
+                                </AppButton>
+                            </OverflowActions>
+                        </PageActionToolbar>
+                    </Toolbar>
+                </PageHeading>
+            </PageHeader>
+
+            <ChildContent>
+                <SectionNavigation AriaLabel="Individual health sections"
+                                   CurrentSectionLabel="@SectionTitle"
+                                   OverflowLabel="@OverflowLabel"
+                                   OverflowActive="@IsOverflowSection">
+                    <Context>
+                        <div class="person-context">
+                            <span aria-hidden="true">WS</span>
+                            <div><strong>Worapat Sukjai</strong><small>Annual checkup · 2026</small></div>
+                            <i title="Current record"></i>
+                        </div>
+                    </Context>
+                    <ChildContent>
+                        <NavLink href="application-shell/person" Match="NavLinkMatch.All"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> Overview</NavLink>
+                        <NavLink href="application-shell/person/profile"><FluentIcon Value="@(new Icons.Regular.Size20.PersonAccounts())" /> Profile</NavLink>
+                        <NavLink href="application-shell/person/checkups"><FluentIcon Value="@(new Icons.Regular.Size20.BoardHeart())" /> Checkup data</NavLink>
+                        <NavLink href="application-shell/person/results"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentHeart())" /> Results <span class="person-nav-count">2</span></NavLink>
+                        <NavLink href="application-shell/person/documents"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentPdf())" /> Documents</NavLink>
+                        <NavLink href="application-shell/person/appointments"><FluentIcon Value="@(new Icons.Regular.Size20.Calendar())" /> Appointments</NavLink>
+                    </ChildContent>
+                    <Overflow>
+                        <NavLink href="application-shell/person/exposure-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Exposure history</NavLink>
+                        <NavLink href="application-shell/person/work-restrictions"><FluentIcon Value="@(new Icons.Regular.Size20.Shield())" /> Work restrictions</NavLink>
+                        <NavLink href="application-shell/person/referrals"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /> Referrals</NavLink>
+                        <NavLink href="application-shell/person/certificates"><FluentIcon Value="@(new Icons.Regular.Size20.Document())" /> Certificates</NavLink>
+                        <NavLink href="application-shell/person/notes"><FluentIcon Value="@(new Icons.Regular.Size20.Note())" /> Notes</NavLink>
+                        <NavLink href="application-shell/person/attachments"><FluentIcon Value="@(new Icons.Regular.Size20.Attach())" /> Attachments</NavLink>
+                        <NavLink href="application-shell/person/audit-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Audit history</NavLink>
+                        <NavLink href="application-shell/person/consent"><FluentIcon Value="@(new Icons.Regular.Size20.Signature())" /> Consent</NavLink>
+                        <NavLink href="application-shell/person/access-control"><FluentIcon Value="@(new Icons.Regular.Size20.LockClosed())" /> Access control</NavLink>
+                    </Overflow>
+                    <Actions>
+                        <button class="person-context-action" type="button" aria-label="Change participant"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /><span>Change</span></button>
+                    </Actions>
+                </SectionNavigation>
+
+                <div class="person-workspace-content">
+                    @switch (ActiveSection)
+                    {
+                        case "checkups":
+                            <section class="person-section-heading">
+                                <div><span>CHECKUP DATA</span><h2>Examination record</h2><p>Organized by clinical group instead of one very long editing form.</p></div>
+                                <span class="person-completion"><strong>8/10</strong> groups complete</span>
+                            </section>
+                            <div class="person-checkup-list">
+                                @foreach (var group in CheckupGroups)
+                                {
+                                    <article>
+                                        <span class="person-checkup-icon"><FluentIcon Value="@group.Icon" /></span>
+                                        <div><strong>@group.Title</strong><small>@group.Description</small></div>
+                                        <span class="demo-status @(group.Complete ? "demo-status--complete" : "demo-status--in-review")">@(group.Complete ? "Complete" : "Needs review")</span>
+                                        <button type="button" aria-label="Edit @group.Title">Edit</button>
+                                    </article>
+                                }
+                            </div>
+                            break;
+
+                        case "results":
+                            <section class="person-section-heading">
+                                <div><span>INTERPRETED RESULTS</span><h2>What needs attention</h2><p>Lead with meaning and next actions; keep raw measurements in Checkup data.</p></div>
+                                <span class="person-completion person-completion--warning"><strong>2</strong> follow-ups</span>
+                            </section>
+                            <div class="person-results-grid">
+                                <article class="person-result-card person-result-card--attention">
+                                    <div><span>HEARING</span><span class="demo-status demo-status--in-review">Follow up</span></div>
+                                    <strong>Early high-frequency shift</strong>
+                                    <p>A small change is present at 4–6 kHz in the left ear compared with the previous examination.</p>
+                                    <footer><span>Recommended</span><b>Repeat audiometry in 3 months</b></footer>
+                                </article>
+                                <article class="person-result-card person-result-card--positive">
+                                    <div><span>VISION</span><span class="demo-status demo-status--complete">Within range</span></div>
+                                    <strong>Vision requirements met</strong>
+                                    <p>Distance, near vision, and color perception meet the current role requirements.</p>
+                                    <footer><span>Next step</span><b>Continue annual surveillance</b></footer>
+                                </article>
+                                <article class="person-result-card">
+                                    <div><span>FITNESS SUMMARY</span><span class="demo-status">Draft</span></div>
+                                    <strong>Fit with follow-up</strong>
+                                    <p>Work can continue. Complete the hearing follow-up before the next annual assessment.</p>
+                                    <footer><span>Reviewed by</span><b>Dr. Narin · 13 Aug 2026</b></footer>
+                                </article>
+                            </div>
+                            break;
+
+                        case "documents":
+                            <section class="person-section-heading">
+                                <div><span>DOCUMENTS</span><h2>Reports and attachments</h2><p>Generated summaries and source files for this checkup period.</p></div>
+                                <button class="demo-action-button demo-action-button--primary" type="button">Upload document</button>
+                            </section>
+                            <div class="person-document-list">
+                                @foreach (var document in Documents)
+                                {
+                                    <article>
+                                        <span><FluentIcon Value="@(new Icons.Regular.Size24.DocumentPdf())" /></span>
+                                        <div><strong>@document.Name</strong><small>@document.Meta</small></div>
+                                        <span class="demo-status @document.StatusClass">@document.Status</span>
+                                        <button type="button">Open</button>
+                                    </article>
+                                }
+                            </div>
+                            break;
+
+                        case var section when section != "overview":
+                            <section class="person-section-heading">
+                                <div><span>EXTENDED WORKSPACE</span><h2>@SectionTitle</h2><p>This destination demonstrates how fifteen sibling views remain discoverable without turning the section bar into a scrolling wall of tabs.</p></div>
+                                <span class="person-completion"><strong>15</strong> sections</span>
+                            </section>
+                            <article class="person-overview-card">
+                                <span class="person-card-label">ACTIVE DESTINATION</span>
+                                <h3>@SectionTitle</h3>
+                                <p>On desktop, frequent destinations remain visible and this route is surfaced through More. On mobile, every destination appears in one current-section menu.</p>
+                            </article>
+                            break;
+
+                        default:
+                            <section class="person-section-heading">
+                                <div><span>PARTICIPANT OVERVIEW</span><h2>A useful snapshot before editing</h2><p>Identity Manager can use the same pattern with Overview, Profile, Security, Passkeys, and Personal data.</p></div>
+                                <span class="person-completion"><strong>80%</strong> complete</span>
+                            </section>
+                            <div class="person-overview-grid">
+                                <article class="person-overview-card person-overview-card--identity">
+                                    <span class="person-card-label">IDENTITY & VISIT</span>
+                                    <dl>
+                                        <div><dt>Employee ID</dt><dd>BAFS-01842</dd></div>
+                                        <div><dt>Visit date</dt><dd>13 Aug 2026</dd></div>
+                                        <div><dt>Department</dt><dd>Airside Operations</dd></div>
+                                        <div><dt>Role</dt><dd>Ground safety officer</dd></div>
+                                    </dl>
+                                </article>
+                                <article class="person-overview-card person-overview-card--signal">
+                                    <span class="person-card-label">CURRENT SIGNAL</span>
+                                    <strong class="person-signal-value">2</strong>
+                                    <h3>Items need follow-up</h3>
+                                    <p>Hearing review and physician sign-off remain before completion.</p>
+                                    <a href="application-shell/person/results">Review results →</a>
+                                </article>
+                                <article class="person-overview-card person-overview-card--timeline">
+                                    <span class="person-card-label">CHECKUP PROGRESS</span>
+                                    <ol>
+                                        <li class="is-complete"><i></i><div><strong>Registration</strong><small>08:20</small></div></li>
+                                        <li class="is-complete"><i></i><div><strong>Examinations</strong><small>10 groups recorded</small></div></li>
+                                        <li class="is-current"><i></i><div><strong>Clinical review</strong><small>2 items pending</small></div></li>
+                                        <li><i></i><div><strong>Final report</strong><small>Not generated</small></div></li>
+                                    </ol>
+                                </article>
+                            </div>
+                            break;
+                    }
+                </div>
+            </ChildContent>
+        </DemoApplicationShell>
+    </div>
+</PlaybookShell>
+
+@code {
+    [Parameter] public string? Section { get; set; }
+
+    private static readonly (string Key, string Label)[] PersonSections =
+    [
+        ("overview", "Overview"), ("profile", "Profile"), ("checkups", "Checkup data"),
+        ("results", "Results"), ("documents", "Documents"), ("appointments", "Appointments"),
+        ("exposure-history", "Exposure history"), ("work-restrictions", "Work restrictions"),
+        ("referrals", "Referrals"), ("certificates", "Certificates"), ("notes", "Notes"),
+        ("attachments", "Attachments"), ("audit-history", "Audit history"),
+        ("consent", "Consent"), ("access-control", "Access control")
+    ];
+
+    private string ActiveSection
+    {
+        get
+        {
+            var candidate = Section?.ToLowerInvariant() ?? "overview";
+            return PersonSections.Any(item => item.Key == candidate) ? candidate : "overview";
+        }
+    }
+
+    private string SectionTitle => PersonSections.First(item => item.Key == ActiveSection).Label;
+    private bool IsOverflowSection => Array.FindIndex(PersonSections, item => item.Key == ActiveSection) >= 6;
+    private string OverflowLabel => IsOverflowSection ? SectionTitle : "More";
+
+    private Breadcrumb[] PersonBreadcrumbs =>
+    [
+        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new(null, "/application-shell/person", "Individual health"),
+        new(null, null, SectionTitle)
+    ];
+
+    private readonly CheckupGroup[] CheckupGroups =
+    [
+        new("Basic information", "Identity, employment, and visit details", new Icons.Regular.Size20.Person(), true),
+        new("Vital signs", "Blood pressure, pulse, height, and weight", new Icons.Regular.Size20.BoardHeart(), true),
+        new("Audiometry", "Pure-tone hearing thresholds", new Icons.Regular.Size20.DocumentHeart(), false),
+        new("Vision", "Distance, near, color, and depth perception", new Icons.Regular.Size20.Eye(), true),
+        new("Clinical conclusion", "Fitness decision and physician notes", new Icons.Regular.Size20.Document(), false)
+    ];
+
+    private readonly DocumentItem[] Documents =
+    [
+        new("Annual checkup summary.pdf", "Generated 13 Aug 2026 · 1.8 MB", "Ready", "demo-status--complete"),
+        new("Audiogram source.pdf", "Uploaded 13 Aug 2026 · 640 KB", "Source", ""),
+        new("Fitness certificate.pdf", "Waiting for physician signature", "Pending", "demo-status--in-review")
+    ];
+
+    private sealed record CheckupGroup(string Title, string Description, Icon Icon, bool Complete);
+    private sealed record DocumentItem(string Name, string Meta, string Status, string StatusClass);
+}

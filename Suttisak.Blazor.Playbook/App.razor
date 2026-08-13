@@ -5,9 +5,10 @@
     </Found>
     <NotFound>
         <PageTitle>Not found · UI Playbook</PageTitle>
-        <main class="playbook-not-found">
-            <h1>Specimen not found</h1>
-            <a href="/">Return to the component index</a>
-        </main>
+        <PlaybookShell>
+            <AccessPageFrame Title="404 not found state">
+                <NotFoundPattern />
+            </AccessPageFrame>
+        </PlaybookShell>
     </NotFound>
 </Router>

@@ -7,7 +7,7 @@
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.PersonalData</h1>
+    <PageHeading Title="@Manage_razor.PersonalData" />
 </SectionContent>
 <IdentityManageShell Title="@Manage_razor.PersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
@@ -19,7 +19,7 @@
         <Actions>
         <form action="@IdentityRoutes.Api.DownloadPersonalData" method="post">
             <AntiforgeryToken />
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@PersonalData_razor.DownloadButton</FluentButton>
+            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@PersonalData_razor.DownloadButton</AppButton>
         </form>
         </Actions>
     </IdentitySettingCard>

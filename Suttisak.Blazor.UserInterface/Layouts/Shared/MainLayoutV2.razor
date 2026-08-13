@@ -1,0 +1,94 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.Extensions.Options
+@using Suttisak.Blazor.UserInterface.Components
+@using Suttisak.Blazor.UserInterface.Components.Navigation
+@using Suttisak.Blazor.UserInterface.Interfaces
+@using Suttisak.Blazor.UserInterface.Models
+@using Suttisak.Blazor.UserInterface.Region
+@using Suttisak.Blazor.UserInterface.Services
+@layout RootLayout
+@implements IBreadcrumbLayout
+@implements IDisposable
+@inherits LayoutComponentBase
+@inject IOptions<BlazorUIOptions> GlobalDesign
+@inject NavigationManager NavigationManager
+
+<CascadingValue Value="this">
+    <ApplicationShellV2 SkipLinkText="@GlobalDesign.Value.SkipLinkText">
+        <Brand>
+            <a class="main-layout-v2__brand" href="/" aria-label="Home">
+                @if (!string.IsNullOrWhiteSpace(GlobalDesign.Value.LogoAssetPath))
+                {
+                    <img src="@GlobalDesign.Value.LogoAssetPath" alt="" />
+                }
+                <span><SectionOutlet SectionId="HeaderSection" /></span>
+            </a>
+        </Brand>
+        <Navigation>
+            <SectionOutlet SectionId="NavigationSection" />
+        </Navigation>
+        <ThemeSwitcher>
+            <ThemeSelector @rendermode="HeaderRenderMode" />
+        </ThemeSwitcher>
+        <LanguageSwitcher>
+            <CultureSelector @rendermode="HeaderRenderMode" />
+        </LanguageSwitcher>
+        <Profile>
+            <ShellProfileControl LoginUrl="@(GlobalDesign.Value.LoginUrl ?? "Account/Login")"
+                                 ProfileImageUrl="@GlobalDesign.Value.ProfileImageUrl"
+                                 @rendermode="HeaderRenderMode" />
+        </Profile>
+        <PageHeader>
+            <SectionOutlet SectionId="MessageBarSection" />
+            @if (_breadcrumbs.Length > 0)
+            {
+                <div class="main-layout-v2__breadcrumbs">
+                    <AppBreadcrumb Items="@_breadcrumbs" />
+                </div>
+            }
+            <SectionOutlet SectionName="@CommonSections.PageTitle" />
+        </PageHeader>
+        <ChildContent>@Body</ChildContent>
+    </ApplicationShellV2>
+</CascadingValue>
+
+@code {
+    public static object HeaderSection = new();
+    public static object NavigationSection = new();
+    public static object MessageBarSection = new();
+
+    private Breadcrumb[] _breadcrumbs = Array.Empty<Breadcrumb>();
+
+    public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        base.OnInitialized();
+    }
+
+    public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
+    {
+        var next = breadcrumbs.ToArray();
+        if (BreadcrumbsMatch(_breadcrumbs, next)) return;
+        _breadcrumbs = next;
+        StateHasChanged();
+    }
+
+    private static bool BreadcrumbsMatch(IReadOnlyList<Breadcrumb> current, IReadOnlyList<Breadcrumb> next)
+    {
+        if (current.Count != next.Count) return false;
+        for (var index = 0; index < current.Count; index++)
+        {
+            if (!string.Equals(current[index].Title, next[index].Title, StringComparison.Ordinal)
+                || !string.Equals(current[index].Url, next[index].Url, StringComparison.Ordinal)
+                || current[index].Icon?.GetType() != next[index].Icon?.GetType()) return false;
+        }
+        return true;
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs args) => _breadcrumbs = Array.Empty<Breadcrumb>();
+
+    public void Dispose() => NavigationManager.LocationChanged -= HandleLocationChanged;
+}

@@ -1,5 +1,7 @@
 @page "/landing"
 @inject PlaybookState State
+@inject IJSRuntime JsRuntime
+@implements IAsyncDisposable
 
 <PageTitle>Landing Page Sandbox · Suttisak.Blazor UI Playbook</PageTitle>
 
@@ -13,15 +15,55 @@
 
         <div class="landing-preview">
             <MarketingPage Id="landing-demo" SkipTarget="landing-features" SkipText="Skip to features">
-                <MarketingHero Title="Understand the signal. Act with confidence."
+                <header class="landing-site-header">
+                    <MarketingContainer>
+                        <a class="landing-site-brand" href="#landing-demo" aria-label="@CurrentTheme.Name home">
+                            <img src="@CurrentTheme.LogoPath" alt="" />
+                            <strong>@CurrentTheme.Name</strong>
+                        </a>
+                        <nav aria-label="Landing page sections">
+                            <a href="#landing-product-preview">Product</a>
+                            <a href="#landing-features">Benefits</a>
+                            <a href="#landing-how">How it works</a>
+                        </nav>
+                        <a class="landing-site-header__action" href="#landing-product-preview">Explore</a>
+                    </MarketingContainer>
+                </header>
+
+                <MarketingHero Class="landing-reveal landing-reveal--hero"
+                               Title="Understand the signal. Act with confidence."
                                Description="@($"{CurrentTheme.Name} turns complex information into a focused next step for every person who needs it.")">
-                    <Eyebrow><span class="landing-eyebrow"><i></i>@CurrentTheme.ShortName · DESIGNED FOR CLARITY</span></Eyebrow>
+                    <Eyebrow>
+                        <span class="landing-brand-lockup">
+                            <span class="landing-brand-lockup__mark"><img src="@CurrentTheme.LogoPath" alt="" /></span>
+                            <span><strong>@CurrentTheme.Name</strong><small>DESIGNED FOR CLARITY</small></span>
+                        </span>
+                    </Eyebrow>
                     <Actions>
                         <MarketingActionLink Href="#landing-features">Explore the product</MarketingActionLink>
-                        <MarketingActionLink Href="#landing-how" Variant="MarketingActionVariant.Secondary">See how it works</MarketingActionLink>
+                        <MarketingActionLink Href="#landing-product-preview" Variant="MarketingActionVariant.Secondary">See live preview</MarketingActionLink>
                     </Actions>
                     <Media>
-                        <MarketingProductFrame Label="LIVE PRODUCT PREVIEW">
+                        <figure class="landing-hero-visual @(CurrentTheme.CropHero ? "landing-hero-visual--framed landing-hero-visual--cover" : "landing-hero-visual--floating")">
+                            <img src="@CurrentTheme.HeroPath" alt="@CurrentTheme.HeroAlt" />
+                            <figcaption><i aria-hidden="true"></i><span>Original @CurrentTheme.Name hero asset</span></figcaption>
+                        </figure>
+                    </Media>
+                </MarketingHero>
+
+                <MarketingProofStrip Class="landing-reveal" AriaLabel="Product highlights">
+                    <MarketingProofItem Value="01" Title="One clear source" Description="Shared language across every role." />
+                    <MarketingProofItem Value="24/7" Title="Ready when needed" Description="Responsive from desk to phone." />
+                    <MarketingProofItem Value="AA" Title="Accessible foundation" Description="Contrast and focus built into the system." />
+                </MarketingProofStrip>
+
+                <section class="landing-product-preview landing-reveal" id="landing-product-preview" aria-labelledby="landing-preview-title">
+                    <MarketingContainer>
+                        <div class="landing-product-preview__heading">
+                            <div><span class="landing-section__eyebrow">LIVE PRODUCT PREVIEW</span><h2 id="landing-preview-title">See the product before the details.</h2></div>
+                            <p>The real hero establishes each app’s identity first. This preview follows as product proof, where the interface can be refined without competing with the opening message.</p>
+                        </div>
+                        <MarketingProductFrame Label="INTERACTIVE PRODUCT DIRECTION">
                             <div class="landing-dashboard">
                                 <div class="landing-dashboard__top"><span></span><span></span><span></span><b>@CurrentTheme.ShortName</b></div>
                                 <div class="landing-dashboard__body">
@@ -31,16 +73,10 @@
                                 <div class="landing-dashboard__bars"><i></i><i></i><i></i><i></i><i></i></div>
                             </div>
                         </MarketingProductFrame>
-                    </Media>
-                </MarketingHero>
+                    </MarketingContainer>
+                </section>
 
-                <MarketingProofStrip AriaLabel="Product highlights">
-                    <MarketingProofItem Value="01" Title="One clear source" Description="Shared language across every role." />
-                    <MarketingProofItem Value="24/7" Title="Ready when needed" Description="Responsive from desk to phone." />
-                    <MarketingProofItem Value="AA" Title="Accessible foundation" Description="Contrast and focus built into the system." />
-                </MarketingProofStrip>
-
-                <section class="landing-section" id="landing-features" aria-labelledby="landing-features-title">
+                <section class="landing-section landing-reveal" id="landing-features" aria-labelledby="landing-features-title">
                     <MarketingContainer>
                         <MarketingSectionHeader HeadingId="landing-features-title" Title="Useful detail, without the noise" Description="A complete product story composed from reusable blocks. Swap the app theme above and the identity changes without changing the page structure.">
                             <Eyebrow><span class="landing-section__eyebrow">WHY @CurrentTheme.ShortName</span></Eyebrow>
@@ -53,7 +89,7 @@
                     </MarketingContainer>
                 </section>
 
-                <section class="landing-section landing-section--muted" id="landing-how" aria-labelledby="landing-how-title">
+                <section class="landing-section landing-section--muted landing-reveal" id="landing-how" aria-labelledby="landing-how-title">
                     <MarketingContainer>
                         <div class="landing-split">
                             <MarketingSectionHeader HeadingId="landing-how-title" Title="From information to action" Description="A short, visible path helps a general audience understand what happens next." Compact="true">
@@ -68,7 +104,7 @@
                     </MarketingContainer>
                 </section>
 
-                <section class="landing-section landing-section--cta">
+                <section class="landing-section landing-section--cta landing-reveal">
                     <MarketingContainer>
                         <MarketingCallToAction>
                             <Content><span class="landing-section__eyebrow">READY TO BEGIN?</span><h2>Make the next decision feel simple.</h2><p>This is a sandbox CTA—safe to reshape while refining the shared component system.</p></Content>
@@ -85,4 +121,23 @@
 
 @code {
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("playbookMotion.observeScrollReveals", ".playbook");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("playbookMotion.disconnect");
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
 }

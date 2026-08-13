@@ -3,9 +3,9 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<FluentButton OnClick="() => EditPasskeyName(Passkey)" 
+<AppButton OnClick="() => EditPasskeyName(Passkey)"
               Title="@Passkeys_razor.RenameTitle" 
-              IconStart="@(new Icons.Filled.Size20.Edit())">@Passkeys_razor.RenameButton</FluentButton>
+              IconStart="@(new Icons.Filled.Size20.Edit())">@Passkeys_razor.RenameButton</AppButton>
 
 @code {
     [Parameter]

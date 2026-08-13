@@ -1,6 +1,11 @@
 <PageTitle>@AccessDenied_razor.AccessDenied</PageTitle>
 
 <IdentityFlowPanel Title="@AccessDenied_razor.AccessDenied" Description="@AccessDenied_razor.NoAccessMessage">
-<span class="text-danger">@AccessDenied_razor.AccessDenied</span>
-<p class="text-danger">@AccessDenied_razor.NoAccessMessage</p>
+    <StatusPanel Compact="true"
+                 Title="@AccessDenied_razor.AccessDenied"
+                 Message="@AccessDenied_razor.NoAccessMessage"
+                 Intent="FeedbackIntent.Warning"
+                 Icon="@(new Icons.Regular.Size24.LockClosed())"
+                 Role="alert"
+                 AriaLive="assertive" />
 </IdentityFlowPanel>

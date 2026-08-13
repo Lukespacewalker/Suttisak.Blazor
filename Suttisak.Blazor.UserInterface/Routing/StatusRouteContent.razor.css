@@ -1,0 +1,139 @@
+.status-route {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-height: min(48rem, 82dvh);
+    box-sizing: border-box;
+    grid-template-rows: auto 1fr auto;
+    padding: clamp(1.25rem, 4vw, 4rem);
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-lg);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    isolation: isolate;
+}
+
+.status-route::before {
+    position: absolute;
+    z-index: -3;
+    width: min(44rem, 84vw);
+    aspect-ratio: 1;
+    border: 1px solid var(--app-accent-border);
+    border-radius: 50%;
+    background: var(--app-accent-soft);
+    content: "";
+    opacity: .72;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+}
+
+.status-route--error::before {
+    border-color: var(--app-danger-border);
+    background: var(--app-danger-soft);
+}
+
+.status-route__brand {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    min-width: 0;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: .65rem;
+}
+
+.status-route__brand img { width: 2.35rem; height: 2.35rem; object-fit: contain; }
+.status-route__brand strong { font-family: var(--app-font-heading); font-size: .9rem; }
+.status-route__brand span { justify-self: end; color: var(--app-foreground-muted); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+.status-route__code {
+    position: absolute;
+    z-index: -2;
+    color: var(--app-foreground);
+    font-family: var(--app-font-heading);
+    font-size: clamp(12rem, 38vw, 34rem);
+    font-weight: 850;
+    line-height: .8;
+    letter-spacing: -.12em;
+    opacity: .045;
+    inset: 50% auto auto 50%;
+    transform: translate(-53%, -50%);
+}
+
+.status-route__signal {
+    position: absolute;
+    z-index: -1;
+    display: grid;
+    width: clamp(9rem, 20vw, 15rem);
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid var(--app-accent-border);
+    border-radius: 50%;
+    color: var(--app-accent);
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -58%);
+}
+
+.status-route--error .status-route__signal { border-color: var(--app-danger-border); color: var(--app-danger); }
+.status-route__signal ::deep svg { width: 2.35rem; height: 2.35rem; }
+.status-route__signal i { position: absolute; width: .52rem; height: .52rem; border-radius: 50%; background: currentColor; inset: 13% 15% auto auto; box-shadow: 0 0 0 .45rem var(--app-surface); }
+
+.status-route__copy {
+    position: relative;
+    z-index: 2;
+    align-self: center;
+    justify-self: center;
+    width: min(100%, 48rem);
+    padding-block: 8rem 2rem;
+    text-align: center;
+}
+
+.status-route__eyebrow { color: var(--app-accent); font-size: .66rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+.status-route--error .status-route__eyebrow { color: var(--app-danger); }
+.status-route__copy h1 { margin: .6rem 0 .9rem; font-family: var(--app-font-heading); font-size: clamp(2.8rem, 7vw, 6.4rem); line-height: .9; letter-spacing: -.06em; text-wrap: balance; }
+.status-route__copy p { max-width: 38rem; margin: 0 auto; color: var(--app-foreground-muted); font-size: clamp(.88rem, 1.4vw, 1rem); line-height: 1.65; text-wrap: pretty; }
+
+.status-route__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .65rem; margin-top: 1.6rem; }
+.status-route__primary,
+.status-route__secondary { display: inline-flex; min-height: 2.75rem; box-sizing: border-box; align-items: center; justify-content: center; padding: .7rem 1rem; border-radius: var(--app-radius-md); font: inherit; font-size: .78rem; font-weight: 820; text-decoration: none; cursor: pointer; }
+.status-route__primary { border: 1px solid var(--app-brand); background: var(--app-brand); color: var(--app-on-brand); box-shadow: var(--app-shadow-sm); }
+.status-route__secondary { border: 1px solid var(--app-border); background: var(--app-surface); color: var(--app-foreground); }
+.status-route__primary:hover,
+.status-route__secondary:hover { transform: translateY(-1px); }
+.status-route__primary:focus-visible,
+.status-route__secondary:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 3px; }
+
+.status-route__reference { display: inline-grid; min-width: min(100%, 20rem); grid-template-columns: auto minmax(0, 1fr); gap: .75rem; margin-top: 1.25rem; padding: .55rem .7rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface-muted); text-align: left; }
+.status-route__reference span { color: var(--app-foreground-muted); font-size: .62rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+.status-route__reference code { overflow: hidden; color: var(--app-foreground); font-family: var(--app-font-mono); font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+
+.status-route footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 1rem; padding-top: .9rem; border-top: 1px solid var(--app-border); color: var(--app-foreground-muted); font-size: .62rem; font-weight: 780; letter-spacing: .07em; }
+
+@media (max-width: 38rem) {
+    .status-route { min-height: 42rem; padding: 1rem; border-radius: var(--app-radius-md); }
+    .status-route__brand { grid-template-columns: auto 1fr; }
+    .status-route__brand span { display: none; }
+    .status-route__copy { padding-top: 7rem; }
+    .status-route__copy h1 { font-size: clamp(2.55rem, 14vw, 4.4rem); }
+    .status-route__actions { display: grid; }
+    .status-route__primary,
+    .status-route__secondary { width: 100%; }
+    .status-route footer { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .status-route__signal { animation: status-route-arrive .65s ease-out both; }
+    .status-route__copy { animation: status-route-copy .55s .12s ease-out both; }
+    .status-route__primary,
+    .status-route__secondary { transition: transform var(--app-duration-fast) ease; }
+}
+
+@keyframes status-route-arrive { from { opacity: 0; transform: translate(-50%, -52%) scale(.86); } }
+@keyframes status-route-copy { from { opacity: 0; transform: translateY(.8rem); } }
+
+@media (forced-colors: active) {
+    .status-route,
+    .status-route__secondary,
+    .status-route__reference { background: Canvas; }
+}

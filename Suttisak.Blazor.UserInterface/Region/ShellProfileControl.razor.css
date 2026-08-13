@@ -1,0 +1,22 @@
+.shell-profile-login {
+    display: inline-flex;
+    min-height: 2.4rem;
+    box-sizing: border-box;
+    align-items: center;
+    gap: .45rem;
+    padding: .45rem .75rem;
+    border: 1px solid var(--app-accent-border);
+    border-radius: .65rem;
+    background: var(--app-accent-soft);
+    color: var(--app-accent);
+    font-size: .78rem;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.shell-profile-login:hover { background: var(--app-accent); color: var(--app-on-accent); }
+.shell-profile-login:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+
+@container app-shell-v2 (max-width: 30rem) {
+    .shell-profile-login span { display: none; }
+}

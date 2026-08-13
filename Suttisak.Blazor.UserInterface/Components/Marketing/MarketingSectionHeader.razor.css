@@ -21,7 +21,7 @@
     line-height: 1.7;
 }
 
-@media (max-width: 760px) {
+@container marketing-page (max-width: 760px) {
     .marketing-section-header {
         margin-bottom: var(--app-space-8);
     }

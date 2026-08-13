@@ -14,13 +14,13 @@
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.Email</h1>
+    <PageHeading Title="@Manage_razor.Email" />
 </SectionContent>
 
 <IdentityManageShell Title="@Manage_razor.Email" Description="@Text["EmailDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage Message="@_message" />
-<FluentGrid>
-    <FluentGridItem xs="12" sm="6">
+<FormGrid Columns="1">
+    <div>
         <form @onsubmit="OnSendEmailVerificationAsync" @formname="send-verification" id="send-verification-form" method="post">
             <AntiforgeryToken />
         </form>
@@ -36,16 +36,16 @@
             else
             {
                 <FluentTextInput value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
-                <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</FluentButton>
+                <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</AppButton>
             }
             <FluentTextInput 
                 Name="Input.NewEmail" 
                 @bind-Value="Input!.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
             <!-- TODO : Restore Fluent Validation Message Later-->
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</FluentButton>
+            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</AppButton>
         </EditForm>
-    </FluentGridItem>
-</FluentGrid>
+    </div>
+</FormGrid>
 </IdentityManageShell>
 
 @code {

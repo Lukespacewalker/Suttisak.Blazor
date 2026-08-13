@@ -1,0 +1,173 @@
+@page "/application-shell/records"
+@inject DemoRecordStore Store
+
+<PageTitle>Records · Application Shell V2</PageTitle>
+
+<PlaybookShell>
+    <div class="application-shell-workbench">
+        <DemoApplicationShell>
+            <PageHeader>
+                <PageHeading Title="Program records"
+                             Eyebrow="Operations"
+                             Description="Create, review, update, and remove records from one focused workspace."
+                             Icon="@(new Icons.Regular.Size24.Table())">
+                    <Breadcrumbs><AppBreadcrumb Items="@RecordBreadcrumbs" /></Breadcrumbs>
+                    <Toolbar>
+                        <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => CreateRecord())">
+                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStartContent>
+                            <ChildContent>New record</ChildContent>
+                        </AppButton>
+                    </Toolbar>
+                </PageHeading>
+            </PageHeader>
+
+            <ChildContent>
+            @if (_draft is not null)
+            {
+                <section class="demo-editor" aria-labelledby="demo-editor-title">
+                    <div class="demo-editor__heading">
+                        <div><span>@(_draft.Id is null ? "CREATE" : "UPDATE")</span><h2 id="demo-editor-title">@(_draft.Id is null ? "New program record" : $"Edit record #{_draft.Id}")</h2></div>
+                        <AppButton IconOnly="true" Variant="AppButtonVariant.Subtle" AriaLabel="Close editor" OnClick="@(_ => CloseEditor())">×</AppButton>
+                    </div>
+                    <FormGrid Columns="2">
+                        <FormField><label>Record name<input @bind="_draft.Name" @bind:event="oninput" /></label></FormField>
+                        <FormField><label>Program<input @bind="_draft.Program" @bind:event="oninput" /></label></FormField>
+                        <FormField><label>Owner<input @bind="_draft.Owner" @bind:event="oninput" /></label></FormField>
+                        <FormField><label>Status<select @bind="_draft.Status"><option>Draft</option><option>Active</option><option>In review</option><option>Complete</option></select></label></FormField>
+                    </FormGrid>
+                    <FormActions>
+                        <AppButton Variant="AppButtonVariant.Primary" Disabled="@(!CanSave)" OnClick="@(_ => SaveRecord())">
+                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Save())" /></IconStartContent>
+                            <ChildContent>Save record</ChildContent>
+                        </AppButton>
+                        <AppButton OnClick="@(_ => CloseEditor())">Cancel</AppButton>
+                    </FormActions>
+                </section>
+            }
+
+            <section class="demo-data-panel" aria-labelledby="record-table-title">
+                <div class="demo-data-panel__heading"><div><span>LIVE DATA</span><h2 id="record-table-title">All records</h2></div></div>
+                <AppDataGrid AriaLabel="Program records">
+                    <Search>
+                        <div class="demo-data-search" role="search">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.Search())" aria-hidden="true" />
+                            <input id="record-search"
+                                   type="search"
+                                   aria-label="Search records"
+                                   placeholder="Search records…"
+                                   autocomplete="off"
+                                   @bind="_searchText"
+                                   @bind:event="oninput" />
+                            @if (!string.IsNullOrWhiteSpace(_searchText))
+                            {
+                                <AppButton IconOnly="true" Variant="AppButtonVariant.Subtle" AriaLabel="Clear search" OnClick="@(_ => ClearSearch())">×</AppButton>
+                            }
+                        </div>
+                    </Search>
+                    <Filters>
+                        <div class="demo-data-meta">
+                            <small aria-live="polite">@RecordCountLabel</small>
+                            <span>Select a column heading to sort</span>
+                        </div>
+                    </Filters>
+                    <ChildContent>
+                    <FluentDataGrid Items="@FilteredRecords" Pagination="_pagination" GridTemplateColumns="minmax(13rem, 1.5fr) minmax(9rem, .9fr) minmax(8rem, .8fr) 7rem 7rem 8rem">
+                        <TemplateColumn Title="Record" Sortable="true" SortBy="@SortByName">
+                            <a class="demo-record-link" href="@($"application-shell/records/{context.Id}")"><strong>@context.Name</strong><small>#@context.Id</small></a>
+                        </TemplateColumn>
+                        <PropertyColumn Property="@(record => record.Program)" Title="Program" Sortable="true" />
+                        <PropertyColumn Property="@(record => record.Owner)" Title="Owner" Sortable="true" />
+                        <TemplateColumn Title="Status" Sortable="true" SortBy="@SortByStatus"><span class="demo-status demo-status--@Slug(context.Status)">@context.Status</span></TemplateColumn>
+                        <TemplateColumn Title="Updated"
+                                        Sortable="true"
+                                        SortBy="@SortByUpdated"
+                                        IsDefaultSortColumn="true"
+                                        InitialSortDirection="DataGridSortDirection.Descending">@context.UpdatedOn.ToString("dd MMM")</TemplateColumn>
+                        <TemplateColumn Title="Actions">
+                            <div class="demo-row-actions">
+                                <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Edit {context.Name}")" OnClick="@(_ => EditRecord(context))">
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Edit())" /></IconStartContent>
+                                </AppButton>
+                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Delete {context.Name}")" OnClick="@(_ => DeleteRecord(context.Id))">
+                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Delete())" /></IconStartContent>
+                                </AppButton>
+                            </div>
+                        </TemplateColumn>
+                    </FluentDataGrid>
+                    </ChildContent>
+                    <Pagination><AppPagination State="_pagination" /></Pagination>
+                </AppDataGrid>
+            </section>
+            </ChildContent>
+        </DemoApplicationShell>
+    </div>
+</PlaybookShell>
+
+@code {
+    private DemoRecordDraft? _draft;
+    private string _searchText = string.Empty;
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 4 };
+
+    private static readonly IGridSort<DemoRecord> SortByName = GridSort<DemoRecord>.ByAscending(record => record.Name);
+    private static readonly IGridSort<DemoRecord> SortByStatus = GridSort<DemoRecord>.ByAscending(record => record.Status);
+    private static readonly IGridSort<DemoRecord> SortByUpdated = GridSort<DemoRecord>.ByAscending(record => record.UpdatedOn);
+
+    private readonly Breadcrumb[] RecordBreadcrumbs =
+    [
+        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new(null, null, "Records")
+    ];
+
+    private bool CanSave => _draft is not null
+        && !string.IsNullOrWhiteSpace(_draft.Name)
+        && !string.IsNullOrWhiteSpace(_draft.Program)
+        && !string.IsNullOrWhiteSpace(_draft.Owner);
+
+    private IQueryable<DemoRecord> FilteredRecords => Store.Records
+        .Where(MatchesSearch)
+        .AsQueryable();
+
+    private string RecordCountLabel => string.IsNullOrWhiteSpace(_searchText)
+        ? $"{Store.Records.Count} records"
+        : $"{FilteredRecords.Count()} of {Store.Records.Count} records";
+
+    private void CreateRecord() => _draft = new DemoRecordDraft();
+
+    private void EditRecord(DemoRecord record) => _draft = new DemoRecordDraft
+    {
+        Id = record.Id,
+        Name = record.Name,
+        Program = record.Program,
+        Owner = record.Owner,
+        Status = record.Status
+    };
+
+    private void SaveRecord()
+    {
+        if (!CanSave || _draft is null) return;
+        Store.Save(_draft);
+        _draft = null;
+    }
+
+    private void DeleteRecord(int id)
+    {
+        Store.Delete(id);
+        if (_draft?.Id == id) _draft = null;
+    }
+
+    private void CloseEditor() => _draft = null;
+    private void ClearSearch() => _searchText = string.Empty;
+
+    private bool MatchesSearch(DemoRecord record)
+    {
+        var query = _searchText.Trim();
+        return query.Length == 0
+            || record.Id.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Name.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Program.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Owner.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Status.Contains(query, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string Slug(string value) => value.ToLowerInvariant().Replace(' ', '-');
+}

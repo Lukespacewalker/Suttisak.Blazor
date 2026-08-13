@@ -1,0 +1,87 @@
+@page "/application-shell/records/{Id:int}"
+@inject DemoRecordStore Store
+
+<PageTitle>@(Record is null ? "Record not found" : Record.Name) · Application Shell V2</PageTitle>
+
+<PlaybookShell>
+    <div class="application-shell-workbench">
+        <DemoApplicationShell>
+            <PageHeader>
+                @if (Record is null)
+                {
+                    <PageHeading Title="Record not found" Description="This demo record may have been removed." Icon="@(new Icons.Regular.Size24.Warning())">
+                        <Breadcrumbs><AppBreadcrumb Items="@MissingBreadcrumbs" /></Breadcrumbs>
+                        <Toolbar><AppButton Href="application-shell/records">Back to records</AppButton></Toolbar>
+                    </PageHeading>
+                }
+                else
+                {
+                    <PageHeading Title="@Record.Name"
+                                 Eyebrow="@($"Record #{Record.Id}")"
+                                 Description="A focused detail page using the same compact heading, breadcrumb trail, and toolbar contract."
+                                 Icon="@(new Icons.Regular.Size24.Document())">
+                        <Breadcrumbs><AppBreadcrumb Items="@DetailBreadcrumbs" /></Breadcrumbs>
+                        <Toolbar>
+                            <AppButton Href="application-shell/records">Back to list</AppButton>
+                            <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
+                                <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Edit())" /></IconStartContent>
+                                <ChildContent>Edit record</ChildContent>
+                            </AppButton>
+                        </Toolbar>
+                    </PageHeading>
+                }
+            </PageHeader>
+            <ChildContent>
+            @if (Record is null)
+            {
+                <StatusPanel Title="Nothing to show" Message="Return to the record list and choose another item." />
+            }
+            else
+            {
+                <div class="demo-detail-grid">
+                    <section class="demo-detail-primary">
+                        <span class="demo-detail-label">PROGRAM SUMMARY</span>
+                        <h2>@Record.Program</h2>
+                        <p>This Playbook detail view proves the complete navigation path while keeping product-owned data and routes outside the reusable shell.</p>
+                        <dl class="demo-detail-list">
+                            <div><dt>Owner</dt><dd>@Record.Owner</dd></div>
+                            <div><dt>Status</dt><dd><span class="demo-status demo-status--@Slug(Record.Status)">@Record.Status</span></dd></div>
+                            <div><dt>Last updated</dt><dd>@Record.UpdatedOn.ToString("dd MMMM yyyy")</dd></div>
+                            <div><dt>Reference</dt><dd>OPS-@Record.Id</dd></div>
+                        </dl>
+                    </section>
+                    <aside class="demo-detail-aside">
+                        <span class="demo-detail-label">ACTIVITY</span>
+                        <ol class="demo-timeline">
+                            <li><i></i><div><strong>Record reviewed</strong><small>Today · @Record.Owner</small></div></li>
+                            <li><i></i><div><strong>Status set to @Record.Status</strong><small>12 August · System</small></div></li>
+                            <li><i></i><div><strong>Record created</strong><small>08 August · @Record.Owner</small></div></li>
+                        </ol>
+                    </aside>
+                </div>
+            }
+            </ChildContent>
+        </DemoApplicationShell>
+    </div>
+</PlaybookShell>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private DemoRecord? Record => Store.Find(Id);
+
+    private Breadcrumb[] DetailBreadcrumbs =>
+    [
+        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new(null, "/application-shell/records", "Records"),
+        new(null, null, Record?.Name ?? "Detail")
+    ];
+
+    private readonly Breadcrumb[] MissingBreadcrumbs =
+    [
+        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new(null, "/application-shell/records", "Records"),
+        new(null, null, "Not found")
+    ];
+
+    private static string Slug(string value) => value.ToLowerInvariant().Replace(' ', '-');
+}

@@ -1,0 +1,3 @@
+.app-tabs { min-width: 0; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
+.app-tabs ::deep fluent-tabs { min-width: max-content; }
+.app-tabs ::deep fluent-tab-panel { min-width: min(100%, 18rem); color: var(--app-foreground); }

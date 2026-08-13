@@ -12,7 +12,7 @@
 <PageTitle>@Manage_razor.DisableTwoFactorAuthentication</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.DisableTwoFactorAuthentication</h1>
+    <PageHeading Title="@Manage_razor.DisableTwoFactorAuthentication" />
 </SectionContent>
 <IdentityManageShell Title="@Manage_razor.DisableTwoFactorAuthentication" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon">
 
@@ -30,7 +30,7 @@
 <div>
     <form @formname="disable-2fa" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken />
-        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Disable2fa_razor.DisableButton</FluentButton>
+        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Disable2fa_razor.DisableButton</AppButton>
     </form>
 </div>
 

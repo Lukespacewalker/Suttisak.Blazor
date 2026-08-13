@@ -31,7 +31,7 @@
     }
 }
 
-@media (max-width: 760px) {
+@container marketing-page (max-width: 760px) {
     .marketing-proof-strip__grid {
         grid-template-columns: 1fr;
     }

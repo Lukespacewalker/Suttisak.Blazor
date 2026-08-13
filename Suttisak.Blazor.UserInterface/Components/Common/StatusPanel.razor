@@ -26,6 +26,7 @@
     [Parameter] public string? Message { get; set; }
     [Parameter] public Icon? Icon { get; set; }
     [Parameter] public bool Loading { get; set; }
+    [Parameter] public bool Compact { get; set; }
     [Parameter] public string Role { get; set; } = "status";
     [Parameter] public string AriaLive { get; set; } = "polite";
     [Parameter] public string? Variant { get; set; }
@@ -37,6 +38,7 @@
     private string CssClassValue => string.Join(" ", new[]
     {
         "status-panel",
+        Compact ? "status-panel--compact" : null,
         Intent is not null
             ? $"status-panel--{Intent.Value.ToString().ToLowerInvariant()}"
             : string.IsNullOrWhiteSpace(Variant) ? null : $"status-panel--{Variant}",

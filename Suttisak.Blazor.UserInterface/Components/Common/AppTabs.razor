@@ -1,0 +1,9 @@
+<div class="app-tabs" @attributes="AdditionalAttributes">
+    <FluentTabs Class="app-tabs__fluent">@ChildContent</FluentTabs>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

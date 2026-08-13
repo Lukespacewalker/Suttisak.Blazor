@@ -13,7 +13,7 @@
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.TwoFactorAuthentication) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.TwoFactorAuthentication</h1>
+    <PageHeading Title="@Manage_razor.TwoFactorAuthentication" />
 </SectionContent>
 
 
@@ -62,7 +62,7 @@
                 <Actions>
                     <form @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync" method="post">
                         <AntiforgeryToken />
-                        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@TwoFactorAuthentication_razor.ForgetBrowserButton</FluentButton>
+                        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@TwoFactorAuthentication_razor.ForgetBrowserButton</AppButton>
                     </form>
                 </Actions>
             </IdentitySettingCard>

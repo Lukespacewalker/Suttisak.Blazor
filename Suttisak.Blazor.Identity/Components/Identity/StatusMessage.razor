@@ -2,12 +2,12 @@
 
 @if (!string.IsNullOrEmpty(DisplayMessage))
 {
-    var statusMessageClass = DisplayMessage.StartsWith("Error") ? MessageBarIntent.Error : MessageBarIntent.Success;
+    var statusMessageClass = DisplayMessage.StartsWith("Error") ? FeedbackIntent.Error : FeedbackIntent.Success;
     var statusMessageTitle = DisplayMessage.StartsWith("Error") ? StatusMessage_razor.Error : StatusMessage_razor.Success;
 
-    <FluentMessageBar Intent="statusMessageClass" Title="@statusMessageTitle" Class="margin-bottom">
+    <FeedbackBanner Intent="statusMessageClass" Title="@statusMessageTitle" CssClass="margin-bottom">
         @DisplayMessage
-    </FluentMessageBar>
+    </FeedbackBanner>
 }
 
 @code {

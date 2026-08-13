@@ -72,6 +72,15 @@
     display: none;
 }
 
+.nav-panel--embedded {
+    width: 100%;
+    overflow: visible;
+    background: transparent;
+}
+
+.nav-panel--embedded .nav-panel__primary,
+.nav-panel--embedded .nav-panel__account { padding-inline: 0; }
+
 .nav-panel__primary,
 .nav-panel__account {
     display: flex;

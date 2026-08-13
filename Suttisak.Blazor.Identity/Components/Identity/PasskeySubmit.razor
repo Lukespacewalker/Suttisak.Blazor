@@ -5,11 +5,11 @@
 
 <form @formname="@FormName" @onsubmit="OnSubmit" method="post">
 	<AntiforgeryToken />
-    <FluentButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())" 
+    <AppButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())"
                   Type="ButtonType.Submit"
 				  Appearance="@Appearance"
                   Name="__passkeySubmit" 
-                  @attributes="AdditionalAttributes">@ChildContent</FluentButton>
+                  @attributes="AdditionalAttributes">@ChildContent</AppButton>
 	<passkey-submit operation="@Operation"
 					name="@OutputParameterName"
 					email-name="@EmailName"
