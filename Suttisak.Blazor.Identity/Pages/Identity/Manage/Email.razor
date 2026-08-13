@@ -11,10 +11,12 @@
 @inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.Email</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })" />
+
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <PageHeading Title="@Manage_razor.Email" />
+<PageHeading Title="@Manage_razor.Email">
+        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })" /></Breadcrumbs>
+    </PageHeading>
 </SectionContent>
 
 <IdentityManageShell Title="@Manage_razor.Email" Description="@Text["EmailDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">

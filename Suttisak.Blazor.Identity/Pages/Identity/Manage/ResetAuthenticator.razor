@@ -7,12 +7,14 @@
 @inject ILogger<ResetAuthenticator<TUser>> Logger
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<IdentityManageShell> Text
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.ResetAuthenticator) })" />
+
 
 <PageTitle>@Manage_razor.ResetAuthenticator</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <PageHeading Title="@Manage_razor.ResetAuthenticator" />
+<PageHeading Title="@Manage_razor.ResetAuthenticator">
+        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.ResetAuthenticator) })" /></Breadcrumbs>
+    </PageHeading>
 </SectionContent>
 <IdentityManageShell Title="@Manage_razor.ResetAuthenticator" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon">
 

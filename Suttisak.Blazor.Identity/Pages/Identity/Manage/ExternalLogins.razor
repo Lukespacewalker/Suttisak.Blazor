@@ -12,10 +12,12 @@
 @inject IStringLocalizer<IdentityManageShell> Text
 
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
-<PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })" />
+
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <PageHeading Title="@Manage_razor.ExternalLogins" />
+<PageHeading Title="@Manage_razor.ExternalLogins">
+        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })" /></Breadcrumbs>
+    </PageHeading>
 </SectionContent>
 
 <IdentityManageShell Title="@Manage_razor.ExternalLogins" Description="@Text["ExternalLoginsDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
