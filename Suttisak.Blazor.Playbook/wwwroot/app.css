@@ -1,11 +1,13 @@
 html,
 body,
-#app { width: 100%; height: 100%; overflow: hidden; }
+#app { width: 100%; min-height: 100%; }
 
 html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
+    overflow-x: clip;
+    overflow-y: auto;
     background: #111317;
 }
 
@@ -14,10 +16,7 @@ select { font: inherit; }
 
 .playbook {
     width: 100%;
-    height: 100dvh;
-    min-height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    min-height: 100dvh;
     overscroll-behavior-y: contain;
     scroll-behavior: smooth;
     scrollbar-color: var(--app-accent-border) var(--app-surface-muted);
@@ -81,8 +80,8 @@ select { font: inherit; }
 }
 
 .theme-healthinsight {
-    --app-brand: light-dark(#0869b5, #60bdff); --app-on-brand: light-dark(#fff, #08253a); --app-brand-secondary: light-dark(#087e46, #52d58d); --app-accent: var(--app-brand-secondary);
-    --app-accent-soft: light-dark(rgb(8 126 70 / .12), rgb(82 213 141 / .18)); --app-accent-border: light-dark(#83c4a1, #388b5e); --app-brand-soft: light-dark(rgb(8 105 181 / .10), rgb(96 189 255 / .16)); --app-brand-secondary-soft: light-dark(rgb(8 126 70 / .12), rgb(82 213 141 / .18));
+    --app-brand: light-dark(#0869b5, #60bdff); --app-on-brand: light-dark(#fff, #08253a); --app-brand-secondary: light-dark(#c84924, #ff8b5c); --app-accent: var(--app-brand-secondary);
+    --app-accent-soft: light-dark(rgb(200 73 36 / .12), rgb(255 139 92 / .18)); --app-accent-border: light-dark(#e1a18c, #a45b40); --app-brand-soft: light-dark(rgb(8 105 181 / .10), rgb(96 189 255 / .16)); --app-brand-secondary-soft: light-dark(rgb(200 73 36 / .12), rgb(255 139 92 / .18));
     --app-background: light-dark(#f3f9fc, #0c171d); --app-surface: light-dark(#fff, #14242b); --app-surface-muted: light-dark(#eaf4f8, #1c3038); --app-surface-hover: light-dark(#e0eef4, #2b4853);
     --app-glass-surface: light-dark(rgb(255 255 255 / .62), rgb(20 36 43 / .68)); --app-glass-surface-strong: light-dark(rgb(255 255 255 / .82), rgb(20 36 43 / .86)); --app-glass-border: light-dark(rgb(8 105 181 / .17), rgb(209 239 255 / .20)); --app-glass-shadow: light-dark(rgb(5 73 116 / .13), rgb(0 0 0 / .38));
     --app-foreground: light-dark(#123f59, #eaf8ff); --app-foreground-muted: light-dark(#587483, #abc3cc); --app-border: light-dark(#c9e2ec, #34525d); --app-grid-line: light-dark(rgb(8 105 181 / .08), rgb(234 248 255 / .08)); --app-shadow-color: light-dark(rgb(5 73 116 / .13), rgb(0 0 0 / .34));
