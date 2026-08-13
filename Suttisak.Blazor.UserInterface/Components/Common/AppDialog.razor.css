@@ -1,0 +1,24 @@
+.app-dialog { width: min(36rem, calc(100vw - 2rem)); max-height: min(44rem, calc(100dvh - 2rem)); padding: 0; border: 1px solid var(--app-border); border-radius: 1rem; background: transparent; color: var(--app-foreground); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / .28); overflow: hidden; }
+.app-dialog::backdrop { background: rgb(8 15 22 / .58); backdrop-filter: blur(3px); }
+.app-dialog[open] { animation: app-dialog-in 180ms cubic-bezier(.2, .8, .2, 1); }
+.app-dialog__surface { display: grid; max-height: inherit; background: var(--app-surface); }
+.app-dialog__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.25rem 1rem; border-block-end: 1px solid var(--app-grid-line); }
+.app-dialog__heading { display: flex; min-width: 0; align-items: flex-start; gap: .75rem; }
+.app-dialog__heading h2 { margin: 0; color: var(--app-foreground); font-size: 1.15rem; line-height: 1.35; }
+.app-dialog__heading p { margin: .3rem 0 0; color: var(--app-foreground-muted); font-size: .9rem; line-height: 1.5; }
+.app-dialog__danger-mark { display: grid; width: 1.75rem; height: 1.75rem; flex: 0 0 auto; place-items: center; border: 1px solid var(--app-danger-border); border-radius: 50%; background: var(--app-danger-soft); color: var(--app-danger); font-weight: 800; }
+.app-dialog__close { display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border: 0; border-radius: .45rem; background: transparent; color: var(--app-foreground-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; }
+.app-dialog__close:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
+.app-dialog__close:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.app-dialog__body { min-height: 0; padding: 1.25rem; overflow: auto; }
+.app-dialog__footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem; padding: 1rem 1.25rem; border-block-start: 1px solid var(--app-border); background: var(--app-surface-muted); }
+.app-dialog--danger { border-color: var(--app-danger-border); }
+.app-dialog--danger .app-dialog__header { box-shadow: inset 3px 0 0 var(--app-danger); }
+
+@keyframes app-dialog-in { from { opacity: 0; transform: translateY(.75rem) scale(.98); } }
+@media (max-width: 36rem) {
+    .app-dialog { width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); border-radius: .8rem; }
+    .app-dialog__header, .app-dialog__body { padding-inline: 1rem; }
+    .app-dialog__footer > ::deep * { flex: 1 1 auto; }
+}
+@media (prefers-reduced-motion: reduce) { .app-dialog[open] { animation: none; } }
