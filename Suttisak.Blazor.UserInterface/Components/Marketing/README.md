@@ -8,6 +8,22 @@ Import the namespace:
 @using Suttisak.Blazor.UserInterface.Components.Marketing
 ```
 
+## Landing layout header
+
+`Layouts.Shared.LandingLayout` uses the same compact product header as the
+Playbook. Supply the application name and optional in-page navigation from the
+derived application layout. The shared layout owns the logo, responsive
+preference controls, authentication/profile action, sticky behavior, and
+mobile collapse.
+
+```razor
+<SectionContent SectionId="LandingLayout.HeaderSection">Product name</SectionContent>
+<SectionContent SectionId="LandingLayout.NavigationSection">
+    <a href="#product">Product</a>
+    <a href="#benefits">Benefits</a>
+</SectionContent>
+```
+
 ## Components
 
 ### `MarketingPage`

@@ -1,6 +1,9 @@
 @using System.Globalization
 
-<div class="app-form-control @Class" @attributes="ContainerAttributes">
+<div class="app-form-control @Class"
+     data-app-calendar="@(Mode == AppCalendarPickerMode.Popup ? "popup" : "native")"
+     data-calendar-first-day="@((int)FirstDayOfWeek)"
+     @attributes="ContainerAttributes">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
         <label class="app-form-control__label" for="@InputId">@Label</label>
@@ -21,6 +24,12 @@
                aria-describedby="@DescriptionId"
                @onchange="HandleChangeAsync"
                @attributes="InputAttributes" />
+        @if (Mode == AppCalendarPickerMode.Popup)
+        {
+            <button class="app-form-control__calendar-trigger" type="button" data-calendar-trigger aria-label="@OpenCalendarLabel" aria-haspopup="dialog" aria-expanded="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" /></svg>
+            </button>
+        }
     </div>
     @if (!string.IsNullOrWhiteSpace(Description))
     {
@@ -40,6 +49,9 @@
     [Parameter] public bool Required { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public string? Class { get; set; }
+    [Parameter] public AppCalendarPickerMode Mode { get; set; } = AppCalendarPickerMode.Popup;
+    [Parameter] public DayOfWeek FirstDayOfWeek { get; set; } = DayOfWeek.Monday;
+    [Parameter] public string OpenCalendarLabel { get; set; } = "Open calendar";
     [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
 

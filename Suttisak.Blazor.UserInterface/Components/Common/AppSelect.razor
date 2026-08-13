@@ -1,0 +1,29 @@
+@using System.Globalization
+@typeparam TValue
+@inherits AppInputBase<TValue>
+
+<div class="@ContainerClass">
+    @if (!string.IsNullOrWhiteSpace(Label)) { <label class="app-form-control__label" for="@InputId">@Label</label> }
+    <div class="app-form-control__input-wrap app-form-control__input-wrap--select">
+        <select id="@InputId" class="@InputClass" name="@NameAttributeValue" value="@CurrentValueAsString"
+                required="@Required" disabled="@Disabled" aria-invalid="@HasValidationError"
+                aria-describedby="@DescribedBy" @onchange="HandleChange" @attributes="AdditionalAttributes">
+            @if (!string.IsNullOrWhiteSpace(Placeholder)) { <option value="" disabled selected="@string.IsNullOrEmpty(CurrentValueAsString)">@Placeholder</option> }
+            @foreach (var option in Options) { <option value="@FormatValueAsString(option.Value)" disabled="@option.Disabled" selected="@IsSelected(option.Value)">@option.Label</option> }
+        </select>
+        <svg class="app-form-control__select-chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
+    </div>
+    <AppInputSupport Description="@Description" DescriptionId="@DescriptionId" ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = Array.Empty<AppSelectOption<TValue>>();
+    [Parameter] public string? Placeholder { get; set; }
+    private bool IsSelected(TValue value) => System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(CurrentValue, value);
+    private void HandleChange(ChangeEventArgs args) => CurrentValueAsString = args.Value?.ToString();
+    protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
+    {
+        if (BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out var parsed)) { result = parsed!; validationErrorMessage = null!; return true; }
+        result = default!; validationErrorMessage = $"The {FieldIdentifier.FieldName} field is not valid."; return false;
+    }
+}

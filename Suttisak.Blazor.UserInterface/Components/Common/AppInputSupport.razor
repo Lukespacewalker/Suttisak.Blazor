@@ -1,0 +1,10 @@
+@if (!string.IsNullOrWhiteSpace(Description)) { <small id="@DescriptionId" class="app-form-control__description">@Description</small> }
+@if (ShowValidationMessage && !string.IsNullOrWhiteSpace(ValidationMessage)) { <small id="@ValidationId" class="app-form-control__error" role="alert">@ValidationMessage</small> }
+
+@code {
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? DescriptionId { get; set; }
+    [Parameter] public string? ValidationMessage { get; set; }
+    [Parameter] public string? ValidationId { get; set; }
+    [Parameter] public bool ShowValidationMessage { get; set; } = true;
+}
