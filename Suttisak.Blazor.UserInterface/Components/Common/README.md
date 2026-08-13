@@ -99,15 +99,25 @@ predictable state model. Supply `LoadingContent`, `EmptyContent`, or
 
 ## Forms and feedback
 
+The shared text box, text area, select, radio group, and checkbox inherit from
+Blazor's `InputBase<TValue>`. They participate in the surrounding `EditContext`,
+receive the standard `modified`, `valid`, and `invalid` field classes, and show
+the first validation message beside the field. They do not depend on a specific
+validation framework: `DataAnnotationsValidator`, FluentValidation adapters,
+or validation messages added directly to an `EditContext` can all drive the
+same visual states.
+
 ```razor
 <EditForm Model="@model" OnValidSubmit="SaveAsync">
     <DataAnnotationsValidator />
-    <FormValidationSummary />
     <FormSection Title="Contact details"
                  Description="Used for assessment follow-up.">
         <FormGrid Columns="2">
-            <FormField><FluentTextField Label="Email" @bind-Value="model.Email" /></FormField>
-            <FormField><FluentTextField Label="Telephone" @bind-Value="model.Telephone" /></FormField>
+            <FormField><AppTextBox Label="Email" @bind-Value="model.Email" /></FormField>
+            <FormField><AppSelect TValue="string" Label="Department" Options="DepartmentOptions" @bind-Value="model.Department" /></FormField>
+            <FormField ColumnSpan="2"><AppTextArea Label="Note" @bind-Value="model.Note" /></FormField>
+            <FormField ColumnSpan="2"><AppRadioGroup TValue="string" Label="Contact channel" Options="ContactOptions" @bind-Value="model.Channel" /></FormField>
+            <FormField ColumnSpan="2"><AppCheckbox Label="I confirm these details" @bind-Value="model.Confirmed" /></FormField>
         </FormGrid>
     </FormSection>
     <FormActions>
@@ -122,12 +132,19 @@ predictable state model. Supply `LoadingContent`, `EmptyContent`, or
                 Dismissible="true" />
 ```
 
-### Native date and time controls
+Keep DataAnnotations on presentation/request models when that is convenient;
+domain entities and application commands do not need to reference UI validation
+attributes. This keeps Clean Architecture boundaries intact while allowing the
+web boundary to reuse Blazor's built-in validation pipeline.
+
+### Date and time controls
 
 Use `AppCalendarPicker`, `AppTimePicker`, and `AppDateTimePicker` when a form
 must remain usable during static server-side rendering. They render native HTML
-inputs rather than a Fluent popup, so validation and submission do not require
-an interactive Blazor circuit.
+inputs first, so validation and submission do not require an interactive Blazor
+circuit. `AppCalendarPicker` progressively upgrades to the shared themed popup;
+without JavaScript it remains a normal native date input. Set `Mode="AppCalendarPickerMode.Native"`
+when the operating-system picker is preferred.
 
 ```razor
 <AppCalendarPicker Label="Date of birth"

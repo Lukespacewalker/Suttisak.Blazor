@@ -1,0 +1,35 @@
+@using System.Globalization
+@typeparam TValue
+@inherits AppInputBase<TValue>
+
+<fieldset class="@ContainerClass" aria-describedby="@DescribedBy">
+    @if (!string.IsNullOrWhiteSpace(Label)) { <legend class="app-form-control__label">@Label</legend> }
+    <div class="app-radio-group app-radio-group--@Orientation.ToLowerInvariant()">
+        @for (var index = 0; index < Options.Count; index++)
+        {
+            var option = Options[index];
+            var optionId = $"{InputId}-{index}";
+            <label class="app-choice app-choice--radio" for="@optionId">
+                <input id="@optionId" class="app-choice__native @CssClass" type="radio" name="@NameAttributeValue"
+                       value="@FormatValueAsString(option.Value)" checked="@IsSelected(option.Value)"
+                       required="@Required" disabled="@(Disabled || option.Disabled)"
+                       aria-invalid="@HasValidationError" aria-describedby="@DescribedBy" @onchange="HandleChange" />
+                <span class="app-choice__control" aria-hidden="true"><i></i></span>
+                <span class="app-choice__content"><strong>@option.Label</strong></span>
+            </label>
+        }
+    </div>
+    <AppInputSupport Description="@Description" DescriptionId="@DescriptionId" ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
+</fieldset>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = Array.Empty<AppSelectOption<TValue>>();
+    [Parameter] public string Orientation { get; set; } = "Vertical";
+    private bool IsSelected(TValue value) => System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(CurrentValue, value);
+    private void HandleChange(ChangeEventArgs args) => CurrentValueAsString = args.Value?.ToString();
+    protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
+    {
+        if (BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out var parsed)) { result = parsed!; validationErrorMessage = null!; return true; }
+        result = default!; validationErrorMessage = $"The {FieldIdentifier.FieldName} field is not valid."; return false;
+    }
+}
