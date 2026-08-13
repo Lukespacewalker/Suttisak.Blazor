@@ -122,6 +122,37 @@ predictable state model. Supply `LoadingContent`, `EmptyContent`, or
                 Dismissible="true" />
 ```
 
+### Native date and time controls
+
+Use `AppCalendarPicker`, `AppTimePicker`, and `AppDateTimePicker` when a form
+must remain usable during static server-side rendering. They render native HTML
+inputs rather than a Fluent popup, so validation and submission do not require
+an interactive Blazor circuit.
+
+```razor
+<AppCalendarPicker Label="Date of birth"
+                   Name="Registration.BirthDate"
+                   Required="true" />
+
+<AppDateTimePicker Label="Appointment"
+                   Name="Appointment.StartsAt"
+                   MinuteStep="15"
+                   Required="true" />
+```
+
+The combined picker posts four fields under the supplied name:
+`LocalDateTime`, `UtcDateTime`, `TimeZoneId`, and `UtcOffsetMinutes`. Bind these
+to `BrowserDateTimeFormValue` on a static SSR endpoint and call
+`TryGetUtcDateTimeOffset`. The helper recomputes the UTC instant from the local
+wall time and IANA time-zone identifier; it does not trust client-provided UTC
+and rejects daylight-saving gaps and ambiguous repeated times.
+
+When used interactively, `Value` is intentionally a `DateTime` with
+`DateTimeKind.Unspecified`: it represents browser-local wall time. Convert it
+through the scoped `BrowserTimeProvider` after that provider is initialized.
+Never call `ToUniversalTime()` on this value because that would use the server
+process time zone in Interactive Server applications.
+
 Use `FeedbackBanner` for contextual or dismissible page feedback and
 `StatusPanel`/`AsyncContent` for states that replace the page's main content.
 Use `FeedbackIntent.Error` for failed operations, `Warning` when work can

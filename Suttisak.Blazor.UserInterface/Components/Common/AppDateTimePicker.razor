@@ -1,0 +1,88 @@
+@using System.Globalization
+
+<div class="app-form-control @Class"
+     data-browser-datetime-control
+     @attributes="ContainerAttributes">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="app-form-control__label" for="@InputId">@Label</label>
+    }
+    <div class="app-form-control__input-wrap">
+        <svg class="app-form-control__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" />
+            <path d="M12 12v3l2 1.2" />
+        </svg>
+        <input id="@InputId"
+               class="app-form-control__input"
+               type="datetime-local"
+               name="@LocalName"
+               value="@FormattedValue"
+               min="@Format(Min)"
+               max="@Format(Max)"
+               step="@Step"
+               required="@Required"
+               disabled="@Disabled"
+               aria-describedby="@DescriptionIds"
+               data-browser-local-datetime
+               @onchange="HandleChangeAsync"
+               @attributes="InputAttributes" />
+    </div>
+    <input type="hidden" name="@UtcName" data-browser-utc-datetime />
+    <input type="hidden" name="@TimeZoneName" data-browser-timezone-id />
+    <input type="hidden" name="@OffsetName" data-browser-offset-minutes />
+    <div class="app-form-control__timezone" id="@TimeZoneDescriptionId">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.3 2.5 3.5 5.5 3.5 9s-1.2 6.5-3.5 9c-2.3-2.5-3.5-5.5-3.5-9S9.7 5.5 12 3Z" /></svg>
+        <span data-browser-timezone-label>Browser local time</span>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <small id="@DescriptionId" class="app-form-control__description">@Description</small>
+    }
+    <small class="app-form-control__error" data-browser-datetime-error aria-live="polite"></small>
+</div>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public DateTime? Value { get; set; }
+    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public DateTime? Min { get; set; }
+    [Parameter] public DateTime? Max { get; set; }
+    [Parameter] public int MinuteStep { get; set; } = 1;
+    [Parameter] public bool IncludeSeconds { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
+
+    private readonly string _generatedId = $"app-datetime-{Guid.NewGuid():N}";
+    private string InputId => Id ?? _generatedId;
+    private string FieldName => string.IsNullOrWhiteSpace(Name) ? InputId : Name;
+    private string LocalName => $"{FieldName}.LocalDateTime";
+    private string UtcName => $"{FieldName}.UtcDateTime";
+    private string TimeZoneName => $"{FieldName}.TimeZoneId";
+    private string OffsetName => $"{FieldName}.UtcOffsetMinutes";
+    private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+    private string TimeZoneDescriptionId => $"{InputId}-timezone";
+    private string DescriptionIds => string.Join(' ', new[] { TimeZoneDescriptionId, DescriptionId }.Where(value => value is not null));
+    private int Step => IncludeSeconds ? Math.Max(1, MinuteStep * 60) : Math.Max(1, MinuteStep) * 60;
+    private string Pattern => IncludeSeconds ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-ddTHH:mm";
+    private string? FormattedValue => Format(Value);
+
+    private string? Format(DateTime? value) => value?.ToString(Pattern, CultureInfo.InvariantCulture);
+
+    private Task HandleChangeAsync(ChangeEventArgs args)
+    {
+        var text = args.Value?.ToString();
+        var formats = IncludeSeconds
+            ? new[] { "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm" }
+            : new[] { "yyyy-MM-ddTHH:mm" };
+        var value = DateTime.TryParseExact(text, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
+            ? DateTime.SpecifyKind(parsed, DateTimeKind.Unspecified)
+            : (DateTime?)null;
+        return ValueChanged.InvokeAsync(value);
+    }
+}

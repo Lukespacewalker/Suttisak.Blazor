@@ -31,19 +31,22 @@ public static class TimeProviderExtensions
     }
 
     public static DateTimeOffset ToUtcDateTimeOffset(this TimeProvider timeProvider, DateTime localDateTime)
+        => timeProvider.LocalTimeZone.ToUtcDateTimeOffset(localDateTime);
+
+    public static DateTimeOffset ToUtcDateTimeOffset(this TimeZoneInfo timeZone, DateTime localDateTime)
     {
         var unspecified = DateTime.SpecifyKind(localDateTime, DateTimeKind.Unspecified);
-        if (timeProvider.LocalTimeZone.IsInvalidTime(unspecified))
+        if (timeZone.IsInvalidTime(unspecified))
         {
             throw new ArgumentException("The selected local time does not exist in the browser time zone.", nameof(localDateTime));
         }
 
-        if (timeProvider.LocalTimeZone.IsAmbiguousTime(unspecified))
+        if (timeZone.IsAmbiguousTime(unspecified))
         {
             throw new ArgumentException("The selected local time is ambiguous in the browser time zone.", nameof(localDateTime));
         }
 
-        return new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(unspecified, timeProvider.LocalTimeZone));
+        return new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(unspecified, timeZone));
     }
 }
 
