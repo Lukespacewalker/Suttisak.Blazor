@@ -1,5 +1,4 @@
 
 .theme-selector button {
-    height: 32px;
-    width: 36px;
+    min-width: 1.85rem;
 }

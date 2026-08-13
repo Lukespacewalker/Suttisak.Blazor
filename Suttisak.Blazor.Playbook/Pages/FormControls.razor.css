@@ -1,0 +1,36 @@
+.form-playbook { width: min(100%, 92rem); box-sizing: border-box; margin-inline: auto; padding: clamp(2rem, 5vw, 5.5rem) clamp(1rem, 4vw, 4.5rem) 6rem; }
+.form-playbook__intro { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(17rem, .7fr); align-items: end; gap: clamp(2rem, 6vw, 7rem); padding-bottom: clamp(2.5rem, 6vw, 5rem); border-bottom: 1px solid var(--app-border); }
+.form-playbook__intro h1 { max-width: 13ch; margin: .7rem 0 0; color: var(--app-foreground); font-size: clamp(2.7rem, 6.5vw, 6.6rem); line-height: .9; letter-spacing: -.065em; }
+.form-playbook__intro h1 em { color: var(--app-accent); font-weight: 520; }
+.form-playbook__intro > p { margin: 0; color: var(--app-foreground-muted); font-size: clamp(1rem, 1.5vw, 1.24rem); line-height: 1.65; }
+.form-playbook__section { padding-block: clamp(2.5rem, 5vw, 5rem); border-bottom: 1px solid var(--app-border); }
+.form-playbook__section-heading { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: 1rem; margin-bottom: 2rem; }
+.form-playbook__section-heading > span { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border-radius: 50%; background: var(--app-brand); color: var(--app-on-brand); font-size: .72rem; font-weight: 800; }
+.form-playbook__section-heading h2 { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2.25rem); letter-spacing: -.035em; }
+.form-playbook__section-heading p { margin: .35rem 0 0; color: var(--app-foreground-muted); }
+.form-playbook__mode { padding: .45rem .65rem; border: 1px solid var(--app-accent-border); border-radius: 99rem; background: var(--app-accent-soft); color: var(--app-accent); font-size: .67rem; letter-spacing: .08em; text-transform: uppercase; }
+.form-playbook__mode--static { border-color: var(--app-border); background: var(--app-surface-muted); color: var(--app-foreground); }
+.form-playbook__stage { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(18rem, .75fr); gap: clamp(1.25rem, 3vw, 3rem); }
+.form-playbook__controls, .form-playbook__static-form, .form-playbook__receipt { border: 1px solid var(--app-border); border-radius: 1rem; background: var(--app-surface); box-shadow: 0 1rem 3rem var(--app-shadow-color); }
+.form-playbook__controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; padding: clamp(1.25rem, 3vw, 2.25rem); }
+.form-playbook__controls > :last-child { grid-column: 1 / -1; }
+.form-playbook__receipt { position: relative; overflow: hidden; padding: 1.5rem; background: var(--app-surface-muted); }
+.form-playbook__receipt::before { position: absolute; width: 9rem; height: 9rem; border-radius: 50%; background: var(--app-accent-soft); content: ""; right: -4rem; top: -4rem; }
+.form-playbook__receipt > span { position: relative; color: var(--app-accent); font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.form-playbook__receipt dl { position: relative; display: grid; gap: .8rem; margin: 1.3rem 0; }
+.form-playbook__receipt dl div { display: grid; gap: .18rem; padding-bottom: .75rem; border-bottom: 1px solid var(--app-border); }
+.form-playbook__receipt dt { color: var(--app-foreground-muted); font-size: .7rem; }
+.form-playbook__receipt dd { margin: 0; font-weight: 720; }
+.form-playbook__receipt p { position: relative; margin: 0; color: var(--app-foreground-muted); font-size: .78rem; line-height: 1.55; }
+.form-playbook__static-form { padding: clamp(1.25rem, 3vw, 2.25rem); }
+.form-playbook__submit-row { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--app-border); }
+.form-playbook__submit-row span { max-width: 40rem; color: var(--app-foreground-muted); font-size: .75rem; }
+.form-playbook__architecture { display: grid; grid-template-columns: minmax(15rem, .7fr) minmax(0, 1.3fr); gap: clamp(2rem, 6vw, 6rem); padding-top: clamp(3rem, 7vw, 6rem); }
+.form-playbook__architecture h2 { max-width: 14ch; margin: .7rem 0 0; font-size: clamp(2rem, 4vw, 4rem); line-height: .98; letter-spacing: -.055em; }
+.form-playbook__architecture ol { display: grid; margin: 0; padding: 0; list-style: none; counter-reset: steps; }
+.form-playbook__architecture li { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: 1.2rem 0; border-top: 1px solid var(--app-border); counter-increment: steps; }
+.form-playbook__architecture li strong::before { content: "0" counter(steps) " / "; color: var(--app-accent); }
+.form-playbook__architecture li span { color: var(--app-foreground-muted); line-height: 1.55; }
+.form-playbook__architecture code { color: var(--app-accent); }
+@media (max-width: 800px) { .form-playbook__intro, .form-playbook__stage, .form-playbook__architecture { grid-template-columns: 1fr; } .form-playbook__intro { align-items: start; gap: 1.25rem; } .form-playbook__section-heading { grid-template-columns: auto 1fr; } .form-playbook__mode { grid-column: 2; justify-self: start; } }
+@media (max-width: 560px) { .form-playbook { padding-inline: .8rem; } .form-playbook__controls { grid-template-columns: 1fr; } .form-playbook__controls > :last-child { grid-column: auto; } .form-playbook__submit-row { align-items: stretch; flex-direction: column; } .form-playbook__submit-row ::deep .app-button { width: 100%; } .form-playbook__architecture li { grid-template-columns: 1fr; gap: .4rem; } }

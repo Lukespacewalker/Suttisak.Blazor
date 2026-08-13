@@ -15,44 +15,53 @@ fluent-button[appearance='primary']:enabled:hover {
 
 .theme-selector,
 .culture-selector {
-    border-radius: var(--borderRadiusCircular);
-    border: 1px solid var(--app-glass-border);
-    display: flex;
-    overflow: hidden;
+    display: inline-flex;
+    gap: .08rem;
+    padding: .16rem;
+    border: 1px solid var(--app-border);
+    border-radius: .58rem;
+    background: var(--app-surface-muted);
 }
 
 .theme-selector button,
 .culture-selector button {
     outline: none;
-    border-radius: var(--borderRadiusCircular);
+    border-radius: .4rem;
     border: none;
 
-    color: light-dark(var(--colorNeutralForeground2), var(--colorBrandForeground2));
+    color: var(--app-foreground-muted);
     background: transparent;
 
-    height: 32px;
-    width: 36px;
+    min-width: 1.85rem;
+    height: 1.75rem;
+    width: auto;
+    padding: .2rem .38rem;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    transition: color var(--transition), background-color var(--transition), border-color var(--transition);
+    font-size: .66rem;
+    font-weight: 780;
+    cursor: pointer;
+    transition: color var(--transition), background-color var(--transition), box-shadow var(--transition);
 
 }
 
 .theme-selector button.active,
 .culture-selector button.active {
-    color: var(--app-on-brand);
-    background: var(--app-brand);
+    color: var(--app-accent);
+    background: var(--app-surface);
+    box-shadow: 0 .15rem .45rem var(--app-shadow-color);
 }
 
 .theme-selector button:hover:not(.active),
 .culture-selector button:hover:not(.active) {
-    background: var(--colorNeutralBackground1Hover);
+    color: var(--app-foreground);
+    background: var(--app-surface-hover);
 }
 
 .theme-selector button.active:hover,
 .culture-selector button.active:hover {
-    background: var(--colorBrandBackgroundHover, var(--app-brand));
+    background: var(--app-surface);
 }
