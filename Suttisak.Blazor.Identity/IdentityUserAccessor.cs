@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Suttisak.Blazor.Identity;
 
-public sealed class IdentityUserAccessor<TUser>(UserManager<TUser> userManager, IdentityRedirectManager redirectManager) where TUser: class
+public sealed class IdentityUserAccessor<TUser>(UserManager<TUser> userManager, IdentityRedirectManager redirectManager) where TUser : class
 {
     public async Task<TUser> GetRequiredUserAsync(HttpContext context)
     {

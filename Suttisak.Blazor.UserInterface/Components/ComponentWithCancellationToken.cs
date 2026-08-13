@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 
 namespace Suttisak.Blazor.UserInterface.Components;
+
 public abstract class ComponentWithCancellationToken : ComponentBase, IDisposable, IAsyncDisposable
 {
     private CancellationTokenSource? _cancellationTokenSource;
