@@ -1,0 +1,51 @@
+.experience-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: clamp(1.1rem, 3vw, 1.75rem);
+    border: 1px solid var(--app-border);
+    border-radius: .25rem 1.5rem 1.5rem 1.5rem;
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    box-shadow: 0 .75rem 2.125rem var(--app-shadow-color);
+}
+
+.experience-card--accent::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0 auto auto 0;
+    width: 4.5rem;
+    height: .25rem;
+    background: linear-gradient(90deg, var(--app-brand), var(--app-brand-secondary));
+}
+
+.experience-card--flush {
+    padding: 0;
+}
+
+.experience-card--elevated {
+    box-shadow: 0 1.25rem 3rem var(--app-shadow-color);
+}
+
+.experience-card--interactive {
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .experience-card--interactive:hover {
+        border-color: var(--app-accent-border);
+        box-shadow: 0 1.25rem 3rem var(--app-shadow-color);
+        transform: translateY(-.125rem);
+    }
+}
+
+@media (forced-colors: active) {
+    .experience-card,
+    .experience-card--interactive:hover {
+        border-color: CanvasText;
+        background: Canvas;
+        color: CanvasText;
+        box-shadow: none;
+    }
+}

@@ -1,0 +1,49 @@
+<article @attributes="AdditionalAttributes" class="@CssClassValue">
+    @ChildContent
+</article>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public bool Accent { get; set; } = true;
+    [Parameter] public bool Flush { get; set; }
+    [Parameter] public bool Elevated { get; set; }
+    [Parameter] public bool Interactive { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue
+    {
+        get
+        {
+            var classes = new List<string> { "experience-card" };
+
+            if (Accent)
+            {
+                classes.Add("experience-card--accent");
+            }
+
+            if (Flush)
+            {
+                classes.Add("experience-card--flush");
+            }
+
+            if (Elevated)
+            {
+                classes.Add("experience-card--elevated");
+            }
+
+            if (Interactive)
+            {
+                classes.Add("experience-card--interactive");
+            }
+
+            if (!string.IsNullOrWhiteSpace(Class))
+            {
+                classes.Add(Class);
+            }
+
+            return string.Join(' ', classes);
+        }
+    }
+}

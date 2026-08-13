@@ -4,14 +4,14 @@
     border: 1px solid var(--app-border);
     border-radius: clamp(1.25rem, 2.4vw, 2rem);
     background: var(--app-surface);
-    box-shadow: 0 2.25rem 5rem color-mix(in srgb, var(--app-foreground) 8%, transparent);
+    box-shadow: 0 2.25rem 5rem var(--app-shadow-color);
 }
 
 .marketing-product-frame::after {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    box-shadow: inset 0 1px color-mix(in srgb, var(--app-foreground) 10%, transparent);
+    box-shadow: inset 0 1px var(--app-grid-line);
     pointer-events: none;
     content: "";
 }
@@ -34,7 +34,7 @@
     height: 0.62rem;
     border-radius: 50%;
     background: var(--app-brand);
-    box-shadow: 0 0 0 0.28rem var(--app-brand-fill-soft);
+    box-shadow: 0 0 0 0.28rem var(--app-accent-soft);
 }
 
 .marketing-product-frame__content {

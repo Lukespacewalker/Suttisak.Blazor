@@ -15,16 +15,16 @@
 }
 
 .identity-manage-nav-link:hover {
-    background: var(--color-glass-layer1-bg, var(--app-surface-muted));
+    background: var(--app-glass-surface);
     transform: translateX(3px);
 }
 
 .identity-manage-nav-link.active {
     color: var(--colorBrandBackground, var(--app-brand));
     border-left: 12px solid var(--colorBrandBackground, var(--app-brand));
-    background: var(--color-glass-layer1-bg, var(--app-surface-muted));
+    background: var(--app-glass-surface);
 }
 
-.identity-manage-nav-link:focus-visible { outline: 3px solid var(--app-brand-highlight-soft); outline-offset: 2px; }
+.identity-manage-nav-link:focus-visible { outline: 3px solid var(--app-accent-soft); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) { .identity-manage-nav-link { transition: none; } }

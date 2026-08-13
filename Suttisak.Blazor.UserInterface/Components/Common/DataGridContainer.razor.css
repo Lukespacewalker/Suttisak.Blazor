@@ -5,10 +5,10 @@
     overflow: auto;
     box-sizing: border-box;
     padding: 0;
-    border: 1px solid var(--color-glass-border, var(--colorNeutralStroke2));
+    border: 1px solid var(--app-glass-border);
     border-radius: var(--borderRadius2XLarge, 1rem);
-    background: var(--color-glass-layer2-bg, var(--colorNeutralBackground1));
-    box-shadow: 0 8px 32px var(--color-glass-shadow, rgba(20, 35, 50, .08));
+    background: var(--app-glass-surface-strong);
+    box-shadow: 0 8px 32px var(--app-glass-shadow);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     scrollbar-gutter: stable;
@@ -21,7 +21,7 @@
 }
 
 .data-grid-container ::deep .fluent-data-grid thead {
-    background: var(--color-glass-layer1-bg, var(--colorNeutralBackground2));
+    background: var(--app-glass-surface);
 }
 
 .data-grid-container ::deep .fluent-data-grid th,

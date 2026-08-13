@@ -1,21 +1,21 @@
 .identity-layout-shell {
-    --identity-bg: color-mix(in srgb, var(--app-brand-surface-1) 84%, transparent);
-    --identity-bg-strong: color-mix(in srgb, var(--app-brand-surface-strong) 94%, transparent);
-    --identity-border: var(--app-brand-border-soft);
-    --identity-shadow: light-dark(0 30px 90px rgba(45, 74, 122, 0.16), 0 30px 90px rgba(0, 0, 0, 0.36));
-    --identity-text: var(--app-brand-text);
-    --identity-text-soft: var(--app-brand-text-soft);
-    --identity-text-muted: var(--app-brand-text-muted);
-    --identity-highlight: var(--app-brand-highlight);
-    --identity-highlight-soft: var(--app-brand-highlight-soft);
-    --identity-divider: var(--app-brand-divider);
-    --identity-grid-line: var(--app-brand-grid-line);
+    --identity-bg: var(--app-glass-surface);
+    --identity-bg-strong: var(--app-glass-surface-strong);
+    --identity-border: var(--app-accent-border);
+    --identity-shadow: 0 30px 90px var(--app-shadow-color);
+    --identity-text: var(--app-foreground);
+    --identity-text-soft: var(--app-foreground-muted);
+    --identity-text-muted: var(--app-foreground-muted);
+    --identity-highlight: var(--app-accent);
+    --identity-highlight-soft: var(--app-accent-soft);
+    --identity-divider: var(--app-border);
+    --identity-grid-line: var(--app-grid-line);
     position: relative;
     overflow: hidden;
     min-height: calc(100dvh);
     padding: clamp(1rem, 2vw, 1.5rem);
     background:
-        radial-gradient(circle at 85% 10%, var(--app-brand-overlay-soft), transparent 30%),
+        radial-gradient(circle at 85% 10%, var(--app-brand-soft), transparent 30%),
         var(--app-background);
     display: grid;
     align-items: center;
@@ -26,7 +26,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(circle, color-mix(in srgb, var(--identity-grid-line) 60%, transparent) 1px, transparent 1.25px);
+    background: radial-gradient(circle, var(--identity-grid-line) 1px, transparent 1.25px);
     background-size: 28px 28px;
     mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.55));
 }
@@ -42,7 +42,7 @@
     height: 42rem;
     top: -16rem;
     right: -8rem;
-    background: radial-gradient(circle, var(--app-brand-overlay) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--app-brand-soft) 0%, transparent 70%);
 }
 
 .identity-layout-background-orb-secondary {
@@ -79,7 +79,7 @@
     display: flex;
     align-items: stretch;
     height: 100%;
-    background: color-mix(in srgb, var(--app-brand) 8%, var(--app-surface));
+    background: var(--app-surface-muted);
 }
 
 .identity-showcase-panel {
@@ -121,7 +121,7 @@
     height: 26rem;
     top: -9rem;
     right: -6rem;
-    background: radial-gradient(circle, var(--app-brand-overlay) 0%, transparent 68%);
+    background: radial-gradient(circle, var(--app-brand-soft) 0%, transparent 68%);
 }
 
 .identity-showcase-orb-secondary {
@@ -129,7 +129,7 @@
     height: 18rem;
     left: -5rem;
     bottom: -4rem;
-    background: radial-gradient(circle, var(--app-brand-overlay-secondary) 0%, transparent 68%);
+    background: radial-gradient(circle, var(--app-brand-secondary-soft) 0%, transparent 68%);
 }
 
 .identity-card-wrap {

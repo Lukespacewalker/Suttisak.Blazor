@@ -1,0 +1,13 @@
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found · UI Playbook</PageTitle>
+        <main class="playbook-not-found">
+            <h1>Specimen not found</h1>
+            <a href="/">Return to the component index</a>
+        </main>
+    </NotFound>
+</Router>

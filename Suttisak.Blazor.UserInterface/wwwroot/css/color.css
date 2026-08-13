@@ -1,82 +1,48 @@
-@property --gradient-brand-start {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: transparent;
-}
-
-@property --gradient-brand-end {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: transparent;
-}
-
 :root,
 body {
-    /* Derived semantic brand surfaces. */
-    --app-brand-surface-1: light-dark(color-mix(in srgb, var(--app-brand) 6%, white), color-mix(in srgb, var(--app-brand) 12%, #020812));
-    --app-brand-surface-2: light-dark(color-mix(in srgb, var(--app-brand) 8%, white), color-mix(in srgb, var(--app-brand) 16%, #04101d));
-    --app-brand-surface-3: light-dark(color-mix(in srgb, var(--app-brand) 10%, white), color-mix(in srgb, var(--app-brand) 10%, #020812));
-    --app-brand-surface-strong: light-dark(color-mix(in srgb, var(--app-brand) 16%, white), color-mix(in srgb, var(--app-brand) 22%, #08172b));
-    --app-brand-overlay-soft: color-mix(in srgb, var(--app-brand) 12%, transparent);
-    --app-brand-overlay: color-mix(in srgb, var(--app-brand) 22%, transparent);
-    --app-brand-overlay-secondary: color-mix(in srgb, var(--app-brand-secondary) 16%, transparent);
-    --app-brand-overlay-ghost: light-dark(rgb(255 255 255 / .42), color-mix(in srgb, var(--app-brand) 10%, transparent));
-    --app-brand-grid-line: light-dark(color-mix(in srgb, var(--app-brand) 16%, transparent), rgb(255 255 255 / .06));
-    --app-brand-border-soft: color-mix(in srgb, var(--app-brand) 22%, var(--app-border));
-    --app-brand-border: color-mix(in srgb, var(--app-brand) 32%, var(--app-border));
-    --app-brand-fill-soft: color-mix(in srgb, var(--app-brand) 10%, var(--app-surface));
-    --app-brand-fill-subtle: color-mix(in srgb, var(--app-brand) 6%, var(--app-surface));
-    --app-brand-band-soft: color-mix(in srgb, var(--app-brand) 7%, transparent);
-    --app-brand-divider: color-mix(in srgb, var(--app-brand) 22%, var(--app-border));
-    --app-brand-shadow-soft: color-mix(in srgb, var(--app-brand) 12%, transparent);
-    --app-brand-text: light-dark(color-mix(in srgb, var(--app-brand) 18%, #10213a), #e5eefc);
-    --app-brand-text-strong: light-dark(color-mix(in srgb, var(--app-brand) 12%, #10213a), #f3f7ff);
-    --app-brand-text-soft: color-mix(in srgb, var(--app-brand-text) 78%, transparent);
-    --app-brand-text-muted: color-mix(in srgb, var(--app-brand-text) 70%, transparent);
-    --app-brand-text-label: color-mix(in srgb, var(--app-brand-text) 64%, transparent);
-    --app-brand-highlight: light-dark(color-mix(in srgb, var(--app-brand) 78%, var(--app-brand-secondary)), color-mix(in srgb, var(--app-brand) 62%, white));
-    --app-brand-highlight-soft: color-mix(in srgb, var(--app-brand) 15%, transparent);
-    --app-brand-gradient: linear-gradient(135deg, var(--app-brand), color-mix(in srgb, var(--app-brand) 40%, var(--app-brand-secondary)));
+    /*
+     * Public color contract.
+     *
+     * Consuming applications override these semantic roles with explicit
+     * light-dark() values taken from the product identity. Components must
+     * consume roles from this list instead of deriving a palette from one hue.
+     */
 
-    /* Secondary brand roles for alternate emphasis. */
-    --app-secondary-surface-1: color-mix(in srgb, var(--app-brand-secondary) 6%, var(--app-surface));
-    --app-secondary-surface-2: color-mix(in srgb, var(--app-brand-secondary) 9%, var(--app-surface));
-    --app-secondary-surface-3: color-mix(in srgb, var(--app-brand-secondary) 12%, var(--app-surface));
-    --app-secondary-surface-strong: color-mix(in srgb, var(--app-brand-secondary) 20%, var(--app-surface));
-    --app-secondary-overlay-soft: color-mix(in srgb, var(--app-brand-secondary) 12%, transparent);
-    --app-secondary-overlay: color-mix(in srgb, var(--app-brand-secondary) 22%, transparent);
-    --app-secondary-overlay-alt: color-mix(in srgb, var(--app-brand) 16%, transparent);
-    --app-secondary-overlay-ghost: var(--app-brand-overlay-ghost);
-    --app-secondary-grid-line: color-mix(in srgb, var(--app-brand-secondary) 16%, transparent);
-    --app-secondary-border-soft: color-mix(in srgb, var(--app-brand-secondary) 22%, var(--app-border));
-    --app-secondary-border: color-mix(in srgb, var(--app-brand-secondary) 32%, var(--app-border));
-    --app-secondary-fill-soft: color-mix(in srgb, var(--app-brand-secondary) 10%, var(--app-surface));
-    --app-secondary-fill-subtle: color-mix(in srgb, var(--app-brand-secondary) 6%, var(--app-surface));
-    --app-secondary-band-soft: color-mix(in srgb, var(--app-brand-secondary) 7%, transparent);
-    --app-secondary-divider: color-mix(in srgb, var(--app-brand-secondary) 22%, var(--app-border));
-    --app-secondary-shadow-soft: color-mix(in srgb, var(--app-brand-secondary) 12%, transparent);
-    --app-secondary-text: var(--app-foreground);
-    --app-secondary-text-strong: var(--app-foreground);
-    --app-secondary-text-soft: var(--app-foreground-muted);
-    --app-secondary-text-muted: var(--app-foreground-muted);
-    --app-secondary-text-label: var(--app-foreground-muted);
-    --app-secondary-highlight: var(--app-brand-secondary);
-    --app-secondary-highlight-soft: color-mix(in srgb, var(--app-brand-secondary) 15%, transparent);
-    --app-secondary-gradient: linear-gradient(135deg, var(--app-brand-secondary), color-mix(in srgb, var(--app-brand-secondary) 52%, var(--app-brand)));
-}
+    /* Product identity and interactive emphasis. */
+    --app-brand: light-dark(#0f6cbd, #62abf5);
+    --app-on-brand: light-dark(#ffffff, #07181d);
+    --app-brand-secondary: light-dark(#107c10, #54c754);
+    --app-accent: var(--app-brand);
+    --app-accent-soft: light-dark(rgb(15 108 189 / .12), rgb(98 171 245 / .18));
+    --app-accent-border: light-dark(#8bbce8, #326b9f);
+    --app-brand-soft: light-dark(rgb(15 108 189 / .10), rgb(98 171 245 / .16));
+    --app-brand-secondary-soft: light-dark(rgb(16 124 16 / .11), rgb(84 199 84 / .17));
 
-.gradient-brand {
-    --gradient-brand-start: var(--app-brand);
-    --gradient-brand-end: var(--app-brand-secondary);
-    transition: --gradient-brand-start var(--app-duration-normal), --gradient-brand-end var(--app-duration-normal);
-    background: linear-gradient(135deg, var(--gradient-brand-start), var(--gradient-brand-end));
-}
+    /* Page, panel, and translucent surfaces. */
+    --app-background: light-dark(#f7f9fb, #101418);
+    --app-surface: light-dark(#ffffff, #191f24);
+    --app-surface-muted: light-dark(#f1f4f7, #222a31);
+    --app-surface-hover: light-dark(#edf2f6, #303a43);
+    --app-glass-surface: light-dark(rgb(255 255 255 / .58), rgb(25 31 36 / .64));
+    --app-glass-surface-strong: light-dark(rgb(255 255 255 / .78), rgb(25 31 36 / .82));
+    --app-glass-border: light-dark(rgb(23 33 43 / .14), rgb(229 238 246 / .18));
+    --app-glass-shadow: light-dark(rgb(15 23 42 / .12), rgb(0 0 0 / .38));
 
-.gradient-brand:hover {
-    --gradient-brand-start: color-mix(in srgb, var(--app-brand) 86%, white);
-    --gradient-brand-end: color-mix(in srgb, var(--app-brand-secondary) 86%, white);
-}
+    /* Readable content and structural lines. */
+    --app-foreground: light-dark(#17212b, #edf3f8);
+    --app-foreground-muted: light-dark(#5f6b7a, #afbbc5);
+    --app-border: light-dark(#d7dde5, #38434d);
+    --app-grid-line: light-dark(rgb(23 33 43 / .08), rgb(237 243 248 / .08));
+    --app-shadow-color: light-dark(rgb(15 23 42 / .12), rgb(0 0 0 / .34));
 
-.secondary-gradient {
-    background: var(--app-secondary-gradient);
+    /* Feedback roles include an explicit soft surface and border. */
+    --app-success: light-dark(#107c10, #54c754);
+    --app-success-soft: light-dark(#edf8ed, #173619);
+    --app-success-border: light-dark(#8bc98b, #397b3d);
+    --app-warning: light-dark(#8a4f00, #f2b84b);
+    --app-warning-soft: light-dark(#fff5df, #3b2b10);
+    --app-warning-border: light-dark(#d8ae65, #8b692b);
+    --app-danger: light-dark(#b42318, #ff8b83);
+    --app-danger-soft: light-dark(#fff0ef, #421c1a);
+    --app-danger-border: light-dark(#e3a29e, #99524d);
 }

@@ -1,0 +1,4 @@
+.experience-disclosure-group {
+    display: grid;
+    gap: .625rem;
+}

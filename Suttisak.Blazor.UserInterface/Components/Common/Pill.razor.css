@@ -3,8 +3,8 @@
     align-self: flex-start;
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
-    background: var(--app-secondary-highlight-soft);
-    color: var(--app-secondary-highlight);
+    background: var(--app-brand-secondary-soft);
+    color: var(--app-brand-secondary);
     font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.08em;

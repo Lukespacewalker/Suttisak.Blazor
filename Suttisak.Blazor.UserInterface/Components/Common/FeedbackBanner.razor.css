@@ -4,16 +4,16 @@
     align-items: start;
     gap: .75rem;
     padding: .85rem 1rem;
-    border: 1px solid var(--feedback-color);
+    border: 1px solid var(--feedback-border);
     border-radius: .85rem;
-    background: color-mix(in srgb, var(--feedback-color) 8%, var(--app-surface));
+    background: var(--feedback-surface);
     color: var(--app-foreground);
 }
 
-.feedback-banner--info { --feedback-color: var(--app-accent); }
-.feedback-banner--success { --feedback-color: var(--app-success); }
-.feedback-banner--warning { --feedback-color: var(--app-warning); }
-.feedback-banner--error { --feedback-color: var(--app-danger); }
+.feedback-banner--info { --feedback-color: var(--app-accent); --feedback-surface: var(--app-accent-soft); --feedback-border: var(--app-accent-border); }
+.feedback-banner--success { --feedback-color: var(--app-success); --feedback-surface: var(--app-success-soft); --feedback-border: var(--app-success-border); }
+.feedback-banner--warning { --feedback-color: var(--app-warning); --feedback-surface: var(--app-warning-soft); --feedback-border: var(--app-warning-border); }
+.feedback-banner--error { --feedback-color: var(--app-danger); --feedback-surface: var(--app-danger-soft); --feedback-border: var(--app-danger-border); }
 
 .feedback-banner__icon {
     display: inline-flex;

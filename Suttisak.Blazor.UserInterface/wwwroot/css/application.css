@@ -43,20 +43,6 @@
     --app-layout-gutter: clamp(1.25rem, 4vw, 3rem);
     --app-marketing-max-width: 76rem;
 
-    /* Semantic defaults. Applications override these values, never component CSS. */
-    --app-brand: var(--accent-fill-rest, var(--colorBrandBackground, #0f6cbd));
-    --app-on-brand: light-dark(#ffffff, #07181d);
-    --app-brand-secondary: color-mix(in srgb, var(--app-brand) 72%, #107c10);
-    --app-background: var(--neutral-layer-1, var(--colorNeutralBackground1, #f7f9fb));
-    --app-surface: var(--neutral-layer-1, var(--colorNeutralBackground1, #fff));
-    --app-surface-muted: var(--neutral-layer-2, var(--colorNeutralBackground2, #f6f8fa));
-    --app-border: var(--neutral-stroke-rest, var(--colorNeutralStroke2, #d7dde5));
-    --app-foreground: var(--neutral-foreground-rest, var(--colorNeutralForeground1, #17212b));
-    --app-foreground-muted: var(--neutral-foreground-hint, var(--colorNeutralForeground3, #5f6b7a));
-    --app-accent: var(--app-brand);
-    --app-success: #107c10;
-    --app-warning: #a15c00;
-    --app-danger: #b42318;
 }
 
 body {
@@ -72,7 +58,7 @@ body {
 }
 
 ::selection {
-    background: color-mix(in srgb, var(--app-accent) 28%, transparent);
+    background: var(--app-accent-soft);
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
@@ -128,7 +114,7 @@ samp {
 }
 
 .fluent-data-grid thead {
-    background: var(--color-glass-layer1-bg, var(--app-surface-muted));
+    background: var(--app-glass-surface);
 }
 
 .fluent-data-grid th,
@@ -178,12 +164,12 @@ samp {
     min-width: 0;
     margin: calc(-1 * var(--app-page-padding-block)) calc(-1 * var(--app-page-padding-inline)) 0;
     padding: .8rem var(--app-page-padding-inline) .9rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--app-border) 68%, transparent);
+    border-bottom: 1px solid var(--app-border);
     background:
         linear-gradient(105deg,
-            color-mix(in srgb, var(--app-brand) 9%, var(--app-surface)) 0%,
-            color-mix(in srgb, var(--app-brand-secondary, var(--app-brand)) 8%, var(--app-surface)) 52%,
-            color-mix(in srgb, #d9ad57 11%, var(--app-surface)) 100%);
+            var(--app-brand-soft) 0%,
+            var(--app-surface) 52%,
+            var(--app-brand-secondary-soft) 100%);
 }
 
 .app-page__breadcrumbs {
@@ -230,9 +216,9 @@ samp {
     overflow: auto;
     box-sizing: border-box;
     padding: 0;
-    border: 1px solid var(--color-glass-border, var(--app-border));
+    border: 1px solid var(--app-glass-border);
     border-radius: var(--borderRadius2XLarge, var(--app-radius-lg));
-    background: var(--color-glass-layer2-bg, var(--app-surface));
+    background: var(--app-glass-surface-strong);
     box-shadow: var(--app-shadow-md);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -245,7 +231,7 @@ samp {
 }
 
 .data-grid-container > .fluent-data-grid thead {
-    background: var(--color-glass-layer1-bg, var(--app-surface-muted));
+    background: var(--app-glass-surface);
 }
 
 .ui-state {
@@ -276,15 +262,15 @@ samp {
 }
 
 .ui-state--success {
-    border-color: color-mix(in srgb, var(--app-success) 35%, var(--app-border));
+    border-color: var(--app-success-border);
 }
 
 .ui-state--warning {
-    border-color: color-mix(in srgb, var(--app-warning) 35%, var(--app-border));
+    border-color: var(--app-warning-border);
 }
 
 .ui-state--error {
-    border-color: color-mix(in srgb, var(--app-danger) 35%, var(--app-border));
+    border-color: var(--app-danger-border);
 }
 
 .text-danger {

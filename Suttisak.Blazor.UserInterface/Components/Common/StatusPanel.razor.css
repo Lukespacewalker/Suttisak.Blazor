@@ -7,9 +7,9 @@
     place-items: center;
     align-content: center;
     gap: .75rem;
-    border: 1px solid var(--neutral-stroke-rest, var(--colorNeutralStroke2));
+    border: 1px solid var(--app-border);
     border-radius: 1.125rem;
-    background: var(--neutral-layer-1, var(--colorNeutralBackground1));
+    background: var(--app-surface);
     text-align: center;
 }
 
@@ -24,7 +24,7 @@
 
 .status-panel p {
     max-width: 34rem;
-    color: var(--neutral-foreground-hint, var(--colorNeutralForeground3));
+    color: var(--app-foreground-muted);
     line-height: 1.65;
 }
 
@@ -34,13 +34,13 @@
     height: 3.5rem;
     place-items: center;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--accent-fill-rest, var(--colorBrandBackground)) 12%, transparent);
-    color: var(--accent-fill-rest, var(--colorBrandForeground1));
+    background: var(--app-accent-soft);
+    color: var(--app-accent);
 }
 
-.status-panel--success { border-color: color-mix(in srgb, var(--app-success, #107c10) 35%, var(--app-border, #d7dde5)); }
-.status-panel--warning { border-color: color-mix(in srgb, var(--app-warning, #a15c00) 35%, var(--app-border, #d7dde5)); }
-.status-panel--error { border-color: color-mix(in srgb, var(--app-danger, #b42318) 35%, var(--app-border, #d7dde5)); }
+.status-panel--success { border-color: var(--app-success-border); }
+.status-panel--warning { border-color: var(--app-warning-border); }
+.status-panel--error { border-color: var(--app-danger-border); }
 
 .status-panel__actions {
     display: flex;

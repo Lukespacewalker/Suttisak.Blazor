@@ -23,7 +23,7 @@
 }
 
 .marketing-page__skip-link:focus-visible {
-    outline: 3px solid var(--app-secondary-highlight);
+    outline: 3px solid var(--app-brand-secondary);
     outline-offset: 3px;
 }
 
