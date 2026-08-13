@@ -23,7 +23,7 @@ public abstract class IdentityRedirectManager(NavigationManager navigationManage
 
     public void RedirectTo(string? uri)
     {
-        
+
         uri ??= "";
 
         // Prevent open redirects.
