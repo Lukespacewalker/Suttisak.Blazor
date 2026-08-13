@@ -9,7 +9,7 @@
 		<Description>A collection of useful components for Blazor</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>0.13.0</AssemblyVersion>
+		<AssemblyVersion>0.14.0</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -21,6 +21,8 @@
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 		<None Update="README.md" Pack="true" PackagePath="\" />
+		<ProjectReference Include="..\Suttisak.Blazor.UserInterface.Generator\Suttisak.Blazor.UserInterface.Generator.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+		<None Include="..\Suttisak.Blazor.UserInterface.Generator\bin\$(Configuration)\netstandard2.0\Suttisak.Blazor.UserInterface.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 	<ItemGroup>

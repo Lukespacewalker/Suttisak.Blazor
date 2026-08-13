@@ -15,7 +15,7 @@
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.ExternalLogins</h1>
+    <PageHeading Title="@Manage_razor.ExternalLogins" />
 </SectionContent>
 
 <IdentityManageShell Title="@Manage_razor.ExternalLogins" Description="@Text["ExternalLoginsDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
@@ -37,7 +37,7 @@
                             <AntiforgeryToken />
                             <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider" />
                             <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey" />
-                            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</FluentButton>
+                            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</AppButton>
                         </form>
                     }
                 </Actions>
@@ -52,9 +52,9 @@
             <AntiforgeryToken />
                 @foreach (var provider in _otherLogins)
                 {
-                    <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
+                    <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
                         @provider.DisplayName
-                    </FluentButton>
+                    </AppButton>
                 }
         </form>
     </FormSection>

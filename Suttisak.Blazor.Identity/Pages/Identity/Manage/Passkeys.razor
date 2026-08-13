@@ -14,7 +14,7 @@
 <PageBreadcrumbs Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Passkeys) })" />
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.Passkeys</h1>
+    <PageHeading Title="@Manage_razor.Passkeys" />
 </SectionContent>
 <IdentityManageShell Title="@Manage_razor.Passkeys" Description="@Text["PasskeysDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
 <StatusMessage />
@@ -39,7 +39,7 @@
                     <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="CredentialId" value="@credentialId" />
-                        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStart="@(new Icons.Filled.Size20.Delete())">@Passkeys_razor.DeleteButton</FluentButton>
+                        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStart="@(new Icons.Filled.Size20.Delete())">@Passkeys_razor.DeleteButton</AppButton>
                     </form>
                 </Actions>
             </IdentitySettingCard>

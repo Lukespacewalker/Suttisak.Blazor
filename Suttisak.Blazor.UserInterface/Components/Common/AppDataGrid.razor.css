@@ -1,0 +1,14 @@
+.app-data-grid__toolbar { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; padding: .75rem; border-bottom: 1px solid var(--app-border); background: var(--app-surface-muted); }
+.app-data-grid__viewport { min-width: 0; overflow: auto; }
+.app-data-grid__viewport ::deep fluent-data-grid { min-width: 42rem; }
+.app-data-grid__footer { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; padding: .7rem .85rem; border-top: 1px solid var(--app-border); background: var(--app-surface-muted); }
+
+@container (max-width: 32rem) {
+    .app-data-grid__search,
+    .app-data-grid__filters,
+    .app-data-grid__actions { flex-basis: 100%; margin-inline-start: 0; }
+}
+.app-data-grid__commandbar { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: .65rem; padding: .75rem; border-bottom: 1px solid var(--app-border); background: var(--app-surface-muted); }
+.app-data-grid__search { min-width: min(18rem, 100%); flex: 1 1 18rem; }
+.app-data-grid__filters { display: flex; min-width: 0; flex: 1 1 auto; flex-wrap: wrap; gap: .45rem; }
+.app-data-grid__actions { display: flex; margin-inline-start: auto; flex-wrap: wrap; gap: .45rem; }

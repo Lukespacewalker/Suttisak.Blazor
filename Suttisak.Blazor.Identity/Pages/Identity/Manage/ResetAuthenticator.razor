@@ -12,7 +12,7 @@
 <PageTitle>@Manage_razor.ResetAuthenticator</PageTitle>
 
 <SectionContent SectionName="@CommonSections.PageTitle">
-    <h1>@Manage_razor.ResetAuthenticator</h1>
+    <PageHeading Title="@Manage_razor.ResetAuthenticator" />
 </SectionContent>
 <IdentityManageShell Title="@Manage_razor.ResetAuthenticator" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon">
 
@@ -30,7 +30,7 @@
 <div>
     <form @formname="reset-authenticator" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken />
-        <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary">@ResetAuthenticator_razor.SubmitButton</FluentButton>
+        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary">@ResetAuthenticator_razor.SubmitButton</AppButton>
     </form>
 </div>
 

@@ -16,18 +16,18 @@
 <span>@ResendEmailConfirmation_razor.EnterEmail</span>
 <hr />
 <StatusMessage Message="@_message" />
-<FluentGrid>
-    <FluentGridItem xs="8" sm="4">
+<FormGrid Columns="1">
+    <div>
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
             <FluentTextInput Name="Input.Email" @bind-Value="Input!.Email" class="form-control" Required="true" Placeholder="@ResendEmailConfirmation_razor.EmailPlaceholder" Label="@ResendEmailConfirmation_razor.EmailLabel" Style="width: 100%;" />
             @*<FluentValidationMessage For="() => Input.Email" class="text-danger" />*@
             @* TODO: restore FluentValidationMessage later in RC3 *@
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@ResendEmailConfirmation_razor.ResendButton</FluentButton>
+            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@ResendEmailConfirmation_razor.ResendButton</AppButton>
         </EditForm>
-    </FluentGridItem>
-</FluentGrid>
+    </div>
+</FormGrid>
 </IdentityFlowPanel>
 
 @code {

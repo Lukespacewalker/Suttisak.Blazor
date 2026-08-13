@@ -1,27 +1,60 @@
-<div class="page-heading @CssClass">
-    @if (Icon is not null)
+<header class="@CssClassValue" aria-labelledby="@HeadingIdValue" @attributes="AdditionalAttributes">
+    @if (Breadcrumbs is not null)
     {
-        <span class="page-heading__icon" aria-hidden="true">
-            <FluentIcon Value="@Icon" />
-        </span>
+        <nav class="page-heading__breadcrumbs" aria-label="@BreadcrumbLabel">
+            @Breadcrumbs
+        </nav>
     }
-    <div class="page-heading__copy">
-        <h1>@Title</h1>
-        @if (!string.IsNullOrWhiteSpace(Description))
+
+    <div class="page-heading__body">
+        @if (Icon is not null)
         {
-            <p>@Description</p>
+            <span class="page-heading__icon" aria-hidden="true">
+                <FluentIcon Value="@Icon" />
+            </span>
+        }
+
+        <div class="page-heading__copy">
+            @if (!string.IsNullOrWhiteSpace(Eyebrow))
+            {
+                <span class="page-heading__eyebrow">@Eyebrow</span>
+            }
+            <h1 id="@HeadingIdValue">@Title</h1>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p>@Description</p>
+            }
+        </div>
+
+        @if (Toolbar is not null || Actions is not null)
+        {
+            <div class="page-heading__toolbar" role="toolbar" aria-label="@ToolbarLabel">
+                @Toolbar
+                @Actions
+            </div>
         }
     </div>
-    @if (Actions is not null)
-    {
-        <div class="page-heading__actions">@Actions</div>
-    }
-</div>
+</header>
 
 @code {
+    private readonly string _generatedHeadingId = $"page-heading-{Guid.NewGuid():N}";
+
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Eyebrow { get; set; }
     [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public RenderFragment? Breadcrumbs { get; set; }
+    [Parameter] public RenderFragment? Toolbar { get; set; }
     [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public string? HeadingId { get; set; }
+    [Parameter] public string BreadcrumbLabel { get; set; } = "Breadcrumb";
+    [Parameter] public string ToolbarLabel { get; set; } = "Page actions";
     [Parameter] public string? CssClass { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string HeadingIdValue => HeadingId ?? _generatedHeadingId;
+    private string CssClassValue => string.IsNullOrWhiteSpace(CssClass)
+        ? "page-heading"
+        : $"page-heading {CssClass}";
 }

@@ -6,9 +6,9 @@
 
 @if (_showError)
 {
-    <FluentMessageBar Intent="MessageBarIntent.Error" Title="@RenamePasskey_razor.Error">
+    <FeedbackBanner Intent="FeedbackIntent.Error" Title="@RenamePasskey_razor.Error">
         @RenamePasskey_razor.ErrorUpdateFailed
-    </FluentMessageBar>
+    </FeedbackBanner>
 }
 
 <FluentDialogBody>

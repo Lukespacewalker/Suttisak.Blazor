@@ -2,6 +2,22 @@
 @implements IDisposable
 
 <CascadingValue Value="this">
+    @if (Embedded)
+    {
+        <div class="nav-panel nav-panel--embedded">
+            @if (AccountContent is not null)
+            {
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="nav-panel__account">@AccountContent</div>
+                    </Authorized>
+                </AuthorizeView>
+            }
+            <div class="nav-panel__primary">@ChildContent</div>
+        </div>
+    }
+    else
+    {
     <FluentLayoutItem Area="LayoutArea.Navigation" Class="@($"app-nav {CollapsedClass} {MobileOpenClass}")">
         <div class="nav-shell">
             <div class="nav-toolbar">
@@ -40,6 +56,7 @@
                 aria-label="Close navigation menu"
                 tabindex="@(IsMobileOpen ? 0 : -1)"></button>
     </FluentLayoutItem>
+    }
 </CascadingValue>
 
 @code {
@@ -53,6 +70,9 @@
 
     [Parameter]
     public RenderFragment? AccountContent { get; set; }
+
+    [Parameter]
+    public bool Embedded { get; set; }
 
     public bool IsCollapsed => State?.IsCollapsed ?? false;
 

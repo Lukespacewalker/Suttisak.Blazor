@@ -1,0 +1,134 @@
+@if (!string.IsNullOrWhiteSpace(Href))
+{
+    <a class="@CssClassValue"
+       href="@(Disabled ? null : Href)"
+       aria-label="@AriaLabel"
+       aria-disabled="@(Disabled ? "true" : null)"
+       aria-busy="@(IsBusy ? "true" : null)"
+       tabindex="@(Disabled ? -1 : null)"
+       title="@EffectiveTitle"
+       style="@ColorStyle"
+       @onclick="HandleClickAsync"
+       @onclick:preventDefault="@Disabled"
+       @attributes="AdditionalAttributes">
+        @ButtonContent
+    </a>
+}
+else
+{
+    <button class="@CssClassValue"
+            type="@HtmlType"
+            aria-label="@AriaLabel"
+            aria-busy="@(IsBusy ? "true" : null)"
+            title="@EffectiveTitle"
+            style="@ColorStyle"
+            disabled="@(Disabled || IsBusy)"
+            @onclick="HandleClickAsync"
+            @attributes="AdditionalAttributes">
+        @ButtonContent
+    </button>
+}
+
+@code {
+    [Parameter] public Icon? IconStart { get; set; }
+    [Parameter] public RenderFragment? IconStartContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public Icon? IconEnd { get; set; }
+    [Parameter] public RenderFragment? IconEndContent { get; set; }
+    [Parameter] public AppButtonVariant Variant { get; set; } = AppButtonVariant.Secondary;
+    [Parameter] public ButtonAppearance? Appearance { get; set; }
+    [Parameter] public AppButtonSize Size { get; set; } = AppButtonSize.Standard;
+    [Parameter] public bool IconOnly { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Busy { get; set; }
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
+    [Parameter] public string? Href { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? ToolTip { get; set; }
+    [Parameter] public string? Color { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue => string.Join(' ', new[]
+    {
+        "app-button",
+        $"app-button--{EffectiveVariant.ToString().ToLowerInvariant()}",
+        $"app-button--{Size.ToString().ToLowerInvariant()}",
+        IconOnly ? "app-button--icon-only" : null,
+        IsBusy ? "is-busy" : null,
+        Class
+    }.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+    private RenderFragment ButtonContent => builder =>
+    {
+        var sequence = 0;
+        if (IsBusy)
+        {
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "app-button__spinner");
+            builder.AddAttribute(sequence++, "aria-hidden", "true");
+            builder.CloseElement();
+        }
+        else if (IconStartContent is not null || IconStart is not null)
+        {
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "app-button__icon");
+            if (IconStartContent is not null)
+            {
+                builder.AddContent(sequence++, IconStartContent);
+            }
+            else
+            {
+                builder.OpenComponent<FluentIcon<Icon>>(sequence++);
+                builder.AddAttribute(sequence++, nameof(FluentIcon<Icon>.Value), IconStart);
+                builder.CloseComponent();
+            }
+            builder.CloseElement();
+        }
+
+        if (ChildContent is not null)
+        {
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "app-button__label");
+            builder.AddContent(sequence++, ChildContent);
+            builder.CloseElement();
+        }
+
+        if (!IsBusy && (IconEndContent is not null || IconEnd is not null))
+        {
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "app-button__icon");
+            if (IconEndContent is not null)
+            {
+                builder.AddContent(sequence++, IconEndContent);
+            }
+            else
+            {
+                builder.OpenComponent<FluentIcon<Icon>>(sequence++);
+                builder.AddAttribute(sequence++, nameof(FluentIcon<Icon>.Value), IconEnd);
+                builder.CloseComponent();
+            }
+            builder.CloseElement();
+        }
+    };
+
+    private Task HandleClickAsync(MouseEventArgs args) =>
+        Disabled || IsBusy ? Task.CompletedTask : OnClick.InvokeAsync(args);
+
+    private bool IsBusy => Busy || Loading;
+    private string? EffectiveTitle => Title ?? ToolTip;
+    private string? ColorStyle => string.IsNullOrWhiteSpace(Color) ? null : $"color:{Color}";
+    private string HtmlType => Type == ButtonType.Submit ? "submit" : Type == ButtonType.Reset ? "reset" : "button";
+    private AppButtonVariant EffectiveVariant => Variant != AppButtonVariant.Secondary || Appearance is null
+        ? Variant
+        : Appearance switch
+        {
+            ButtonAppearance.Primary => AppButtonVariant.Primary,
+            ButtonAppearance.Subtle or ButtonAppearance.Transparent => AppButtonVariant.Subtle,
+            _ => AppButtonVariant.Secondary
+        };
+}

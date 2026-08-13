@@ -1,0 +1,10 @@
+@inject PlaybookState State
+
+<a class="access-brand" href="landing" aria-label="@CurrentTheme.Name home">
+    <span><img src="@CurrentTheme.LogoPath" alt="" /></span>
+    <strong>@CurrentTheme.Name</strong>
+</a>
+
+@code {
+    private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+}

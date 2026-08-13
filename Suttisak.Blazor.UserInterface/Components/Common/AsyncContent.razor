@@ -58,7 +58,7 @@
     [Parameter] public string RetryLabel { get; set; } = "Try again";
     [Parameter] public EventCallback OnRetry { get; set; }
 
-    private RenderFragment RetryActions => @<FluentButton Appearance="ButtonAppearance.Primary" OnClick="@OnRetry">
+    private RenderFragment RetryActions => @<AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => OnRetry.InvokeAsync())">
         @RetryLabel
-    </FluentButton>;
+    </AppButton>;
 }

@@ -1,0 +1,100 @@
+@using Microsoft.Extensions.Options
+@inject IServiceProvider Services
+@inject NavigationManager Navigation
+
+<PageTitle>@StatusCode · @Content.Title</PageTitle>
+
+<section class="status-route status-route--@Variant"
+         role="@(StatusCode >= 500 ? "alert" : "region")"
+         aria-live="@(StatusCode >= 500 ? "assertive" : "polite")"
+         aria-labelledby="@HeadingId">
+    <header class="status-route__brand">
+        @if (!string.IsNullOrWhiteSpace(ActiveOptions.LogoUrl))
+        {
+            <img src="@ActiveOptions.LogoUrl" alt="" />
+        }
+        <strong>@ActiveOptions.BrandName</strong>
+        <span>Service status / @StatusCode</span>
+    </header>
+
+    <span class="status-route__code" aria-hidden="true">@StatusCode</span>
+    <div class="status-route__signal" aria-hidden="true">
+        <FluentIcon Value="@Icon" />
+        <i></i>
+    </div>
+
+    <div class="status-route__copy">
+        <span class="status-route__eyebrow">@Content.Eyebrow</span>
+        <h1 id="@HeadingId">@Content.Title</h1>
+        <p>@Content.Message</p>
+
+        <div class="status-route__actions">
+            @if (Content.RetryPrimaryAction)
+            {
+                <button class="status-route__primary" type="button" @onclick="Retry">@Content.PrimaryActionLabel</button>
+            }
+            else
+            {
+                <a class="status-route__primary" href="@PrimaryHref">@Content.PrimaryActionLabel</a>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Content.SecondaryActionLabel))
+            {
+                <a class="status-route__secondary" href="@SecondaryHref">@Content.SecondaryActionLabel</a>
+            }
+        </div>
+
+        @if (ActiveOptions.ShowRequestId && !string.IsNullOrWhiteSpace(RequestId))
+        {
+            <div class="status-route__reference">
+                <span>@ActiveOptions.RequestIdLabel</span>
+                <code>@RequestId</code>
+            </div>
+        }
+    </div>
+
+    <footer>
+        <span>@StatusCode / @ActiveOptions.BrandName</span>
+        <span>@Content.FooterText</span>
+    </footer>
+</section>
+
+@code {
+    private readonly StatusRouteOptions _defaults = new();
+
+    [Parameter, EditorRequired] public int StatusCode { get; set; }
+    [Parameter] public string? RequestId { get; set; }
+    [Parameter] public StatusRouteOptions? Options { get; set; }
+
+    private string HeadingId => $"status-route-{StatusCode}-title";
+    private StatusRouteOptions ActiveOptions
+    {
+        get
+        {
+            if (Options is not null)
+                return Options;
+
+            return Services.GetService(typeof(IOptions<StatusRouteOptions>)) is IOptions<StatusRouteOptions> configured
+                ? configured.Value
+                : _defaults;
+        }
+    }
+    private StatusRoutePageOptions Content => ActiveOptions.Resolve(StatusCode);
+    private string PrimaryHref => Content.PrimaryActionHref ?? ActiveOptions.HomeHref;
+    private string SecondaryHref => Content.SecondaryActionHref ?? ActiveOptions.HomeHref;
+    private string Variant => StatusCode switch
+    {
+        403 => "forbidden",
+        404 => "missing",
+        >= 500 => "error",
+        _ => "status"
+    };
+    private Icon Icon => StatusCode switch
+    {
+        403 => new Icons.Regular.Size24.LockClosed(),
+        404 => new Icons.Regular.Size24.DocumentDismiss(),
+        _ => new Icons.Regular.Size24.ErrorCircle()
+    };
+
+    private void Retry() => Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+}

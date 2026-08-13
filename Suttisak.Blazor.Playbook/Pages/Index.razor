@@ -29,7 +29,8 @@
                                       Title="Your result"
                                       Emphasis="in plain language"
                                       Description="A reader-first summary that gives the outcome context before showing detailed measurements."
-                                      Watermark="@CurrentTheme.ShortName">
+                                      Watermark="@CurrentTheme.ShortName"
+                                      VisualIsDecorative="false">
                         <Details><div class="playbook-meta"><span>12 Aug 2026</span><span>8 measures complete</span></div></Details>
                         <Visual><div class="playbook-score"><span>82</span><strong>On track</strong><small>overall score</small></div></Visual>
                     </ExperienceHeader>
@@ -49,12 +50,26 @@
             <SpecimenSection Id="workflow" Number="02" Title="Workflow & forms" Description="Compact hierarchy and actions for CRUD and administration screens.">
                 <div class="playbook-stack">
                     <PageHeading Title="Assessment periods" Description="Create, publish, and archive assessment windows.">
-                        <Actions><button class="playbook-button playbook-button--primary">New period</button></Actions>
+                        <Actions>
+                            <AppButton Variant="AppButtonVariant.Primary">
+                                <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStartContent>
+                                <ChildContent>New period</ChildContent>
+                            </AppButton>
+                        </Actions>
                     </PageHeading>
                     <Toolbar AriaLabel="Assessment actions">
-                        <FluentButton Appearance="ButtonAppearance.Primary">Primary Fluent action</FluentButton>
-                        <button class="playbook-button">Filter</button>
-                        <button class="playbook-button">Export</button>
+                        <AppButton Variant="AppButtonVariant.Primary">
+                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStartContent>
+                            <ChildContent>Shared primary action</ChildContent>
+                        </AppButton>
+                        <AppButton>
+                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Filter())" /></IconStartContent>
+                            <ChildContent>Filter</ChildContent>
+                        </AppButton>
+                        <AppButton>
+                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.ArrowDownload())" /></IconStartContent>
+                            <ChildContent>Export</ChildContent>
+                        </AppButton>
                         <span class="playbook-toolbar-spacer"></span>
                         <Pill>12 active</Pill>
                     </Toolbar>
@@ -69,9 +84,14 @@
                         </FormGrid>
                     </FormSection>
                     <div class="playbook-card-grid">
-                        <GlassCard Title="Bangkok" Subtitle="7 completed · 2 in progress" IsActive="true"><p>Current reporting period</p></GlassCard>
-                        <GlassCard Title="Rayong" Subtitle="4 completed · 1 in progress"><p>Ready for review</p></GlassCard>
+                        <AppCard Title="Bangkok" Description="7 completed · 2 in progress" Interactive="true"><p>Current reporting period</p></AppCard>
+                        <AppCard Title="Rayong" Description="4 completed · 1 in progress"><p>Ready for review</p></AppCard>
                     </div>
+                    <AppTabs aria-label="Record sections">
+                        <AppTab Label="Overview"><p>Summary content stays inside the shared tab treatment.</p></AppTab>
+                        <AppTab Label="Activity"><p>Recent changes and audit activity.</p></AppTab>
+                        <AppTab Label="Documents"><p>Files and supporting evidence.</p></AppTab>
+                    </AppTabs>
                 </div>
             </SpecimenSection>
 
@@ -82,8 +102,17 @@
                     <FeedbackBanner Intent="FeedbackIntent.Warning" Title="Needs review" Message="Two measurements are outside the expected range." />
                     <FeedbackBanner Intent="FeedbackIntent.Error" Title="Could not sync" Message="Try again after checking the connection." />
                     <StatusPanel Title="Nothing to review yet" Message="Completed submissions will appear here." Variant="empty">
-                        <Actions><button class="playbook-button">Refresh</button></Actions>
+                        <Actions>
+                            <AppButton>
+                                <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.ArrowClockwise())" /></IconStartContent>
+                                <ChildContent>Refresh</ChildContent>
+                            </AppButton>
+                        </Actions>
                     </StatusPanel>
+                    <AppLoading Title="Loading participant record" Message="Preparing the latest results…" />
+                    <AppCard Title="Import progress" Description="A semantic progress treatment that follows every app palette.">
+                        <AppProgress Value="68" AriaLabel="Import progress" />
+                    </AppCard>
                 </div>
             </SpecimenSection>
 

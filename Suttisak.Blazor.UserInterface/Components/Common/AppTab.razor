@@ -1,0 +1,9 @@
+<FluentTab Label="@Label" aria-label="@Label" Style="@Style" @attributes="AdditionalAttributes">@ChildContent</FluentTab>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public string? Style { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

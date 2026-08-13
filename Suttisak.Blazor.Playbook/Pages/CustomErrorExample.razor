@@ -1,0 +1,96 @@
+@page "/access/custom-error"
+@using Suttisak.Blazor.UserInterface.Routing
+@inject PlaybookState State
+
+<PageTitle>Custom error pattern · UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <AccessPageFrame Title="Application-owned error copy">
+        <main class="custom-error-workbench">
+            <aside class="custom-error-editor" aria-labelledby="custom-error-editor-title">
+                <div class="custom-error-editor__heading">
+                    <span>LIVE CONFIGURATION</span>
+                    <h1 id="custom-error-editor-title">Make the error belong to the app.</h1>
+                    <p>The generator owns routes. The application owns brand, language, actions, and support guidance.</p>
+                </div>
+
+                <label>
+                    <span>Status</span>
+                    <select @bind="StatusCode">
+                        <option value="403">403 · Forbidden</option>
+                        <option value="404">404 · Not found</option>
+                        <option value="500">500 · Server error</option>
+                    </select>
+                </label>
+
+                <div class="custom-error-editor__row">
+                    <label><span>Brand name</span><input @bind="Options.BrandName" @bind:event="oninput" /></label>
+                    <label><span>Eyebrow</span><input @bind="Current.Eyebrow" @bind:event="oninput" /></label>
+                </div>
+                <label><span>Title</span><input @bind="Current.Title" @bind:event="oninput" /></label>
+                <label><span>Message</span><textarea rows="4" @bind="Current.Message" @bind:event="oninput"></textarea></label>
+
+                <div class="custom-error-editor__row">
+                    <label><span>Primary action</span><input @bind="Current.PrimaryActionLabel" @bind:event="oninput" /></label>
+                    <label><span>Home path</span><input @bind="Options.HomeHref" @bind:event="oninput" /></label>
+                </div>
+                <label><span>Footer guidance</span><input @bind="Current.FooterText" @bind:event="oninput" /></label>
+
+                <label class="custom-error-editor__check">
+                    <input type="checkbox" @bind="Options.ShowRequestId" />
+                    <span>Show incident reference for support</span>
+                </label>
+
+                <div class="custom-error-editor__actions">
+                    <button type="button" @onclick="UseSelectedApp">Use selected app</button>
+                    <button type="button" @onclick="ResetCopy">Reset copy</button>
+                </div>
+
+                <details class="custom-error-editor__code">
+                    <summary>Program.cs configuration</summary>
+                    <pre><code>@ConfigurationExample</code></pre>
+                </details>
+            </aside>
+
+            <section class="custom-error-preview" aria-label="Custom status page preview">
+                <StatusRouteContent StatusCode="@StatusCode"
+                                    RequestId="ERR-DEMO-9F2A"
+                                    Options="@Options" />
+            </section>
+        </main>
+    </AccessPageFrame>
+</PlaybookShell>
+
+@code {
+    private int StatusCode { get; set; } = 500;
+    private StatusRouteOptions Options { get; set; } = new();
+    private StatusRoutePageOptions Current => Options.Resolve(StatusCode);
+
+    protected override void OnInitialized() => UseSelectedApp();
+
+    private void UseSelectedApp()
+    {
+        var theme = PlaybookCatalog.Themes.First(value => value.Key == State.Theme);
+        Options.BrandName = theme.Name;
+        Options.LogoUrl = theme.LogoPath;
+    }
+
+    private void ResetCopy()
+    {
+        var brand = Options.BrandName;
+        var logo = Options.LogoUrl;
+        Options = new StatusRouteOptions { BrandName = brand, LogoUrl = logo };
+    }
+
+    private string ConfigurationExample => $$"""
+        builder.Services.AddSuttisakStatusRoutes(options =>
+        {
+            options.BrandName = "{{Options.BrandName}}";
+            options.LogoUrl = "/assets/logo.png";
+            options.HomeHref = "{{Options.HomeHref}}";
+            options.Error.Title = "{{Options.Error.Title}}";
+            options.Error.Message = "{{Options.Error.Message}}";
+            options.Error.PrimaryActionLabel = "{{Options.Error.PrimaryActionLabel}}";
+        });
+        """;
+}

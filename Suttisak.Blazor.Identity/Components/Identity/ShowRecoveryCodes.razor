@@ -8,8 +8,8 @@
         @ShowRecoveryCodes_razor.WarningDescription
     </p>
 </div>
-<FluentGrid>
-    <FluentGridItem sm="12">
+<FormGrid Columns="1">
+    <div>
         @foreach (var recoveryCode in RecoveryCodes)
         {
             <div>
@@ -17,9 +17,9 @@
             </div>
         }
 
-    </FluentGridItem>
+    </div>
 
-</FluentGrid>
+</FormGrid>
 
 
 @code {

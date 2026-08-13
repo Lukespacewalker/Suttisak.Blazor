@@ -14,8 +14,8 @@
 <hr />
 <StatusMessage Message="@_message" />
 <p>@LoginWith2fa_razor.InfoMessage</p>
-<FluentGrid>
-    <FluentGridItem xs="8" sm="4">
+<FormGrid Columns="1">
+    <div>
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
             <input type="hidden" name="RememberMe" value="@RememberMe" />
@@ -25,10 +25,10 @@
             @*<FluentValidationMessage For="() => Input.TwoFactorCode" class="text-danger" />*@
             @* TODO: restore FluentValidationMessage later in RC3 *@
             <FluentCheckbox Name="Input.RememberMachine" @bind-Value="Input!.RememberMachine" Label="@LoginWith2fa_razor.RememberMachineLabel" Style="width: 100%;" />
-            <FluentButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@LoginWith2fa_razor.LoginButton</FluentButton>
+            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@LoginWith2fa_razor.LoginButton</AppButton>
         </EditForm>
-    </FluentGridItem>
-</FluentGrid>
+    </div>
+</FormGrid>
 <p>
     @LoginWith2fa_razor.NoAccessText
     <a href="Account/LoginWithRecoveryCode?ReturnUrl=@ReturnUrl">@LoginWith2fa_razor.RecoveryCodeLink</a>.

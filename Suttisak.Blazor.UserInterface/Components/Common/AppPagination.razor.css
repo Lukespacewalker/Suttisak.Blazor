@@ -1,0 +1,15 @@
+.app-pagination {
+    display: flex;
+    min-width: 0;
+    justify-content: flex-end;
+    padding-top: .75rem;
+    color: var(--app-foreground-muted);
+}
+
+.app-pagination fluent-paginator { width: 100%; }
+.app-pagination__page-label { margin-inline-start: auto; }
+
+@media (max-width: 40rem) {
+    .app-pagination { justify-content: stretch; overflow-x: auto; }
+    .app-pagination__page-label { margin-inline-start: 0; }
+}

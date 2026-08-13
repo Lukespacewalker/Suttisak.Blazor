@@ -1,7 +1,11 @@
 <PageTitle>@Lockout_razor.PageTitle</PageTitle>
 
 <IdentityFlowPanel Title="@Lockout_razor.Header" Description="@Lockout_razor.Message">
-<span>@Lockout_razor.Header</span>
-
-<p>@Lockout_razor.Message</p>
+    <StatusPanel Compact="true"
+                 Title="@Lockout_razor.Header"
+                 Message="@Lockout_razor.Message"
+                 Intent="FeedbackIntent.Warning"
+                 Icon="@(new Icons.Regular.Size24.LockClosed())"
+                 Role="alert"
+                 AriaLive="assertive" />
 </IdentityFlowPanel>

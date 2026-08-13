@@ -26,9 +26,10 @@
     }
     @if (Dismissible)
     {
-        <FluentButton Appearance="ButtonAppearance.Transparent"
+        <AppButton Variant="AppButtonVariant.Subtle"
+                      IconOnly="true"
                       IconStart="@(new Icons.Regular.Size20.Dismiss())"
-                      OnClick="@OnDismiss"
+                      OnClick="@(_ => OnDismiss.InvokeAsync())"
                       aria-label="@DismissLabel" />
     }
 </section>

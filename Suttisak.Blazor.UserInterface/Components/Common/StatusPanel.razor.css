@@ -49,3 +49,18 @@
     gap: .75rem;
     margin-top: .25rem;
 }
+
+.status-panel--compact {
+    min-height: 0;
+    margin: 0;
+    padding: 1.1rem;
+    place-items: start;
+    text-align: left;
+}
+
+.status-panel--compact .status-panel__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.status-panel--compact .status-panel__actions { justify-content: flex-start; }
