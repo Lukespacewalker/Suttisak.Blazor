@@ -136,14 +136,13 @@
     padding: 0.25rem;
 }
 
-/*
- .app-nav--collapsed .nav-category__toggle {
+.app-nav--collapsed .nav-category__toggle {
     display: none;
 }
 
 .app-nav--collapsed .nav-category__panel {
     display: none;
-} */
+}
 
 @media (max-width: 900px) {
     .app-nav--collapsed .nav-category__toggle {

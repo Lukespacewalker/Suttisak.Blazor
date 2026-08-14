@@ -89,7 +89,7 @@
 .section-navigation__overflow-trigger.is-active::after { background: var(--app-accent); }
 .section-navigation__items ::deep a:focus-visible,
 .section-navigation__overflow-trigger:focus-visible,
-.section-navigation__mobile-trigger:focus-visible { outline: 2px solid var(--app-accent); outline-offset: -3px; }
+.section-navigation__mobile-trigger:focus-visible { outline: none; }
 
 .section-navigation__overflow { position: relative; display: flex; flex: 0 0 auto; align-items: stretch; border-inline-start: 1px solid var(--app-border); }
 .section-navigation__dots { display: inline-flex; gap: 2px; }
@@ -164,5 +164,5 @@
     .section-navigation,
     .section-navigation__overflow-panel { background: Canvas; }
     .section-navigation__items ::deep a.active,
-    .section-navigation__overflow-trigger.is-active { outline: 2px solid Highlight; }
+    .section-navigation__overflow-trigger.is-active { outline: none; }
 }

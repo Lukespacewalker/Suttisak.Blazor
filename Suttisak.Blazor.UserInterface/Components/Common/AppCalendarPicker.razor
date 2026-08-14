@@ -8,7 +8,7 @@
     {
         <label class="app-form-control__label" for="@InputId">@Label</label>
     }
-    <div class="app-form-control__input-wrap">
+    <div class="app-form-control__input-wrap app-form-control__input-wrap--has-icon">
         <svg class="app-form-control__icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" />
         </svg>
@@ -26,7 +26,7 @@
                @attributes="InputAttributes" />
         @if (Mode == AppCalendarPickerMode.Popup)
         {
-            <button class="app-form-control__calendar-trigger" type="button" data-calendar-trigger aria-label="@OpenCalendarLabel" aria-haspopup="dialog" aria-expanded="false">
+            <button class="app-form-control__calendar-trigger" type="button" data-calendar-trigger aria-label="@OpenCalendarLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" /></svg>
             </button>
         }

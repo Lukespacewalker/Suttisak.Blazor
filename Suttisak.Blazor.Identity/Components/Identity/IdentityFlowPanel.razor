@@ -3,10 +3,12 @@
 @using Suttisak.Blazor.UserInterface.Layouts.Shared
 @inject IStringLocalizer<IdentityFlowPanel> Text
 
-<SectionContent SectionId="IdentityLayout.CardEyebrowSection">
-    @if (UiSlots?.Brand is not null) { @UiSlots.Brand } else { @Text["AccountSecurity"] }
-</SectionContent>
+@if (UiSlots?.Brand is not null)
+{
+    <SectionContent SectionId="IdentityLayout.CardEyebrowSection">@UiSlots.Brand</SectionContent>
+}
 <SectionContent SectionId="IdentityLayout.CardTitleSection">@Title</SectionContent>
+<SectionContent SectionId="IdentityLayout.CardKickerSection">@(Kicker ?? Text["GetStarted"])</SectionContent>
 <SectionContent SectionId="IdentityLayout.CardIntroSection">@Description</SectionContent>
 @if (UiSlots?.LoginShowcase is not null)
 {
@@ -24,6 +26,7 @@
 
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Kicker { get; set; }
     [Parameter] public string? Description { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
     [CascadingParameter] private IdentityUiSlots? UiSlots { get; set; }

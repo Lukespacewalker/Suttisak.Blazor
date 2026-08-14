@@ -82,10 +82,7 @@
 }
 
 .landing-layout__navigation ::deep a:focus-visible,
-.landing-layout__brand:focus-visible {
-    outline: 2px solid var(--app-accent);
-    outline-offset: 3px;
-}
+.landing-layout__brand:focus-visible { outline: none; }
 
 .landing-page-content {
     flex: 0 0 auto;

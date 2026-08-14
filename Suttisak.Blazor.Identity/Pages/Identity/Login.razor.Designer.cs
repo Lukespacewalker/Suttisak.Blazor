@@ -185,5 +185,14 @@ namespace Suttisak.Blazor.Identity.Pages.Identity {
                 return ResourceManager.GetString("UsernamePasswordAccess", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome back.
+        /// </summary>
+        public static string WelcomeBack {
+            get {
+                return ResourceManager.GetString("WelcomeBack", resourceCulture);
+            }
+        }
     }
 }

@@ -7,6 +7,11 @@ text {
     gap: 1.1rem;
 }
 
+.login-fields {
+    display: grid;
+    gap: 1rem;
+}
+
 .login-remember-row {
     display: inline-flex;
     align-items: center;
@@ -24,16 +29,19 @@ text {
     accent-color: var(--login-highlight);
 }
 
-.login-form-actions {
+.login-form-options {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    flex-wrap: wrap;
+}
+
+.login-form-actions {
+    display: grid;
 }
 
 .login-form-actions ::deep fluent-button {
-    width: min(100%, 11rem);
+    width: 100%;
 }
 
 .login-secondary-link {

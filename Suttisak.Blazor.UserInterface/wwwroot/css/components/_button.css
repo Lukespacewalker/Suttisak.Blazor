@@ -18,7 +18,8 @@
     background: transparent;
 
     min-width: 1.85rem;
-    height: 1.75rem;
+    /* Matches the 2.35rem header CTA once the selector's padding and border are included. */
+    height: 1.91rem;
     width: auto;
     padding: .2rem .38rem;
 
@@ -53,6 +54,5 @@
 
 .theme-selector button:focus-visible,
 .culture-selector button:focus-visible {
-    outline: 2px solid var(--app-accent);
-    outline-offset: 2px;
+    outline: none;
 }

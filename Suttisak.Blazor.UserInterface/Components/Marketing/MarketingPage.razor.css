@@ -23,10 +23,7 @@
     transform: translate(-50%, 0);
 }
 
-.marketing-page__skip-link:focus-visible {
-    outline: 3px solid var(--app-brand-secondary);
-    outline-offset: 3px;
-}
+.marketing-page__skip-link:focus-visible { outline: none; }
 
 @media (max-width: 760px) {
     .marketing-page {

@@ -20,7 +20,7 @@
 .identity-setting-card__actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; }
 .identity-setting-card__actions ::deep .identity-card-action { display: inline-flex; align-items: center; justify-content: center; min-height: 2.15rem; padding: .35rem .7rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-sm); color: var(--app-foreground); font-size: var(--app-type-sm, .875rem); font-weight: 650; text-decoration: none; }
 .identity-setting-card__actions ::deep .identity-card-action:hover { background: var(--app-accent-soft); }
-.identity-setting-card__actions ::deep .identity-card-action:focus-visible { outline: 3px solid var(--app-accent-soft); outline-offset: 2px; }
+.identity-setting-card__actions ::deep .identity-card-action:focus-visible { outline: none; }
 .identity-setting-card__actions ::deep .identity-card-action--danger { color: var(--app-danger); border-color: var(--app-danger-border); }
 .identity-setting-card__actions ::deep .identity-card-action--danger:hover { background: var(--app-danger-soft); }
 .identity-setting-card--danger { border-color: var(--app-danger-border); background: var(--app-danger-soft); }

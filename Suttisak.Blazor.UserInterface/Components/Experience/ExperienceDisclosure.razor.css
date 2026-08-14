@@ -25,10 +25,7 @@
     display: none;
 }
 
-.experience-disclosure summary:focus-visible {
-    outline: .1875rem solid var(--app-focus-ring, var(--app-brand));
-    outline-offset: -.1875rem;
-}
+.experience-disclosure summary:focus-visible { outline: none; }
 
 .experience-disclosure__marker {
     display: grid;
