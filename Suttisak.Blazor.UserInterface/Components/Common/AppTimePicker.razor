@@ -1,11 +1,16 @@
 @using System.Globalization
 
-<div class="app-form-control @Class" @attributes="ContainerAttributes">
+<div class="app-form-control @Class"
+     data-app-time="popup"
+     data-time-minute-step="@Math.Max(1, MinuteStep)"
+     data-time-second-step="@Math.Max(1, SecondStep)"
+     data-time-include-seconds="@IncludeSeconds.ToString().ToLowerInvariant()"
+     @attributes="ContainerAttributes">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
         <label class="app-form-control__label" for="@InputId">@Label</label>
     }
-    <div class="app-form-control__input-wrap">
+    <div class="app-form-control__input-wrap app-form-control__input-wrap--has-icon">
         <svg class="app-form-control__icon" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="9" />
             <path d="M12 7v5l3.5 2" />
@@ -23,6 +28,9 @@
                aria-describedby="@DescriptionId"
                @onchange="HandleChangeAsync"
                @attributes="InputAttributes" />
+        <button class="app-form-control__picker-trigger" type="button" data-time-trigger aria-label="@OpenTimeLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg>
+        </button>
     </div>
     @if (!string.IsNullOrWhiteSpace(Description))
     {
@@ -40,9 +48,11 @@
     [Parameter] public TimeOnly? Min { get; set; }
     [Parameter] public TimeOnly? Max { get; set; }
     [Parameter] public int MinuteStep { get; set; } = 1;
+    [Parameter] public int SecondStep { get; set; } = 1;
     [Parameter] public bool IncludeSeconds { get; set; }
     [Parameter] public bool Required { get; set; }
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string OpenTimeLabel { get; set; } = "Open time picker";
     [Parameter] public string? Class { get; set; }
     [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
@@ -51,7 +61,7 @@
     private string InputId => Id ?? _generatedId;
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
     private string? FormattedValue => Format(Value);
-    private int Step => IncludeSeconds ? Math.Max(1, MinuteStep * 60) : Math.Max(1, MinuteStep) * 60;
+    private int Step => IncludeSeconds ? Math.Max(1, SecondStep) : Math.Max(1, MinuteStep) * 60;
     private string Pattern => IncludeSeconds ? "HH:mm:ss" : "HH:mm";
 
     private string? Format(TimeOnly? value) => value?.ToString(Pattern, CultureInfo.InvariantCulture);
@@ -59,7 +69,9 @@
     private Task HandleChangeAsync(ChangeEventArgs args)
     {
         var text = args.Value?.ToString();
-        var formats = IncludeSeconds ? new[] { "HH:mm:ss", "HH:mm" } : new[] { "HH:mm" };
+        // Browsers may normalize a time value with seconds even when the visual
+        // control only exposes hours and minutes.
+        var formats = new[] { "HH:mm:ss", "HH:mm" };
         var value = TimeOnly.TryParseExact(text, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? parsed
             : (TimeOnly?)null;

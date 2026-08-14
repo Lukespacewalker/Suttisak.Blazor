@@ -158,6 +158,20 @@ validation framework: `DataAnnotationsValidator`, FluentValidation adapters,
 or validation messages added directly to an `EditContext` can all drive the
 same visual states.
 
+`AppTextBox` and `AppSelect` also accept an optional leading `IconContent` slot.
+When omitted, the control keeps its standard text padding and does not reserve
+empty icon space.
+
+```razor
+<AppTextBox Label="Email" @bind-Value="model.Email">
+    <IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Mail())" /></IconContent>
+</AppTextBox>
+
+<AppSelect TValue="string" Label="Department" Options="DepartmentOptions" @bind-Value="model.Department">
+    <IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Building())" /></IconContent>
+</AppSelect>
+```
+
 ```razor
 <EditForm Model="@model" OnValidSubmit="SaveAsync">
     <DataAnnotationsValidator />
@@ -193,9 +207,15 @@ web boundary to reuse Blazor's built-in validation pipeline.
 Use `AppCalendarPicker`, `AppTimePicker`, and `AppDateTimePicker` when a form
 must remain usable during static server-side rendering. They render native HTML
 inputs first, so validation and submission do not require an interactive Blazor
-circuit. `AppCalendarPicker` progressively upgrades to the shared themed popup;
-without JavaScript it remains a normal native date input. Set `Mode="AppCalendarPickerMode.Native"`
-when the operating-system picker is preferred.
+circuit. All three controls progressively upgrade to shared themed popups;
+without JavaScript they remain normal native inputs. The calendar popup includes
+direct month and year selectors, while the time and date-time popups respect
+`MinuteStep`, `SecondStep`, `Min`, `Max`, and `IncludeSeconds`. When
+`IncludeSeconds="true"`, the native step and popup second choices use
+`SecondStep` (one second by default). Set
+`Mode="AppCalendarPickerMode.Native"` on `AppCalendarPicker` when the
+operating-system calendar is preferred. Accessible trigger labels can be
+customized with `OpenCalendarLabel`, `OpenTimeLabel`, and `OpenDateTimeLabel`.
 
 ```razor
 <AppCalendarPicker Label="Date of birth"

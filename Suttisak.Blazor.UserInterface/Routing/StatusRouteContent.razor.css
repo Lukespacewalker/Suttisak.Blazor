@@ -102,7 +102,7 @@
 .status-route__primary:hover,
 .status-route__secondary:hover { transform: translateY(-1px); }
 .status-route__primary:focus-visible,
-.status-route__secondary:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 3px; }
+.status-route__secondary:focus-visible { outline: none; }
 
 .status-route__reference { display: inline-grid; min-width: min(100%, 20rem); grid-template-columns: auto minmax(0, 1fr); gap: .75rem; margin-top: 1.25rem; padding: .55rem .7rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface-muted); text-align: left; }
 .status-route__reference span { color: var(--app-foreground-muted); font-size: .62rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }

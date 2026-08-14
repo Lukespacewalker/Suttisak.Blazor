@@ -134,8 +134,7 @@ html body {
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-    outline: 2px solid var(--app-accent);
-    outline-offset: 2px;
+    outline: none;
 }
 
 body h1,
@@ -369,11 +368,5 @@ samp {
         transition-duration: .01ms !important;
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
-    }
-}
-
-@media (forced-colors: active) {
-    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-        outline-color: Highlight;
     }
 }

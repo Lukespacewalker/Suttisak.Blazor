@@ -2,12 +2,17 @@
 
 <div class="app-form-control @Class"
      data-browser-datetime-control
+     data-app-datetime="popup"
+     data-calendar-first-day="@((int)FirstDayOfWeek)"
+     data-time-minute-step="@Math.Max(1, MinuteStep)"
+     data-time-second-step="@Math.Max(1, SecondStep)"
+     data-time-include-seconds="@IncludeSeconds.ToString().ToLowerInvariant()"
      @attributes="ContainerAttributes">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
         <label class="app-form-control__label" for="@InputId">@Label</label>
     }
-    <div class="app-form-control__input-wrap">
+    <div class="app-form-control__input-wrap app-form-control__input-wrap--has-icon">
         <svg class="app-form-control__icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" />
             <path d="M12 12v3l2 1.2" />
@@ -26,6 +31,9 @@
                data-browser-local-datetime
                @onchange="HandleChangeAsync"
                @attributes="InputAttributes" />
+        <button class="app-form-control__picker-trigger" type="button" data-datetime-trigger aria-label="@OpenDateTimeLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" /><path d="M12 12v3l2 1.2" /></svg>
+        </button>
     </div>
     <input type="hidden" name="@UtcName" data-browser-utc-datetime />
     <input type="hidden" name="@TimeZoneName" data-browser-timezone-id />
@@ -51,9 +59,12 @@
     [Parameter] public DateTime? Min { get; set; }
     [Parameter] public DateTime? Max { get; set; }
     [Parameter] public int MinuteStep { get; set; } = 1;
+    [Parameter] public int SecondStep { get; set; } = 1;
     [Parameter] public bool IncludeSeconds { get; set; }
     [Parameter] public bool Required { get; set; }
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public DayOfWeek FirstDayOfWeek { get; set; } = DayOfWeek.Monday;
+    [Parameter] public string OpenDateTimeLabel { get; set; } = "Open date and time picker";
     [Parameter] public string? Class { get; set; }
     [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
@@ -68,7 +79,7 @@
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
     private string TimeZoneDescriptionId => $"{InputId}-timezone";
     private string DescriptionIds => string.Join(' ', new[] { TimeZoneDescriptionId, DescriptionId }.Where(value => value is not null));
-    private int Step => IncludeSeconds ? Math.Max(1, MinuteStep * 60) : Math.Max(1, MinuteStep) * 60;
+    private int Step => IncludeSeconds ? Math.Max(1, SecondStep) : Math.Max(1, MinuteStep) * 60;
     private string Pattern => IncludeSeconds ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-ddTHH:mm";
     private string? FormattedValue => Format(Value);
 
@@ -77,9 +88,9 @@
     private Task HandleChangeAsync(ChangeEventArgs args)
     {
         var text = args.Value?.ToString();
-        var formats = IncludeSeconds
-            ? new[] { "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm" }
-            : new[] { "yyyy-MM-ddTHH:mm" };
+        // Browsers may normalize a local date-time with seconds even when the
+        // visual control only exposes hours and minutes.
+        var formats = new[] { "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm" };
         var value = DateTime.TryParseExact(text, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? DateTime.SpecifyKind(parsed, DateTimeKind.Unspecified)
             : (DateTime?)null;

@@ -10,7 +10,7 @@
 .app-quick-grid ::deep button.col-title { cursor: pointer; }
 .app-quick-grid ::deep button.col-title:hover { color: var(--app-foreground); background: var(--app-surface-hover); }
 .app-quick-grid ::deep button.col-title:focus-visible,
-.app-quick-grid ::deep .col-options-button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.app-quick-grid ::deep .col-options-button:focus-visible { outline: none; }
 .app-quick-grid ::deep .col-title-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .app-quick-grid ::deep .sort-indicator { width: .85rem; height: .85rem; opacity: .65; }
 .app-quick-grid ::deep .col-options-button { width: 1.75rem; min-width: 1.75rem; height: 1.75rem; border: 0; border-radius: .35rem; background-color: transparent; color: var(--app-foreground-muted); cursor: pointer; }

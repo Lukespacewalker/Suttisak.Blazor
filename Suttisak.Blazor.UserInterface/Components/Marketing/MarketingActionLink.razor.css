@@ -30,10 +30,7 @@
     box-shadow: 0 0.75rem 1.5rem var(--app-shadow-color);
 }
 
-.marketing-action:focus-visible {
-    outline: 3px solid var(--app-brand-secondary);
-    outline-offset: 3px;
-}
+.marketing-action:focus-visible { outline: none; }
 
 .marketing-action__leading {
     display: inline-flex;

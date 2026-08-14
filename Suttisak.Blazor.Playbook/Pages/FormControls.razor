@@ -23,16 +23,20 @@
             <div class="form-playbook__stage">
                 <div class="form-playbook__controls">
                     <AppCalendarPicker Label="Appointment date"
-                                       Description="Uses the shared calendar popup, with the native picker as its no-JavaScript fallback."
+                                       Description="Jump directly to any month or year in the shared calendar popup."
                                        Min="@DateOnly.FromDateTime(DateTime.Today)"
                                        @bind-Value="_date" />
                     <AppTimePicker Label="Start time"
-                                   Description="15-minute steps, represented as local wall time."
+                                   Description="Uses the shared time popup with seconds in 5-second steps."
                                    MinuteStep="15"
+                                   IncludeSeconds="true"
+                                   SecondStep="5"
                                    @bind-Value="_time" />
                     <AppDateTimePicker Label="Follow-up date and time"
-                                       Description="The browser time zone—not the server time zone—owns this value."
+                                       Description="Choose the calendar and browser-local time, including seconds, in one popup."
                                        MinuteStep="5"
+                                       IncludeSeconds="true"
+                                       SecondStep="10"
                                        @bind-Value="_dateTime" />
                 </div>
 
@@ -40,8 +44,8 @@
                     <span>Current Razor values</span>
                     <dl>
                         <div><dt>Date</dt><dd>@(_date?.ToString("yyyy-MM-dd") ?? "Not selected")</dd></div>
-                        <div><dt>Time</dt><dd>@(_time?.ToString("HH:mm") ?? "Not selected")</dd></div>
-                        <div><dt>Local date + time</dt><dd>@(_dateTime?.ToString("yyyy-MM-dd HH:mm") ?? "Not selected")</dd></div>
+                        <div><dt>Time</dt><dd>@(_time?.ToString("HH:mm:ss") ?? "Not selected")</dd></div>
+                        <div><dt>Local date + time</dt><dd>@(_dateTime?.ToString("yyyy-MM-dd HH:mm:ss") ?? "Not selected")</dd></div>
                     </dl>
                     <p>The combined control also keeps hidden UTC and time-zone fields synchronized for a normal HTML form submission.</p>
                 </aside>
@@ -60,10 +64,14 @@
                 <div class="form-playbook__validated-form">
                     <FormGrid Columns="2">
                         <FormField>
-                            <AppTextBox Label="Display name" Description="Shown to people in this workspace." Placeholder="e.g. Kanda S." @bind-Value="_profile.DisplayName" />
+                            <AppTextBox Label="Display name" Description="Shown to people in this workspace." Placeholder="e.g. Kanda S." @bind-Value="_profile.DisplayName">
+                                <IconContent><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6" /></svg></IconContent>
+                            </AppTextBox>
                         </FormField>
                         <FormField>
-                            <AppSelect TValue="string" Label="Department" Description="Select one operational area." Placeholder="Choose a department" Options="@DepartmentOptions" @bind-Value="_profile.Department" />
+                            <AppSelect TValue="string" Label="Department" Description="Select one operational area." Placeholder="Choose a department" Options="@DepartmentOptions" @bind-Value="_profile.Department">
+                                <IconContent><svg viewBox="0 0 24 24"><path d="M4 21h16M6 21V5l6-2 6 2v16M9 8h1M14 8h1M9 12h1M14 12h1M11 21v-4h2v4" /></svg></IconContent>
+                            </AppSelect>
                         </FormField>
                         <FormField ColumnSpan="2">
                             <AppTextArea Label="About this person" Description="A short note for the care team." Placeholder="Add useful context…" Rows="4" MaxLength="160" @bind-Value="_profile.Note" />
@@ -101,7 +109,7 @@
                     </FormField>
                     <FormField>
                         <AppTimePicker Label="Preferred contact time"
-                                       Description="A plain native time value."
+                                       Description="Posts a local wall time with a native no-JavaScript fallback."
                                        Name="Registration.ContactTime"
                                        MinuteStep="15" />
                     </FormField>
@@ -136,8 +144,8 @@
 
 @code {
     private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
-    private TimeOnly? _time = new(9, 30);
-    private DateTime? _dateTime = DateTime.SpecifyKind(DateTime.Today.AddDays(7).AddHours(10), DateTimeKind.Unspecified);
+    private TimeOnly? _time = new(9, 30, 25);
+    private DateTime? _dateTime = DateTime.SpecifyKind(DateTime.Today.AddDays(7).AddHours(10).AddSeconds(20), DateTimeKind.Unspecified);
     private readonly ProfileFormModel _profile = new() { DisplayName = "Ka" };
     private EditContext _editContext = default!;
     private bool _saved;
