@@ -1,49 +1,49 @@
 @using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Sections
 @using Microsoft.Extensions.Localization
 @using Suttisak.Blazor.Identity.Pages.Identity.Manage
 @using Suttisak.Blazor.UserInterface.Components.Navigation
+@using Suttisak.Blazor.UserInterface.Layouts
 @inject IStringLocalizer<IdentityManageShell> Text
 
+<SectionContent SectionName="@CommonSections.PageTitle">
+    <PageHeading SectionTitle="@Text["AccountCenter"]"
+                 SectionDescription="@Text["AccountCenterCaption"]"
+                 SectionIcon="@(new Icons.Regular.Size20.PersonCircle())"
+                 SectionActions="@SectionActions"
+                 Title="@Title"
+                 Description="@Description"
+                 Icon="@Icon"
+                 PageActions="@PageActions">
+        <Breadcrumbs><AppBreadcrumb Items="@BreadcrumbItems" /></Breadcrumbs>
+        <Navigation>
+            <SectionNavigation AriaLabel="@Text["AccountNavigation"]"
+                               CurrentSectionLabel="@CurrentSectionLabel"
+                               MobileLabel="@Text["AccountSection"]"
+                               OverflowLabel="@Text["More"]"
+                               OverflowActive="@OverflowActive"
+                               Embedded="true">
+                <ChildContent>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Root"
+                                           Icon="@(new Icons.Regular.Size20.Home())"
+                                           ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Root)"
+                                           Match="NavLinkMatch.All">@Text["Overview"]</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Profile" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Profile)" Icon="@(new Icons.Regular.Size20.PersonAccounts())">@Manage_razor.Profile</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Email" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Email)" Icon="@(new Icons.Regular.Size20.Mail())">@Manage_razor.Email</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ChangePassword" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ChangePassword)" Icon="@(new Icons.Regular.Size20.Password())">@Manage_razor.ChangePassword</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.TwoFactorAuthentication)" Icon="@(new Icons.Regular.Size20.KeyMultiple())">@Manage_razor.TwoFactorAuthentication</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Passkeys" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Passkeys)" Icon="@(new Icons.Regular.Size20.PersonPasskey())">@Manage_razor.Passkeys</IdentityManageNavLink>
+                </ChildContent>
+                <Overflow>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ExternalLogins" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ExternalLogins)" Icon="@(new Icons.Regular.Size20.GlobeSurface())">@Manage_razor.ExternalLogins</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.PersonalData" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.PersonalData)" Icon="@(new Icons.Regular.Size20.DatabasePerson())">@Manage_razor.PersonalData</IdentityManageNavLink>
+                </Overflow>
+            </SectionNavigation>
+        </Navigation>
+    </PageHeading>
+</SectionContent>
+
 <div class="identity-manage-shell">
-    <SectionNavigation AriaLabel="@Text["AccountNavigation"]"
-                       CurrentSectionLabel="@CurrentSectionLabel"
-                       MobileLabel="@Text["AccountSection"]"
-                       OverflowLabel="@Text["More"]"
-                       OverflowActive="@OverflowActive">
-        <Context>
-            <div class="identity-manage-nav__brand">
-            @if (UiSlots?.Brand is not null)
-            {
-                @UiSlots.Brand
-            }
-            else
-            {
-                <span class="identity-manage-nav__brand-mark" aria-hidden="true">
-                    <FluentIcon Value="@(new Icons.Regular.Size20.PersonCircle())" />
-                </span>
-                <span>
-                    <strong>@Text["AccountCenter"]</strong>
-                    <small>@Text["AccountCenterCaption"]</small>
-                </span>
-            }
-            </div>
-        </Context>
-        <ChildContent>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Root"
-                                   Icon="@(new Icons.Regular.Size20.Home())"
-                                   ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Root)"
-                                   Match="NavLinkMatch.All">@Text["Overview"]</IdentityManageNavLink>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Profile" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Profile)" Icon="@(new Icons.Regular.Size20.PersonAccounts())">@Manage_razor.Profile</IdentityManageNavLink>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Email" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Email)" Icon="@(new Icons.Regular.Size20.Mail())">@Manage_razor.Email</IdentityManageNavLink>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ChangePassword" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ChangePassword)" Icon="@(new Icons.Regular.Size20.Password())">@Manage_razor.ChangePassword</IdentityManageNavLink>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.TwoFactorAuthentication)" Icon="@(new Icons.Regular.Size20.KeyMultiple())">@Manage_razor.TwoFactorAuthentication</IdentityManageNavLink>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Passkeys" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Passkeys)" Icon="@(new Icons.Regular.Size20.PersonPasskey())">@Manage_razor.Passkeys</IdentityManageNavLink>
-        </ChildContent>
-        <Overflow>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ExternalLogins" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ExternalLogins)" Icon="@(new Icons.Regular.Size20.GlobeSurface())">@Manage_razor.ExternalLogins</IdentityManageNavLink>
-            <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.PersonalData" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.PersonalData)" Icon="@(new Icons.Regular.Size20.DatabasePerson())">@Manage_razor.PersonalData</IdentityManageNavLink>
-        </Overflow>
-    </SectionNavigation>
     @if (UiSlots?.AccountHelp is not null)
     {
         <aside class="identity-manage-nav__help">
@@ -52,19 +52,6 @@
     }
 
     <main class="identity-manage-content" id="identity-manage-content" aria-label="@Title">
-        @if (Icon is not null || !string.IsNullOrWhiteSpace(Description))
-        {
-        <header class="identity-manage-content__intro">
-            @if (Icon is not null)
-            {
-                <span class="identity-manage-content__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(Description))
-            {
-                <p class="identity-manage-content__description">@Description</p>
-            }
-        </header>
-        }
         <div class="identity-manage-content__body">@ChildContent</div>
     </main>
 </div>
@@ -74,6 +61,9 @@
     [Parameter] public string? Description { get; set; }
     [Parameter] public string? ActiveUrl { get; set; }
     [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public IEnumerable<Breadcrumb> BreadcrumbItems { get; set; } = Array.Empty<Breadcrumb>();
+    [Parameter] public RenderFragment? SectionActions { get; set; }
+    [Parameter] public RenderFragment? PageActions { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 
     [CascadingParameter] private IdentityUiSlots? UiSlots { get; set; }

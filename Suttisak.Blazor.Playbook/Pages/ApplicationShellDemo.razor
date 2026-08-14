@@ -7,18 +7,17 @@
         <DemoApplicationShell>
             <PageHeader>
                 <PageHeading Title="Good morning, Kanda"
-                             Eyebrow="Thursday · 13 August"
                              Description="A compact home for daily operations, recent activity, and the work that needs attention."
                              Icon="@(new Icons.Regular.Size24.Home())">
                     <Breadcrumbs>
                         <AppBreadcrumb Items="@OverviewBreadcrumbs" />
                     </Breadcrumbs>
-                    <Toolbar>
+                    <PageActions>
                         <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
                             <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Table())" /></IconStartContent>
                             <ChildContent>Open records</ChildContent>
                         </AppButton>
-                    </Toolbar>
+                    </PageActions>
                 </PageHeading>
             </PageHeader>
 

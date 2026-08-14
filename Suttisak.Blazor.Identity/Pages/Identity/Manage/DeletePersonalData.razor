@@ -11,13 +11,8 @@
 
 <PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
-<SectionContent SectionName="@CommonSections.PageTitle">
-<PageHeading Title="@Manage_razor.DeletePersonalData">
-        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(PersonalData<TUser>.StaticPageIcon, PersonalData<TUser>.StaticPageUrl, Manage_razor.PersonalData), new Breadcrumb(StaticPageIcon, null, Manage_razor.DeletePersonalData) })" /></Breadcrumbs>
-    </PageHeading>
-</SectionContent>
-
-<IdentityManageShell Title="@Manage_razor.DeletePersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.PersonalData" Icon="@StaticPageIcon">
+<IdentityManageShell Title="@Manage_razor.DeletePersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.PersonalData" Icon="@StaticPageIcon"
+                     BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(PersonalData<TUser>.StaticPageIcon, PersonalData<TUser>.StaticPageUrl, Manage_razor.PersonalData), new Breadcrumb(StaticPageIcon, null, Manage_razor.DeletePersonalData) })">
 <StatusMessage Message="@_message" />
 
 <FormGrid Columns="1">

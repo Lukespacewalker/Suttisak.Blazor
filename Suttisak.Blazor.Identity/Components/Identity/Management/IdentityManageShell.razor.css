@@ -4,28 +4,7 @@
     gap: clamp(1rem, 2vw, 1.5rem);
 }
 
-.identity-manage-nav__brand {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: .65rem;
-}
-
-.identity-manage-nav__brand-mark,
-.identity-manage-content__icon {
-    display: inline-grid;
-    flex: 0 0 auto;
-    place-items: center;
-    color: var(--app-accent);
-}
-
-.identity-manage-nav__brand strong,
-.identity-manage-nav__brand small { display: block; }
-.identity-manage-nav__brand strong { font-size: .82rem; }
-.identity-manage-nav__brand small { margin-top: .1rem; color: var(--app-foreground-muted); font-size: .68rem; }
-
 .identity-manage-nav__help {
-    margin-top: -.65rem;
     padding: .7rem .85rem;
     border-inline-start: 3px solid var(--app-accent-border);
     background: var(--app-surface-muted);
@@ -35,9 +14,6 @@
 }
 
 .identity-manage-content { min-width: 0; }
-.identity-manage-content__intro { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--app-border); }
-.identity-manage-content__icon { width: 2.25rem; height: 2.25rem; border-radius: var(--app-radius-md); background: var(--app-accent-soft); }
-.identity-manage-content__description { max-width: 62ch; margin: 0; color: var(--app-foreground-muted); font-size: .875rem; line-height: 1.5; }
 .identity-manage-content__body { display: grid; gap: 1rem; }
 .identity-manage-content__body ::deep .identity-settings-list { display: grid; gap: .75rem; }
 .identity-manage-content__body ::deep .identity-provider-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
@@ -48,7 +24,3 @@
 .identity-manage-content__body ::deep .alert { margin: 0; padding: 1rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface-muted); }
 .identity-manage-content__body ::deep .alert-danger { border-color: var(--app-danger-border); background: var(--app-danger-soft); }
 .identity-manage-content__body ::deep .alert-warning { border-color: var(--app-warning-border); background: var(--app-warning-soft); }
-
-@container (max-width: 34rem) {
-    .identity-manage-content__intro { align-items: flex-start; }
-}

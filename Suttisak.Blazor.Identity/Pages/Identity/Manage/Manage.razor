@@ -7,16 +7,11 @@
 <PageTitle>@Manage_razor.Manage</PageTitle>
 
 
-<SectionContent SectionName="@CommonSections.PageTitle">
-<PageHeading Title="@Manage_razor.Manage">
-        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(StaticPageIcon, null, Manage_razor.Manage) })" /></Breadcrumbs>
-    </PageHeading>
-</SectionContent>
-
-<IdentityManageShell Title="@Manage_razor.Manage"
+<IdentityManageShell Title="@Text["Overview"]"
                      Description="@Text["OverviewDescription"]"
                      ActiveUrl="@IdentityRoutes.Account.Manage.Root"
-                     Icon="@StaticPageIcon">
+                     Icon="@StaticPageIcon"
+                     BreadcrumbItems="@(new[] { new Breadcrumb(StaticPageIcon, null, Manage_razor.Manage) })">
     <StatusMessage />
 
     <div class="identity-overview-grid">

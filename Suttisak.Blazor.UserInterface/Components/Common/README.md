@@ -106,14 +106,25 @@ menu. Put destructive actions last.
 ## Page composition
 
 ```razor
-<PageHeading Title="Participants"
-             Eyebrow="Administration"
+<PageHeading SectionTitle="Assessment workspace"
+             SectionDescription="Administration"
+             SectionIcon="@(new Icons.Regular.Size20.Briefcase())"
+             Title="Participants"
              Description="Manage people in the current assessment period"
              Icon="@(new Icons.Regular.Size24.People())">
     <Breadcrumbs><AppBreadcrumb Items="@breadcrumbs" /></Breadcrumbs>
-    <Toolbar>
+    <SectionActions>
+        <AppButton Variant="AppButtonVariant.Subtle">Workspace settings</AppButton>
+    </SectionActions>
+    <PageActions>
         <AppButton Variant="AppButtonVariant.Primary">Add participant</AppButton>
-    </Toolbar>
+    </PageActions>
+    <Navigation>
+        <SectionNavigation AriaLabel="Participant sections" Embedded="true">
+            <NavLink href="participants" Match="NavLinkMatch.All">Overview</NavLink>
+            <NavLink href="participants/results">Results</NavLink>
+        </SectionNavigation>
+    </Navigation>
 </PageHeading>
 
 <AsyncContent State="@ContentState"
@@ -134,12 +145,13 @@ menu. Put destructive actions last.
 </AsyncContent>
 ```
 
-`PageHeading` is a compact task-oriented header for CRUD and administration
-pages. Its `Breadcrumbs` and `Toolbar` slots keep route context, title, and
-actions in one responsive surface without adding external margin. Keep labels,
-routes, and action behavior in the consuming application. The older `Actions`
-slot remains supported for existing consumers; new compositions should use
-`Toolbar`. Responsive changes follow each component's own container width, so
+`PageHeading` is the application hierarchy contract for CRUD and administration
+pages. It renders breadcrumb context, optional section identity and
+`SectionActions`, the current page title and `PageActions`, then optional sibling
+`Navigation`. The page title remains the single `h1`; `SectionTitle` identifies
+the surrounding account, participant, case, or workspace without creating a
+second heading landmark. Keep labels, routes, and action behavior in the
+consuming application. Responsive changes follow each component's own container width, so
 embedded previews and constrained application panes behave like real mobile
 layouts even when the browser viewport is wide. Use `ExperienceHeader` for reader-facing results, education, and
 guidance pages.
