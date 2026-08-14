@@ -6,6 +6,33 @@
         </nav>
     }
 
+    @if (!string.IsNullOrWhiteSpace(SectionTitle))
+    {
+        <div class="page-heading__section">
+            @if (SectionIcon is not null)
+            {
+                <span class="page-heading__section-icon" aria-hidden="true">
+                    <FluentIcon Value="@SectionIcon" />
+                </span>
+            }
+
+            <div class="page-heading__section-copy">
+                <span class="page-heading__section-title">@SectionTitle</span>
+                @if (!string.IsNullOrWhiteSpace(SectionDescription))
+                {
+                    <span class="page-heading__section-description">@SectionDescription</span>
+                }
+            </div>
+
+            @if (SectionActions is not null)
+            {
+                <div class="page-heading__section-actions" role="toolbar" aria-label="@SectionActionsLabel">
+                    @SectionActions
+                </div>
+            }
+        </div>
+    }
+
     <div class="page-heading__body">
         @if (Icon is not null)
         {
@@ -15,10 +42,6 @@
         }
 
         <div class="page-heading__copy">
-            @if (!string.IsNullOrWhiteSpace(Eyebrow))
-            {
-                <span class="page-heading__eyebrow">@Eyebrow</span>
-            }
             <h1 id="@HeadingIdValue">@Title</h1>
             @if (!string.IsNullOrWhiteSpace(Description))
             {
@@ -26,14 +49,20 @@
             }
         </div>
 
-        @if (Toolbar is not null || Actions is not null)
+        @if (PageActions is not null)
         {
-            <div class="page-heading__toolbar" role="toolbar" aria-label="@ToolbarLabel">
-                @Toolbar
-                @Actions
+            <div class="page-heading__page-actions" role="toolbar" aria-label="@PageActionsLabel">
+                @PageActions
             </div>
         }
     </div>
+
+    @if (Navigation is not null)
+    {
+        <div class="page-heading__navigation">
+            @Navigation
+        </div>
+    }
 </header>
 
 @code {
@@ -41,14 +70,18 @@
 
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Description { get; set; }
-    [Parameter] public string? Eyebrow { get; set; }
     [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? SectionTitle { get; set; }
+    [Parameter] public string? SectionDescription { get; set; }
+    [Parameter] public Icon? SectionIcon { get; set; }
     [Parameter] public RenderFragment? Breadcrumbs { get; set; }
-    [Parameter] public RenderFragment? Toolbar { get; set; }
-    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public RenderFragment? SectionActions { get; set; }
+    [Parameter] public RenderFragment? PageActions { get; set; }
+    [Parameter] public RenderFragment? Navigation { get; set; }
     [Parameter] public string? HeadingId { get; set; }
     [Parameter] public string BreadcrumbLabel { get; set; } = "Breadcrumb";
-    [Parameter] public string ToolbarLabel { get; set; } = "Page actions";
+    [Parameter] public string SectionActionsLabel { get; set; } = "Section actions";
+    [Parameter] public string PageActionsLabel { get; set; } = "Page actions";
     [Parameter] public string? CssClass { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }

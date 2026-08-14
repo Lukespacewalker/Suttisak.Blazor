@@ -11,23 +11,24 @@
                 {
                     <PageHeading Title="Record not found" Description="This demo record may have been removed." Icon="@(new Icons.Regular.Size24.Warning())">
                         <Breadcrumbs><AppBreadcrumb Items="@MissingBreadcrumbs" /></Breadcrumbs>
-                        <Toolbar><AppButton Href="application-shell/records">Back to records</AppButton></Toolbar>
+                        <PageActions><AppButton Href="application-shell/records">Back to records</AppButton></PageActions>
                     </PageHeading>
                 }
                 else
                 {
                     <PageHeading Title="@Record.Name"
-                                 Eyebrow="@($"Record #{Record.Id}")"
+                                 SectionTitle="Program records"
+                                 SectionDescription="@($"Record #{Record.Id}")"
                                  Description="A focused detail page using the same compact heading, breadcrumb trail, and toolbar contract."
                                  Icon="@(new Icons.Regular.Size24.Document())">
                         <Breadcrumbs><AppBreadcrumb Items="@DetailBreadcrumbs" /></Breadcrumbs>
-                        <Toolbar>
+                        <PageActions>
                             <AppButton Href="application-shell/records">Back to list</AppButton>
                             <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
                                 <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Edit())" /></IconStartContent>
                                 <ChildContent>Edit record</ChildContent>
                             </AppButton>
-                        </Toolbar>
+                        </PageActions>
                     </PageHeading>
                 }
             </PageHeader>

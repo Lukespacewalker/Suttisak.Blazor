@@ -27,8 +27,7 @@ navigation already identifies the product area and the user needs to move among
 views of one account, participant, case, or other current context.
 
 ```razor
-<SectionNavigation AriaLabel="Participant sections">
-    <Context>@* current participant summary *@</Context>
+<SectionNavigation AriaLabel="Participant sections" Embedded="true">
     <ChildContent>
         <NavLink href="participants/42" Match="NavLinkMatch.All">Overview</NavLink>
         <NavLink href="participants/42/results">Results</NavLink>
@@ -38,16 +37,22 @@ views of one account, participant, case, or other current context.
         <NavLink href="participants/42/appointments">Appointments</NavLink>
         <NavLink href="participants/42/audit">Audit history</NavLink>
     </Overflow>
-    <Actions>@* context-level action *@</Actions>
 </SectionNavigation>
 ```
+
+Set `Embedded="true"` when the navigation is supplied through
+`PageHeading.Navigation`. In that composition the heading owns the outer
+surface, section identity, and section-level actions, while
+`SectionNavigation` renders only the sibling destinations.
 
 Keep global destinations in `ApplicationShellV2.Navigation`. Keep only sibling
 views of the current entity in `SectionNavigation`; do not repeat the primary
 navigation. The application owns routes, localized labels, icons, and actions.
-On narrow containers the context and action remain above a horizontally
-scrollable navigation rail so the pattern does not create a second mobile
-drawer or sidebar.
+In the standard composition, put the current entity in
+`PageHeading.SectionTitle`, context-level actions in
+`PageHeading.SectionActions`, and current-page actions in
+`PageHeading.PageActions`. On narrow containers the navigation becomes one
+current-section menu rather than a second drawer or sidebar.
 
 For more than seven sibling views, keep the highest-frequency destinations in
 `ChildContent` and move the rest to `Overflow`. Set `OverflowActive="true"`

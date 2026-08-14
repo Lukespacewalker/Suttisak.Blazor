@@ -13,12 +13,8 @@
 <PageTitle>@Manage_razor.Passkeys</PageTitle>
 
 
-<SectionContent SectionName="@CommonSections.PageTitle">
-<PageHeading Title="@Manage_razor.Passkeys">
-        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Passkeys) })" /></Breadcrumbs>
-    </PageHeading>
-</SectionContent>
-<IdentityManageShell Title="@Manage_razor.Passkeys" Description="@Text["PasskeysDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon">
+<IdentityManageShell Title="@Manage_razor.Passkeys" Description="@Text["PasskeysDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+                     BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Passkeys) })">
 <StatusMessage />
 
 @if (_currentPasskeys is not { Count: >= MaxPasskeyCount })
