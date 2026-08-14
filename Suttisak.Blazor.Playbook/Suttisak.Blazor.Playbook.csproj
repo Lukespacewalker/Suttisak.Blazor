@@ -13,4 +13,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Suttisak.Blazor.UserInterface\Suttisak.Blazor.UserInterface.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="ImageSources\**\*" />
+    <None Update="ImageSources\**\*" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" Pack="false" />
+  </ItemGroup>
 </Project>

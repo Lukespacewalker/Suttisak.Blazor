@@ -9,12 +9,8 @@
 
 <PageTitle>@Manage_razor.GenerateRecoveryCodes</PageTitle>
 
-<SectionContent SectionName="@CommonSections.PageTitle">
-<PageHeading Title="@Manage_razor.GenerateRecoveryCodes">
-        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.GenerateRecoveryCodes) })" /></Breadcrumbs>
-    </PageHeading>
-</SectionContent>
-<IdentityManageShell Title="@Manage_razor.GenerateRecoveryCodes" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon">
+<IdentityManageShell Title="@Manage_razor.GenerateRecoveryCodes" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon"
+                     BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.GenerateRecoveryCodes) })">
 
 @if (_recoveryCodes is not null)
 {

@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.7.1</AssemblyVersion>
+		<AssemblyVersion>0.7.2</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -374,6 +374,8 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\images\icons\" />
+	  <Content Remove="ImageSources\**\*" />
+	  <None Update="ImageSources\**\*" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" Pack="false" />
 	</ItemGroup>
 
 </Project>

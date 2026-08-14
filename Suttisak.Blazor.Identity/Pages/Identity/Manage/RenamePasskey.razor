@@ -10,12 +10,8 @@
 
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
-<SectionContent SectionName="@CommonSections.PageTitle">
-<PageHeading Title="@Manage_razor.RenamePasskey">
-        <Breadcrumbs><AppBreadcrumb Items="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(Passkeys<TUser>.StaticPageIcon, Passkeys<TUser>.StaticPageUrl, Manage_razor.Passkeys), new Breadcrumb(StaticPageIcon, null, Manage_razor.RenamePasskey) })" /></Breadcrumbs>
-    </PageHeading>
-</SectionContent>
-<IdentityManageShell Title="@Manage_razor.RenamePasskey" Description="@Text["PasskeysDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.Passkeys" Icon="@StaticPageIcon">
+<IdentityManageShell Title="@Manage_razor.RenamePasskey" Description="@Text["PasskeysDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.Passkeys" Icon="@StaticPageIcon"
+                     BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(Passkeys<TUser>.StaticPageIcon, Passkeys<TUser>.StaticPageUrl, Manage_razor.Passkeys), new Breadcrumb(StaticPageIcon, null, Manage_razor.RenamePasskey) })">
 
 <EditForm Model="Input" OnValidSubmit="Rename" method="post">
     <DataAnnotationsValidator />

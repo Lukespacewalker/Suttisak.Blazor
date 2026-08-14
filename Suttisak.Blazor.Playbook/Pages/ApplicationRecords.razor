@@ -8,16 +8,18 @@
         <DemoApplicationShell>
             <PageHeader>
                 <PageHeading Title="Program records"
-                             Eyebrow="Operations"
+                             SectionTitle="Operations"
+                             SectionDescription="Program administration"
+                             SectionIcon="@(new Icons.Regular.Size20.Briefcase())"
                              Description="Create, review, update, and remove records from one focused workspace."
                              Icon="@(new Icons.Regular.Size24.Table())">
                     <Breadcrumbs><AppBreadcrumb Items="@RecordBreadcrumbs" /></Breadcrumbs>
-                    <Toolbar>
+                    <PageActions>
                         <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => CreateRecord())">
                             <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStartContent>
                             <ChildContent>New record</ChildContent>
                         </AppButton>
-                    </Toolbar>
+                    </PageActions>
                 </PageHeading>
             </PageHeader>
 

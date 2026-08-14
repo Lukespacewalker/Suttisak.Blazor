@@ -13,6 +13,13 @@
     container: section-navigation / inline-size;
 }
 
+.section-navigation--embedded {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
 .section-navigation--without-context { grid-template-columns: minmax(0, 1fr) auto; }
 .section-navigation--without-context .section-navigation__desktop { grid-column: 1; }
 .section-navigation--without-context .section-navigation__actions { grid-column: 2; }

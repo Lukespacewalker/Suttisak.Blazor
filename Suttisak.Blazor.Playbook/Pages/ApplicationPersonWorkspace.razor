@@ -7,12 +7,20 @@
     <div class="application-shell-workbench">
         <DemoApplicationShell>
             <PageHeader>
-                <PageHeading Title="Worapat Sukjai"
-                             Eyebrow="HN 004829 · 42 years"
+                <PageHeading SectionTitle="Worapat Sukjai"
+                             SectionDescription="HN 004829 · 42 years · Annual checkup 2026"
+                             SectionIcon="@(new Icons.Regular.Size20.Person())"
+                             Title="@SectionTitle"
                              Description="One participant context with clear sibling views for checkup work, interpreted results, and documents."
-                             Icon="@(new Icons.Regular.Size24.Person())">
+                             Icon="@SectionIcon">
                     <Breadcrumbs><AppBreadcrumb Items="@PersonBreadcrumbs" /></Breadcrumbs>
-                    <Toolbar>
+                    <SectionActions>
+                        <AppButton Variant="AppButtonVariant.Subtle">
+                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.People())" /></IconStartContent>
+                            <ChildContent>Change participant</ChildContent>
+                        </AppButton>
+                    </SectionActions>
+                    <PageActions>
                         <PageActionToolbar Role="group" AriaLabel="Participant actions">
                             <PrimaryAction>
                                 <AppButton Variant="AppButtonVariant.Primary">
@@ -41,46 +49,38 @@
                                 </AppButton>
                             </OverflowActions>
                         </PageActionToolbar>
-                    </Toolbar>
+                    </PageActions>
+                    <Navigation>
+                        <SectionNavigation AriaLabel="Individual health sections"
+                                           CurrentSectionLabel="@SectionTitle"
+                                           OverflowLabel="@OverflowLabel"
+                                           OverflowActive="@IsOverflowSection"
+                                           Embedded="true">
+                            <ChildContent>
+                                <NavLink href="application-shell/person" Match="NavLinkMatch.All"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> Overview</NavLink>
+                                <NavLink href="application-shell/person/profile"><FluentIcon Value="@(new Icons.Regular.Size20.PersonAccounts())" /> Profile</NavLink>
+                                <NavLink href="application-shell/person/checkups"><FluentIcon Value="@(new Icons.Regular.Size20.BoardHeart())" /> Checkup data</NavLink>
+                                <NavLink href="application-shell/person/results"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentHeart())" /> Results <span class="person-nav-count">2</span></NavLink>
+                                <NavLink href="application-shell/person/documents"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentPdf())" /> Documents</NavLink>
+                                <NavLink href="application-shell/person/appointments"><FluentIcon Value="@(new Icons.Regular.Size20.Calendar())" /> Appointments</NavLink>
+                            </ChildContent>
+                            <Overflow>
+                                <NavLink href="application-shell/person/exposure-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Exposure history</NavLink>
+                                <NavLink href="application-shell/person/work-restrictions"><FluentIcon Value="@(new Icons.Regular.Size20.Shield())" /> Work restrictions</NavLink>
+                                <NavLink href="application-shell/person/referrals"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /> Referrals</NavLink>
+                                <NavLink href="application-shell/person/certificates"><FluentIcon Value="@(new Icons.Regular.Size20.Document())" /> Certificates</NavLink>
+                                <NavLink href="application-shell/person/notes"><FluentIcon Value="@(new Icons.Regular.Size20.Note())" /> Notes</NavLink>
+                                <NavLink href="application-shell/person/attachments"><FluentIcon Value="@(new Icons.Regular.Size20.Attach())" /> Attachments</NavLink>
+                                <NavLink href="application-shell/person/audit-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Audit history</NavLink>
+                                <NavLink href="application-shell/person/consent"><FluentIcon Value="@(new Icons.Regular.Size20.Signature())" /> Consent</NavLink>
+                                <NavLink href="application-shell/person/access-control"><FluentIcon Value="@(new Icons.Regular.Size20.LockClosed())" /> Access control</NavLink>
+                            </Overflow>
+                        </SectionNavigation>
+                    </Navigation>
                 </PageHeading>
             </PageHeader>
 
             <ChildContent>
-                <SectionNavigation AriaLabel="Individual health sections"
-                                   CurrentSectionLabel="@SectionTitle"
-                                   OverflowLabel="@OverflowLabel"
-                                   OverflowActive="@IsOverflowSection">
-                    <Context>
-                        <div class="person-context">
-                            <span aria-hidden="true">WS</span>
-                            <div><strong>Worapat Sukjai</strong><small>Annual checkup · 2026</small></div>
-                            <i title="Current record"></i>
-                        </div>
-                    </Context>
-                    <ChildContent>
-                        <NavLink href="application-shell/person" Match="NavLinkMatch.All"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> Overview</NavLink>
-                        <NavLink href="application-shell/person/profile"><FluentIcon Value="@(new Icons.Regular.Size20.PersonAccounts())" /> Profile</NavLink>
-                        <NavLink href="application-shell/person/checkups"><FluentIcon Value="@(new Icons.Regular.Size20.BoardHeart())" /> Checkup data</NavLink>
-                        <NavLink href="application-shell/person/results"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentHeart())" /> Results <span class="person-nav-count">2</span></NavLink>
-                        <NavLink href="application-shell/person/documents"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentPdf())" /> Documents</NavLink>
-                        <NavLink href="application-shell/person/appointments"><FluentIcon Value="@(new Icons.Regular.Size20.Calendar())" /> Appointments</NavLink>
-                    </ChildContent>
-                    <Overflow>
-                        <NavLink href="application-shell/person/exposure-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Exposure history</NavLink>
-                        <NavLink href="application-shell/person/work-restrictions"><FluentIcon Value="@(new Icons.Regular.Size20.Shield())" /> Work restrictions</NavLink>
-                        <NavLink href="application-shell/person/referrals"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /> Referrals</NavLink>
-                        <NavLink href="application-shell/person/certificates"><FluentIcon Value="@(new Icons.Regular.Size20.Document())" /> Certificates</NavLink>
-                        <NavLink href="application-shell/person/notes"><FluentIcon Value="@(new Icons.Regular.Size20.Note())" /> Notes</NavLink>
-                        <NavLink href="application-shell/person/attachments"><FluentIcon Value="@(new Icons.Regular.Size20.Attach())" /> Attachments</NavLink>
-                        <NavLink href="application-shell/person/audit-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Audit history</NavLink>
-                        <NavLink href="application-shell/person/consent"><FluentIcon Value="@(new Icons.Regular.Size20.Signature())" /> Consent</NavLink>
-                        <NavLink href="application-shell/person/access-control"><FluentIcon Value="@(new Icons.Regular.Size20.LockClosed())" /> Access control</NavLink>
-                    </Overflow>
-                    <Actions>
-                        <button class="person-context-action" type="button" aria-label="Change participant"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /><span>Change</span></button>
-                    </Actions>
-                </SectionNavigation>
-
                 <div class="person-workspace-content">
                     @switch (ActiveSection)
                     {
@@ -222,6 +222,15 @@
     }
 
     private string SectionTitle => PersonSections.First(item => item.Key == ActiveSection).Label;
+    private Icon SectionIcon => ActiveSection switch
+    {
+        "profile" => new Icons.Regular.Size24.PersonAccounts(),
+        "checkups" => new Icons.Regular.Size24.BoardHeart(),
+        "results" => new Icons.Regular.Size24.DocumentHeart(),
+        "documents" => new Icons.Regular.Size24.DocumentPdf(),
+        "appointments" => new Icons.Regular.Size24.Calendar(),
+        _ => new Icons.Regular.Size24.Person()
+    };
     private bool IsOverflowSection => Array.FindIndex(PersonSections, item => item.Key == ActiveSection) >= 6;
     private string OverflowLabel => IsOverflowSection ? SectionTitle : "More";
 
