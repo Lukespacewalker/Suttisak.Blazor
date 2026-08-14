@@ -14,7 +14,26 @@
 			<div class="identity-layout-background-orb identity-layout-background-orb-tertiary"></div>
 		</div>
 		<div class="identity-layout-grid">
-			<aside class="identity-showcase" aria-hidden="true">
+			<main class="identity-card-wrap">
+				<div class="identity-card">
+					<div class="identity-card-controls" aria-label="Display preferences">
+						<CultureSelector @rendermode="HeaderRenderMode" />
+						<ThemeSelector @rendermode="HeaderRenderMode" />
+					</div>
+					<div class="identity-card-header">
+						<div class="identity-card-brand"><SectionOutlet SectionId="CardEyebrowSection" /></div>
+						<div class="header">
+							<p class="identity-kicker"><SectionOutlet SectionId="CardKickerSection" /></p>
+							<h1><SectionOutlet SectionId="CardTitleSection" /></h1>
+							<p class="identity-intro"><SectionOutlet SectionId="CardIntroSection" /></p>
+						</div>
+					</div>
+					<div class="identity-card-body">@Body</div>
+				</div>
+			</main>
+
+			<aside class="identity-showcase" aria-label="Account access information">
+				<div class="identity-showcase-grid" aria-hidden="true"></div>
 				<div class="identity-showcase-orb identity-showcase-orb-primary"></div>
 				<div class="identity-showcase-orb identity-showcase-orb-secondary"></div>
 
@@ -22,27 +41,13 @@
 					<SectionOutlet SectionId="ShowcaseSection" />
 				</div>
 			</aside>
-
-			<main class="identity-card-wrap">
-				<div class="identity-card">
-					<div class="identity-card-header">
-						<CultureSelector @rendermode="HeaderRenderMode" />
-						<ThemeSelector @rendermode="HeaderRenderMode" />
-						<div class="header">
-							<p class="identity-eyebrow"><SectionOutlet SectionId="CardEyebrowSection" /></p>
-							<h2><SectionOutlet SectionId="CardTitleSection" /></h2>
-							<p class="identity-intro"><SectionOutlet SectionId="CardIntroSection" /></p>
-						</div>
-					</div>
-					@Body
-				</div>
-			</main>
 		</div>
 	</section>
 </CascadingValue>
 @code {
 	public static object ShowcaseSection = new();
 	public static object CardEyebrowSection = new();
+	public static object CardKickerSection = new();
 	public static object CardTitleSection = new();
 	public static object CardIntroSection = new();
 

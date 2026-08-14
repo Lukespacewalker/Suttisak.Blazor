@@ -25,6 +25,6 @@
     background: var(--app-glass-surface);
 }
 
-.identity-manage-nav-link:focus-visible { outline: 3px solid var(--app-accent-soft); outline-offset: 2px; }
+.identity-manage-nav-link:focus-visible { outline: none; }
 
 @media (prefers-reduced-motion: reduce) { .identity-manage-nav-link { transition: none; } }

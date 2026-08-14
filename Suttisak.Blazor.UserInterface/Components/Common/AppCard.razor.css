@@ -13,7 +13,7 @@
 .app-card--interactive { transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
 .app-card--interactive:hover { border-color: var(--app-accent-border); box-shadow: 0 .9rem 2.5rem var(--app-shadow-color); transform: translateY(-2px); }
 .app-card--interactive { cursor: pointer; }
-.app-card--interactive:focus-visible { outline: 3px solid var(--app-focus-ring); outline-offset: 3px; }
+.app-card--interactive:focus-visible { outline: none; }
 .app-card.is-active { border-color: var(--app-accent-border); box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-primary) 22%, transparent), 0 .9rem 2.5rem var(--app-shadow-color); }
 .app-card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; padding-bottom: .85rem; border-bottom: 1px solid var(--app-border); }
 .app-card__header h2 { margin: 0; font-family: var(--app-font-heading); font-size: 1rem; }

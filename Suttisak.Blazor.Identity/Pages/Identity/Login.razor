@@ -12,24 +12,35 @@
 
 <PageTitle>@Login_razor.Login</PageTitle>
 
-<SectionContent SectionId="IdentityLayout.CardEyebrowSection">
-    @if (UiSlots?.Brand is not null) { @UiSlots.Brand }
-</SectionContent>
+@if (UiSlots?.Brand is not null)
+{
+    <SectionContent SectionId="IdentityLayout.CardEyebrowSection">
+        @UiSlots.Brand
+    </SectionContent>
+}
 
 <SectionContent SectionId="IdentityLayout.CardTitleSection">
     @Login_razor.Login
+</SectionContent>
+
+<SectionContent SectionId="IdentityLayout.CardKickerSection">
+    @Login_razor.WelcomeBack
 </SectionContent>
 
 <SectionContent SectionId="IdentityLayout.CardIntroSection">
     @Login_razor.SignInIntro
 </SectionContent>
 
-@if (UiSlots?.LoginShowcase is not null)
-{
-    <SectionContent SectionId="IdentityLayout.ShowcaseSection">
+<SectionContent SectionId="IdentityLayout.ShowcaseSection">
+    @if (UiSlots?.LoginShowcase is not null)
+    {
         @UiSlots.LoginShowcase
-    </SectionContent>
-}
+    }
+    else
+    {
+        <h1>@Login_razor.Login</h1>
+    }
+</SectionContent>
 
 <text>
 	<StatusMessage Message="@_statusMessage" />
@@ -59,28 +70,34 @@
 		<DataAnnotationsValidator />
 		<FluentValidationSummary class="text-danger" role="alert" />
 
-		<div>
-			<FluentTextInput Name="LoginWithUsernamePasswordInput.Username" Width="100%"
-							 @bind-Value="LoginWithUsernamePasswordInput!.Username" AutoComplete="username" Required="true"
-							 Placeholder="@(string.IsNullOrEmpty(UserNamePlaceholder) ? Login_razor.EmailOrUsername : UserNamePlaceholder)" Label="@Login_razor.Username" Style="width: 100%" />
+		<div class="login-fields">
+			<AppTextBox Name="LoginWithUsernamePasswordInput.Username"
+						@bind-Value="LoginWithUsernamePasswordInput!.Username" Autocomplete="username" Required="true"
+						Placeholder="@(string.IsNullOrEmpty(UserNamePlaceholder) ? Login_razor.EmailOrUsername : UserNamePlaceholder)" Label="@Login_razor.Username">
+				<IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /></IconContent>
+			</AppTextBox>
 
-			<FluentTextInput Name="LoginWithUsernamePasswordInput.Password" Width="100%"
-							 @bind-Value="LoginWithUsernamePasswordInput!.Password" AutoComplete="current-password" Required="true"
-							 Placeholder="@(string.IsNullOrEmpty(PasswordPlaceholder) ? Login_razor.Password : PasswordPlaceholder)" Label="@Login_razor.Password" Style="width: 100%"
-							 TextInputType="TextInputType.Password" />
+			<AppTextBox Name="LoginWithUsernamePasswordInput.Password" Type="password"
+						@bind-Value="LoginWithUsernamePasswordInput!.Password" Autocomplete="current-password" Required="true"
+						Placeholder="@(string.IsNullOrEmpty(PasswordPlaceholder) ? Login_razor.Password : PasswordPlaceholder)" Label="@Login_razor.Password">
+				<IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Password())" /></IconContent>
+			</AppTextBox>
 
+		</div>
+
+		<div class="login-form-options">
 			<label class="login-remember-row" for="remember-me">
 				<input id="remember-me" name="@($"{LoginWithUsernameFormName}.RememberMe")" type="checkbox"
 					   @bind="LoginWithUsernamePasswordInput!.RememberMe" />
 				<span>@Login_razor.KeepMeSignedInOnThisDevice</span>
 			</label>
+			<a class="login-secondary-link"
+			   href="@IdentityRoutes.Account.ForgotPassword">@Login_razor.ForgotPassword</a>
 		</div>
 
 		<div class="login-form-actions">
 			<AppButton Appearance="ButtonAppearance.Primary" Type="ButtonType.Submit">@Login_razor.SignIn
 			</AppButton>
-			<a class="login-secondary-link"
-			   href="@IdentityRoutes.Account.ForgotPassword">@Login_razor.ForgotPassword</a>
 		</div>
 	</EditForm>
 

@@ -55,9 +55,7 @@
 .app-shell-v2__header-actions {
     display: flex;
     min-width: 0;
-    margin-inline-start: auto;
     align-items: center;
-    justify-content: flex-end;
     gap: .4rem;
 }
 
@@ -65,7 +63,7 @@
 .app-shell-v2__preference,
 .app-shell-v2__profile { display: flex; min-width: 0; align-items: center; }
 
-.app-shell-v2__preferences { gap: .35rem; }
+.app-shell-v2__preferences { margin-inline-start: auto; gap: .35rem; }
 
 .app-shell-v2__menu-button {
     display: grid;
@@ -87,7 +85,7 @@
 .app-shell-v2__menu-button.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .app-shell-v2__menu-button.is-open span:nth-child(2) { opacity: 0; transform: scaleX(.3); }
 .app-shell-v2__menu-button.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-.app-shell-v2__menu-button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.app-shell-v2__menu-button:focus-visible { outline: none; }
 
 .app-shell-v2__frame {
     position: relative;

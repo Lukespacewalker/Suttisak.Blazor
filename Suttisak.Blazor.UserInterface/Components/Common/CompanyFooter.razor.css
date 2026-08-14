@@ -12,7 +12,7 @@
 
 .company-footer a { color: inherit; font-weight: 650; text-underline-offset: .2em; }
 .company-footer a:hover { color: var(--accent-foreground-rest, #0f6cbd); }
-.company-footer a:focus-visible { outline: 2px solid currentColor; outline-offset: .2rem; border-radius: .15rem; }
+.company-footer a:focus-visible { outline: none; }
 
 @media (max-width: 30rem) {
     .company-footer { row-gap: .25rem; }

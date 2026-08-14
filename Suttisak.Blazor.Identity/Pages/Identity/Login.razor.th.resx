@@ -124,7 +124,7 @@
     <value>การพยายามเข้าสู่ระบบไม่ถูกต้อง</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>เข้าสู่ระบบ</value>
+    <value>เข้าสู่ระบบเพื่อดำเนินการต่อ</value>
   </data>
   <data name="Passkey" xml:space="preserve">
     <value>พาสคีย์</value>
@@ -157,6 +157,9 @@
     <value>หรือเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน</value>
   </data>
   <data name="SignInIntro" xml:space="preserve">
-    <value>ใช้บัญชี พาสคีย์ หรือผู้ให้บริการภายนอกของคุณเพื่อเข้าสู่พื้นที่ทำงาน</value>
+    <value>เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน พาสคีย์ หรือวิธีอื่นที่องค์กรของคุณเปิดใช้</value>
+  </data>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>ยินดีต้อนรับกลับ</value>
   </data>
 </root>

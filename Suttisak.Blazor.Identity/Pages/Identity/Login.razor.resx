@@ -124,7 +124,7 @@
     <value>Invalid sign-in attempt.</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Sign in</value>
+    <value>Sign in to continue</value>
   </data>
   <data name="Passkey" xml:space="preserve">
     <value>Passkey</value>
@@ -157,6 +157,9 @@
     <value>Or sign in with username and password</value>
   </data>
   <data name="SignInIntro" xml:space="preserve">
-    <value>Use your account, passkey, or an external provider to enter the workspace.</value>
+    <value>Sign in with your username and password, passkey, or another option provided by your organization.</value>
+  </data>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>Welcome back</value>
   </data>
 </root>

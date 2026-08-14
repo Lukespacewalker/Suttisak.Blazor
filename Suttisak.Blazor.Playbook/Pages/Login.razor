@@ -29,14 +29,12 @@
                     <div class="access-divider"><span>or use your account</span></div>
 
                     <form class="access-form" @onsubmit="PreventSubmit" @onsubmit:preventDefault>
-                        <label>
-                            <span>Username</span>
-                            <input type="text" name="username" autocomplete="username" placeholder="name@company.com" />
-                        </label>
-                        <label>
-                            <span>Password</span>
-                            <input type="password" name="password" autocomplete="current-password" placeholder="Enter your password" />
-                        </label>
+                        <AppTextBox Label="Username" Type="text" Autocomplete="username" Placeholder="name@company.com" @bind-Value="_username">
+                            <IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /></IconContent>
+                        </AppTextBox>
+                        <AppTextBox Label="Password" Type="password" Autocomplete="current-password" Placeholder="Enter your password" @bind-Value="_password">
+                            <IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Password())" /></IconContent>
+                        </AppTextBox>
                         <div class="access-form__options">
                             <label class="access-check"><input type="checkbox" /> <span>Keep me signed in</span></label>
                             <button class="access-text-action" type="button">Forgot password?</button>
@@ -48,25 +46,30 @@
                         </button>
                     </form>
 
-                    <p class="access-switch">New to @CurrentTheme.Name? <a href="access/register">Create an account</a></p>
+                    <div class="access-switch">
+                        <span>New to @CurrentTheme.Name?</span>
+                        <a href="access/register">Create an account</a>
+                    </div>
                     <p class="access-demo-note">Playbook preview — authentication actions are intentionally disabled.</p>
                 </div>
             </section>
 
             <aside class="access-story" aria-label="Product message">
                 <div class="access-story__grid" aria-hidden="true"></div>
-                <span class="access-story__index">SECURE ACCESS / 01</span>
+                <span class="access-story__index">SECURE ACCESS</span>
                 <div>
                     <blockquote>“One clear doorway into the work that matters.”</blockquote>
-                    <p>Designed to support organizational accounts and modern passwordless access.</p>
+                    <p>Sign in securely to continue your work in @CurrentTheme.Name.</p>
                 </div>
-                <div class="access-story__status"><i></i><span>Protected workspace</span><b>@CurrentTheme.ShortName</b></div>
+                <div class="access-story__status"><i></i><span>Private, protected access</span><b>@CurrentTheme.Name.ToUpperInvariant()</b></div>
             </aside>
         </main>
     </AccessPageFrame>
 </PlaybookShell>
 
 @code {
+    private string? _username;
+    private string? _password;
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
     private static void PreventSubmit() { }
 }
