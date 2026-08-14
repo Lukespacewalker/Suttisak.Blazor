@@ -1,0 +1,130 @@
+@page "/component-browser"
+
+<PageTitle>Component browser · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="component-browser">
+        <header class="component-browser__intro">
+            <div>
+                <span class="playbook-kicker">Interactive component browser</span>
+                <h1>Try the contract.<br /><em>Not just the picture.</em></h1>
+            </div>
+            <p>Each specimen is a running shared-library component. Change a value, open an overlay, dismiss feedback, or switch tabs to see its real behavior in the current application theme.</p>
+        </header>
+
+        <nav class="component-browser__jump" aria-label="Component categories">
+            <a href="#actions">Actions</a>
+            <a href="#overlays">Overlays</a>
+            <a href="#navigation">Navigation</a>
+            <a href="#feedback">Feedback</a>
+        </nav>
+
+        <section id="actions" class="component-browser__section" aria-labelledby="actions-title">
+            <header><span>01 / Actions</span><h2 id="actions-title">AppButton</h2><code>&lt;AppButton&gt;</code></header>
+            <div class="component-browser__stage">
+                <div class="component-browser__button-row">
+                    <AppButton Variant="AppButtonVariant.Primary" OnClick="Increment">Add item</AppButton>
+                    <AppButton OnClick="ResetCount">Reset</AppButton>
+                    <AppButton Variant="AppButtonVariant.Danger" OnClick="ClearCount">Clear</AppButton>
+                </div>
+                <output class="component-browser__readout" aria-live="polite"><strong>@_itemCount</strong><span>items staged</span></output>
+            </div>
+        </section>
+
+        <section id="overlays" class="component-browser__section" aria-labelledby="overlays-title">
+            <header><span>02 / Overlays</span><h2 id="overlays-title">Dialog &amp; Drawer</h2><code>ShowAsync(value)</code></header>
+            <div class="component-browser__stage component-browser__stage--split">
+                <div>
+                    <h3>AppDialog</h3>
+                    <p>Use for focused decisions that must retain the current page context.</p>
+                    <AppButton Variant="AppButtonVariant.Primary" OnClick="OpenDialogAsync">Open confirmation</AppButton>
+                </div>
+                <div>
+                    <h3>AppDrawer</h3>
+                    <p>Use for a task with more room while keeping the underlying page visible.</p>
+                    <AppButton OnClick="OpenDrawerAsync">Open details drawer</AppButton>
+                </div>
+                <p class="component-browser__result" aria-live="polite">@_overlayResult</p>
+            </div>
+        </section>
+
+        <section id="navigation" class="component-browser__section" aria-labelledby="navigation-title">
+            <header><span>03 / Navigation</span><h2 id="navigation-title">AppTabs</h2><code>&lt;AppTabs&gt;</code></header>
+            <div class="component-browser__stage">
+                <AppTabs aria-label="Component browser preview tabs">
+                    <AppTab Label="Overview"><p class="component-browser__tab-copy">A compact view for the most important component information.</p></AppTab>
+                    <AppTab Label="API"><p class="component-browser__tab-copy">Parameters are explicit Razor properties, so each app keeps its own copy and behavior.</p></AppTab>
+                    <AppTab Label="Accessibility"><p class="component-browser__tab-copy">Keyboard focus and semantic controls remain part of the shared component contract.</p></AppTab>
+                </AppTabs>
+            </div>
+        </section>
+
+        <section id="feedback" class="component-browser__section" aria-labelledby="feedback-title">
+            <header><span>04 / Feedback</span><h2 id="feedback-title">Progress &amp; feedback</h2><code>Value / Intent</code></header>
+            <div class="component-browser__stage component-browser__feedback-stage">
+                <div class="component-browser__progress-control">
+                    <label for="progress-value">Import progress <strong>@_progress%</strong></label>
+                    <input id="progress-value" type="range" min="0" max="100" @bind="_progress" />
+                    <AppProgress Value="@_progress" AriaLabel="Demo import progress" />
+                </div>
+                @if (!_feedbackDismissed)
+                {
+                    <FeedbackBanner Intent="FeedbackIntent.Success" Title="Component state saved" Message="This banner can be dismissed like it would be in an application." Dismissible="true" OnDismiss="DismissFeedback" />
+                }
+                else
+                {
+                    <AppButton Variant="AppButtonVariant.Subtle" OnClick="RestoreFeedback">Restore feedback banner</AppButton>
+                }
+            </div>
+        </section>
+    </main>
+
+    <AppDialog TInput="string" TResult="bool" @ref="_dialog"
+               Title="Publish this component?" Description="This is a live confirmation Dialog specimen.">
+        <Body Context="dialog"><p><strong>@dialog.Value</strong> will be visible to every consuming application.</p></Body>
+        <Footer Context="dialog">
+            <AppButton OnClick="@(_ => dialog.CancelAsync())">Keep as draft</AppButton>
+            <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => dialog.CloseAsync(true))">Publish</AppButton>
+        </Footer>
+    </AppDialog>
+
+    <AppDrawer TInput="string" TResult="bool" @ref="_drawer"
+               Title="Component details" Description="A live end-position Drawer specimen.">
+        <Body Context="drawer">
+            <p>This drawer receives <strong>@drawer.Value</strong> from <code>ShowAsync</code> and returns a result when you finish.</p>
+            <AppTextArea Label="Implementation note" Rows="3" Placeholder="Try typing here…" @bind-Value="_drawerNote" />
+        </Body>
+        <Footer Context="drawer">
+            <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
+            <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => drawer.CloseAsync(true))">Done</AppButton>
+        </Footer>
+    </AppDrawer>
+</PlaybookShell>
+
+@code {
+    private AppDialog<string, bool>? _dialog;
+    private AppDrawer<string, bool>? _drawer;
+    private int _itemCount = 3;
+    private int _progress = 68;
+    private bool _feedbackDismissed;
+    private string? _drawerNote;
+    private string _overlayResult = "No overlay result yet.";
+
+    private void Increment() => _itemCount++;
+    private void ResetCount() => _itemCount = 3;
+    private void ClearCount() => _itemCount = 0;
+    private void DismissFeedback() => _feedbackDismissed = true;
+    private void RestoreFeedback() => _feedbackDismissed = false;
+
+    private async Task OpenDialogAsync()
+    {
+        var result = await _dialog!.ShowAsync("AppDialog");
+        _overlayResult = result.HasValue ? "Dialog confirmed publication." : "Dialog was cancelled.";
+    }
+
+    private async Task OpenDrawerAsync()
+    {
+        var result = await _drawer!.ShowAsync("AppDrawer");
+        _overlayResult = result.HasValue ? "Drawer was completed." : "Drawer was cancelled.";
+    }
+}
