@@ -1,0 +1,30 @@
+.component-browser { width: min(100% - 2rem, 82rem); margin: 0 auto; padding: clamp(2rem, 5vw, 5.5rem) 0 6rem; }
+.component-browser__intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(16rem, .65fr); align-items: end; gap: 3rem; padding: 0 clamp(.5rem, 2vw, 1.5rem) 2.5rem; border-bottom: 1px solid var(--app-border); }
+.component-browser__intro h1 { margin: .45rem 0 0; font-family: var(--app-font-heading); font-size: clamp(3rem, 6vw, 5.6rem); line-height: .88; letter-spacing: -.065em; }
+.component-browser__intro h1 em { color: var(--app-accent); font-style: normal; }
+.component-browser__intro p { max-width: 38rem; margin: 0 0 .35rem; color: var(--app-foreground-muted); font-size: 1rem; line-height: 1.7; }
+.component-browser__jump { display: flex; flex-wrap: wrap; gap: .5rem; padding: 1.25rem clamp(.5rem, 2vw, 1.5rem); border-bottom: 1px solid var(--app-grid-line); }
+.component-browser__jump a { padding: .4rem .7rem; border: 1px solid var(--app-border); border-radius: 99rem; color: var(--app-foreground-muted); font-size: .78rem; font-weight: 750; text-decoration: none; }
+.component-browser__jump a:hover, .component-browser__jump a:focus-visible { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-foreground); outline: none; }
+.component-browser__section { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: clamp(1.25rem, 4vw, 4rem); padding: clamp(2rem, 5vw, 4rem) clamp(.5rem, 2vw, 1.5rem); border-bottom: 1px solid var(--app-border); }
+.component-browser__section > header span { display: block; color: var(--app-accent); font-size: .7rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.component-browser__section h2 { margin: .35rem 0 .65rem; font-family: var(--app-font-heading); font-size: 1.7rem; letter-spacing: -.035em; }
+.component-browser__section code { color: var(--app-foreground-muted); font-size: .76rem; }
+.component-browser__stage { min-width: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--app-border); border-radius: 1rem; background: linear-gradient(135deg, var(--app-brand-soft), transparent 45%), var(--app-surface); box-shadow: 0 1rem 2.5rem var(--app-shadow-color); }
+.component-browser__stage--split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.component-browser__stage--split > div { display: grid; align-content: start; gap: .8rem; }
+.component-browser__stage h3 { margin: 0; font-size: 1rem; }
+.component-browser__stage p { margin: 0; color: var(--app-foreground-muted); font-size: .9rem; line-height: 1.6; }
+.component-browser__button-row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.component-browser__readout { display: inline-grid; margin-top: 2rem; padding: .75rem 1rem; border-left: 3px solid var(--app-accent); background: var(--app-surface-muted); }
+.component-browser__readout strong { font-family: var(--app-font-heading); font-size: 1.8rem; line-height: 1; }
+.component-browser__readout span { margin-top: .25rem; color: var(--app-foreground-muted); font-size: .75rem; }
+.component-browser__result { grid-column: 1 / -1; padding-top: 1rem; border-top: 1px solid var(--app-border); }
+.component-browser__tab-copy { padding: 1rem 0 .25rem; }
+.component-browser__feedback-stage { display: grid; gap: 1.5rem; }
+.component-browser__progress-control { display: grid; gap: .7rem; }
+.component-browser__progress-control label { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; }
+.component-browser__progress-control label strong { color: var(--app-accent); }
+.component-browser__progress-control input { width: 100%; accent-color: var(--app-accent); }
+@media (max-width: 50rem) { .component-browser__intro, .component-browser__section { grid-template-columns: 1fr; gap: 1.25rem; } .component-browser__intro { align-items: start; } }
+@media (max-width: 34rem) { .component-browser { width: min(100% - 1rem, 82rem); padding-top: 2rem; } .component-browser__stage--split { grid-template-columns: 1fr; } .component-browser__section { padding-inline: 0; } }
