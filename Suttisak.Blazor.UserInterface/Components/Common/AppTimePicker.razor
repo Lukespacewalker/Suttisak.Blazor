@@ -5,6 +5,16 @@
      data-time-minute-step="@Math.Max(1, MinuteStep)"
      data-time-second-step="@Math.Max(1, SecondStep)"
      data-time-include-seconds="@IncludeSeconds.ToString().ToLowerInvariant()"
+     data-picker-locale="@Text.Locale"
+     data-picker-time-dialog-label="@Text.TimePickerDialogLabel"
+     data-picker-choose-time-label="@Text.ChooseTimeLabel"
+     data-picker-browser-local-time-label="@Text.BrowserLocalTimeLabel"
+     data-picker-hour-label="@Text.HourLabel"
+     data-picker-minute-label="@Text.MinuteLabel"
+     data-picker-second-label="@Text.SecondLabel"
+     data-picker-now-label="@Text.NowLabel"
+     data-picker-cancel-label="@Text.CancelLabel"
+     data-picker-apply-label="@Text.ApplyLabel"
      @attributes="ContainerAttributes">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
@@ -28,7 +38,7 @@
                aria-describedby="@DescriptionId"
                @onchange="HandleChangeAsync"
                @attributes="InputAttributes" />
-        <button class="app-form-control__picker-trigger" type="button" data-time-trigger aria-label="@OpenTimeLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
+        <button class="app-form-control__picker-trigger" type="button" data-time-trigger aria-label="@EffectiveOpenTimeLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg>
         </button>
     </div>
@@ -57,7 +67,10 @@
     [Parameter] public bool IncludeSeconds { get; set; }
     [Parameter] public bool Required { get; set; }
     [Parameter] public bool Disabled { get; set; }
-    [Parameter] public string OpenTimeLabel { get; set; } = "Open time picker";
+    /// <summary>Localized text for the popup. Defaults preserve the English UI.</summary>
+    [Parameter] public AppPickerText Text { get; set; } = new();
+    /// <summary>Overrides <see cref="AppPickerText.OpenTimeLabel"/> for this trigger.</summary>
+    [Parameter] public string? OpenTimeLabel { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
@@ -65,6 +78,7 @@
     private readonly string _generatedId = $"app-time-{Guid.NewGuid():N}";
     private string InputId => Id ?? _generatedId;
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+    private string EffectiveOpenTimeLabel => OpenTimeLabel ?? Text.OpenTimeLabel;
     private bool UsesDateTimeValue => DateTimeValueChanged.HasDelegate;
     private string? FormattedValue => UsesDateTimeValue ? Format(DateTimeValue) : Format(Value);
     private string? FormattedMin => UsesDateTimeValue ? Format(DateTimeMin) : Format(Min);

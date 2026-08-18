@@ -32,7 +32,7 @@
 
 .feedback-banner__copy p {
     margin: 0;
-    color: var(--app-foreground-muted);
+    color: var(--app-foreground);
     line-height: 1.55;
 }
 

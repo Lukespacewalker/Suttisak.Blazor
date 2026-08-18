@@ -4,7 +4,7 @@
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
     background: var(--app-brand-secondary-soft);
-    color: var(--app-brand-secondary);
+    color: var(--app-foreground);
     font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.08em;

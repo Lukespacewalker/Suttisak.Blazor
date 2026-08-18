@@ -3,6 +3,12 @@
 <div class="app-form-control @Class"
      data-app-calendar="@(Mode == AppCalendarPickerMode.Popup ? "popup" : "native")"
      data-calendar-first-day="@((int)FirstDayOfWeek)"
+     data-picker-locale="@Text.Locale"
+     data-picker-calendar-dialog-label="@Text.CalendarDialogLabel"
+     data-picker-previous-month-label="@Text.PreviousMonthLabel"
+     data-picker-next-month-label="@Text.NextMonthLabel"
+     data-picker-month-label="@Text.MonthLabel"
+     data-picker-year-label="@Text.YearLabel"
      @attributes="ContainerAttributes">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
@@ -26,7 +32,7 @@
                @attributes="InputAttributes" />
         @if (Mode == AppCalendarPickerMode.Popup)
         {
-            <button class="app-form-control__calendar-trigger" type="button" data-calendar-trigger aria-label="@OpenCalendarLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
+            <button class="app-form-control__calendar-trigger" type="button" data-calendar-trigger aria-label="@EffectiveOpenCalendarLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" /></svg>
             </button>
         }
@@ -56,13 +62,17 @@
     [Parameter] public string? Class { get; set; }
     [Parameter] public AppCalendarPickerMode Mode { get; set; } = AppCalendarPickerMode.Popup;
     [Parameter] public DayOfWeek FirstDayOfWeek { get; set; } = DayOfWeek.Monday;
-    [Parameter] public string OpenCalendarLabel { get; set; } = "Open calendar";
+    /// <summary>Localized text for the popup. Defaults preserve the English UI.</summary>
+    [Parameter] public AppPickerText Text { get; set; } = new();
+    /// <summary>Overrides <see cref="AppPickerText.OpenCalendarLabel"/> for this trigger.</summary>
+    [Parameter] public string? OpenCalendarLabel { get; set; }
     [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
 
     private readonly string _generatedId = $"app-date-{Guid.NewGuid():N}";
     private string InputId => Id ?? _generatedId;
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+    private string EffectiveOpenCalendarLabel => OpenCalendarLabel ?? Text.OpenCalendarLabel;
     private bool UsesDateTimeValue => DateTimeValueChanged.HasDelegate;
     private string? FormattedValue => UsesDateTimeValue ? Format(DateTimeValue) : Format(Value);
     private string? FormattedMin => UsesDateTimeValue ? Format(DateTimeMin) : Format(Min);

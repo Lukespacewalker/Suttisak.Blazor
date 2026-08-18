@@ -3,7 +3,7 @@
         @foreach (var tab in _tabs)
         {
             <button id="@tab.TabId" type="button" role="tab"
-                    aria-selected="@(tab.Id == CurrentActiveId)" aria-controls="@tab.PanelId"
+                    aria-selected="@(tab.Id == CurrentActiveId ? "true" : "false")" aria-controls="@tab.PanelId"
                     tabindex="@(tab.Id == CurrentActiveId ? 0 : -1)"
                     @ref="tab.Element"
                     @onclick="() => ActivateAsync(tab.Id)"

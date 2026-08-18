@@ -54,13 +54,13 @@ function enhanceDateTimeControl(control) {
 
         const date = parseLocalDateTime(localInput.value);
         if (!date) {
-            const message = "This local time does not exist in the browser time zone.";
+            const message = pickerText(control, "pickerInvalidLocalTimeMessage", "This local time does not exist in the browser time zone.");
             localInput.setCustomValidity(message);
             if (error) error.textContent = message;
             return;
         }
         if (hasAmbiguousOffset(date)) {
-            const message = "This local time occurs twice when the clock changes. Choose another time.";
+            const message = pickerText(control, "pickerAmbiguousLocalTimeMessage", "This local time occurs twice when the clock changes. Choose another time.");
             localInput.setCustomValidity(message);
             if (error) error.textContent = message;
             return;
@@ -109,6 +109,14 @@ function updatePickerInput(input, value) {
     input.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
+function pickerText(control, key, fallback) {
+    return control.dataset[key] ?? fallback;
+}
+
+function pickerLocale(control) {
+    return control.dataset.pickerLocale || undefined;
+}
+
 function positionPickerPopup(popup, trigger, preferredWidth) {
     const rect = trigger.getBoundingClientRect();
     const width = Math.min(preferredWidth, window.innerWidth - 16);
@@ -138,16 +146,16 @@ function enhanceCalendarControl(control) {
     popup.setAttribute("popover", "auto");
     popup.setAttribute("role", "dialog");
     popup.setAttribute("aria-modal", "false");
-    popup.setAttribute("aria-label", trigger.getAttribute("aria-label") || "Calendar");
+    popup.setAttribute("aria-label", pickerText(control, "pickerCalendarDialogLabel", trigger.getAttribute("aria-label") || "Calendar"));
     popup.innerHTML = `
         <div class="app-calendar-popup__header">
-            <button class="app-calendar-popup__nav" type="button" data-calendar-previous aria-label="Previous month">‹</button>
+            <button class="app-calendar-popup__nav" type="button" data-calendar-previous>‹</button>
             <div class="app-calendar-popup__period">
-                <select class="app-calendar-popup__period-select" data-calendar-month aria-label="Month"></select>
-                <select class="app-calendar-popup__period-select app-calendar-popup__period-select--year" data-calendar-year aria-label="Year"></select>
+                <select class="app-calendar-popup__period-select" data-calendar-month></select>
+                <select class="app-calendar-popup__period-select app-calendar-popup__period-select--year" data-calendar-year></select>
             </div>
             <span class="app-calendar-popup__announcement" aria-live="polite"></span>
-            <button class="app-calendar-popup__nav" type="button" data-calendar-next aria-label="Next month">›</button>
+            <button class="app-calendar-popup__nav" type="button" data-calendar-next>›</button>
         </div>
         <div class="app-calendar-popup__weekdays" aria-hidden="true"></div>
         <div class="app-calendar-popup__days"></div>`;
@@ -158,10 +166,17 @@ function enhanceCalendarControl(control) {
     const yearSelect = popup.querySelector("[data-calendar-year]");
     const weekdays = popup.querySelector(".app-calendar-popup__weekdays");
     const days = popup.querySelector(".app-calendar-popup__days");
+    popup.querySelector("[data-calendar-previous]").setAttribute("aria-label", pickerText(control, "pickerPreviousMonthLabel", "Previous month"));
+    popup.querySelector("[data-calendar-next]").setAttribute("aria-label", pickerText(control, "pickerNextMonthLabel", "Next month"));
+    monthSelect.setAttribute("aria-label", pickerText(control, "pickerMonthLabel", "Month"));
+    yearSelect.setAttribute("aria-label", pickerText(control, "pickerYearLabel", "Year"));
     const todayValue = formatCalendarDate(new Date());
-    const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: "narrow" });
-    const monthFormatter = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" });
-    const monthNameFormatter = new Intl.DateTimeFormat(undefined, { month: "long" });
+    const locale = pickerLocale(control);
+    const weekdayFormatter = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
+    const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" });
+    const monthNameFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
+    const yearFormatter = new Intl.NumberFormat(locale, { useGrouping: false });
+    const fullDateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
 
     for (let month = 0; month < 12; month++) {
         const option = document.createElement("option");
@@ -174,7 +189,7 @@ function enhanceCalendarControl(control) {
     for (let year = maximumYear; year >= minimumYear; year--) {
         const option = document.createElement("option");
         option.value = String(year);
-        option.textContent = new Intl.NumberFormat(undefined, { useGrouping: false }).format(year);
+        option.textContent = yearFormatter.format(year);
         yearSelect.append(option);
     }
 
@@ -201,7 +216,7 @@ function enhanceCalendarControl(control) {
             button.textContent = String(date.getDate());
             button.dataset.value = value;
             button.tabIndex = value === input.value ? 0 : -1;
-            button.setAttribute("aria-label", new Intl.DateTimeFormat(undefined, { dateStyle: "full" }).format(date));
+            button.setAttribute("aria-label", fullDateFormatter.format(date));
             if (date.getMonth() !== visibleMonth.getMonth()) button.classList.add("is-outside");
             if (value === todayValue) button.classList.add("is-today");
             if (value === input.value) { button.classList.add("is-selected"); button.setAttribute("aria-current", "date"); }
@@ -288,23 +303,23 @@ function enhanceTimeControl(control) {
     popup.setAttribute("popover", "auto");
     popup.setAttribute("role", "dialog");
     popup.setAttribute("aria-modal", "false");
-    popup.setAttribute("aria-label", trigger.getAttribute("aria-label") || "Time picker");
+    popup.setAttribute("aria-label", pickerText(control, "pickerTimeDialogLabel", trigger.getAttribute("aria-label") || "Time picker"));
     popup.innerHTML = `
         <div class="app-picker-popup__heading">
             <span class="app-picker-popup__heading-icon" aria-hidden="true">◷</span>
-            <div><strong>Choose time</strong><small>Browser local time</small></div>
+            <div><strong data-picker-choose-time></strong><small data-picker-browser-local-time></small></div>
         </div>
         <div class="app-time-popup__fields">
-            <label><span>Hour</span><select data-time-hour aria-label="Hour"></select></label>
+            <label><span data-picker-hour></span><select data-time-hour></select></label>
             <b aria-hidden="true">:</b>
-            <label><span>Minute</span><select data-time-minute aria-label="Minute"></select></label>
-            ${includeSeconds ? '<b aria-hidden="true">:</b><label><span>Second</span><select data-time-second aria-label="Second"></select></label>' : ""}
+            <label><span data-picker-minute></span><select data-time-minute></select></label>
+            ${includeSeconds ? '<b aria-hidden="true">:</b><label><span data-picker-second></span><select data-time-second></select></label>' : ""}
         </div>
         <div class="app-picker-popup__actions">
-            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-time-now>Now</button>
+            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-time-now></button>
             <span></span>
-            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-picker-cancel>Cancel</button>
-            <button class="app-picker-popup__button app-picker-popup__button--primary" type="button" data-picker-apply>Apply</button>
+            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-picker-cancel></button>
+            <button class="app-picker-popup__button app-picker-popup__button--primary" type="button" data-picker-apply></button>
         </div>`;
     control.append(popup);
 
@@ -312,6 +327,20 @@ function enhanceTimeControl(control) {
     const minuteSelect = popup.querySelector("[data-time-minute]");
     const secondSelect = popup.querySelector("[data-time-second]");
     const applyButton = popup.querySelector("[data-picker-apply]");
+    const hourLabel = pickerText(control, "pickerHourLabel", "Hour");
+    const minuteLabel = pickerText(control, "pickerMinuteLabel", "Minute");
+    const secondLabel = pickerText(control, "pickerSecondLabel", "Second");
+    popup.querySelector("[data-picker-choose-time]").textContent = pickerText(control, "pickerChooseTimeLabel", "Choose time");
+    popup.querySelector("[data-picker-browser-local-time]").textContent = pickerText(control, "pickerBrowserLocalTimeLabel", "Browser local time");
+    popup.querySelector("[data-picker-hour]").textContent = hourLabel;
+    popup.querySelector("[data-picker-minute]").textContent = minuteLabel;
+    if (secondSelect) popup.querySelector("[data-picker-second]").textContent = secondLabel;
+    hourSelect.setAttribute("aria-label", hourLabel);
+    minuteSelect.setAttribute("aria-label", minuteLabel);
+    if (secondSelect) secondSelect.setAttribute("aria-label", secondLabel);
+    popup.querySelector("[data-time-now]").textContent = pickerText(control, "pickerNowLabel", "Now");
+    popup.querySelector("[data-picker-cancel]").textContent = pickerText(control, "pickerCancelLabel", "Cancel");
+    applyButton.textContent = pickerText(control, "pickerApplyLabel", "Apply");
     populateNumberSelect(hourSelect, 0, 23);
     populateNumberSelect(minuteSelect, 0, 59, minuteStep);
     if (secondSelect) populateNumberSelect(secondSelect, 0, 59, secondStep);
@@ -373,31 +402,31 @@ function enhanceDateTimePicker(control) {
     popup.setAttribute("popover", "auto");
     popup.setAttribute("role", "dialog");
     popup.setAttribute("aria-modal", "false");
-    popup.setAttribute("aria-label", trigger.getAttribute("aria-label") || "Date and time picker");
+    popup.setAttribute("aria-label", pickerText(control, "pickerDatetimeDialogLabel", trigger.getAttribute("aria-label") || "Date and time picker"));
     popup.innerHTML = `
         <div class="app-calendar-popup__header">
-            <button class="app-calendar-popup__nav" type="button" data-calendar-previous aria-label="Previous month">‹</button>
+            <button class="app-calendar-popup__nav" type="button" data-calendar-previous>‹</button>
             <div class="app-calendar-popup__period">
-                <select class="app-calendar-popup__period-select" data-calendar-month aria-label="Month"></select>
-                <select class="app-calendar-popup__period-select app-calendar-popup__period-select--year" data-calendar-year aria-label="Year"></select>
+                <select class="app-calendar-popup__period-select" data-calendar-month></select>
+                <select class="app-calendar-popup__period-select app-calendar-popup__period-select--year" data-calendar-year></select>
             </div>
             <span class="app-calendar-popup__announcement" aria-live="polite"></span>
-            <button class="app-calendar-popup__nav" type="button" data-calendar-next aria-label="Next month">›</button>
+            <button class="app-calendar-popup__nav" type="button" data-calendar-next>›</button>
         </div>
         <div class="app-calendar-popup__weekdays" aria-hidden="true"></div>
         <div class="app-calendar-popup__days"></div>
-        <div class="app-datetime-popup__time" aria-label="Time">
+        <div class="app-datetime-popup__time">
             <span class="app-datetime-popup__time-icon" aria-hidden="true">◷</span>
-            <label><span>Hour</span><select data-time-hour aria-label="Hour"></select></label>
+            <label><span data-picker-hour></span><select data-time-hour></select></label>
             <b aria-hidden="true">:</b>
-            <label><span>Minute</span><select data-time-minute aria-label="Minute"></select></label>
-            ${includeSeconds ? '<b aria-hidden="true">:</b><label><span>Second</span><select data-time-second aria-label="Second"></select></label>' : ""}
+            <label><span data-picker-minute></span><select data-time-minute></select></label>
+            ${includeSeconds ? '<b aria-hidden="true">:</b><label><span data-picker-second></span><select data-time-second></select></label>' : ""}
         </div>
         <div class="app-picker-popup__actions">
-            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-datetime-now>Now</button>
+            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-datetime-now></button>
             <span></span>
-            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-picker-cancel>Cancel</button>
-            <button class="app-picker-popup__button app-picker-popup__button--primary" type="button" data-picker-apply>Apply</button>
+            <button class="app-picker-popup__button app-picker-popup__button--quiet" type="button" data-picker-cancel></button>
+            <button class="app-picker-popup__button app-picker-popup__button--primary" type="button" data-picker-apply></button>
         </div>`;
     control.append(popup);
 
@@ -410,10 +439,30 @@ function enhanceDateTimePicker(control) {
     const minuteSelect = popup.querySelector("[data-time-minute]");
     const secondSelect = popup.querySelector("[data-time-second]");
     const applyButton = popup.querySelector("[data-picker-apply]");
+    const hourLabel = pickerText(control, "pickerHourLabel", "Hour");
+    const minuteLabel = pickerText(control, "pickerMinuteLabel", "Minute");
+    const secondLabel = pickerText(control, "pickerSecondLabel", "Second");
+    popup.querySelector("[data-calendar-previous]").setAttribute("aria-label", pickerText(control, "pickerPreviousMonthLabel", "Previous month"));
+    popup.querySelector("[data-calendar-next]").setAttribute("aria-label", pickerText(control, "pickerNextMonthLabel", "Next month"));
+    monthSelect.setAttribute("aria-label", pickerText(control, "pickerMonthLabel", "Month"));
+    yearSelect.setAttribute("aria-label", pickerText(control, "pickerYearLabel", "Year"));
+    popup.querySelector(".app-datetime-popup__time").setAttribute("aria-label", pickerText(control, "pickerTimeLabel", "Time"));
+    popup.querySelector("[data-picker-hour]").textContent = hourLabel;
+    popup.querySelector("[data-picker-minute]").textContent = minuteLabel;
+    if (secondSelect) popup.querySelector("[data-picker-second]").textContent = secondLabel;
+    hourSelect.setAttribute("aria-label", hourLabel);
+    minuteSelect.setAttribute("aria-label", minuteLabel);
+    if (secondSelect) secondSelect.setAttribute("aria-label", secondLabel);
+    popup.querySelector("[data-datetime-now]").textContent = pickerText(control, "pickerNowLabel", "Now");
+    popup.querySelector("[data-picker-cancel]").textContent = pickerText(control, "pickerCancelLabel", "Cancel");
+    applyButton.textContent = pickerText(control, "pickerApplyLabel", "Apply");
     const todayValue = formatCalendarDate(new Date());
-    const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: "narrow" });
-    const monthFormatter = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" });
-    const monthNameFormatter = new Intl.DateTimeFormat(undefined, { month: "long" });
+    const locale = pickerLocale(control);
+    const weekdayFormatter = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
+    const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" });
+    const monthNameFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
+    const yearFormatter = new Intl.NumberFormat(locale, { useGrouping: false });
+    const fullDateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
 
     for (let month = 0; month < 12; month++) {
         const option = document.createElement("option");
@@ -426,7 +475,7 @@ function enhanceDateTimePicker(control) {
     for (let year = maximumYear; year >= minimumYear; year--) {
         const option = document.createElement("option");
         option.value = String(year);
-        option.textContent = new Intl.NumberFormat(undefined, { useGrouping: false }).format(year);
+        option.textContent = yearFormatter.format(year);
         yearSelect.append(option);
     }
     for (let index = 0; index < 7; index++) {
@@ -466,7 +515,7 @@ function enhanceDateTimePicker(control) {
             button.textContent = String(date.getDate());
             button.dataset.value = value;
             button.tabIndex = value === selectedDateValue() ? 0 : -1;
-            button.setAttribute("aria-label", new Intl.DateTimeFormat(undefined, { dateStyle: "full" }).format(date));
+            button.setAttribute("aria-label", fullDateFormatter.format(date));
             if (date.getMonth() !== visibleMonth.getMonth()) button.classList.add("is-outside");
             if (value === todayValue) button.classList.add("is-today");
             if (value === selectedDateValue()) { button.classList.add("is-selected"); button.setAttribute("aria-current", "date"); }
