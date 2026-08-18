@@ -52,7 +52,7 @@ navigation unexpectedly open.
 
 ## Breadcrumbs
 
-Use data-driven breadcrumbs instead of page-owned `FluentBreadcrumb` markup.
+Use data-driven breadcrumbs instead of page-owned breadcrumb markup.
 Every page declares `PageBreadcrumbs` with application-owned titles, routes,
 and icons:
 

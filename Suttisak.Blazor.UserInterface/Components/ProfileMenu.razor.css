@@ -2,7 +2,7 @@
 .profile-menu summary { display: flex; min-height: 2.35rem; box-sizing: border-box; align-items: center; gap: .42rem; padding: .22rem .4rem .22rem .22rem; border: 1px solid var(--app-border); border-radius: 99rem; background: var(--app-surface); color: var(--app-foreground); cursor: pointer; list-style: none; }
 .profile-menu summary::-webkit-details-marker { display: none; }
 .profile-menu summary:hover { border-color: var(--app-accent-border); background: var(--app-surface-hover); }
-.profile-menu summary:focus-visible { outline: none; }
+.profile-menu summary:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .profile-menu__avatar { display: grid; width: 1.8rem; height: 1.8rem; box-sizing: border-box; place-items: center; flex: 0 0 auto; border-radius: 50%; background: var(--app-brand); color: var(--app-on-brand); font-size: .6rem; font-weight: 850; object-fit: cover; }
 .profile-menu summary strong { max-width: 7rem; overflow: hidden; font-size: .7rem; text-overflow: ellipsis; white-space: nowrap; }
 .profile-menu__chevron { width: .9rem; height: .9rem; fill: none; stroke: currentColor; stroke-width: 1.7; transition: transform .16s ease; }
@@ -14,7 +14,7 @@
 .profile-menu__identity small { color: var(--app-foreground-muted); font-size: .62rem; }
 .profile-menu__panel button { display: grid; grid-template-columns: 1.2rem 1fr; align-items: center; gap: .55rem; padding: .65rem .55rem; border: 0; border-radius: .5rem; background: transparent; color: var(--app-foreground); font: inherit; font-size: .72rem; font-weight: 680; text-align: left; cursor: pointer; }
 .profile-menu__panel button:hover { background: var(--app-surface-hover); }
-.profile-menu__panel button:focus-visible { outline: none; }
+.profile-menu__panel button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .profile-menu__panel button svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .profile-menu__login { color: var(--app-accent); font-size: .75rem; font-weight: 750; text-decoration: none; }
 @container app-shell-v2 (max-width: 30rem) { .profile-menu summary strong, .profile-menu summary .profile-menu__chevron { display: none; } }

@@ -3,7 +3,8 @@
 .app-grid__table th { padding: .7rem .85rem; border-block-end: 1px solid var(--app-border); background: var(--app-surface-muted); color: var(--app-foreground-muted); font-size: .78rem; font-weight: 700; letter-spacing: .035em; text-align: start; text-transform: uppercase; white-space: nowrap; }
 .app-grid__table td { padding: .75rem .85rem; border-block-end: 1px solid var(--app-grid-line); color: var(--app-foreground); vertical-align: middle; }
 .app-grid__table tbody tr { transition: background-color 120ms ease; }
-.app-grid__table tbody tr:hover, .app-grid__table tbody tr:focus-visible { background: var(--app-surface-hover); outline: none; }
+.app-grid__table tbody tr:hover { background: var(--app-surface-hover); }
+.app-grid__table tbody tr:focus-visible { background: var(--app-surface-hover); outline: 2px solid var(--app-focus-ring); outline-offset: -2px; }
 .app-grid__table tbody tr.is-selected { background: var(--app-accent-soft); }
 .app-grid__table tbody tr:last-child td { border-block-end: 0; }
 .app-grid__sort-button { display: inline-flex; align-items: center; gap: .35rem; max-width: 100%; padding: .2rem .3rem; border: 0; border-radius: .35rem; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: inherit; text-align: inherit; text-transform: inherit; }

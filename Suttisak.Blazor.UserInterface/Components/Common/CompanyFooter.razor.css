@@ -11,8 +11,8 @@
 }
 
 .company-footer a { color: inherit; font-weight: 650; text-underline-offset: .2em; }
-.company-footer a:hover { color: var(--accent-foreground-rest, #0f6cbd); }
-.company-footer a:focus-visible { outline: none; }
+.company-footer a:hover { color: var(--app-accent); }
+.company-footer a:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 @media (max-width: 30rem) {
     .company-footer { row-gap: .25rem; }

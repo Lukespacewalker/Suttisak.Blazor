@@ -1,80 +1,4 @@
-let isThemingSetup = false;
-let isThemingScheduled = false;
 let formControlObserver;
-
-const themeSettingsKey = "suttisak-blazor:theme-settings";
-const legacyThemeSettingsKey = "fluentui-blazor:theme-settings";
-const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
-
-function getThemePreference() {
-    try {
-        const mode = JSON.parse(localStorage.getItem(themeSettingsKey)
-            ?? localStorage.getItem(legacyThemeSettingsKey)
-            ?? "{}")?.mode;
-        return mode === "light" || mode === "dark" ? mode : "system";
-    } catch {
-        return "system";
-    }
-}
-
-function resolveColorScheme(preference) {
-    return preference === "dark" || (preference === "system" && systemTheme.matches)
-        ? "dark"
-        : "light";
-}
-
-function applyTheme(preference = getThemePreference(), resolvedScheme) {
-    preference = String(preference).toLowerCase();
-    if (preference !== "light" && preference !== "dark") preference = "system";
-
-    const scheme = resolvedScheme ?? resolveColorScheme(preference);
-    document.documentElement.dataset.colorScheme = scheme;
-    document.documentElement.dataset.themePreference = preference;
-    document.documentElement.style.colorScheme = scheme;
-
-    if (document.body) {
-        document.body.dataset.colorScheme = scheme;
-        document.body.dataset.theme = scheme;
-        document.body.dataset.themePreference = preference;
-    }
-
-    return scheme;
-}
-
-function setupTheming() {
-    if (isThemingSetup) return;
-
-    if (!document.body) {
-        if (!isThemingScheduled) {
-            isThemingScheduled = true;
-            document.addEventListener("DOMContentLoaded", setupTheming, { once: true });
-        }
-        return;
-    }
-
-    isThemingSetup = true;
-    applyTheme();
-
-    document.body.addEventListener("themeChanged", event => {
-        if (typeof event.detail?.isDark === "boolean") {
-            applyTheme(getThemePreference(), event.detail.isDark ? "dark" : "light");
-        }
-    });
-
-    systemTheme.addEventListener?.("change", () => {
-        if (getThemePreference() === "system") applyTheme("system");
-    });
-
-    window.addEventListener("storage", event => {
-        if (event.key === themeSettingsKey || event.key === legacyThemeSettingsKey) applyTheme();
-    });
-
-    window.suttisakTheme = {
-        initialized: true,
-        apply: applyTheme,
-        getMode: getThemePreference
-    };
-}
 
 function parseLocalDateTime(value) {
     const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/.exec(value ?? "");
@@ -715,25 +639,21 @@ function setupFormControls() {
 }
 
 export function beforeStart() {
-    setupTheming();
     setupFormControls();
     setupAdaptiveOverflow();
 }
 
 export function afterStarted() {
-    setupTheming();
     setupFormControls();
     setupAdaptiveOverflow();
 }
 
 export function beforeWebStart() {
-    setupTheming();
     setupFormControls();
     setupAdaptiveOverflow();
 }
 
 export function afterWebStarted() {
-    setupTheming();
     setupFormControls();
     setupAdaptiveOverflow();
 }

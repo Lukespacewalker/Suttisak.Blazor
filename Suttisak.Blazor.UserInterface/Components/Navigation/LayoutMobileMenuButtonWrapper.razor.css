@@ -15,7 +15,7 @@
         place-content: center;
         gap: 5px;
         border: 1px solid var(--app-glass-border);
-        border-radius: var(--borderRadiusCircular);
+        border-radius: var(--app-radius-round);
         background: var(--app-glass-surface-strong);
         color: var(--app-foreground);
         cursor: pointer;

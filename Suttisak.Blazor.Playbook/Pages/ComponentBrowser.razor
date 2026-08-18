@@ -51,11 +51,12 @@
         <section id="navigation" class="component-browser__section" aria-labelledby="navigation-title">
             <header><span>03 / Navigation</span><h2 id="navigation-title">AppTabs</h2><code>&lt;AppTabs&gt;</code></header>
             <div class="component-browser__stage">
-                <AppTabs aria-label="Component browser preview tabs">
-                    <AppTab Label="Overview"><p class="component-browser__tab-copy">A compact view for the most important component information.</p></AppTab>
-                    <AppTab Label="API"><p class="component-browser__tab-copy">Parameters are explicit Razor properties, so each app keeps its own copy and behavior.</p></AppTab>
-                    <AppTab Label="Accessibility"><p class="component-browser__tab-copy">Keyboard focus and semantic controls remain part of the shared component contract.</p></AppTab>
+                <AppTabs AriaLabel="Component browser preview tabs" @bind-ActiveId="_activeTab">
+                    <AppTab Id="overview" Label="Overview"><p class="component-browser__tab-copy">A compact view for the most important component information.</p></AppTab>
+                    <AppTab Id="api" Label="API"><p class="component-browser__tab-copy">Parameters are explicit Razor properties, so each app keeps its own copy and behavior.</p></AppTab>
+                    <AppTab Id="accessibility" Label="Accessibility"><p class="component-browser__tab-copy">Keyboard focus and semantic controls remain part of the shared component contract.</p></AppTab>
                 </AppTabs>
+                <p class="component-browser__result" aria-live="polite">Active tab: @_activeTab</p>
             </div>
         </section>
 
@@ -108,6 +109,7 @@
     private int _itemCount = 3;
     private int _progress = 68;
     private bool _feedbackDismissed;
+    private string? _activeTab = "overview";
     private string? _drawerNote;
     private string _overlayResult = "No overlay result yet.";
 

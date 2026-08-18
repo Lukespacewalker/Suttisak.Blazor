@@ -6,6 +6,7 @@
 
 @code {
     [CascadingParameter] private AppTabs? Tabs { get; set; }
+    [Parameter] public string? Id { get; set; }
     [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
     [Parameter] public string? Style { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
@@ -14,13 +15,18 @@
     private readonly string _id = $"app-tab-{Guid.NewGuid():N}";
     private string TabId => $"{_id}-tab";
     private string PanelId => $"{_id}-panel";
-    private bool IsActive => Tabs?.IsActive(_id) == true;
+    private string RegistrationId => Id ?? _id;
+    private string? _registeredId;
+    private bool IsActive => Tabs?.IsActive(RegistrationId) == true;
 
     protected override void OnParametersSet()
     {
         if (Tabs is null) throw new InvalidOperationException($"{nameof(AppTab)} must be inside {nameof(AppTabs)}.");
-        Tabs.Register(new(_id, Label, TabId, PanelId));
+        if (_registeredId is not null && _registeredId != RegistrationId)
+            Tabs.Unregister(_registeredId);
+        Tabs.Register(new(RegistrationId, Label, TabId, PanelId));
+        _registeredId = RegistrationId;
     }
 
-    public void Dispose() => Tabs?.Unregister(_id);
+    public void Dispose() => Tabs?.Unregister(_registeredId ?? RegistrationId);
 }

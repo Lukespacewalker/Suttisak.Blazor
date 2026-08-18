@@ -26,7 +26,7 @@
             <FormValidationSummary class="text-danger" role="alert" />
             <AppTextBox Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Style="width: 100%" />
             <AppTextBox Name="Input.PhoneNumber" @bind-Value="Input!.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
-            <!-- TODO : Restore Fluent Validation Message Later-->
+            <!-- TODO: Add a field-level validation message. -->
             <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@Profile_razor.SaveButton</AppButton>
         </EditForm>
     </div>

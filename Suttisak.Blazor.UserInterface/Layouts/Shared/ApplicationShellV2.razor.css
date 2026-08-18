@@ -85,7 +85,7 @@
 .app-shell-v2__menu-button.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .app-shell-v2__menu-button.is-open span:nth-child(2) { opacity: 0; transform: scaleX(.3); }
 .app-shell-v2__menu-button.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-.app-shell-v2__menu-button:focus-visible { outline: none; }
+.app-shell-v2__menu-button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 .app-shell-v2__frame {
     position: relative;

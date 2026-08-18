@@ -12,6 +12,6 @@
     justify-content: center;
 }
 
-body[data-color-scheme="dark"] .header-footer-content {
+:root[data-theme="dark"] .header-footer-content {
     background: url(/assets/backgrounds/gradient-dark.svg);
 }

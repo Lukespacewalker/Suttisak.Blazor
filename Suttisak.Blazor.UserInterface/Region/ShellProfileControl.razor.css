@@ -15,7 +15,7 @@
 }
 
 .shell-profile-login:hover { background: var(--app-accent); color: var(--app-on-accent); }
-.shell-profile-login:focus-visible { outline: none; }
+.shell-profile-login:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 @container app-shell-v2 (max-width: 30rem) {
     .shell-profile-login span { display: none; }

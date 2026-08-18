@@ -1,12 +1,12 @@
 (() => {
-    const storageKey = "fluentui-blazor:theme-settings";
+    const storageKey = "suttisak-blazor:theme-settings";
     let preference = "system";
 
     try {
         const mode = JSON.parse(localStorage.getItem(storageKey) ?? "{}")?.mode;
         if (mode === "light" || mode === "dark") preference = mode;
     } catch {
-        // Invalid or unavailable storage falls back to the operating-system theme.
+        // Storage can be unavailable in private browsing; use the system scheme instead.
     }
 
     const scheme = preference === "dark"
@@ -14,9 +14,7 @@
         ? "dark"
         : "light";
 
-    document.documentElement.dataset.colorScheme = scheme;
-    document.documentElement.dataset.themePreference = preference;
-    document.documentElement.style.colorScheme = scheme;
+    document.documentElement.setAttribute("data-theme", scheme);
 
     const closeMobileNavigation = (shell) => {
         const navigation = shell.querySelector(".app-shell-v2__navigation");

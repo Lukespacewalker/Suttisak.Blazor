@@ -12,20 +12,27 @@
     color-scheme: light dark;
     --design-unit: 4;
     --transition: .22s cubic-bezier(.4, 0, .2, 1);
+    --app-focus-ring: var(--app-accent);
 }
 
 html {
     scroll-behavior: smooth;
 }
 
-:root[data-color-scheme="dark"],
-body[data-color-scheme="dark"],
-body[data-theme="dark"] {
+:root[data-theme="dark"] {
     color-scheme: dark;
 }
 
-:root[data-color-scheme="light"],
-body[data-color-scheme="light"],
-body[data-theme="light"] {
+:root[data-theme="light"] {
     color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
 }
