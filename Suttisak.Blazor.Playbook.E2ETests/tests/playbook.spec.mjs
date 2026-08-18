@@ -38,10 +38,12 @@ test.describe('UI Playbook shared-component contracts', () => {
   test('A 100k-row AppQuickGrid keeps the browser DOM bounded', async ({ page }) => {
     await page.goto('/grid-performance');
     const grid = page.locator('table[aria-label="100000 virtual records"]');
-    await expect(grid).toBeVisible();
+    // WebAssembly startup on the smallest hosted Linux runner can exceed the
+    // default five-second assertion window for this intentionally large page.
+    await expect(grid).toBeVisible({ timeout: 20_000 });
 
     const renderedRows = grid.locator('tbody tr');
-    await expect(renderedRows.first()).toContainText('1');
+    await expect(renderedRows.first()).toContainText('1', { timeout: 20_000 });
     // The browser renders only the viewport plus its overscan buffer: less
     // than 0.2% of the 100k source, rather than every record.
     expect(await renderedRows.count()).toBeLessThan(200);
