@@ -21,6 +21,8 @@
     internal void Register(AppTabRegistration tab)
     {
         var index = _tabs.FindIndex(candidate => candidate.Id == tab.Id);
+        if (index >= 0 && _tabs[index] == tab) return;
+
         if (index < 0) _tabs.Add(tab); else _tabs[index] = tab;
         _activeId ??= tab.Id;
         _ = InvokeAsync(StateHasChanged);
@@ -28,7 +30,8 @@
 
     internal void Unregister(string id)
     {
-        _tabs.RemoveAll(tab => tab.Id == id);
+        if (_tabs.RemoveAll(tab => tab.Id == id) == 0) return;
+
         if (_activeId == id) _activeId = _tabs.FirstOrDefault()?.Id;
         _ = InvokeAsync(StateHasChanged);
     }
