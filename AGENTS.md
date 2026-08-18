@@ -12,8 +12,8 @@ When changing the reusable UI library, follow this sequence:
    - `AudiogramIQ`
    - `OccMedCheckUpBlazor`
    - `CoeKPI`
-   - `ROSA-Questionnaire`
-   - `Survey-Ajinomoto`
+   - `ErgoTrack`
+   - `MentalInsight`
 
 Do not change their Debug `ProjectReference` entries; they intentionally use the sibling source project during local development. Before committing an app, search the repository for `Suttisak.Blazor.UserInterface` so every Release package reference in that app receives the same version.
 
