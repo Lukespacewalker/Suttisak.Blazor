@@ -9,13 +9,14 @@
         aria-labelledby="@_titleId"
         aria-describedby="@DescriptionId"
         data-dismissible="@Dismissible.ToString().ToLowerInvariant()"
+        data-prevent-outside-dismiss="@PreventDismissOnOutsideClick.ToString().ToLowerInvariant()"
         @onclose="HandleNativeClose">
     @if (_hasValue)
     {
     <div class="app-drawer__surface">
         <header class="app-drawer__header">
             <div class="app-drawer__heading">
-                @if (Dangerous) { <span class="app-drawer__danger-mark" aria-hidden="true">!</span> }
+                @if (ShowModeMark) { <span class="@ModeMarkClass" aria-hidden="true">@ModeMark</span> }
                 <div>
                     <h2 id="@_titleId">@Title</h2>
                     @if (!string.IsNullOrWhiteSpace(Description)) { <p id="@_descriptionId">@Description</p> }
@@ -49,18 +50,24 @@
     [Parameter] public AppDrawerPosition Position { get; set; } = AppDrawerPosition.End;
     [Parameter] public AppDrawerSize Size { get; set; } = AppDrawerSize.Standard;
     [Parameter] public bool Dangerous { get; set; }
+    [Parameter] public AppDialogMode Mode { get; set; }
     [Parameter] public bool Dismissible { get; set; } = true;
+    [Parameter] public bool PreventDismissOnOutsideClick { get; set; }
     [Parameter] public string CloseLabel { get; set; } = "Close drawer";
     [Parameter] public string? Class { get; set; }
 
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : _descriptionId;
     private AppOverlayContext<TInput, TResult> Context => new(_value, CloseAsync, CancelAsync);
+    private bool ShowModeMark => Dangerous || Mode != AppDialogMode.Default;
+    private string ModeMark => Dangerous || Mode == AppDialogMode.Error ? "!" : Mode == AppDialogMode.Warning ? "!" : "i";
+    private string ModeMarkClass => $"app-drawer__mode-mark app-drawer__mode-mark--{(Dangerous ? "error" : Mode.ToString().ToLowerInvariant())}";
     private string CssClassValue => string.Join(' ', new[]
     {
         "app-drawer",
         $"app-drawer--{Position.ToString().ToLowerInvariant()}",
         $"app-drawer--{Size.ToString().ToLowerInvariant()}",
         Dangerous ? "app-drawer--danger" : null,
+        Mode != AppDialogMode.Default ? $"app-drawer--{Mode.ToString().ToLowerInvariant()}" : null,
         Class
     }.Where(value => !string.IsNullOrWhiteSpace(value)));
 

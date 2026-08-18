@@ -1,9 +1,9 @@
-.fluent-card:hover {
+.card-menu:hover {
     background: var(--app-surface-hover);
     box-shadow: 0 12px 40px var(--app-glass-shadow);
     cursor: pointer;
 }
-.fluent-card {
+.card-menu {
     background: var(--app-glass-surface-strong);
     backdrop-filter: blur(20px) saturate(200%);
     border: 1px solid var(--app-glass-border);
@@ -17,6 +17,6 @@
     align-items: center;
 }
 
-    .fluent-card .subtitle {
+    .card-menu .subtitle {
         color: var(--colorNeutralForeground2);
     }

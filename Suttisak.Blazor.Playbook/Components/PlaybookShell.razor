@@ -1,5 +1,5 @@
 @inject PlaybookState State
-@inject IThemeService FluentThemeService
+@inject IThemeService ThemeService
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
@@ -21,12 +21,8 @@
 
         <div class="playbook-control">
             <label for="theme-select">Application</label>
-            <select id="theme-select" value="@State.Theme" @onchange="ChangeThemeAsync">
-                @foreach (var theme in PlaybookCatalog.Themes)
-                {
-                    <option value="@theme.Key">@theme.Name</option>
-                }
-            </select>
+            <AppSelect TValue="string" Id="theme-select" Options="@ThemeOptions"
+                       @bind-Value="State.Theme" @bind-Value:after="ApplyThemeAsync" />
         </div>
 
         <div class="playbook-segment playbook-segment--theme" aria-label="Color scheme">
@@ -50,6 +46,8 @@
     private static string Active(string value, string candidate) =>
         value == candidate ? "is-active" : string.Empty;
     private string ColorSchemeValue => State.Mode == "auto" ? "light dark" : State.Mode;
+    private static AppSelectOption<string>[] ThemeOptions =>
+        PlaybookCatalog.Themes.Select(theme => new AppSelectOption<string>(theme.Key, theme.Name)).ToArray();
 
     protected override void OnInitialized()
     {
@@ -60,29 +58,29 @@
     {
         if (firstRender)
         {
-            await ApplyFluentThemeAsync();
+            await ApplyThemeAsync();
         }
-    }
-
-    private async Task ChangeThemeAsync(ChangeEventArgs args)
-    {
-        State.Theme = args.Value?.ToString() ?? State.Theme;
-        await ApplyFluentThemeAsync();
     }
 
     private async Task ChangeModeAsync(string mode)
     {
         State.Mode = mode;
-        await ApplyFluentThemeAsync();
+        await ApplyThemeAsync();
     }
 
-    private async Task ApplyFluentThemeAsync()
+    private async Task ApplyThemeAsync()
     {
         var theme = PlaybookCatalog.Themes.First(value => value.Key == State.Theme);
         await JsRuntime.InvokeVoidAsync("playbookTheme.setPrimaryColor", theme.PrimaryColor);
         var isDark = State.Mode == "dark"
             || State.Mode == "auto" && await JsRuntime.InvokeAsync<bool>("playbookTheme.prefersDark");
-        await FluentThemeService.SetThemeAsync(theme.PrimaryColor, isDark);
+        ThemeService.ThemeConfiguration = State.Mode switch
+        {
+            "light" => DesignThemeMode.Light,
+            "dark" => DesignThemeMode.Dark,
+            _ => DesignThemeMode.System
+        };
+        ThemeService.CurrentThemeMode = isDark ? ThemeMode.Dark : ThemeMode.Light;
     }
 
     private void HandleStateChanged() => _ = InvokeAsync(StateHasChanged);

@@ -1,5 +1,5 @@
 @inject PlaybookState State
-@inject IThemeService FluentThemeService
+@inject IThemeService ThemeService
 @inject IJSRuntime JsRuntime
 
 <ApplicationShellV2 MainContentId="demo-application-main"
@@ -30,11 +30,11 @@
     </LanguageSwitcher>
     <Profile>
         <details class="demo-profile">
-            <summary aria-label="Open profile menu"><span>KS</span><b>Kanda</b><FluentIcon Value="@(new Icons.Regular.Size16.ChevronDown())" /></summary>
+            <summary aria-label="Open profile menu"><span>KS</span><b>Kanda</b><Suttisak.Blazor.Icons.Icon Name="ChevronDown" Size="16"  /></summary>
             <div class="demo-profile__menu">
                 <div><span>KS</span><p><strong>Kanda S.</strong><small>Workspace administrator</small></p></div>
-                <a href="#demo-profile"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> Profile</a>
-                <a href="#demo-signout"><FluentIcon Value="@(new Icons.Regular.Size20.SignOut())" /> Sign out</a>
+                <a href="#demo-profile"><Suttisak.Blazor.Icons.Icon Name="Person" Size="20"  /> Profile</a>
+                <a href="#demo-signout"><Suttisak.Blazor.Icons.Icon Name="SignOut" Size="20"  /> Sign out</a>
             </div>
         </details>
     </Profile>
@@ -42,24 +42,24 @@
         <div class="demo-app-nav-group">
             <span>@(IsThai ? "พื้นที่ทำงาน" : "Workspace")</span>
             <NavLink href="application-shell" Match="NavLinkMatch.All">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Home())" /> @(IsThai ? "ภาพรวม" : "Overview")
+                <Suttisak.Blazor.Icons.Icon Name="Home" Size="20"  /> @(IsThai ? "ภาพรวม" : "Overview")
             </NavLink>
             <NavLink href="application-shell/records">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Table())" /> @(IsThai ? "รายการ" : "Records")
+                <Suttisak.Blazor.Icons.Icon Name="Table" Size="20"  /> @(IsThai ? "รายการ" : "Records")
                 <small>@RecordCount</small>
             </NavLink>
             <NavLink href="application-shell/person">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> @(IsThai ? "สุขภาพรายบุคคล" : "Individual health")
+                <Suttisak.Blazor.Icons.Icon Name="Person" Size="20"  /> @(IsThai ? "สุขภาพรายบุคคล" : "Individual health")
             </NavLink>
         </div>
         <div class="demo-app-nav-group">
             <span>@(IsThai ? "จัดการ" : "Manage")</span>
             <NavSubmenu Label="@(IsThai ? "การดูแลระบบ" : "Administration")"
-                        Icon="@(new Icons.Regular.Size20.Settings())"
+                        IconName="@("Settings")"
                         Badge="3">
-                <a href="#demo-team"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /> @(IsThai ? "ทีม" : "Team")</a>
-                <a href="#demo-permissions"><FluentIcon Value="@(new Icons.Regular.Size20.PersonLock())" /> @(IsThai ? "สิทธิ์" : "Permissions")</a>
-                <a href="#demo-settings"><FluentIcon Value="@(new Icons.Regular.Size20.Settings())" /> @(IsThai ? "การตั้งค่า" : "Settings")</a>
+                <a href="#demo-team"><Suttisak.Blazor.Icons.Icon Name="People" Size="20"  /> @(IsThai ? "ทีม" : "Team")</a>
+                <a href="#demo-permissions"><Suttisak.Blazor.Icons.Icon Name="PersonLock" Size="20"  /> @(IsThai ? "สิทธิ์" : "Permissions")</a>
+                <a href="#demo-settings"><Suttisak.Blazor.Icons.Icon Name="Settings" Size="20"  /> @(IsThai ? "การตั้งค่า" : "Settings")</a>
             </NavSubmenu>
         </div>
     </Navigation>
@@ -84,7 +84,13 @@
         State.Mode = mode;
         var isDark = mode == "dark"
             || mode == "auto" && await JsRuntime.InvokeAsync<bool>("playbookTheme.prefersDark");
-        await FluentThemeService.SetThemeAsync(CurrentTheme.PrimaryColor, isDark);
+        ThemeService.ThemeConfiguration = mode switch
+        {
+            "light" => DesignThemeMode.Light,
+            "dark" => DesignThemeMode.Dark,
+            _ => DesignThemeMode.System
+        };
+        ThemeService.CurrentThemeMode = isDark ? ThemeMode.Dark : ThemeMode.Light;
         await JsRuntime.InvokeVoidAsync("playbookTheme.setPrimaryColor", CurrentTheme.PrimaryColor);
     }
 }

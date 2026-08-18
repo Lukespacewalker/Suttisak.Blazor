@@ -1,14 +1,16 @@
 let isThemingSetup = false;
 let isThemingScheduled = false;
-let themeObserver;
 let formControlObserver;
 
-const themeSettingsKey = "fluentui-blazor:theme-settings";
+const themeSettingsKey = "suttisak-blazor:theme-settings";
+const legacyThemeSettingsKey = "fluentui-blazor:theme-settings";
 const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
 function getThemePreference() {
     try {
-        const mode = JSON.parse(localStorage.getItem(themeSettingsKey) ?? "{}")?.mode;
+        const mode = JSON.parse(localStorage.getItem(themeSettingsKey)
+            ?? localStorage.getItem(legacyThemeSettingsKey)
+            ?? "{}")?.mode;
         return mode === "light" || mode === "dark" ? mode : "system";
     } catch {
         return "system";
@@ -39,19 +41,6 @@ function applyTheme(preference = getThemePreference(), resolvedScheme) {
     return scheme;
 }
 
-function observeFluentTheme() {
-    const theme = document.querySelector("fluent-design-theme");
-    if (!theme || theme.dataset.suttisakThemeObserved === "true") return;
-
-    theme.dataset.suttisakThemeObserved = "true";
-    new MutationObserver(() => {
-        const mode = theme.getAttribute("mode");
-        applyTheme(
-            getThemePreference(),
-            mode === "light" || mode === "dark" ? mode : undefined);
-    }).observe(theme, { attributes: true, attributeFilter: ["mode"] });
-}
-
 function setupTheming() {
     if (isThemingSetup) return;
 
@@ -77,12 +66,8 @@ function setupTheming() {
     });
 
     window.addEventListener("storage", event => {
-        if (event.key === themeSettingsKey) applyTheme();
+        if (event.key === themeSettingsKey || event.key === legacyThemeSettingsKey) applyTheme();
     });
-
-    observeFluentTheme();
-    themeObserver = new MutationObserver(observeFluentTheme);
-    themeObserver.observe(document.documentElement, { childList: true, subtree: true });
 
     window.suttisakTheme = {
         initialized: true,
@@ -618,6 +603,92 @@ function enhanceDateTimePicker(control) {
     popup.addEventListener("keydown", event => { if (event.key === "Escape") { close(); trigger.focus(); } });
 }
 
+let adaptiveOverflowObserver;
+const adaptiveOverflowResizeObservers = new WeakMap();
+const adaptiveOverflowFrames = new WeakMap();
+
+function measureAdaptiveOverflow(root) {
+    if (!root.isConnected) return;
+
+    root.removeAttribute("data-overflowing");
+    const kind = root.dataset.adaptiveOverflow;
+    let overflowing = false;
+
+    if (kind === "section-navigation") {
+        const desktop = root.querySelector(".section-navigation__desktop");
+        const items = root.querySelector(".section-navigation__items");
+        if (desktop && items && getComputedStyle(desktop).display !== "none") {
+            overflowing = items.scrollWidth > desktop.clientWidth + 1;
+        }
+    } else if (kind === "page-action-toolbar") {
+        const bounds = root.getBoundingClientRect();
+        const inlineGroups = root.querySelectorAll(
+            ":scope > .page-action-toolbar__supporting, " +
+            ":scope > .page-action-toolbar__inline-overflow, " +
+            ":scope > .page-action-toolbar__primary");
+        overflowing = Array.from(inlineGroups).some(group => {
+            if (getComputedStyle(group).display === "none") return false;
+            const groupBounds = group.getBoundingClientRect();
+            return groupBounds.left < bounds.left - 1 || groupBounds.right > bounds.right + 1;
+        });
+    }
+
+    root.dataset.overflowReady = "true";
+    if (overflowing) root.dataset.overflowing = "true";
+    else {
+        const selector = kind === "section-navigation"
+            ? ":scope > .section-navigation__desktop > .section-navigation__overflow[open]"
+            : ":scope > .page-action-toolbar__more[open]";
+        root.querySelectorAll(selector).forEach(details => details.removeAttribute("open"));
+    }
+}
+
+function queueAdaptiveOverflow(root) {
+    const previous = adaptiveOverflowFrames.get(root);
+    if (previous) cancelAnimationFrame(previous);
+    adaptiveOverflowFrames.set(root, requestAnimationFrame(() => {
+        adaptiveOverflowFrames.delete(root);
+        measureAdaptiveOverflow(root);
+    }));
+}
+
+function enhanceAdaptiveOverflow(root) {
+    if (adaptiveOverflowResizeObservers.has(root)) {
+        queueAdaptiveOverflow(root);
+        return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => queueAdaptiveOverflow(root));
+    resizeObserver.observe(root);
+    adaptiveOverflowResizeObservers.set(root, resizeObserver);
+    queueAdaptiveOverflow(root);
+}
+
+function setupAdaptiveOverflow() {
+    if (!document.documentElement) return;
+    document.querySelectorAll("[data-adaptive-overflow]").forEach(enhanceAdaptiveOverflow);
+
+    if (!adaptiveOverflowObserver) {
+        adaptiveOverflowObserver = new MutationObserver(records => {
+            const roots = new Set();
+            for (const record of records) {
+                if (record.target instanceof Element) {
+                    const owner = record.target.closest("[data-adaptive-overflow]");
+                    if (owner) roots.add(owner);
+                }
+                for (const node of record.addedNodes) {
+                    if (!(node instanceof Element)) continue;
+                    if (node.matches("[data-adaptive-overflow]")) roots.add(node);
+                    node.querySelectorAll?.("[data-adaptive-overflow]").forEach(root => roots.add(root));
+                }
+            }
+            roots.forEach(enhanceAdaptiveOverflow);
+        });
+        adaptiveOverflowObserver.observe(document.documentElement, { childList: true, subtree: true });
+        document.fonts?.ready.then(() => document.querySelectorAll("[data-adaptive-overflow]").forEach(queueAdaptiveOverflow));
+    }
+}
+
 function setupFormControls() {
     if (!document.documentElement) return;
     document.querySelectorAll("[data-browser-datetime-control]").forEach(enhanceDateTimeControl);
@@ -646,19 +717,23 @@ function setupFormControls() {
 export function beforeStart() {
     setupTheming();
     setupFormControls();
+    setupAdaptiveOverflow();
 }
 
 export function afterStarted() {
     setupTheming();
     setupFormControls();
+    setupAdaptiveOverflow();
 }
 
 export function beforeWebStart() {
     setupTheming();
     setupFormControls();
+    setupAdaptiveOverflow();
 }
 
 export function afterWebStarted() {
     setupTheming();
     setupFormControls();
+    setupAdaptiveOverflow();
 }

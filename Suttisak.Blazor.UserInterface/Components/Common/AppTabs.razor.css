@@ -1,3 +1,6 @@
-.app-tabs { min-width: 0; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
-.app-tabs ::deep fluent-tabs { min-width: max-content; }
-.app-tabs ::deep fluent-tab-panel { min-width: min(100%, 18rem); color: var(--app-foreground); }
+.app-tabs { min-width: 0; }
+.app-tabs__list { display: flex; gap: .25rem; overflow-x: auto; border-bottom: 1px solid var(--app-border); overscroll-behavior-inline: contain; scrollbar-width: thin; }
+.app-tabs__list button { padding: .65rem .85rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--app-foreground-muted); cursor: pointer; font: inherit; font-weight: 650; white-space: nowrap; }
+.app-tabs__list button[aria-selected="true"] { border-bottom-color: var(--app-brand); color: var(--app-foreground); }
+.app-tabs__list button:focus-visible { outline: 2px solid var(--app-focus-ring, var(--app-brand)); outline-offset: -2px; }
+.app-tabs ::deep [role="tabpanel"] { min-width: min(100%, 18rem); padding-block: 1rem; color: var(--app-foreground); }

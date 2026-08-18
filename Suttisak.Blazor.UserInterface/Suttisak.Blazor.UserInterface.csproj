@@ -9,7 +9,7 @@
 		<Description>A collection of useful components for Blazor</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>0.19.0</AssemblyVersion>
+		<AssemblyVersion>0.21.0</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -19,6 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Suttisak.Blazor.Icons\Suttisak.Blazor.Icons.csproj" />
 		<SupportedPlatform Include="browser" />
 		<None Update="README.md" Pack="true" PackagePath="\" />
 		<ProjectReference Include="..\Suttisak.Blazor.UserInterface.Generator\Suttisak.Blazor.UserInterface.Generator.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
@@ -30,8 +31,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="10.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.11" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.11" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="5.0.0-rc.4-26180.1" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="5.0.0-rc.4-26180.1" />
 	</ItemGroup>
 
 	<ItemGroup>

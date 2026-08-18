@@ -37,7 +37,7 @@
         width: 100%;
     }
 
-    .form-actions ::deep fluent-button {
+    .form-actions ::deep .app-button {
         flex: 1 1 auto;
     }
 }

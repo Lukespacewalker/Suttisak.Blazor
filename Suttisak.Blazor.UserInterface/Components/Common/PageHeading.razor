@@ -9,11 +9,9 @@
     @if (!string.IsNullOrWhiteSpace(SectionTitle))
     {
         <div class="page-heading__section">
-            @if (SectionIcon is not null)
+            @if (!string.IsNullOrWhiteSpace(SectionIconName))
             {
-                <span class="page-heading__section-icon" aria-hidden="true">
-                    <FluentIcon Value="@SectionIcon" />
-                </span>
+                <span class="page-heading__section-icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@SectionIconName" Size="@SectionIconSize" /></span>
             }
 
             <div class="page-heading__section-copy">
@@ -34,11 +32,9 @@
     }
 
     <div class="page-heading__body">
-        @if (Icon is not null)
+        @if (!string.IsNullOrWhiteSpace(IconName))
         {
-            <span class="page-heading__icon" aria-hidden="true">
-                <FluentIcon Value="@Icon" />
-            </span>
+            <span class="page-heading__icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@IconName" Size="@IconSize" /></span>
         }
 
         <div class="page-heading__copy">
@@ -70,10 +66,12 @@
 
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Description { get; set; }
-    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? IconName { get; set; }
+    [Parameter] public int IconSize { get; set; } = 24;
     [Parameter] public string? SectionTitle { get; set; }
     [Parameter] public string? SectionDescription { get; set; }
-    [Parameter] public Icon? SectionIcon { get; set; }
+    [Parameter] public string? SectionIconName { get; set; }
+    [Parameter] public int SectionIconSize { get; set; } = 20;
     [Parameter] public RenderFragment? Breadcrumbs { get; set; }
     [Parameter] public RenderFragment? SectionActions { get; set; }
     [Parameter] public RenderFragment? PageActions { get; set; }

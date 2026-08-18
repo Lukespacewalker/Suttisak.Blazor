@@ -22,12 +22,17 @@
     content: "/";
 }
 
-.app-breadcrumb__item ::deep .fluent-breadcrumb-item {
+.app-breadcrumb__item > a,
+.app-breadcrumb__item > span {
     display: inline-flex;
     min-width: 0;
     align-items: center;
     gap: .35rem;
 }
+
+.app-breadcrumb__item > a { color: inherit; text-decoration: none; }
+.app-breadcrumb__item > a:hover { text-decoration: underline; }
+.app-breadcrumb__item > a:focus-visible { border-radius: .25rem; outline: 2px solid var(--app-focus-ring, var(--app-brand)); outline-offset: 2px; }
 
 .app-breadcrumb__label {
     overflow: hidden;

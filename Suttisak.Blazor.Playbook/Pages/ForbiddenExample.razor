@@ -11,8 +11,8 @@
                        Description="Your account is signed in, but it does not have permission to view this page. Ask an administrator for access or return to your workspace."
                        FooterText="Your session is still secure">
             <Actions>
-                <a class="access-primary-action" href="application-shell">Return to workspace</a>
-                <button class="access-secondary-link access-link-button" type="button">Request access</button>
+                <AppButton Href="application-shell" Variant="AppButtonVariant.Primary" Class="access-primary-action">Return to workspace</AppButton>
+                <AppButton Variant="AppButtonVariant.Subtle" Class="access-secondary-link access-link-button">Request access</AppButton>
             </Actions>
         </StatusPattern>
     </AccessPageFrame>

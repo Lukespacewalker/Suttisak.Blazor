@@ -5,28 +5,50 @@
 <fieldset class="@ContainerClass" aria-describedby="@DescribedBy">
     @if (!string.IsNullOrWhiteSpace(Label)) { <legend class="app-form-control__label">@Label</legend> }
     <div class="app-radio-group app-radio-group--@Orientation.ToLowerInvariant()">
-        @for (var index = 0; index < Options.Count; index++)
+        @if (ChildContent is not null)
         {
-            var option = Options[index];
-            var optionId = $"{InputId}-{index}";
-            <label class="app-choice app-choice--radio" for="@optionId">
-                <input id="@optionId" class="app-choice__native @CssClass" type="radio" name="@NameAttributeValue"
-                       value="@FormatValueAsString(option.Value)" checked="@IsSelected(option.Value)"
-                       required="@Required" disabled="@(Disabled || option.Disabled)"
-                       aria-invalid="@HasValidationError" aria-describedby="@DescribedBy" @onchange="HandleChange" />
-                <span class="app-choice__control" aria-hidden="true"><i></i></span>
-                <span class="app-choice__content"><strong>@option.Label</strong></span>
-            </label>
+            <CascadingValue Value="@Context" IsFixed="true">
+                @ChildContent
+            </CascadingValue>
+        }
+        else
+        {
+            @for (var index = 0; index < Options.Count; index++)
+            {
+                var option = Options[index];
+                var optionId = $"{InputId}-{index}";
+                <label class="app-choice app-choice--radio" for="@optionId">
+                    <input id="@optionId" class="app-choice__native @CssClass" type="radio" name="@NameAttributeValue"
+                           value="@FormatValueAsString(option.Value)" checked="@IsSelected(option.Value)"
+                           required="@Required" disabled="@(Disabled || option.Disabled)"
+                           aria-invalid="@HasValidationError" aria-describedby="@DescribedBy" @onchange="HandleChange" />
+                    <span class="app-choice__control" aria-hidden="true"><i></i></span>
+                    <span class="app-choice__content"><strong>@option.Label</strong></span>
+                </label>
+            }
         }
     </div>
     <AppInputSupport Description="@Description" DescriptionId="@DescriptionId" ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
 </fieldset>
 
 @code {
-    [Parameter, EditorRequired] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = Array.Empty<AppSelectOption<TValue>>();
+    [Parameter] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = Array.Empty<AppSelectOption<TValue>>();
     [Parameter] public string Orientation { get; set; } = "Vertical";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private AppRadioGroupContext<TValue> Context => new(this);
     private bool IsSelected(TValue value) => System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(CurrentValue, value);
     private void HandleChange(ChangeEventArgs args) => CurrentValueAsString = args.Value?.ToString();
+    internal string RadioName => NameAttributeValue;
+    internal string GroupId => InputId;
+    internal bool HasValidationErrorValue => HasValidationError;
+    internal string DescribedByValue => DescribedBy;
+    internal string CssClassValue => CssClass;
+    internal TValue SelectedValue => CurrentValue!;
+    internal Task SetCurrentValueAsync(TValue value)
+    {
+        CurrentValue = value;
+        return Task.CompletedTask;
+    }
     protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
     {
         if (BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out var parsed)) { result = parsed!; validationErrorMessage = null!; return true; }

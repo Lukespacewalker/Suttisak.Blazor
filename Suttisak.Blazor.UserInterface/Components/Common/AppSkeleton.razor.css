@@ -1,0 +1,14 @@
+.app-skeleton {
+    display: inline-block;
+    min-block-size: 1em;
+    min-inline-size: 5rem;
+    border-radius: .35rem;
+    background: color-mix(in srgb, currentColor 11%, transparent);
+}
+
+.app-skeleton--circle { border-radius: 50%; }
+.app-skeleton--shimmer { background: linear-gradient(90deg, color-mix(in srgb, currentColor 8%, transparent), color-mix(in srgb, currentColor 17%, transparent), color-mix(in srgb, currentColor 8%, transparent)); background-size: 200% 100%; animation: app-skeleton-shimmer 1.2s ease-in-out infinite; }
+
+@keyframes app-skeleton-shimmer { to { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) { .app-skeleton--shimmer { animation: none; } }

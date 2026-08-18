@@ -10,56 +10,56 @@
 <IdentityManageShell Title="@Text["Overview"]"
                      Description="@Text["OverviewDescription"]"
                      ActiveUrl="@IdentityRoutes.Account.Manage.Root"
-                     Icon="@StaticPageIcon"
+                     IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(StaticPageIcon, null, Manage_razor.Manage) })">
     <StatusMessage />
 
     <div class="identity-overview-grid">
         <IdentitySettingCard Title="@Manage_razor.Email"
                              Description="@Text["EmailDescription"]"
-                             Icon="@(new Icons.Regular.Size20.Mail())">
+                             IconName="Mail">
             <Badge><IdentityStatusBadge Tone="@(_isEmailConfirmed ? "success" : "warning")">@(_isEmailConfirmed ? Text["Verified"] : Text["NotVerified"])</IdentityStatusBadge></Badge>
             <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.Email">@Text["ManageAction"]</a></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.ChangePassword"
                              Description="@Text["PasswordDescription"]"
-                             Icon="@(new Icons.Regular.Size20.Password())">
+                             IconName="Password">
             <Badge><IdentityStatusBadge Tone="@(_hasPassword ? "success" : "warning")">@(_hasPassword ? Text["PasswordSet"] : Text["NoPassword"])</IdentityStatusBadge></Badge>
             <Actions><a class="identity-card-action" href="@(_hasPassword ? IdentityRoutes.Account.Manage.ChangePassword : IdentityRoutes.Account.Manage.SetPassword)">@Text["ManageAction"]</a></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.TwoFactorAuthentication"
                              Description="@Text["TwoFactorDescription"]"
-                             Icon="@(new Icons.Regular.Size20.KeyMultiple())">
+                             IconName="KeyMultiple">
             <Badge><IdentityStatusBadge Tone="@(_is2FaEnabled ? "success" : "warning")">@(_is2FaEnabled ? Text["Enabled"] : Text["NotConfigured"])</IdentityStatusBadge></Badge>
             <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Text["ManageAction"]</a></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.Passkeys"
                              Description="@Text["PasskeysDescription"]"
-                             Icon="@(new Icons.Regular.Size20.PersonPasskey())">
+                             IconName="PersonPasskey">
             <Badge><IdentityStatusBadge Tone="@(_passkeyCount > 0 ? "success" : "neutral")">@string.Format(Text["PasskeyCount"], _passkeyCount)</IdentityStatusBadge></Badge>
             <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.Passkeys">@Text["ManageAction"]</a></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.ExternalLogins"
                              Description="@Text["ExternalLoginsDescription"]"
-                             Icon="@(new Icons.Regular.Size20.GlobeSurface())">
+                             IconName="GlobeSurface">
             <Badge><IdentityStatusBadge>@string.Format(Text["ExternalLoginCount"], _externalLoginCount)</IdentityStatusBadge></Badge>
             <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.ExternalLogins">@Text["ManageAction"]</a></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.PersonalData"
                              Description="@Text["PersonalDataDescription"]"
-                             Icon="@(new Icons.Regular.Size20.DatabasePerson())">
+                             IconName="DatabasePerson">
             <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.PersonalData">@Text["ManageAction"]</a></Actions>
         </IdentitySettingCard>
     </div>
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; } = new Icons.Regular.Size20.PersonCircle();
+    public static string StaticPageIcon { get; } = "PersonCircle";
     public static string StaticPageUrl { get; } = IdentityRoutes.Account.Manage.Root;
     public static string StaticPageTitleKey { get; } = nameof(Manage_razor.Manage);
 

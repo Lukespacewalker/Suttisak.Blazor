@@ -3,11 +3,11 @@
 ## Cards and data grids
 
 Use `AppCard` for standard application surfaces. It provides optional header,
-description, actions, body, and footer regions. `AppQuickGrid<TGridItem>` is the
-preferred sorting, paging, and virtualization engine. It wraps Microsoft's
-official Blazor QuickGrid with the shared visual contract and does not depend on
-Fluent DataGrid. `AppDataGrid` remains the responsive command-bar and state
-container, so existing Fluent grids can be migrated one screen at a time.
+description, actions, body, and footer regions. `AppGrid<TGridItem>` is the
+library-native replacement for Fluent DataGrid pages. `AppQuickGrid<TGridItem>`
+remains available when its QuickGrid virtualization model is needed. `AppDataGrid`
+is the responsive command-bar and state container, so existing grids can be
+migrated one screen at a time.
 
 ```razor
 <AppDataGrid AriaLabel="People">
@@ -23,23 +23,66 @@ Supply exactly one of `Items` or `ItemsProvider`. When `Virtualize` is enabled,
 all rows must have the fixed height supplied by `ItemSize`. Use `ItemKey` for a
 stable primary key so Blazor retains row identity across sorting and refreshes.
 
+## Dependency-free data grid
+
+`AppGrid<TGridItem>` is the library-native alternative for new work and Fluent
+DataGrid migrations. It has no Fluent or QuickGrid runtime dependency: use
+`AppGridPropertyColumn` for a property and `AppGridTemplateColumn` for cell
+markup. It accepts an `IQueryable<TGridItem>` through `Items`, or an
+`AppGridItemsProvider<TGridItem>` for server-side paging. Provider requests
+include zero-based `StartIndex`, requested `Count`, the selected column and
+direction in `Sort`, and a cancellation token. Call `RefreshDataAsync()` (or
+`RefreshAsync()`) after changing external filters.
+
+```razor
+<AppGrid TGridItem="Person" Items="@people.AsQueryable()"
+         Pagination="@pagination" ItemKey="@(person => person.Id)"
+         SelectionMode="AppGridSelectionMode.Single"
+         @bind-SelectedItem="selectedPerson" AriaLabel="People">
+    <AppGridSelectColumn TGridItem="Person" />
+    <AppGridPropertyColumn TGridItem="Person" TProperty="string"
+                           Property="@(person => person.Name)" Title="Name"
+                           Sortable="true" IsDefaultSortColumn="true" />
+    <AppGridTemplateColumn TGridItem="Person" Title="Actions">
+        <AppButton OnClick="@(_ => Edit(context))">Edit</AppButton>
+    </AppGridTemplateColumn>
+</AppGrid>
+<AppGridPaginator State="@pagination" />
+
+@code {
+    private readonly AppGridPaginationState pagination = new(itemsPerPage: 25);
+    private Person? selectedPerson;
+}
+```
+
+Use `AppGridSelectColumn` with `Single` or `Multiple` selection and optionally
+set `SelectOnRowClick="false"` when only the checkbox should select rows. Rows
+remain keyboard-selectable with Enter or Space. Template columns are sortable
+only when `SortBy` (for local items) and normally `SortKey` (for a provider) are
+supplied. Virtualized rows, column resizing, filtering UI, and Fluent-specific
+column option menus are intentionally outside this compact replacement.
+
 ## Dialogs and drawers
 
 `AppDialog<TInput, TResult>` and `AppDrawer<TInput, TResult>` accept a value in
 `ShowAsync` and return `AppOverlayResult<TResult>`. Cancelling with Escape, the
 backdrop, the close button, or `CancelAsync` returns `IsCancelled = true`.
 Set `Dismissible="false"` when the user must explicitly choose a footer action.
-Set `Dangerous="true"` for destructive confirmation and pair it with a danger
-button. Drawers can open from either side and have narrow, standard, and wide
-sizes.
+To keep Escape and the close button available but stop backdrop clicks, set
+`PreventDismissOnOutsideClick="true"`. `Mode` provides the `Information`,
+`Warning`, and `Error` visual treatments. Set `Dangerous="true"` for destructive
+confirmation and pair it with the filled `AppButtonVariant.DangerPrimary` action.
+Drawers can open from either side and have narrow, standard, and wide sizes and
+also support `Mode` and `PreventDismissOnOutsideClick`.
 
 ```razor
 <AppDialog TInput="Person" TResult="Person" @ref="deleteDialog"
-           Title="Delete this person?" Dangerous="true">
+           Title="Delete this person?" Dangerous="true"
+           PreventDismissOnOutsideClick="true">
     <Body Context="dialog"><p>@dialog.Value.Name will be removed.</p></Body>
     <Footer Context="dialog">
         <AppButton OnClick="@(_ => dialog.CancelAsync())">Cancel</AppButton>
-        <AppButton Variant="AppButtonVariant.Danger"
+        <AppButton Variant="AppButtonVariant.DangerPrimary"
                    OnClick="@(_ => dialog.CloseAsync(dialog.Value))">Delete</AppButton>
     </Footer>
 </AppDialog>
@@ -99,9 +142,12 @@ visual overrides.
 
 For four or more page actions, use `PageActionToolbar`: keep one action in
 `PrimaryAction`, at most two frequent actions in `SupportingActions`, and place
-the remainder in `OverflowActions`. In narrow containers only the primary action
-and overflow trigger remain visible; supporting actions are repeated inside the
-menu. Put destructive actions last.
+the remainder in `OverflowActions`. All actions remain visible while they fit;
+the native **More** menu appears only when the toolbar's measured width is no
+longer sufficient. In narrow containers only the primary action and overflow
+trigger remain visible, with supporting actions repeated inside the menu. The
+menu works during static SSR without a Blazor click handler. Put destructive
+actions last.
 
 ## Page composition
 
@@ -161,6 +207,12 @@ predictable state model. Supply `LoadingContent`, `EmptyContent`, or
 `ErrorContent` only when a feature needs a richer custom state.
 
 ## Forms and feedback
+
+`AppStack`, `AppDivider`, and `AppSkeleton` cover responsive grouping, visual
+separation, and loading placeholders without a third-party component runtime.
+Use `AppNumberInput<TValue>` and `AppSwitch` for numeric and boolean form
+fields; like the other `AppInputBase` controls, both bind to the surrounding
+`EditContext` and display validation feedback.
 
 The shared text box, text area, select, radio group, and checkbox inherit from
 Blazor's `InputBase<TValue>`. They participate in the surrounding `EditContext`,

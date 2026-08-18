@@ -70,7 +70,7 @@
         align-items: stretch;
     }
 
-    .identity-form-actions ::deep fluent-button {
+    .identity-form-actions ::deep .app-button {
         width: 100%;
     }
 }

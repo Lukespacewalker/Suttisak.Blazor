@@ -19,8 +19,8 @@
 .identity-manage-content__body ::deep .identity-provider-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
 .identity-manage-content__body ::deep form,
 .identity-manage-content__body ::deep .identity-form { display: grid; gap: 1rem; max-width: 42rem; }
-.identity-manage-content__body ::deep fluent-text-field,
-.identity-manage-content__body ::deep fluent-button[appearance="accent"] { max-width: 100%; }
+.identity-manage-content__body ::deep .app-form-control,
+.identity-manage-content__body ::deep .app-button { max-width: 100%; }
 .identity-manage-content__body ::deep .alert { margin: 0; padding: 1rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface-muted); }
 .identity-manage-content__body ::deep .alert-danger { border-color: var(--app-danger-border); background: var(--app-danger-soft); }
 .identity-manage-content__body ::deep .alert-warning { border-color: var(--app-warning-border); background: var(--app-warning-soft); }

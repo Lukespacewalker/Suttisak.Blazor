@@ -1,9 +1,40 @@
 <div class="app-tabs" @attributes="AdditionalAttributes">
-    <FluentTabs Class="app-tabs__fluent">@ChildContent</FluentTabs>
+    <div class="app-tabs__list" role="tablist">
+        @foreach (var tab in _tabs)
+        {
+            <button id="@tab.TabId" type="button" role="tab"
+                    aria-selected="@(tab.Id == _activeId)" aria-controls="@tab.PanelId"
+                    tabindex="@(tab.Id == _activeId ? 0 : -1)"
+                    @onclick="() => Activate(tab.Id)">@tab.Label</button>
+        }
+    </div>
+    <CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
 </div>
 
 @code {
+    private readonly List<AppTabRegistration> _tabs = [];
+    private string? _activeId;
+
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
-    [Parameter(CaptureUnmatchedValues = true)]
-    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    internal void Register(AppTabRegistration tab)
+    {
+        var index = _tabs.FindIndex(candidate => candidate.Id == tab.Id);
+        if (index < 0) _tabs.Add(tab); else _tabs[index] = tab;
+        _activeId ??= tab.Id;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    internal void Unregister(string id)
+    {
+        _tabs.RemoveAll(tab => tab.Id == id);
+        if (_activeId == id) _activeId = _tabs.FirstOrDefault()?.Id;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    internal bool IsActive(string id) => id == _activeId;
+    private void Activate(string id) => _activeId = id;
+
+    internal sealed record AppTabRegistration(string Id, string Label, string TabId, string PanelId);
 }

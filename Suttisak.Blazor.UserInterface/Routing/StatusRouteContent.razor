@@ -19,7 +19,7 @@
 
     <span class="status-route__code" aria-hidden="true">@StatusCode</span>
     <div class="status-route__signal" aria-hidden="true">
-        <FluentIcon Value="@Icon" />
+        <Suttisak.Blazor.Icons.Icon Name="@IconName" Size="24" />
         <i></i>
     </div>
 
@@ -89,11 +89,11 @@
         >= 500 => "error",
         _ => "status"
     };
-    private Icon Icon => StatusCode switch
+    private string IconName => StatusCode switch
     {
-        403 => new Icons.Regular.Size24.LockClosed(),
-        404 => new Icons.Regular.Size24.DocumentDismiss(),
-        _ => new Icons.Regular.Size24.ErrorCircle()
+        403 => "LockClosed",
+        404 => "DocumentDismiss",
+        _ => "ErrorCircle"
     };
 
     private void Retry() => Navigation.NavigateTo(Navigation.Uri, forceLoad: true);

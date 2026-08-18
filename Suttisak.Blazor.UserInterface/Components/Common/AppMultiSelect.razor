@@ -1,0 +1,68 @@
+@using System.Globalization
+@typeparam TValue
+
+<div class="app-form-control @Class">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="app-form-control__label" for="@InputId">@Label</label>
+    }
+    <div class="app-form-control__input-wrap app-form-control__input-wrap--select">
+        <select id="@InputId" class="app-form-control__input" name="@Name" multiple="true"
+                disabled="@Disabled" required="@Required" aria-describedby="@DescriptionId"
+                @onchange="HandleChange" @attributes="AdditionalAttributes">
+            @if (ChildContent is not null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                @foreach (var option in Options)
+                {
+                    <option value="@Format(option.Value)" disabled="@option.Disabled" selected="@IsSelected(option.Value)">@option.Label</option>
+                }
+            }
+        </select>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <small id="@DescriptionId" class="app-form-control__description">@Description</small>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = Array.Empty<AppSelectOption<TValue>>();
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public IEnumerable<TValue> SelectedItems { get; set; } = Array.Empty<TValue>();
+    [Parameter] public EventCallback<IEnumerable<TValue>> SelectedItemsChanged { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _generatedId = $"app-multi-select-{Guid.NewGuid():N}";
+    private string InputId => Id ?? _generatedId;
+    private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+
+    private bool IsSelected(TValue value) => SelectedItems.Contains(value, EqualityComparer<TValue>.Default);
+    private static string Format(TValue value) => BindConverter.FormatValue(value, CultureInfo.CurrentCulture)?.ToString() ?? string.Empty;
+
+    private async Task HandleChange(ChangeEventArgs args)
+    {
+        var rawValues = args.Value switch
+        {
+            string[] values => values,
+            IEnumerable<string> values => values.ToArray(),
+            string value => new[] { value },
+            _ => Array.Empty<string>()
+        };
+        var parsedValues = rawValues
+            .Where(value => BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out _))
+            .Select(value => BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out var parsed) ? parsed! : default!)
+            .ToArray();
+        await SelectedItemsChanged.InvokeAsync(parsedValues);
+    }
+}

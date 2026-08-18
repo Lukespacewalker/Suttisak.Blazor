@@ -7,9 +7,9 @@
    href="@Href"
    @onclick="HandleClick">
     <span class="nav-item__icon">
-        @if (DisplayIcon is not null)
+        @if (!string.IsNullOrWhiteSpace(DisplayIconName))
         {
-            <FluentIcon Value="@(DisplayIcon)" />
+            <Suttisak.Blazor.Icons.Icon Name="@DisplayIconName" Size="20" Variant="@(IsActive ? Suttisak.Blazor.Icons.IconVariant.Filled : Suttisak.Blazor.Icons.IconVariant.Regular)" />
         }
     </span>
     <span class="nav-item__label">@ChildContent</span>
@@ -33,11 +33,11 @@
     public string Href { get; set; } = string.Empty;
     [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
 
-    [Parameter]
-    public Icon? IconRest { get; set; }
+    /// <summary>Dependency-free icon key for the resting navigation state.</summary>
+    [Parameter] public string? IconRestName { get; set; }
 
-    [Parameter]
-    public Icon? IconActive { get; set; }
+    /// <summary>Dependency-free icon key for the active navigation state.</summary>
+    [Parameter] public string? IconActiveName { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -45,7 +45,7 @@
     [Parameter]
     public RenderFragment? TrailingContent { get; set; }
 
-    private Icon? DisplayIcon => IsActive ? IconActive ?? IconRest : IconRest;
+    private string? DisplayIconName => IsActive ? IconActiveName ?? IconRestName : IconRestName;
 
     private bool IsActive
     {

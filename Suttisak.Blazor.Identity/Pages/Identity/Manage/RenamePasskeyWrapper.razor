@@ -1,11 +1,11 @@
 @typeparam TUser where TUser : class
 
-@inject IDialogService DialogService
+@inject AppOverlayService DialogService
 @inject NavigationManager NavigationManager
 
 <AppButton OnClick="() => EditPasskeyName(Passkey)"
               Title="@Passkeys_razor.RenameTitle" 
-              IconStart="@(new Icons.Filled.Size20.Edit())">@Passkeys_razor.RenameButton</AppButton>
+              IconStartName="Edit" IconStartSize="20">@Passkeys_razor.RenameButton</AppButton>
 
 @code {
     [Parameter]
@@ -13,13 +13,11 @@
 
     private async Task EditPasskeyName(UserPasskeyInfo passkey)
     {
-        var result = await DialogService.ShowDialogAsync<RenamePasskeyDialog<TUser>>(dialogOptions =>
-        {
-            dialogOptions.Header.Title = Manage_razor.RenamePasskey;
-            dialogOptions.Parameters[nameof(RenamePasskeyDialog<>.Passkey)] = passkey;
-        });
+        var result = await DialogService.ShowDialogAsync<RenamePasskeyDialog<TUser>, bool>(
+            new AppOverlayOptions { Title = Manage_razor.RenamePasskey },
+            AppOverlayParameters.Create((nameof(RenamePasskeyDialog<TUser>.Passkey), passkey)));
 
-        if (result is { Cancelled: false})
+        if (result is { HasValue: true, Value: true })
         {
             NavigationManager.NavigateTo(IdentityRoutes.Account.Manage.Passkeys);
         }

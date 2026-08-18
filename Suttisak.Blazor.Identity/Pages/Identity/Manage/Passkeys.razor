@@ -13,15 +13,15 @@
 <PageTitle>@Manage_razor.Passkeys</PageTitle>
 
 
-<IdentityManageShell Title="@Manage_razor.Passkeys" Description="@Text["PasskeysDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.Passkeys" Description="@Text["PasskeysDescription"]" ActiveUrl="@StaticPageUrl" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Passkeys) })">
 <StatusMessage />
 
 @if (_currentPasskeys is not { Count: >= MaxPasskeyCount })
 {
-    <FluentStack role="menubar" Orientation="Orientation.Horizontal" Class="glass-container margin-bottom">
-        <PasskeySubmit Appearance="ButtonAppearance.Primary" OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
-    </FluentStack>
+    <AppStack role="menubar" Direction="Horizontal" Class="glass-container margin-bottom">
+        <PasskeySubmit Variant="AppButtonVariant.Primary" OnSubmit="AddPasskey" FormName="@AddPasskeyFormName" Operation="PasskeyOperation.Create" OutputParameterName="@nameof(Output)">@Passkeys_razor.AddPasskeyButton</PasskeySubmit>
+    </AppStack>
 }
 
 @if (_currentPasskeys is { Count: > 0 })
@@ -30,14 +30,14 @@
         @foreach (var passkey in _currentPasskeys)
         {
             var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
-            <IdentitySettingCard Title="@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)" Icon="@(new Icons.Regular.Size20.PersonPasskey())">
+            <IdentitySettingCard Title="@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)" IconName="PersonPasskey">
                 <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
                 <Actions>
                     <RenamePasskeyWrapper TUser="TUser" Passkey="passkey" @rendermode="@(new InteractiveServerRenderMode())" />
                     <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="CredentialId" value="@credentialId" />
-                        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStart="@(new Icons.Filled.Size20.Delete())">@Passkeys_razor.DeleteButton</AppButton>
+                        <AppButton Type="submit" Variant="AppButtonVariant.Secondary" Name="action" Value="delete" Title="@Passkeys_razor.DeleteTitle" IconStartName="Delete" IconStartSize="20">@Passkeys_razor.DeleteButton</AppButton>
                     </form>
                 </Actions>
             </IdentitySettingCard>
@@ -57,7 +57,7 @@ else
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.PersonPasskey();
+    public static string StaticPageIcon { get; set; } = "PersonPasskey";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.Passkeys;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.Passkeys);

@@ -41,22 +41,31 @@
     grid-column: 2;
     display: flex;
     min-width: 0;
+    overflow: hidden;
+}
+
+.section-navigation__items,
+.section-navigation__primary-items,
+.section-navigation__optional-items {
+    display: flex;
+    min-width: 0;
+    align-items: stretch;
+    gap: .1rem;
 }
 
 .section-navigation__items {
-    display: flex;
-    min-width: 0;
     flex: 1 1 auto;
-    align-items: stretch;
-    gap: .1rem;
     padding-inline: .35rem;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scrollbar-width: thin;
 }
 
+.section-navigation__primary-items,
+.section-navigation__optional-items { flex: 0 0 auto; }
+
 .section-navigation__items ::deep a,
-.section-navigation__overflow-trigger {
+.section-navigation__overflow > summary {
     position: relative;
     display: inline-flex;
     min-width: max-content;
@@ -76,8 +85,12 @@
     cursor: pointer;
 }
 
+.section-navigation__overflow > summary { list-style: none; }
+.section-navigation__overflow > summary::-webkit-details-marker,
+.section-navigation__mobile > summary::-webkit-details-marker { display: none; }
+
 .section-navigation__items ::deep a::after,
-.section-navigation__overflow-trigger::after {
+.section-navigation__overflow > summary::after {
     position: absolute;
     right: .7rem;
     bottom: 0;
@@ -89,21 +102,30 @@
 }
 
 .section-navigation__items ::deep a:hover,
-.section-navigation__overflow-trigger:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
+.section-navigation__overflow > summary:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
 .section-navigation__items ::deep a.active,
-.section-navigation__overflow-trigger.is-active { background: var(--app-accent-soft); color: var(--app-accent); }
+.section-navigation__overflow.is-active > summary { background: var(--app-accent-soft); color: var(--app-accent); }
 .section-navigation__items ::deep a.active::after,
-.section-navigation__overflow-trigger.is-active::after { background: var(--app-accent); }
+.section-navigation__overflow.is-active > summary::after { background: var(--app-accent); }
 .section-navigation__items ::deep a:focus-visible,
-.section-navigation__overflow-trigger:focus-visible,
+.section-navigation__overflow > summary:focus-visible,
 .section-navigation__mobile-trigger:focus-visible { outline: none; }
 
-.section-navigation__overflow { position: relative; display: flex; flex: 0 0 auto; align-items: stretch; border-inline-start: 1px solid var(--app-border); }
+.section-navigation__overflow {
+    position: relative;
+    display: none;
+    flex: 0 0 auto;
+    align-items: stretch;
+    border-inline-start: 1px solid var(--app-border);
+}
+
+.section-navigation[data-overflowing="true"] .section-navigation__optional-items { display: none; }
+.section-navigation[data-overflowing="true"] .section-navigation__overflow { display: flex; }
 .section-navigation__dots { display: inline-flex; gap: 2px; }
 .section-navigation__dots i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
 .section-navigation__chevron { width: .42rem; height: .42rem; margin-inline: .12rem .05rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .16s ease; }
-.section-navigation__overflow-trigger[aria-expanded="true"] .section-navigation__chevron,
-.section-navigation__mobile-trigger[aria-expanded="true"] .section-navigation__chevron { transform: translateY(2px) rotate(225deg); }
+.section-navigation__overflow[open] .section-navigation__chevron,
+.section-navigation__mobile[open] .section-navigation__chevron { transform: translateY(2px) rotate(225deg); }
 
 .section-navigation__overflow-panel {
     position: absolute;
@@ -139,7 +161,7 @@
 .section-navigation__mobile-panel ::deep a.active { background: var(--app-accent-soft); color: var(--app-accent); }
 
 .section-navigation__actions { grid-column: 3; display: flex; align-items: center; padding: .55rem .7rem; border-inline-start: 1px solid var(--app-border); }
-.section-navigation__mobile { display: none; }
+.section-navigation__mobile { display: none; margin: 0; }
 
 @container section-navigation (max-width: 52rem) {
     .section-navigation,
@@ -151,10 +173,16 @@
     .section-navigation--without-context .section-navigation__actions { grid-column: 2; grid-row: 1; }
 }
 
+/* Static-SSR fallback before adaptive measurement starts. */
+@container section-navigation (max-width: 42rem) {
+    .section-navigation:not([data-overflow-ready]) .section-navigation__optional-items { display: none; }
+    .section-navigation:not([data-overflow-ready]) .section-navigation__overflow { display: flex; }
+}
+
 @container section-navigation (max-width: 30rem) {
     .section-navigation__desktop { display: none; }
     .section-navigation__mobile { grid-column: 1 / -1; grid-row: 2; display: block; border-top: 1px solid var(--app-border); }
-    .section-navigation__mobile-trigger { display: flex; width: 100%; min-height: 3.6rem; align-items: center; justify-content: space-between; gap: .75rem; padding: .6rem .8rem; border: 0; background: var(--app-surface); color: var(--app-foreground); text-align: left; cursor: pointer; }
+    .section-navigation__mobile-trigger { display: flex; width: 100%; min-height: 3.6rem; box-sizing: border-box; align-items: center; justify-content: space-between; gap: .75rem; padding: .6rem .8rem; border: 0; background: var(--app-surface); color: var(--app-foreground); text-align: left; cursor: pointer; list-style: none; }
     .section-navigation__mobile-trigger > span { display: grid; gap: .1rem; }
     .section-navigation__mobile-trigger small { color: var(--app-foreground-muted); font-size: .59rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
     .section-navigation__mobile-trigger strong { font-size: .78rem; }
@@ -171,5 +199,5 @@
     .section-navigation,
     .section-navigation__overflow-panel { background: Canvas; }
     .section-navigation__items ::deep a.active,
-    .section-navigation__overflow-trigger.is-active { outline: none; }
+    .section-navigation__overflow.is-active > summary { outline: none; }
 }

@@ -1,10 +1,10 @@
-﻿using Microsoft.FluentUI.AspNetCore.Components;
-
 namespace Suttisak.Blazor.UserInterface.Models;
 
-public class Breadcrumb(Icon? icon, string? url, string title)
+public class Breadcrumb(string? iconName, string? url, string title)
 {
-    public Icon? Icon { get; } = icon;
+    public string? IconName { get; } = iconName;
+
+    public static Breadcrumb FromIconName(string? iconName, string? url, string title) => new(iconName, url, title);
     public string? Url { get; } = url;
     public string Title { get; } = title;
 

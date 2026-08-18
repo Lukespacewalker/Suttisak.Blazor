@@ -20,11 +20,9 @@
     <div>
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
-            <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextInput Name="Input.RecoveryCode" @bind-Value="Input!.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
-            @*<FluentValidationMessage For="() => Input.RecoveryCode" class="text-danger" />*@
-            @* TODO: restore FluentValidationMessage later in RC3 *@
-            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</AppButton>
+            <FormValidationSummary class="text-danger" role="alert" />
+            <AppTextBox Name="Input.RecoveryCode" @bind-Value="Input!.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
+            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</AppButton>
         </EditForm>
     </div>
 </FormGrid>

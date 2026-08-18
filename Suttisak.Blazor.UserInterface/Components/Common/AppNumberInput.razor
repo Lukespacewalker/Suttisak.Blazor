@@ -1,0 +1,25 @@
+@using System.Globalization
+@typeparam TValue
+@inherits AppInputBase<TValue>
+
+<div class="@ContainerClass">
+    @if (!string.IsNullOrWhiteSpace(Label)) { <label class="app-form-control__label" for="@InputId">@Label</label> }
+    <div class="app-form-control__input-wrap">
+        <input id="@InputId" class="@InputClass" type="number" name="@NameAttributeValue" value="@CurrentValueAsString"
+               min="@Min" max="@Max" step="@Step" required="@Required" disabled="@Disabled"
+               aria-invalid="@HasValidationError" aria-describedby="@DescribedBy" @oninput="HandleInput" @attributes="AdditionalAttributes" />
+    </div>
+    <AppInputSupport Description="@Description" DescriptionId="@DescriptionId" ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
+</div>
+
+@code {
+    [Parameter] public string? Min { get; set; }
+    [Parameter] public string? Max { get; set; }
+    [Parameter] public string? Step { get; set; }
+    private void HandleInput(ChangeEventArgs args) => CurrentValueAsString = args.Value?.ToString();
+    protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
+    {
+        if (BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out var parsed)) { result = parsed!; validationErrorMessage = null!; return true; }
+        result = default!; validationErrorMessage = $"The {FieldIdentifier.FieldName} field is not valid."; return false;
+    }
+}

@@ -2,9 +2,9 @@
          class="@CssClassValue"
          role="@Role"
          aria-live="@AriaLive">
-    @if (Icon is not null)
+    @if (!string.IsNullOrWhiteSpace(IconName))
     {
-        <span class="feedback-banner__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
+        <span class="feedback-banner__icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@IconName" Size="@IconSize" /></span>
     }
     <div class="feedback-banner__copy">
         @if (!string.IsNullOrWhiteSpace(Title))
@@ -28,7 +28,7 @@
     {
         <AppButton Variant="AppButtonVariant.Subtle"
                       IconOnly="true"
-                      IconStart="@(new Icons.Regular.Size20.Dismiss())"
+                      IconStartName="Dismiss" IconStartSize="20"
                       OnClick="@(_ => OnDismiss.InvokeAsync())"
                       aria-label="@DismissLabel" />
     }
@@ -38,7 +38,8 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Message { get; set; }
     [Parameter] public FeedbackIntent Intent { get; set; } = FeedbackIntent.Info;
-    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? IconName { get; set; }
+    [Parameter] public int IconSize { get; set; } = 20;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? Actions { get; set; }
     [Parameter] public bool Dismissible { get; set; }

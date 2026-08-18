@@ -1,8 +1,8 @@
 <details class="@CssClassValue" open="@Expanded" @attributes="AdditionalAttributes">
     <summary class="nav-submenu__trigger">
-        @if (Icon is not null)
+        @if (!string.IsNullOrWhiteSpace(IconName))
         {
-            <span class="nav-submenu__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
+            <span class="nav-submenu__icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@IconName" Size="20" Variant="@(Active ? Suttisak.Blazor.Icons.IconVariant.Filled : Suttisak.Blazor.Icons.IconVariant.Regular)" /></span>
         }
         <span class="nav-submenu__label">@Label</span>
         @if (!string.IsNullOrWhiteSpace(Badge))
@@ -16,7 +16,7 @@
 
 @code {
     [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
-    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? IconName { get; set; }
     [Parameter] public string? Badge { get; set; }
     [Parameter] public bool Expanded { get; set; }
     [Parameter] public bool Active { get; set; }

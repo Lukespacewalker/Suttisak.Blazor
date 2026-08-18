@@ -1,0 +1,19 @@
+.app-grid { min-width: 0; overflow: auto; color: var(--app-foreground); background: var(--app-surface); }
+.app-grid__table { width: 100%; min-width: 42rem; border-spacing: 0; border-collapse: separate; }
+.app-grid__table th { padding: .7rem .85rem; border-block-end: 1px solid var(--app-border); background: var(--app-surface-muted); color: var(--app-foreground-muted); font-size: .78rem; font-weight: 700; letter-spacing: .035em; text-align: start; text-transform: uppercase; white-space: nowrap; }
+.app-grid__table td { padding: .75rem .85rem; border-block-end: 1px solid var(--app-grid-line); color: var(--app-foreground); vertical-align: middle; }
+.app-grid__table tbody tr { transition: background-color 120ms ease; }
+.app-grid__table tbody tr:hover, .app-grid__table tbody tr:focus-visible { background: var(--app-surface-hover); outline: none; }
+.app-grid__table tbody tr.is-selected { background: var(--app-accent-soft); }
+.app-grid__table tbody tr:last-child td { border-block-end: 0; }
+.app-grid__sort-button { display: inline-flex; align-items: center; gap: .35rem; max-width: 100%; padding: .2rem .3rem; border: 0; border-radius: .35rem; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: inherit; text-align: inherit; text-transform: inherit; }
+.app-grid__sort-button:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
+.app-grid__sort-button:focus-visible, .app-grid__checkbox:focus-visible { outline: 2px solid var(--app-focus-ring, var(--app-brand)); outline-offset: 2px; }
+.app-grid__sort-indicator { width: .9rem; color: var(--app-foreground-muted); text-align: center; }
+.app-grid__checkbox { width: 1rem; height: 1rem; accent-color: var(--app-brand); cursor: pointer; }
+.app-grid__empty-row td { color: var(--app-foreground-muted); text-align: center; }
+.app-grid__loading { display: flex; align-items: center; gap: .5rem; padding: .65rem .85rem; color: var(--app-foreground-muted); font-size: .875rem; }
+.app-grid__loading::before { width: .8rem; height: .8rem; border: 2px solid var(--app-border); border-top-color: var(--app-brand); border-radius: 50%; content: ""; animation: app-grid-spin .7s linear infinite; }
+
+@keyframes app-grid-spin { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) { .app-grid__table tbody tr { transition: none; } .app-grid__loading::before { animation: none; } }

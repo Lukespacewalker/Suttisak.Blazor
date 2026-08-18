@@ -180,16 +180,18 @@ samp {
    components that have not yet been wrapped in DataGridContainer. The
    container adds the surface and scrolling behaviour; these rules keep the
    table treatment consistent everywhere. */
-.fluent-data-grid {
+.app-grid,
+.app-quick-grid {
     color: var(--app-foreground);
 }
 
-.fluent-data-grid thead {
+.app-grid thead,
+.app-quick-grid thead {
     background: var(--app-glass-surface);
 }
 
-.fluent-data-grid th,
-.fluent-data-grid [role="columnheader"] {
+.app-grid th,
+.app-quick-grid th {
     color: var(--app-foreground-muted);
     font-size: .75rem;
     font-weight: 700;
@@ -197,8 +199,8 @@ samp {
     text-transform: uppercase;
 }
 
-.fluent-data-grid td,
-.fluent-data-grid [role="gridcell"] {
+.app-grid td,
+.app-quick-grid td {
     vertical-align: middle;
 }
 
@@ -296,12 +298,14 @@ samp {
     scrollbar-gutter: stable;
 }
 
-.data-grid-container > .fluent-data-grid {
+.data-grid-container > .app-grid,
+.data-grid-container > .app-quick-grid {
     width: 100%;
     min-width: max-content;
 }
 
-.data-grid-container > .fluent-data-grid thead {
+.data-grid-container > .app-grid thead,
+.data-grid-container > .app-quick-grid thead {
     background: var(--app-glass-surface);
 }
 

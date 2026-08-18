@@ -15,17 +15,18 @@
     overscroll-behavior-inline: contain;
 }
 
-.data-grid-container ::deep .fluent-data-grid {
+.data-grid-container ::deep .app-grid,
+.data-grid-container ::deep .app-quick-grid {
     width: 100%;
-    min-width: max-content;
 }
 
-.data-grid-container ::deep .fluent-data-grid thead {
+.data-grid-container ::deep .app-grid thead,
+.data-grid-container ::deep .app-quick-grid thead {
     background: var(--app-glass-surface);
 }
 
-.data-grid-container ::deep .fluent-data-grid th,
-.data-grid-container ::deep .fluent-data-grid [role="columnheader"] {
+.data-grid-container ::deep .app-grid th,
+.data-grid-container ::deep .app-quick-grid th {
     color: var(--app-foreground-muted, var(--colorNeutralForeground3));
     font-size: .75rem;
     font-weight: 700;
@@ -33,19 +34,26 @@
     text-transform: uppercase;
 }
 
-.data-grid-container ::deep .fluent-data-grid tr {
+.data-grid-container ::deep .app-grid tr,
+.data-grid-container ::deep .app-quick-grid tr {
     transition: background-color 140ms ease, box-shadow 140ms ease;
 }
 
-.data-grid-container ::deep .fluent-data-grid tr:focus-within {
+.data-grid-container ::deep .app-grid tr:focus-within,
+.data-grid-container ::deep .app-quick-grid tr:focus-within {
     position: relative;
     z-index: 1;
     box-shadow: inset 3px 0 0 var(--app-accent, var(--colorBrandBackground));
 }
 
-.data-grid-container ::deep .fluent-data-grid td,
-.data-grid-container ::deep .fluent-data-grid [role="gridcell"] {
+.data-grid-container ::deep .app-grid td,
+.data-grid-container ::deep .app-quick-grid td {
     vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .data-grid-container ::deep .app-grid tr,
+    .data-grid-container ::deep .app-quick-grid tr { transition: none; }
 }
 
 @media (max-width: 48rem) {

@@ -55,8 +55,18 @@ In the standard composition, put the current entity in
 current-section menu rather than a second drawer or sidebar.
 
 For more than seven sibling views, keep the highest-frequency destinations in
-`ChildContent` and move the rest to `Overflow`. Set `OverflowActive="true"`
+`ChildContent` and move the rest to `Overflow`. Overflow destinations remain
+inline while every item fits; the component reveals the native **More** menu
+only when its measured container runs out of room. Set `OverflowActive="true"`
 and change `OverflowLabel` to the active destination when the current route is
 inside the overflow menu, so the selected section remains visible. At narrow
 container widths the component replaces the horizontal rail with one current-
-section trigger and renders both fragments in a scrollable menu.
+section trigger and renders both fragments in a scrollable menu. Both menus use
+native `details` and `summary`, so they remain operable during static SSR before
+Blazor interactivity is available.
+# Navigation components
+
+`NavItem` and `NavCategory` accept `IconRestName` and `IconActiveName` for
+icons from `Suttisak.Blazor.Icons`. Use the same semantic name for both states
+unless a filled active state adds useful meaning; selection itself is already
+communicated by the active menu style and `aria-current`.

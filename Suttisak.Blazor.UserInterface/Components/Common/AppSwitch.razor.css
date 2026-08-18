@@ -1,0 +1,6 @@
+.app-choice--switch { align-items: center; }
+.app-choice__switch { position: relative; inline-size: 2.5rem; block-size: 1.4rem; border-radius: 999px; background: color-mix(in srgb, currentColor 25%, transparent); transition: background .16s ease; }
+.app-choice__switch::after { content: ""; position: absolute; inset: .18rem auto .18rem .18rem; aspect-ratio: 1; border-radius: 50%; background: Canvas; transition: transform .16s ease; }
+.app-choice__native:checked + .app-choice__switch { background: var(--app-brand, #1769aa); }
+.app-choice__native:checked + .app-choice__switch::after { transform: translateX(1.1rem); }
+@media (prefers-reduced-motion: reduce) { .app-choice__switch, .app-choice__switch::after { transition: none; } }

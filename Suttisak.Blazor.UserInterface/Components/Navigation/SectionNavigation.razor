@@ -1,49 +1,44 @@
-@implements IDisposable
-@inject NavigationManager NavigationManager
-
-<nav class="@CssClassValue" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+<nav class="@CssClassValue"
+     aria-label="@AriaLabel"
+     data-adaptive-overflow="section-navigation"
+     @attributes="AdditionalAttributes">
     @if (Context is not null)
     {
         <div class="section-navigation__context">@Context</div>
     }
 
     <div class="section-navigation__desktop">
-        <div class="section-navigation__items">@ChildContent</div>
+        <div class="section-navigation__items">
+            <div class="section-navigation__primary-items">@ChildContent</div>
+            @if (Overflow is not null)
+            {
+                <div class="section-navigation__optional-items">@Overflow</div>
+            }
+        </div>
+
         @if (Overflow is not null)
         {
-            <div class="section-navigation__overflow">
-                <button class="section-navigation__overflow-trigger @(OverflowActive ? "is-active" : null)"
-                        type="button"
-                        aria-expanded="@_overflowOpen.ToString().ToLowerInvariant()"
-                        @onclick="ToggleOverflow">
+            <details class="section-navigation__overflow @(OverflowActive ? "is-active" : null)">
+                <summary aria-label="@OverflowLabel" title="@OverflowLabel">
                     <span class="section-navigation__dots" aria-hidden="true"><i></i><i></i><i></i></span>
                     <span>@OverflowLabel</span>
                     <i class="section-navigation__chevron" aria-hidden="true"></i>
-                </button>
-                @if (_overflowOpen)
-                {
-                    <div class="section-navigation__overflow-panel" @onclick="CloseMenus">@Overflow</div>
-                }
-            </div>
+                </summary>
+                <div class="section-navigation__overflow-panel">@Overflow</div>
+            </details>
         }
     </div>
 
-    <div class="section-navigation__mobile">
-        <button class="section-navigation__mobile-trigger"
-                type="button"
-                aria-expanded="@_mobileOpen.ToString().ToLowerInvariant()"
-                @onclick="ToggleMobile">
+    <details class="section-navigation__mobile">
+        <summary class="section-navigation__mobile-trigger">
             <span><small>@MobileLabel</small><strong>@CurrentSectionLabel</strong></span>
             <i class="section-navigation__chevron" aria-hidden="true"></i>
-        </button>
-        @if (_mobileOpen)
-        {
-            <div class="section-navigation__mobile-panel" @onclick="CloseMenus">
-                @ChildContent
-                @Overflow
-            </div>
-        }
-    </div>
+        </summary>
+        <div class="section-navigation__mobile-panel">
+            @ChildContent
+            @Overflow
+        </div>
+    </details>
 
     @if (Actions is not null)
     {
@@ -66,9 +61,6 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private bool _overflowOpen;
-    private bool _mobileOpen;
-
     private string CssClassValue => string.Join(' ', new[]
     {
         "section-navigation",
@@ -77,23 +69,4 @@
         Actions is null ? "section-navigation--without-actions" : null,
         Class
     }.Where(value => !string.IsNullOrWhiteSpace(value)));
-
-    protected override void OnInitialized() => NavigationManager.LocationChanged += HandleLocationChanged;
-
-    private void ToggleOverflow() => _overflowOpen = !_overflowOpen;
-    private void ToggleMobile() => _mobileOpen = !_mobileOpen;
-
-    private void CloseMenus()
-    {
-        _overflowOpen = false;
-        _mobileOpen = false;
-    }
-
-    private void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs args)
-    {
-        CloseMenus();
-        _ = InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose() => NavigationManager.LocationChanged -= HandleLocationChanged;
 }

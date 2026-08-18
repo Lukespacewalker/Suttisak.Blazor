@@ -14,7 +14,7 @@
 <PageTitle>@Manage_razor.ExternalLogins</PageTitle>
 
 
-<IdentityManageShell Title="@Manage_razor.ExternalLogins" Description="@Text["ExternalLoginsDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.ExternalLogins" Description="@Text["ExternalLoginsDescription"]" ActiveUrl="@StaticPageUrl" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.ExternalLogins) })">
 <StatusMessage />
 @if (_currentLogins?.Count > 0)
@@ -25,7 +25,7 @@
             var profile = GetProfile(login);
             <IdentitySettingCard Title="@(profile?.DisplayName ?? login.ProviderDisplayName)"
                                  Description="@profile?.Email"
-                                 Icon="@(new Icons.Regular.Size20.GlobeSurface())">
+                                 IconName="GlobeSurface">
                 <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
                 <Actions>
                     @if (_showRemoveButton)
@@ -34,7 +34,7 @@
                             <AntiforgeryToken />
                             <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider" />
                             <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey" />
-                            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</AppButton>
+                            <AppButton Type="submit" Variant="AppButtonVariant.Secondary" Title="@string.Format(ExternalLogins_razor.RemoveLoginTitle, login.ProviderDisplayName)">@ExternalLogins_razor.RemoveButton</AppButton>
                         </form>
                     }
                 </Actions>
@@ -49,7 +49,7 @@
             <AntiforgeryToken />
                 @foreach (var provider in _otherLogins)
                 {
-                    <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
+                    <AppButton Type="submit" Variant="AppButtonVariant.Secondary" Name="Provider" Value="@provider.Name" Title="@string.Format(ExternalLogins_razor.LogInUsingTitle, provider.DisplayName)">
                         @provider.DisplayName
                     </AppButton>
                 }
@@ -60,7 +60,7 @@
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.GlobeSurface();
+    public static string StaticPageIcon { get; set; } = "GlobeSurface";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.ExternalLogins;
 	public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.ExternalLogins);

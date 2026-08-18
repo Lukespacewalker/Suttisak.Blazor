@@ -10,7 +10,7 @@
 
 <PageTitle>@Manage_razor.RenamePasskey</PageTitle>
 
-<IdentityManageShell Title="@Manage_razor.RenamePasskey" Description="@Text["PasskeysDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.Passkeys" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.RenamePasskey" Description="@Text["PasskeysDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.Passkeys" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(Passkeys<TUser>.StaticPageIcon, Passkeys<TUser>.StaticPageUrl, Manage_razor.Passkeys), new Breadcrumb(StaticPageIcon, null, Manage_razor.RenamePasskey) })">
 
 <EditForm Model="Input" OnValidSubmit="Rename" method="post">
@@ -24,15 +24,15 @@
         <h4>@RenamePasskey_razor.EnterName</h4>
     }
     <ValidationSummary class="text-danger" role="alert" />
-    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input!.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
+    <AppTextBox Label="@RenamePasskey_razor.PasskeyNameLabel" @bind-Value="Input!.Name" Name="Input.Name" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
     <ValidationMessage For="() => Input!.Name" class="text-danger" />
-    <AppButton Type="ButtonType.Submit">@RenamePasskey_razor.ContinueButton</AppButton>
+    <AppButton Type="submit">@RenamePasskey_razor.ContinueButton</AppButton>
 </EditForm>
 
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Edit();
+    public static string StaticPageIcon { get; set; } = "Edit";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.RenamePasskeyTemplate;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.RenamePasskey);

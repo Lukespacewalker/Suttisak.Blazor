@@ -14,7 +14,7 @@
 			@foreach (var provider in _externalLogins)
 			{
 				<div class="external-login-option">
-					<AppButton Type="ButtonType.Submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
+					<AppButton Type="submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
 						<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?"/>
 						@provider.DisplayName
 					</AppButton>
