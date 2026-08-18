@@ -4,7 +4,7 @@
 
 Use `AppCard` for standard application surfaces. It provides optional header,
 description, actions, body, and footer regions. `AppGrid<TGridItem>` is the
-library-native replacement for Fluent DataGrid pages. `AppQuickGrid<TGridItem>`
+library-native grid for application pages. `AppQuickGrid<TGridItem>`
 remains available when its QuickGrid virtualization model is needed. `AppDataGrid`
 is the responsive command-bar and state container, so existing grids can be
 migrated one screen at a time.
@@ -25,8 +25,8 @@ stable primary key so Blazor retains row identity across sorting and refreshes.
 
 ## Dependency-free data grid
 
-`AppGrid<TGridItem>` is the library-native alternative for new work and Fluent
-DataGrid migrations. It has no Fluent or QuickGrid runtime dependency: use
+`AppGrid<TGridItem>` is the library-native option for dependency-free grids.
+It has no third-party grid or QuickGrid runtime dependency: use
 `AppGridPropertyColumn` for a property and `AppGridTemplateColumn` for cell
 markup. It accepts an `IQueryable<TGridItem>` through `Items`, or an
 `AppGridItemsProvider<TGridItem>` for server-side paging. Provider requests
@@ -59,8 +59,35 @@ Use `AppGridSelectColumn` with `Single` or `Multiple` selection and optionally
 set `SelectOnRowClick="false"` when only the checkbox should select rows. Rows
 remain keyboard-selectable with Enter or Space. Template columns are sortable
 only when `SortBy` (for local items) and normally `SortKey` (for a provider) are
-supplied. Virtualized rows, column resizing, filtering UI, and Fluent-specific
+supplied. Virtualized rows, column resizing, filtering UI, and vendor-specific
 column option menus are intentionally outside this compact replacement.
+
+For controlled selection, bind `SelectedItem` only with
+`SelectionMode="AppGridSelectionMode.Single"`, or `SelectedItems` only with
+`SelectionMode="AppGridSelectionMode.Multiple"`. Setting the matching bound
+value to `null` clears the current selection. The grid raises only the matching
+change callback for its selection mode.
+
+## Menu cards and tabs
+
+`CardMenu` renders a native link when it receives `Url`, and a native button
+when it receives `OnClick`; the click callback takes precedence when both are
+provided for backward compatibility. `Disabled` prevents either action. Its
+`Title` and `Subtitle` are rendered as text, so use `ChildContent` for trusted,
+application-owned rich markup.
+
+`AppTabs` supports ArrowLeft, ArrowRight, Home, and End from a tab. Provide an
+`Id` for each `AppTab` and bind `ActiveId` when a parent needs to own the active
+tab; without that binding, the first tab is selected by default.
+
+```razor
+<AppTabs AriaLabel="Record sections" @bind-ActiveId="activeSection">
+    <AppTab Id="overview" Label="Overview">...</AppTab>
+    <AppTab Id="history" Label="History">...</AppTab>
+</AppTabs>
+
+@code { private string? activeSection = "overview"; }
+```
 
 ## Dialogs and drawers
 
@@ -113,17 +140,17 @@ the occupational-health product family.
 
 Use `AppButton` for branded application actions. It owns the shared visual
 contract while the consuming application supplies labels, icons, routes, and
-event handlers. Use Fluent controls when their behavior is the main value—for
-example `FluentDataGrid`, menu positioning, dialogs, and complex form inputs.
+event handlers. Use the matching `App*` component for grids, menus, overlays,
+and form inputs so behavior and visual tokens remain consistent.
 
 ```razor
 <AppButton Variant="AppButtonVariant.Primary" OnClick="CreateParticipant">
-    <IconStart><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStart>
+    <IconStart><Icon Name="Add" Size="20" /></IconStart>
     <ChildContent>Add participant</ChildContent>
 </AppButton>
 
 <AppButton Href="participants/export" Variant="AppButtonVariant.Secondary">
-    <IconStart><FluentIcon Value="@(new Icons.Regular.Size20.ArrowDownload())" /></IconStart>
+    <IconStart><Icon Name="ArrowDownload" Size="20" /></IconStart>
     <ChildContent>Export</ChildContent>
 </AppButton>
 
@@ -131,14 +158,14 @@ example `FluentDataGrid`, menu positioning, dialogs, and complex form inputs.
            Size="AppButtonSize.Compact"
            IconOnly="true"
            AriaLabel="Edit participant">
-    <IconStart><FluentIcon Value="@(new Icons.Regular.Size20.Edit())" /></IconStart>
+    <IconStart><Icon Name="Edit" Size="20" /></IconStart>
 </AppButton>
 ```
 
 Always provide `AriaLabel` when `IconOnly` is enabled. `Href` renders a link;
 without it the component renders a native button. The component intentionally
-does not wrap FluentButton so application branding does not depend on Fluent's
-visual overrides.
+does not wrap a third-party button, so application branding stays within the
+shared design-token contract.
 
 For four or more page actions, use `PageActionToolbar`: keep one action in
 `PrimaryAction`, at most two frequent actions in `SupportingActions`, and place
@@ -228,11 +255,11 @@ empty icon space.
 
 ```razor
 <AppTextBox Label="Email" @bind-Value="model.Email">
-    <IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Mail())" /></IconContent>
+    <IconContent><Icon Name="Mail" Size="20" /></IconContent>
 </AppTextBox>
 
 <AppSelect TValue="string" Label="Department" Options="DepartmentOptions" @bind-Value="model.Department">
-    <IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Building())" /></IconContent>
+    <IconContent><Icon Name="Building" Size="20" /></IconContent>
 </AppSelect>
 ```
 
@@ -339,8 +366,10 @@ Load the bootstrap script in the document `<head>` before application styles:
 <script src="@Assets["_content/Suttisak.Blazor.UserInterface/js/theme-bootstrap.js"]"></script>
 ```
 
-It only resolves the persisted Fluent UI mode before first paint. The library's
-automatically loaded `Suttisak.Blazor.UserInterface.lib.module.js` initializer
-then synchronizes the document and body theme attributes, follows system-theme
-and cross-tab changes, observes the Fluent design-theme element, and exposes
-`window.suttisakTheme`.
+The script resolves the persisted `light`, `dark`, or `system` preference before
+first paint. It writes the resolved scheme to one contract only:
+`html[data-theme="light"]` or `html[data-theme="dark"]`. `ThemeSelector`
+keeps that attribute current for system-preference and cross-tab changes once it
+is interactive. Applications should use semantic CSS tokens for their accent
+colors and retain their `<meta name="theme-color">`; do not add theme attributes
+to `body` or depend on a JavaScript global.

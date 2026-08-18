@@ -7,9 +7,9 @@
     width: 100%;
     margin: 0;
     padding: 0.5rem 0.75rem;
-    border: 1px solid var(--colorNeutralStroke2, rgba(0, 0, 0, 0.12));
+    border: 1px solid var(--app-border);
     border-radius: 0.75rem;
-    background: var(--colorNeutralBackground2, #ffffff);
+    background: var(--app-surface-muted);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
     container-type: inline-size;
 }

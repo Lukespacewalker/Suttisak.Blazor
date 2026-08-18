@@ -6,4 +6,7 @@ public interface IThemeService
     ThemeMode CurrentThemeMode { get; set; }
     event EventHandler<DesignThemeMode>? ThemeConfigurationChanged;
     event EventHandler<ThemeMode>? CurrentThemeChanged;
+
+    /// <summary>Updates the preference and its resolved scheme together.</summary>
+    void SetTheme(DesignThemeMode configuration, ThemeMode currentThemeMode);
 }

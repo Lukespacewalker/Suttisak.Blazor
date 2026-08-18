@@ -1,11 +1,13 @@
 <div class="app-tabs" @attributes="AdditionalAttributes">
-    <div class="app-tabs__list" role="tablist">
+    <div class="app-tabs__list" role="tablist" aria-label="@EffectiveAriaLabel">
         @foreach (var tab in _tabs)
         {
             <button id="@tab.TabId" type="button" role="tab"
-                    aria-selected="@(tab.Id == _activeId)" aria-controls="@tab.PanelId"
-                    tabindex="@(tab.Id == _activeId ? 0 : -1)"
-                    @onclick="() => Activate(tab.Id)">@tab.Label</button>
+                    aria-selected="@(tab.Id == CurrentActiveId)" aria-controls="@tab.PanelId"
+                    tabindex="@(tab.Id == CurrentActiveId ? 0 : -1)"
+                    @ref="tab.Element"
+                    @onclick="() => ActivateAsync(tab.Id)"
+                    @onkeydown="args => HandleKeyDownAsync(args, tab.Id)">@tab.Label</button>
         }
     </div>
     <CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
@@ -16,15 +18,39 @@
     private string? _activeId;
 
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    /// <summary>
+    /// Gets or sets the active tab identifier. Set this together with
+    /// <see cref="ActiveIdChanged"/> to control the active tab from the parent.
+    /// </summary>
+    [Parameter] public string? ActiveId { get; set; }
+    [Parameter] public EventCallback<string?> ActiveIdChanged { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Tabs";
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsControlled => ActiveIdChanged.HasDelegate;
+    private string? CurrentActiveId => IsControlled ? ActiveId : _activeId;
+    private string EffectiveAriaLabel => AdditionalAttributes is not null
+        && AdditionalAttributes.TryGetValue("aria-label", out var ariaLabel)
+        && ariaLabel is not null
+            ? ariaLabel.ToString() ?? AriaLabel
+            : AriaLabel;
 
     internal void Register(AppTabRegistration tab)
     {
         var index = _tabs.FindIndex(candidate => candidate.Id == tab.Id);
-        if (index >= 0 && _tabs[index] == tab) return;
+        if (index >= 0)
+        {
+            // Preserve the instance populated by @ref. AppTab registers again
+            // during subsequent renders, and replacing it would discard the
+            // ElementReference used for roving keyboard focus.
+            _tabs[index].Label = tab.Label;
+            _tabs[index].TabId = tab.TabId;
+            _tabs[index].PanelId = tab.PanelId;
+            return;
+        }
 
-        if (index < 0) _tabs.Add(tab); else _tabs[index] = tab;
-        _activeId ??= tab.Id;
+        _tabs.Add(tab);
+        if (!IsControlled) _activeId ??= tab.Id;
         _ = InvokeAsync(StateHasChanged);
     }
 
@@ -32,12 +58,46 @@
     {
         if (_tabs.RemoveAll(tab => tab.Id == id) == 0) return;
 
-        if (_activeId == id) _activeId = _tabs.FirstOrDefault()?.Id;
+        if (!IsControlled && _activeId == id) _activeId = _tabs.FirstOrDefault()?.Id;
         _ = InvokeAsync(StateHasChanged);
     }
 
-    internal bool IsActive(string id) => id == _activeId;
-    private void Activate(string id) => _activeId = id;
+    internal bool IsActive(string id) => id == CurrentActiveId;
 
-    internal sealed record AppTabRegistration(string Id, string Label, string TabId, string PanelId);
+    private async Task ActivateAsync(string id)
+    {
+        if (IsControlled)
+            await ActiveIdChanged.InvokeAsync(id);
+        else
+            _activeId = id;
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs args, string currentId)
+    {
+        var currentIndex = _tabs.FindIndex(tab => tab.Id == currentId);
+        if (currentIndex < 0 || _tabs.Count == 0) return;
+
+        var nextIndex = args.Key switch
+        {
+            "ArrowLeft" => (currentIndex - 1 + _tabs.Count) % _tabs.Count,
+            "ArrowRight" => (currentIndex + 1) % _tabs.Count,
+            "Home" => 0,
+            "End" => _tabs.Count - 1,
+            _ => -1
+        };
+        if (nextIndex < 0) return;
+
+        var next = _tabs[nextIndex];
+        await ActivateAsync(next.Id);
+        await next.Element.FocusAsync();
+    }
+
+    internal sealed class AppTabRegistration(string id, string label, string tabId, string panelId)
+    {
+        public string Id { get; } = id;
+        public string Label { get; set; } = label;
+        public string TabId { get; set; } = tabId;
+        public string PanelId { get; set; } = panelId;
+        public ElementReference Element { get; set; }
+    }
 }

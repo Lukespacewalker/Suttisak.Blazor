@@ -4,26 +4,37 @@ namespace Suttisak.Blazor.UserInterface.Services;
 
 public class ThemeService : IThemeService
 {
+    private DesignThemeMode _themeConfiguration = DesignThemeMode.System;
+    private ThemeMode _currentThemeMode = ThemeMode.Light;
+
     public DesignThemeMode ThemeConfiguration
     {
-        get;
+        get => _themeConfiguration;
         set
         {
-            field = value;
-            ThemeConfigurationChanged?.Invoke(this, field);
+            if (_themeConfiguration == value) return;
+            _themeConfiguration = value;
+            ThemeConfigurationChanged?.Invoke(this, value);
         }
-    } = DesignThemeMode.System;
+    }
 
     public ThemeMode CurrentThemeMode
     {
-        get;
+        get => _currentThemeMode;
         set
         {
-            field = value;
-            CurrentThemeChanged?.Invoke(this, field);
+            if (_currentThemeMode == value) return;
+            _currentThemeMode = value;
+            CurrentThemeChanged?.Invoke(this, value);
         }
     }
 
     public event EventHandler<DesignThemeMode>? ThemeConfigurationChanged;
     public event EventHandler<ThemeMode>? CurrentThemeChanged;
+
+    public void SetTheme(DesignThemeMode configuration, ThemeMode currentThemeMode)
+    {
+        ThemeConfiguration = configuration;
+        CurrentThemeMode = currentThemeMode;
+    }
 }

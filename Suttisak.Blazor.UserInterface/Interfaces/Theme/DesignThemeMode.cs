@@ -1,8 +1,7 @@
 namespace Suttisak.Blazor.UserInterface.Interfaces.Theme;
 
 /// <summary>
-/// Defines available design theme modes.
-/// Replaces the removed FluentUI v4 <c>DesignThemeModes</c> enum.
+/// Defines the available persisted theme preferences.
 /// </summary>
 public enum DesignThemeMode
 {

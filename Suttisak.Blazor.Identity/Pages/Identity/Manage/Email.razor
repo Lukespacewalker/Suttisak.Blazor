@@ -38,7 +38,7 @@
             <AppTextBox
                 Name="Input.NewEmail" 
                 @bind-Value="Input!.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
-            <!-- TODO : Restore Fluent Validation Message Later-->
+            <!-- TODO: Add a field-level validation message. -->
             <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</AppButton>
         </EditForm>
     </div>

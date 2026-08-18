@@ -46,7 +46,8 @@
             @foreach (var item in _rows)
             {
                 var selected = IsItemSelected(item);
-                <tr class="@RowClassValue(item, selected)"
+                <tr @key="GetItemKey(item)"
+                    class="@RowClassValue(item, selected)"
                     tabindex="@(CanSelectRows ? "0" : null)"
                     aria-selected="@(CanSelectRows ? selected : null)"
                     @onclick="() => SelectRowAsync(item)"
@@ -94,6 +95,8 @@
     private bool _loading;
     private bool _sourceWasSet;
     private bool _disposed;
+    private bool _hasSelectedItemParameter;
+    private bool _hasSelectedItemsParameter;
 
     [Parameter] public IQueryable<TGridItem>? Items { get; set; }
     [Parameter] public AppGridItemsProvider<TGridItem>? ItemsProvider { get; set; }
@@ -121,6 +124,13 @@
     private bool CanSelectRows => SelectionMode != AppGridSelectionMode.None && SelectOnRowClick;
     private bool AreVisibleRowsSelected => _rows.Count > 0 && _rows.All(IsItemSelected);
     private string GridClassValue => string.Join(' ', new[] { "app-grid", Class }.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        _hasSelectedItemParameter = parameters.TryGetValue<TGridItem?>(nameof(SelectedItem), out _);
+        _hasSelectedItemsParameter = parameters.TryGetValue<IReadOnlySet<TGridItem>?>(nameof(SelectedItems), out _);
+        return base.SetParametersAsync(parameters);
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -168,7 +178,7 @@
             _ = InvokeAsync(StateHasChanged);
     }
 
-    /// <summary>Reloads the current page from its source. Compatible with Fluent DataGrid's refresh call.</summary>
+    /// <summary>Reloads the current page from its source.</summary>
     public Task RefreshDataAsync() => LoadDataAsync();
 
     /// <summary>Alias for <see cref="RefreshDataAsync"/>.</summary>
@@ -326,32 +336,44 @@
     private async Task NotifySelectionChangedAsync()
     {
         var selected = _selectedItemsByKey.Values.ToHashSet();
-        var selectedItem = selected.FirstOrDefault();
-        await SelectedItemChanged.InvokeAsync(selectedItem);
-        await SelectedItemsChanged.InvokeAsync(selected);
+        if (SelectionMode == AppGridSelectionMode.Single)
+            await SelectedItemChanged.InvokeAsync(selected.FirstOrDefault());
+        else if (SelectionMode == AppGridSelectionMode.Multiple)
+            await SelectedItemsChanged.InvokeAsync(selected);
         await InvokeAsync(StateHasChanged);
     }
 
     private void SyncExternalSelection()
     {
-        if (SelectedItems is not null)
+        if (SelectionMode == AppGridSelectionMode.None)
         {
             _selectedKeys.Clear();
             _selectedItemsByKey.Clear();
-            foreach (var item in SelectedItems)
+            return;
+        }
+
+        if (SelectionMode == AppGridSelectionMode.Single && _hasSelectedItemParameter)
+        {
+            _selectedKeys.Clear();
+            _selectedItemsByKey.Clear();
+            if (SelectedItem is not null)
             {
-                var key = GetItemKey(item);
+                var key = GetItemKey(SelectedItem);
                 _selectedKeys.Add(key);
-                _selectedItemsByKey[key] = item;
+                _selectedItemsByKey[key] = SelectedItem;
             }
         }
-        else if (SelectedItem is not null)
+        else if (SelectionMode == AppGridSelectionMode.Multiple && _hasSelectedItemsParameter)
         {
             _selectedKeys.Clear();
             _selectedItemsByKey.Clear();
-            var key = GetItemKey(SelectedItem);
-            _selectedKeys.Add(key);
-            _selectedItemsByKey[key] = SelectedItem;
+            if (SelectedItems is not null)
+                foreach (var item in SelectedItems)
+                {
+                    var key = GetItemKey(item);
+                    _selectedKeys.Add(key);
+                    _selectedItemsByKey[key] = item;
+                }
         }
     }
 

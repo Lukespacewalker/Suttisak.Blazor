@@ -17,7 +17,7 @@
 .app-drawer__mode-mark--error { border-color: var(--app-danger-border); background: var(--app-danger-soft); color: var(--app-danger); }
 .app-drawer__close { display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border: 0; border-radius: .45rem; background: transparent; color: var(--app-foreground-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; }
 .app-drawer__close:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
-.app-drawer__close:focus-visible { outline: none; }
+.app-drawer__close:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .app-drawer__body { min-height: 0; padding: 1.25rem; overflow: auto; }
 .app-drawer__footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem; padding: 1rem 1.25rem; border-block-start: 1px solid var(--app-border); background: var(--app-surface-muted); }
 .app-drawer--danger .app-drawer__header { box-shadow: inset 3px 0 0 var(--app-danger); }

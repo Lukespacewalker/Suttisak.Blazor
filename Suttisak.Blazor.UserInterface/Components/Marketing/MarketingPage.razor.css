@@ -23,7 +23,7 @@
     transform: translate(-50%, 0);
 }
 
-.marketing-page__skip-link:focus-visible { outline: none; }
+.marketing-page__skip-link:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 @media (max-width: 760px) {
     .marketing-page {
