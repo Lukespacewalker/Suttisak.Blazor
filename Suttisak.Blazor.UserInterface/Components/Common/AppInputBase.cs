@@ -1,11 +1,27 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Linq.Expressions;
 
 namespace Suttisak.Blazor.UserInterface.Components.Common;
 
 public abstract class AppInputBase<TValue> : InputBase<TValue>
 {
     private readonly string _generatedId = $"app-input-{Guid.NewGuid():N}";
+    private TValue _unboundValue = default!;
+
+    /// <summary>
+    /// Supports controlled inputs that intentionally provide <c>Value</c> and
+    /// <c>ValueChanged</c> without an <c>EditForm</c> binding expression.
+    /// </summary>
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (!parameters.TryGetValue<Expression<Func<TValue>>>(nameof(ValueExpression), out var valueExpression) || valueExpression is null)
+        {
+            ValueExpression = () => _unboundValue;
+        }
+
+        return base.SetParametersAsync(parameters);
+    }
 
     [Parameter] public string? Id { get; set; }
     [Parameter] public string? Label { get; set; }
