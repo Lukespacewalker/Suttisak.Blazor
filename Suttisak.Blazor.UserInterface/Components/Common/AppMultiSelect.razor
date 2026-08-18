@@ -1,18 +1,20 @@
 @using System.Globalization
+@using System.Linq.Expressions
 @typeparam TValue
+@inherits AppInputBase<IEnumerable<TValue>>
 
-<div class="app-form-control @Class">
+<div class="@ContainerCssClass">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
         <label class="app-form-control__label" for="@InputId">@Label</label>
     }
     <div class="app-form-control__input-wrap app-form-control__input-wrap--select">
-        <select id="@InputId" class="app-form-control__input" name="@Name" multiple="true"
-                disabled="@Disabled" required="@Required" aria-describedby="@DescriptionId"
+        <select id="@InputId" class="@InputClass" name="@(Name ?? NameAttributeValue)" multiple="true"
+                disabled="@Disabled" required="@Required" aria-invalid="@HasValidationError" aria-describedby="@DescribedBy"
                 @onchange="HandleChange" @attributes="AdditionalAttributes">
             @if (ChildContent is not null)
             {
-                @ChildContent
+                <CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
             }
             else
             {
@@ -27,27 +29,49 @@
     {
         <small id="@DescriptionId" class="app-form-control__description">@Description</small>
     }
+    <AppInputSupport ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
 </div>
 
 @code {
-    [Parameter] public string? Id { get; set; }
     [Parameter] public string? Name { get; set; }
-    [Parameter] public string? Label { get; set; }
-    [Parameter] public string? Description { get; set; }
-    [Parameter] public bool Required { get; set; }
-    [Parameter] public bool Disabled { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = Array.Empty<AppSelectOption<TValue>>();
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>
+    /// Compatibility alias for <see cref="InputBase{TValue}.Value"/>. New code
+    /// may use either <c>@bind-Value</c> or <c>@bind-SelectedItems</c>.
+    /// </summary>
     [Parameter] public IEnumerable<TValue> SelectedItems { get; set; } = Array.Empty<TValue>();
     [Parameter] public EventCallback<IEnumerable<TValue>> SelectedItemsChanged { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public Expression<Func<IEnumerable<TValue>>>? SelectedItemsExpression { get; set; }
 
-    private readonly string _generatedId = $"app-multi-select-{Guid.NewGuid():N}";
-    private string InputId => Id ?? _generatedId;
-    private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+    private bool _usesSelectedItemsBinding;
+    private string ContainerCssClass => string.Join(' ', new[] { ContainerClass, Class }.Where(value => !string.IsNullOrWhiteSpace(value)));
 
-    private bool IsSelected(TValue value) => SelectedItems.Contains(value, EqualityComparer<TValue>.Default);
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var suppliesValue = parameters.TryGetValue<IEnumerable<TValue>>(nameof(Value), out _);
+        _usesSelectedItemsBinding = parameters.TryGetValue<IEnumerable<TValue>>(nameof(SelectedItems), out _);
+        if (suppliesValue && _usesSelectedItemsBinding)
+        {
+            throw new InvalidOperationException($"Supply either {nameof(Value)} or {nameof(SelectedItems)}, not both.");
+        }
+
+        if (!suppliesValue
+            && parameters.TryGetValue<Expression<Func<IEnumerable<TValue>>>>(nameof(SelectedItemsExpression), out var expression)
+            && expression is not null)
+        {
+            ValueExpression = expression;
+        }
+
+        await base.SetParametersAsync(parameters);
+        if (_usesSelectedItemsBinding)
+        {
+            Value = SelectedItems ?? Array.Empty<TValue>();
+        }
+    }
+
+    internal bool IsSelected(TValue value) => (CurrentValue ?? Array.Empty<TValue>()).Contains(value, EqualityComparer<TValue>.Default);
     private static string Format(TValue value) => BindConverter.FormatValue(value, CultureInfo.CurrentCulture)?.ToString() ?? string.Empty;
 
     private async Task HandleChange(ChangeEventArgs args)
@@ -63,6 +87,17 @@
             .Where(value => BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out _))
             .Select(value => BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out var parsed) ? parsed! : default!)
             .ToArray();
-        await SelectedItemsChanged.InvokeAsync(parsedValues);
+        CurrentValue = parsedValues;
+        if (_usesSelectedItemsBinding)
+        {
+            await SelectedItemsChanged.InvokeAsync(parsedValues);
+        }
+    }
+
+    protected override bool TryParseValueFromString(string? value, out IEnumerable<TValue> result, out string validationErrorMessage)
+    {
+        result = Array.Empty<TValue>();
+        validationErrorMessage = null!;
+        return true;
     }
 }

@@ -22,6 +22,10 @@ public abstract class AppGridPropertyColumnBase<TGridItem, TProperty> : AppGridC
     });
 
     internal override object? GetSortValue(TGridItem item) => Value(item);
+    internal override bool SupportsQuerySort => true;
+
+    internal override IQueryable<TGridItem> ApplyQuerySort(IQueryable<TGridItem> source, bool descending)
+        => descending ? source.OrderByDescending(Property) : source.OrderBy(Property);
 
     private TProperty Value(TGridItem item)
     {

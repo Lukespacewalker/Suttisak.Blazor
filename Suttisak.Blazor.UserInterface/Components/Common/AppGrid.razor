@@ -7,7 +7,7 @@
         @ChildContent
     </CascadingValue>
 
-    <table class="app-grid__table" aria-label="@AriaLabel" aria-busy="@_loading">
+    <table class="app-grid__table" aria-label="@AriaLabel" aria-busy="@(_loading ? "true" : "false")">
         <thead>
             <tr>
                 @foreach (var column in _columns)
@@ -49,7 +49,7 @@
                 <tr @key="GetItemKey(item)"
                     class="@RowClassValue(item, selected)"
                     tabindex="@(CanSelectRows ? "0" : null)"
-                    aria-selected="@(CanSelectRows ? selected : null)"
+                    aria-selected="@(CanSelectRows ? (selected ? "true" : "false") : null)"
                     @onclick="() => SelectRowAsync(item)"
                     @onkeydown="(args) => HandleRowKeyDownAsync(args, item)">
                     @foreach (var column in _columns)
@@ -164,6 +164,7 @@
             _columns.Add(column);
             if (_sort is null && column.IsDefaultSortColumn && column.Sortable)
                 _sort = new AppGridSort(column.ColumnId, column.InitialSortDescending);
+
             _ = InvokeAsync(async () =>
             {
                 await RefreshDataAsync();
@@ -213,18 +214,68 @@
             }
             else if (Items is not null)
             {
-                var rows = Items.AsEnumerable();
                 var column = _sort is null ? null : _columns.FirstOrDefault(candidate => candidate.ColumnId == _sort.ColumnId);
-                if (column is not null && column.Sortable)
-                    rows = _sort!.Descending
-                        ? rows.OrderByDescending(column.GetSortValue, Comparer<object?>.Default)
-                        : rows.OrderBy(column.GetSortValue, Comparer<object?>.Default);
+                var query = Items;
+                var canSortInQuery = column is null || !column.Sortable || column.SupportsQuerySort;
 
-                var materialized = rows.ToArray();
-                Pagination?.SetTotalItemCount(materialized.Length);
-                _rows = Pagination is null
-                    ? materialized
-                    : materialized.Skip(startIndex).Take(Pagination.ItemsPerPage).ToArray();
+                // Property columns retain their typed expression, so providers
+                // such as EF can translate sorting, Count, Skip, and Take
+                // without materializing a potentially enormous source. Template
+                // columns expose only a Func and continue through the safe
+                // client-side fallback below.
+                if (column is not null && column.Sortable && column.SupportsQuerySort)
+                {
+                    var sortedQuery = column.ApplyQuerySort(query, _sort!.Descending);
+                    canSortInQuery = !ReferenceEquals(sortedQuery, query);
+                    if (canSortInQuery)
+                        query = sortedQuery;
+                }
+
+                var loadedFromQuery = false;
+                if (canSortInQuery)
+                {
+                    try
+                    {
+                        // Count the filtered source before applying ordering;
+                        // this is simpler for remote providers to translate.
+                        if (Pagination is not null && Pagination.SetTotalItemCount(Items.Count()))
+                        {
+                            await LoadDataAsync();
+                            return;
+                        }
+
+                        _rows = Pagination is null
+                            ? query.ToArray()
+                            : query.Skip(startIndex).Take(Pagination.ItemsPerPage).ToArray();
+                        loadedFromQuery = true;
+                    }
+                    catch (NotSupportedException)
+                    {
+                        // Some custom IQueryable providers cannot translate
+                        // Count/Skip/Take. Preserve the historical client-side
+                        // behavior for those providers.
+                    }
+                }
+
+                if (!loadedFromQuery)
+                {
+                    // Fall back from the original source so a provider that
+                    // rejected query-side ordering is not asked to execute it
+                    // again during enumeration.
+                    var rows = Items.AsEnumerable();
+                    if (_sort is not null && column is not null && column.Sortable)
+                    {
+                        rows = _sort.Descending
+                            ? rows.OrderByDescending(column.GetSortValue, Comparer<object?>.Default)
+                            : rows.OrderBy(column.GetSortValue, Comparer<object?>.Default);
+                    }
+
+                    var materialized = rows.ToArray();
+                    Pagination?.SetTotalItemCount(materialized.Length);
+                    _rows = Pagination is null
+                        ? materialized
+                        : materialized.Skip(startIndex).Take(Pagination.ItemsPerPage).ToArray();
+                }
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
