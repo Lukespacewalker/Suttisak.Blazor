@@ -2,6 +2,10 @@
 
 Reusable building blocks for landing, product, about, and contact pages. The components own layout, responsive behavior, and visual states. The consuming application owns content and behavior.
 
+## Shared access-page layout
+
+`Layouts.Shared.AccessPageLayout` supplies the responsive authentication-page frame used by `IdentityLayout`: a form card, display-preference slot, and branded showcase panel. Applications provide their own brand, copy, forms, routes, and showcase markup through slots.
+
 Import the namespace:
 
 ```razor

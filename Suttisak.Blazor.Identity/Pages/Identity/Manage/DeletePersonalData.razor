@@ -11,7 +11,7 @@
 
 <PageTitle>@Manage_razor.DeletePersonalData</PageTitle>
 
-<IdentityManageShell Title="@Manage_razor.DeletePersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.PersonalData" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.DeletePersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.PersonalData" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(PersonalData<TUser>.StaticPageIcon, PersonalData<TUser>.StaticPageUrl, Manage_razor.PersonalData), new Breadcrumb(StaticPageIcon, null, Manage_razor.DeletePersonalData) })">
 <StatusMessage Message="@_message" />
 
@@ -24,20 +24,18 @@
         </div>
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
-            <FluentValidationSummary class="text-danger" role="alert" />
+            <FormValidationSummary class="text-danger" role="alert" />
             @if (_requirePassword)
             {
-                <FluentTextInput type="password" Name="Input.Password" @bind-Value="Input!.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
-                @*<FluentValidationMessage For="() => Input.Password" class="text-danger" />*@
-                @* TODO: restore FluentValidationMessage later in RC3 *@
+                <AppTextBox type="password" Name="Input.Password" @bind-Value="Input!.Password" AutoComplete="new-password" Required="true" Placeholder="@DeletePersonalData_razor.PasswordPlaceholder" Label="@DeletePersonalData_razor.PasswordLabel" Style="width: 100%" />
             }
-            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Class="identity-danger-button" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</AppButton>
+            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Class="identity-danger-button" Style="width: 100%;">@DeletePersonalData_razor.SubmitButton</AppButton>
         </EditForm>
     </div>
 </FormGrid>
 </IdentityManageShell>
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Delete();
+    public static string StaticPageIcon { get; set; } = "Delete";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.DeletePersonalData;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.DeletePersonalData);

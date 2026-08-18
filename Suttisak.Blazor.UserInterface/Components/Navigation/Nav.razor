@@ -23,7 +23,7 @@
                 <button class="nav-toolbar-button nav-toolbar-button--collapse"
                         @onclick="ToggleCollapsed"
                         aria-label="Collapse navigation menu">
-                    <FluentIcon Value="@CollapseIcon" />
+                    <Suttisak.Blazor.Icons.Icon Name="@CollapseIconName" Size="20" />
                 </button>
                 @if (BrandContent is not null)
                 {
@@ -81,9 +81,7 @@
 
     private string MobileOpenClass => IsMobileOpen ? "app-nav--mobile-open" : string.Empty;
 
-    private Icon CollapseIcon => IsCollapsed
-        ? new Icons.Regular.Size20.PanelLeftExpand()
-        : new Icons.Regular.Size20.PanelLeftContract();
+    private string CollapseIconName => IsCollapsed ? "PanelLeftExpand" : "PanelLeftContract";
 
     protected override void OnInitialized()
     {

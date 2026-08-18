@@ -1,0 +1,158 @@
+@implements IDisposable
+@inject AppOverlayService OverlayService
+
+@if (_current?.Kind == AppOverlayKind.Drawer)
+{
+    <AppDrawer TInput="AppOverlayRequest" TResult="object" @ref="_drawer"
+               Title="@_current.Options.Title" Description="@_current.Options.Description"
+               Position="@_current.Options.DrawerPosition" Size="@_current.Options.DrawerSize"
+               Dangerous="@_current.Options.Dangerous" Mode="@_current.Options.Mode"
+               Dismissible="@_current.Options.Dismissible"
+               PreventDismissOnOutsideClick="@_current.Options.PreventDismissOnOutsideClick"
+               Class="@_current.Options.Class"
+               Body="@BodyContent" Footer="@FooterContent" />
+}
+else
+{
+    <AppDialog TInput="AppOverlayRequest" TResult="object" @ref="_dialog"
+               Title="@(_current?.Options.Title ?? string.Empty)" Description="@_current?.Options.Description"
+               Dangerous="@(_current?.Options.Dangerous ?? false)" Mode="@(_current?.Options.Mode ?? AppDialogMode.Default)"
+               Dismissible="@(_current?.Options.Dismissible ?? true)"
+               PreventDismissOnOutsideClick="@(_current?.Options.PreventDismissOnOutsideClick ?? false)"
+               Class="@_current?.Options.Class"
+               Body="@BodyContent" Footer="@FooterContent" />
+}
+
+@code {
+    private AppDialog<AppOverlayRequest, object>? _dialog;
+    private AppDrawer<AppOverlayRequest, object>? _drawer;
+    private AppOverlayRequest? _current;
+    private bool _openAfterRender;
+    private bool _showing;
+    private readonly Func<Task> _queueSignal;
+
+    private RenderFragment<AppOverlayContext<AppOverlayRequest, object>> BodyContent =>
+        overlay => builder => builder.AddContent(0, RenderBody(overlay.Value));
+
+    private RenderFragment<AppOverlayContext<AppOverlayRequest, object>>? FooterContent =>
+        _current is { Preset: not null } or { Fragments.Footer: not null }
+            ? overlay => builder =>
+            {
+                var footer = RenderFooter(overlay.Value);
+                if (footer is not null) builder.AddContent(0, footer);
+            }
+            : null;
+
+    public AppOverlayHost() => _queueSignal = OnQueueChangedAsync;
+
+    protected override void OnInitialized()
+    {
+        OverlayService.Attach(_queueSignal);
+        _ = OnQueueChangedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_openAfterRender || _current is null) return;
+
+        _openAfterRender = false;
+        var request = _current;
+        try
+        {
+            var result = request.Kind == AppOverlayKind.Drawer
+                ? await _drawer!.ShowAsync(request)
+                : await _dialog!.ShowAsync(request);
+            request.Complete(result.IsCancelled
+                ? AppOverlayResult<object?>.Cancelled()
+                : AppOverlayResult<object?>.FromValue(result.Value));
+        }
+        catch (Exception exception)
+        {
+            request.Fault(exception);
+        }
+        finally
+        {
+            _current = null;
+            _showing = false;
+            await InvokeAsync(StateHasChanged);
+            await OnQueueChangedAsync();
+        }
+    }
+
+    private async Task OnQueueChangedAsync()
+    {
+        await InvokeAsync(() =>
+        {
+            if (_showing || !OverlayService.TryDequeue(out var request) || request is null) return;
+
+            _showing = true;
+            _current = request;
+            request.AttachController(new AppOverlayController(
+                result => request.Kind == AppOverlayKind.Drawer
+                    ? _drawer!.CloseAsync(result!)
+                    : _dialog!.CloseAsync(result!),
+                () => request.Kind == AppOverlayKind.Drawer
+                    ? _drawer!.CancelAsync()
+                    : _dialog!.CancelAsync()));
+            _openAfterRender = true;
+            StateHasChanged();
+        });
+    }
+
+    private RenderFragment RenderBody(AppOverlayRequest request) => builder =>
+    {
+        if (request.Preset is { } preset)
+        {
+            builder.OpenElement(0, "p");
+            builder.AddContent(1, preset.Message);
+            builder.CloseElement();
+            return;
+        }
+
+        builder.OpenComponent<CascadingValue<AppOverlayController>>(2);
+        builder.AddAttribute(3, nameof(CascadingValue<AppOverlayController>.Value), request.Controller);
+        builder.AddAttribute(4, nameof(CascadingValue<AppOverlayController>.IsFixed), true);
+        if (request.ComponentType is not null)
+        {
+            builder.OpenComponent(5, request.ComponentType);
+            if (request.Parameters is not null)
+            {
+                builder.AddMultipleAttributes(6, request.Parameters.Select(parameter =>
+                    new KeyValuePair<string, object>(parameter.Key, parameter.Value!)));
+            }
+            builder.CloseComponent();
+        }
+        else if (request.Fragments is not null)
+        {
+            builder.AddContent(7, request.Fragments.Body(request.Controller!));
+        }
+        builder.CloseComponent();
+    };
+
+    private RenderFragment? RenderFooter(AppOverlayRequest request)
+    {
+        if (request.Preset is { } preset)
+        {
+            return builder =>
+            {
+                var sequence = 0;
+                if (preset.CancelText is not null)
+                {
+                    builder.OpenComponent<AppButton>(sequence++);
+                    builder.AddAttribute(sequence++, nameof(AppButton.OnClick), EventCallback.Factory.Create<MouseEventArgs>(this, _ => request.Controller!.CancelAsync()));
+                    builder.AddContent(sequence++, preset.CancelText);
+                    builder.CloseComponent();
+                }
+                builder.OpenComponent<AppButton>(sequence++);
+                builder.AddAttribute(sequence++, nameof(AppButton.Variant), request.Preset.IsConfirmation && request.Options.Dangerous ? AppButtonVariant.DangerPrimary : AppButtonVariant.Primary);
+                builder.AddAttribute(sequence++, nameof(AppButton.OnClick), EventCallback.Factory.Create<MouseEventArgs>(this, _ => request.Controller!.CloseAsync(true)));
+                builder.AddContent(sequence++, preset.ConfirmText);
+                builder.CloseComponent();
+            };
+        }
+
+        return request.Fragments?.Footer?.Invoke(request.Controller!);
+    }
+
+    public void Dispose() => OverlayService.Detach(_queueSignal);
+}

@@ -1,0 +1,44 @@
+<section class="access-page-layout">
+    <div class="access-page-layout__background" aria-hidden="true"></div>
+    <div class="access-page-layout__grid">
+        <main class="access-page-layout__card">
+            @if (Controls is not null)
+            {
+                <div class="access-page-layout__controls" aria-label="Display preferences">@Controls</div>
+            }
+
+            <header class="access-page-layout__header">
+                @if (Brand is not null)
+                {
+                    <div class="access-page-layout__brand">@Brand</div>
+                }
+                <div class="access-page-layout__heading">
+                    @if (Kicker is not null) { <p class="access-page-layout__kicker">@Kicker</p> }
+                    <h1 id="@HeadingId">@Title</h1>
+                    @if (Intro is not null) { <div class="access-page-layout__intro">@Intro</div> }
+                </div>
+            </header>
+
+            <div class="access-page-layout__body">@ChildContent</div>
+        </main>
+
+        <aside class="access-page-layout__showcase" aria-label="@ShowcaseLabel">
+            <div class="access-page-layout__showcase-grid" aria-hidden="true"></div>
+            <div class="access-page-layout__showcase-orb access-page-layout__showcase-orb--primary" aria-hidden="true"></div>
+            <div class="access-page-layout__showcase-orb access-page-layout__showcase-orb--secondary" aria-hidden="true"></div>
+            <div class="access-page-layout__showcase-content">@Showcase</div>
+        </aside>
+    </div>
+</section>
+
+@code {
+    [Parameter] public RenderFragment? Brand { get; set; }
+    [Parameter] public RenderFragment? Controls { get; set; }
+    [Parameter] public RenderFragment? Kicker { get; set; }
+    [Parameter, EditorRequired] public RenderFragment Title { get; set; } = default!;
+    [Parameter] public RenderFragment? Intro { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter, EditorRequired] public RenderFragment Showcase { get; set; } = default!;
+    [Parameter] public string HeadingId { get; set; } = "access-page-title";
+    [Parameter] public string ShowcaseLabel { get; set; } = "Account access information";
+}

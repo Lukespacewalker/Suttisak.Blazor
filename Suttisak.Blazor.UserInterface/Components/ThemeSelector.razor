@@ -1,24 +1,22 @@
 @using Microsoft.JSInterop
 @using Suttisak.Blazor.UserInterface.Interfaces.Theme
-@using FluentIThemeService = Microsoft.FluentUI.AspNetCore.Components.IThemeService
-@using FluentThemeMode = Microsoft.FluentUI.AspNetCore.Components.ThemeMode
-@inject FluentIThemeService FluentThemeService
+@inject Suttisak.Blazor.UserInterface.Interfaces.Theme.IThemeService ThemeService
 @inject IJSRuntime JsRuntime
 
 <div class="theme-selector">
-    <button class="@($"{(IsCurrentTheme(FluentThemeMode.Light) ? "active" : "")}")"
-            type="button" aria-label="Use light theme" aria-pressed="@Pressed(IsCurrentTheme(FluentThemeMode.Light))"
-            @onclick="@(() => SetThemeAsync(FluentThemeMode.Light))">
+    <button class="@($"{(IsCurrentTheme(DesignThemeMode.Light) ? "active" : "")}")"
+            type="button" aria-label="Use light theme" aria-pressed="@Pressed(IsCurrentTheme(DesignThemeMode.Light))"
+            @onclick="@(() => SetThemeAsync(DesignThemeMode.Light))">
         <span aria-hidden="true">☼</span>
     </button>
-    <button class="@($"{(IsCurrentTheme(FluentThemeMode.Dark) ? "active" : "")}")"
-            type="button" aria-label="Use dark theme" aria-pressed="@Pressed(IsCurrentTheme(FluentThemeMode.Dark))"
-            @onclick="@(() => SetThemeAsync(FluentThemeMode.Dark))">
+    <button class="@($"{(IsCurrentTheme(DesignThemeMode.Dark) ? "active" : "")}")"
+            type="button" aria-label="Use dark theme" aria-pressed="@Pressed(IsCurrentTheme(DesignThemeMode.Dark))"
+            @onclick="@(() => SetThemeAsync(DesignThemeMode.Dark))">
         <span aria-hidden="true">◐</span>
     </button>
-    <button class="@($"{(IsCurrentTheme(FluentThemeMode.System) ? "active" : "")}")"
-        type="button" aria-label="Use system theme" aria-pressed="@Pressed(IsCurrentTheme(FluentThemeMode.System))"
-        @onclick="@(() => SetThemeAsync(FluentThemeMode.System))">
+    <button class="@($"{(IsCurrentTheme(DesignThemeMode.System) ? "active" : "")}")"
+        type="button" aria-label="Use system theme" aria-pressed="@Pressed(IsCurrentTheme(DesignThemeMode.System))"
+        @onclick="@(() => SetThemeAsync(DesignThemeMode.System))">
         <span aria-hidden="true">A</span>
     </button>
 </div>
@@ -26,7 +24,7 @@
 @code {
     private IJSObjectReference? _module;
 
-    private FluentThemeMode _currentThemeMode;
+    private DesignThemeMode _currentThemeMode;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -36,12 +34,12 @@
             _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSelector.razor.js");
             await _module.InvokeVoidAsync("initializeColorScheme");
             var result = await _module.InvokeAsync<string>("getTheme");
-            if (Enum.TryParse<FluentThemeMode>(result, true, out var themeMode))
+            if (Enum.TryParse<DesignThemeMode>(result, true, out var themeMode))
             {
                 if (_currentThemeMode != themeMode)
                 {
                     _currentThemeMode = themeMode;
-                    await FluentThemeService.SetThemeAsync(themeMode);
+                    ThemeService.ThemeConfiguration = themeMode;
                     await _module.InvokeVoidAsync("setColorScheme", themeMode.ToString());
                     mustUpdate = true;
                 }
@@ -54,17 +52,17 @@
         }
     }
 
-    private bool IsCurrentTheme(FluentThemeMode mode)
+    private bool IsCurrentTheme(DesignThemeMode mode)
     {
         return _currentThemeMode == mode;
     }
 
     private static string Pressed(bool value) => value ? "true" : "false";
 
-    private async Task SetThemeAsync(FluentThemeMode mode)
+    private async Task SetThemeAsync(DesignThemeMode mode)
     {
         _currentThemeMode = mode;
-        await FluentThemeService.SetThemeAsync(mode);
+        ThemeService.ThemeConfiguration = mode;
         if (_module is not null)
         {
             await _module.InvokeVoidAsync("setColorScheme", mode.ToString());

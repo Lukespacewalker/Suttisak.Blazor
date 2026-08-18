@@ -3,9 +3,10 @@
 .identity-flow-panel ::deep > span:first-child { display: none; }
 .identity-flow-panel ::deep h1, .identity-flow-panel ::deep h2, .identity-flow-panel ::deep h3, .identity-flow-panel ::deep h4, .identity-flow-panel ::deep p { margin-top: 0; }
 .identity-flow-panel ::deep form { display: grid; gap: 1rem; width: 100%; }
-.identity-flow-panel ::deep fluent-grid, .identity-flow-panel ::deep fluent-grid-item { width: 100%; }
-.identity-flow-panel ::deep fluent-grid-item { grid-column: 1 / -1 !important; }
-.identity-flow-panel ::deep fluent-button[type="submit"] { min-height: 2.75rem; }
+.identity-flow-panel ::deep .form-grid,
+.identity-flow-panel ::deep .form-field { width: 100%; }
+.identity-flow-panel ::deep .form-field { grid-column: 1 / -1 !important; }
+.identity-flow-panel ::deep .app-button[type="submit"] { min-height: 2.75rem; }
 .identity-flow-panel ::deep .alert { padding: .9rem 1rem; border: 1px solid var(--app-accent-border); border-radius: var(--app-radius-md); background: var(--app-accent-soft); color: var(--app-foreground); line-height: 1.55; }
 .identity-flow-panel ::deep .alert-danger { border-color: var(--app-danger-border); background: var(--app-danger-soft); }
 .identity-flow-panel ::deep .alert-warning { border-color: var(--app-warning-border); background: var(--app-warning-soft); }

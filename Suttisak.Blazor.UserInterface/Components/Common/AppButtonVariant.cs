@@ -5,7 +5,8 @@ public enum AppButtonVariant
     Primary,
     Secondary,
     Subtle,
-    Danger
+    Danger,
+    DangerPrimary
 }
 
 public enum AppButtonSize

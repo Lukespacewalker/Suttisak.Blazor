@@ -68,19 +68,19 @@
 	<EditForm Model="LoginWithUsernamePasswordInput" asp-route-returnUrl="@ReturnUrl" method="post"
 			  OnValidSubmit="LoginWithUsernamePassword" FormName="@LoginWithUsernameFormName" class="login-form">
 		<DataAnnotationsValidator />
-		<FluentValidationSummary class="text-danger" role="alert" />
+		<FormValidationSummary class="text-danger" role="alert" />
 
 		<div class="login-fields">
 			<AppTextBox Name="LoginWithUsernamePasswordInput.Username"
 						@bind-Value="LoginWithUsernamePasswordInput!.Username" Autocomplete="username" Required="true"
 						Placeholder="@(string.IsNullOrEmpty(UserNamePlaceholder) ? Login_razor.EmailOrUsername : UserNamePlaceholder)" Label="@Login_razor.Username">
-				<IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /></IconContent>
+				<IconContent><Suttisak.Blazor.Icons.Icon Name="Person" Size="20" /></IconContent>
 			</AppTextBox>
 
 			<AppTextBox Name="LoginWithUsernamePasswordInput.Password" Type="password"
 						@bind-Value="LoginWithUsernamePasswordInput!.Password" Autocomplete="current-password" Required="true"
 						Placeholder="@(string.IsNullOrEmpty(PasswordPlaceholder) ? Login_razor.Password : PasswordPlaceholder)" Label="@Login_razor.Password">
-				<IconContent><FluentIcon Value="@(new Icons.Regular.Size20.Password())" /></IconContent>
+				<IconContent><Suttisak.Blazor.Icons.Icon Name="Password" Size="20" /></IconContent>
 			</AppTextBox>
 
 		</div>
@@ -96,7 +96,7 @@
 		</div>
 
 		<div class="login-form-actions">
-			<AppButton Appearance="ButtonAppearance.Primary" Type="ButtonType.Submit">@Login_razor.SignIn
+			<AppButton Variant="AppButtonVariant.Primary" Type="submit">@Login_razor.SignIn
 			</AppButton>
 		</div>
 	</EditForm>

@@ -6,43 +6,18 @@
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-
-	<section class="identity-layout-shell">
-		<div class="identity-layout-background" aria-hidden="true">
-			<div class="identity-layout-background-orb identity-layout-background-orb-primary"></div>
-			<div class="identity-layout-background-orb identity-layout-background-orb-secondary"></div>
-			<div class="identity-layout-background-orb identity-layout-background-orb-tertiary"></div>
-		</div>
-		<div class="identity-layout-grid">
-			<main class="identity-card-wrap">
-				<div class="identity-card">
-					<div class="identity-card-controls" aria-label="Display preferences">
-						<CultureSelector @rendermode="HeaderRenderMode" />
-						<ThemeSelector @rendermode="HeaderRenderMode" />
-					</div>
-					<div class="identity-card-header">
-						<div class="identity-card-brand"><SectionOutlet SectionId="CardEyebrowSection" /></div>
-						<div class="header">
-							<p class="identity-kicker"><SectionOutlet SectionId="CardKickerSection" /></p>
-							<h1><SectionOutlet SectionId="CardTitleSection" /></h1>
-							<p class="identity-intro"><SectionOutlet SectionId="CardIntroSection" /></p>
-						</div>
-					</div>
-					<div class="identity-card-body">@Body</div>
-				</div>
-			</main>
-
-			<aside class="identity-showcase" aria-label="Account access information">
-				<div class="identity-showcase-grid" aria-hidden="true"></div>
-				<div class="identity-showcase-orb identity-showcase-orb-primary"></div>
-				<div class="identity-showcase-orb identity-showcase-orb-secondary"></div>
-
-				<div class="identity-showcase-panel">
-					<SectionOutlet SectionId="ShowcaseSection" />
-				</div>
-			</aside>
-		</div>
-	</section>
+    <AccessPageLayout>
+        <Brand><SectionOutlet SectionId="CardEyebrowSection" /></Brand>
+        <Controls>
+            <CultureSelector @rendermode="HeaderRenderMode" />
+            <ThemeSelector @rendermode="HeaderRenderMode" />
+        </Controls>
+        <Kicker><SectionOutlet SectionId="CardKickerSection" /></Kicker>
+        <Title><SectionOutlet SectionId="CardTitleSection" /></Title>
+        <Intro><SectionOutlet SectionId="CardIntroSection" /></Intro>
+        <ChildContent>@Body</ChildContent>
+        <Showcase><SectionOutlet SectionId="ShowcaseSection" /></Showcase>
+    </AccessPageLayout>
 </CascadingValue>
 @code {
 	public static object ShowcaseSection = new();

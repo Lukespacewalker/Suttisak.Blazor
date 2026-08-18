@@ -3,46 +3,51 @@
 
 <PlaybookShell>
     <AccessPageFrame Title="New account registration">
-        <main class="access-page access-page--register" aria-labelledby="register-title">
-            <section class="access-form-panel">
-                <AccessBrand />
-                <div class="access-form-panel__body">
-                    <div class="access-heading">
-                        <span>GET STARTED</span>
-                        <h1 id="register-title">Create your account</h1>
-                        <p>Set up your profile. Your organization may ask for more information later.</p>
-                    </div>
+        <AccessPageLayout HeadingId="register-title" ShowcaseLabel="Registration benefits">
+            <Brand><AccessBrand /></Brand>
+            <Controls><AccessPreferences /></Controls>
+            <Kicker>@(IsThai ? "เริ่มต้นใช้งาน" : "GET STARTED")</Kicker>
+            <Title>@(IsThai ? "สร้างบัญชีของคุณ" : "Create your account")</Title>
+            <Intro><p>@(IsThai ? "ตั้งค่าโปรไฟล์ของคุณ องค์กรอาจขอข้อมูลเพิ่มเติมในภายหลัง" : "Set up your profile. Your organization may ask for more information later.")</p></Intro>
+            <ChildContent>
                     <form class="access-form" @onsubmit="PreventSubmit" @onsubmit:preventDefault>
                         <div class="access-form__row">
-                            <label><span>First name</span><input type="text" autocomplete="given-name" placeholder="First name" /></label>
-                            <label><span>Last name</span><input type="text" autocomplete="family-name" placeholder="Last name" /></label>
+                            <AppTextBox Label="@T("First name", "ชื่อ")" Autocomplete="given-name" Placeholder="@T("First name", "ชื่อ")" @bind-Value="_firstName" />
+                            <AppTextBox Label="@T("Last name", "นามสกุล")" Autocomplete="family-name" Placeholder="@T("Last name", "นามสกุล")" @bind-Value="_lastName" />
                         </div>
-                        <label><span>Work email</span><input type="email" autocomplete="email" placeholder="name@company.com" /></label>
-                        <label><span>Password</span><input type="password" autocomplete="new-password" placeholder="At least 8 characters" /></label>
-                        <label><span>Confirm password</span><input type="password" autocomplete="new-password" placeholder="Enter password again" /></label>
-                        <label class="access-check access-check--terms"><input type="checkbox" /><span>I agree to the terms of use and privacy notice.</span></label>
-                        <button class="access-primary-action" type="submit">Create account</button>
+                        <AppTextBox Label="@T("Work email", "อีเมลที่ทำงาน")" Type="email" Autocomplete="email" Placeholder="name@company.com" @bind-Value="_email" />
+                        <AppTextBox Label="@T("Password", "รหัสผ่าน")" Type="password" Autocomplete="new-password" Placeholder="@T("At least 8 characters", "อย่างน้อย 8 อักขระ")" @bind-Value="_password" />
+                        <AppTextBox Label="@T("Confirm password", "ยืนยันรหัสผ่าน")" Type="password" Autocomplete="new-password" Placeholder="@T("Enter password again", "กรอกรหัสผ่านอีกครั้ง")" @bind-Value="_confirmPassword" />
+                        <AppCheckbox Label="@T("I agree to the terms of use and privacy notice.", "ฉันยอมรับข้อกำหนดการใช้งานและประกาศความเป็นส่วนตัว")" @bind-Value="_agreedToTerms" />
+                        <AppButton Type="submit" Variant="AppButtonVariant.Primary" Class="access-primary-action">@T("Create account", "สร้างบัญชี")</AppButton>
                     </form>
                     <div class="access-switch">
-                        <span>Already have an account?</span>
-                        <a href="access/login">Sign in</a>
+                        <span>@(IsThai ? "มีบัญชีอยู่แล้ว?" : "Already have an account?")</span>
+                        <a href="access/login">@(IsThai ? "เข้าสู่ระบบ" : "Sign in")</a>
                     </div>
-                    <p class="access-demo-note">Playbook preview — registration is intentionally disabled.</p>
-                </div>
-            </section>
-            <aside class="access-story" aria-label="Registration benefits">
-                <div class="access-story__grid" aria-hidden="true"></div>
-                <span class="access-story__index">YOUR WORKSPACE / 02</span>
+                    <p class="access-demo-note">@T("Playbook preview — registration is intentionally disabled.", "ตัวอย่าง Playbook — การลงทะเบียนถูกปิดไว้โดยตั้งใจ")</p>
+            </ChildContent>
+            <Showcase>
+                <span class="access-story__index">@(IsThai ? "พื้นที่ทำงานของคุณ / 02" : "YOUR WORKSPACE / 02")</span>
                 <div>
-                    <blockquote>Start focused. Stay connected.</blockquote>
-                    <p>Your profile keeps preferences, activity, and access together across every device.</p>
+                    <blockquote>@(IsThai ? "เริ่มอย่างมีเป้าหมาย เชื่อมต่อได้เสมอ" : "Start focused. Stay connected.")</blockquote>
+                    <p>@(IsThai ? "โปรไฟล์ของคุณเก็บการตั้งค่า กิจกรรม และสิทธิ์เข้าถึงไว้ด้วยกันบนทุกอุปกรณ์" : "Your profile keeps preferences, activity, and access together across every device.")</p>
                 </div>
-                <ol class="access-story__steps"><li><b>01</b><span>Create your identity</span></li><li><b>02</b><span>Verify your organization</span></li><li><b>03</b><span>Enter your workspace</span></li></ol>
-            </aside>
-        </main>
+                <ol class="access-story__steps"><li><b>01</b><span>@(IsThai ? "สร้างตัวตนของคุณ" : "Create your identity")</span></li><li><b>02</b><span>@(IsThai ? "ยืนยันองค์กรของคุณ" : "Verify your organization")</span></li><li><b>03</b><span>@(IsThai ? "เข้าสู่พื้นที่ทำงาน" : "Enter your workspace")</span></li></ol>
+            </Showcase>
+        </AccessPageLayout>
     </AccessPageFrame>
 </PlaybookShell>
 
 @code {
+    [Inject] private PlaybookState State { get; set; } = default!;
+    private string? _firstName;
+    private string? _lastName;
+    private string? _email;
+    private string? _password;
+    private string? _confirmPassword;
+    private bool _agreedToTerms;
+    private bool IsThai => State.Language == "th";
+    private string T(string english, string thai) => IsThai ? thai : english;
     private static void PreventSubmit() { }
 }

@@ -20,8 +20,8 @@
                type="time"
                name="@Name"
                value="@FormattedValue"
-               min="@Format(Min)"
-               max="@Format(Max)"
+               min="@FormattedMin"
+               max="@FormattedMax"
                step="@Step"
                required="@Required"
                disabled="@Disabled"
@@ -43,10 +43,15 @@
     [Parameter] public string? Description { get; set; }
     [Parameter] public TimeOnly? Value { get; set; }
     [Parameter] public EventCallback<TimeOnly?> ValueChanged { get; set; }
+    /// <summary>DateTime-compatible binding for APIs that represent a time with DateTime?.</summary>
+    [Parameter] public DateTime? DateTimeValue { get; set; }
+    [Parameter] public EventCallback<DateTime?> DateTimeValueChanged { get; set; }
     [Parameter] public string? Name { get; set; }
     [Parameter] public string? Id { get; set; }
     [Parameter] public TimeOnly? Min { get; set; }
     [Parameter] public TimeOnly? Max { get; set; }
+    [Parameter] public DateTime? DateTimeMin { get; set; }
+    [Parameter] public DateTime? DateTimeMax { get; set; }
     [Parameter] public int MinuteStep { get; set; } = 1;
     [Parameter] public int SecondStep { get; set; } = 1;
     [Parameter] public bool IncludeSeconds { get; set; }
@@ -60,11 +65,15 @@
     private readonly string _generatedId = $"app-time-{Guid.NewGuid():N}";
     private string InputId => Id ?? _generatedId;
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
-    private string? FormattedValue => Format(Value);
+    private bool UsesDateTimeValue => DateTimeValueChanged.HasDelegate;
+    private string? FormattedValue => UsesDateTimeValue ? Format(DateTimeValue) : Format(Value);
+    private string? FormattedMin => UsesDateTimeValue ? Format(DateTimeMin) : Format(Min);
+    private string? FormattedMax => UsesDateTimeValue ? Format(DateTimeMax) : Format(Max);
     private int Step => IncludeSeconds ? Math.Max(1, SecondStep) : Math.Max(1, MinuteStep) * 60;
     private string Pattern => IncludeSeconds ? "HH:mm:ss" : "HH:mm";
 
     private string? Format(TimeOnly? value) => value?.ToString(Pattern, CultureInfo.InvariantCulture);
+    private string? Format(DateTime? value) => value?.ToString(Pattern, CultureInfo.InvariantCulture);
 
     private Task HandleChangeAsync(ChangeEventArgs args)
     {
@@ -75,6 +84,9 @@
         var value = TimeOnly.TryParseExact(text, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? parsed
             : (TimeOnly?)null;
-        return ValueChanged.InvokeAsync(value);
+        var existingDate = DateTimeValue?.Date ?? DateTime.Today;
+        return UsesDateTimeValue
+            ? DateTimeValueChanged.InvokeAsync(value is null ? null : existingDate.Add(value.Value.ToTimeSpan()))
+            : ValueChanged.InvokeAsync(value);
     }
 }

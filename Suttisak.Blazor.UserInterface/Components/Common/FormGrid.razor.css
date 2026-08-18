@@ -6,11 +6,7 @@
     align-items: start;
 }
 
-.form-grid ::deep fluent-text-field,
-.form-grid ::deep fluent-select,
-.form-grid ::deep fluent-text-area,
-.form-grid ::deep fluent-number-field,
-.form-grid ::deep fluent-date-picker {
+.form-grid ::deep .app-form-control {
     width: 100%;
 }
 

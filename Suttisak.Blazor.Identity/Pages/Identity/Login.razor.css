@@ -40,7 +40,7 @@ text {
     display: grid;
 }
 
-.login-form-actions ::deep fluent-button {
+.login-form-actions ::deep .app-button {
     width: 100%;
 }
 
@@ -92,7 +92,7 @@ text {
 
 .login-alt-actions ::deep button,
 .login-alt-actions ::deep a,
-.login-alt-actions ::deep fluent-button {
+.login-alt-actions ::deep .app-button {
     width: 100%;
 }
 
@@ -101,7 +101,7 @@ text {
         align-items: stretch;
     }
 
-    .login-form-actions ::deep fluent-button {
+    .login-form-actions ::deep .app-button {
         width: 100%;
     }
 }

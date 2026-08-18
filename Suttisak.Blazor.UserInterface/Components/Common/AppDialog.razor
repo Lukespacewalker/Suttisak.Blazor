@@ -9,15 +9,16 @@
         aria-labelledby="@_titleId"
         aria-describedby="@DescriptionId"
         data-dismissible="@Dismissible.ToString().ToLowerInvariant()"
+        data-prevent-outside-dismiss="@PreventDismissOnOutsideClick.ToString().ToLowerInvariant()"
         @onclose="HandleNativeClose">
     @if (_hasValue)
     {
     <div class="app-dialog__surface">
         <header class="app-dialog__header">
             <div class="app-dialog__heading">
-                @if (Dangerous)
+                @if (ShowModeMark)
                 {
-                    <span class="app-dialog__danger-mark" aria-hidden="true">!</span>
+                    <span class="@ModeMarkClass" aria-hidden="true">@ModeMark</span>
                 }
                 <div>
                     <h2 id="@_titleId">@Title</h2>
@@ -58,13 +59,24 @@
     [Parameter, EditorRequired] public RenderFragment<AppOverlayContext<TInput, TResult>> Body { get; set; } = default!;
     [Parameter] public RenderFragment<AppOverlayContext<TInput, TResult>>? Footer { get; set; }
     [Parameter] public bool Dangerous { get; set; }
+    [Parameter] public AppDialogMode Mode { get; set; }
     [Parameter] public bool Dismissible { get; set; } = true;
+    [Parameter] public bool PreventDismissOnOutsideClick { get; set; }
     [Parameter] public string CloseLabel { get; set; } = "Close dialog";
     [Parameter] public string? Class { get; set; }
 
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : _descriptionId;
     private AppOverlayContext<TInput, TResult> Context => new(_value, CloseAsync, CancelAsync);
-    private string CssClassValue => string.Join(' ', new[] { "app-dialog", Dangerous ? "app-dialog--danger" : null, Class }
+    private bool ShowModeMark => Dangerous || Mode != AppDialogMode.Default;
+    private string ModeMark => Dangerous || Mode == AppDialogMode.Error ? "!" : Mode == AppDialogMode.Warning ? "!" : "i";
+    private string ModeMarkClass => $"app-dialog__mode-mark app-dialog__mode-mark--{(Dangerous ? "error" : Mode.ToString().ToLowerInvariant())}";
+    private string CssClassValue => string.Join(' ', new[]
+    {
+        "app-dialog",
+        Dangerous ? "app-dialog--danger" : null,
+        Mode != AppDialogMode.Default ? $"app-dialog--{Mode.ToString().ToLowerInvariant()}" : null,
+        Class
+    }
         .Where(value => !string.IsNullOrWhiteSpace(value)));
 
     public Task<AppOverlayResult<TResult>> ShowAsync(TInput value)

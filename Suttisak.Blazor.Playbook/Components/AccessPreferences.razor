@@ -1,0 +1,31 @@
+@inject PlaybookState State
+@inject IThemeService ThemeService
+@inject IJSRuntime JsRuntime
+
+<div class="access-preferences">
+    <div class="access-preferences__language" aria-label="Language">
+        <button type="button" class="@(State.Language == "en" ? "active" : null)" aria-pressed="@(State.Language == "en")" @onclick='() => State.Language = "en"'>EN</button>
+        <button type="button" class="@(State.Language == "th" ? "active" : null)" aria-pressed="@(State.Language == "th")" @onclick='() => State.Language = "th"'>ไทย</button>
+    </div>
+    <div class="access-preferences__theme" aria-label="Color scheme">
+        <button type="button" class="@(State.Mode == "light" ? "active" : null)" aria-label="Use light theme" aria-pressed="@(State.Mode == "light")" @onclick='() => SetModeAsync("light")'><span aria-hidden="true">☼</span></button>
+        <button type="button" class="@(State.Mode == "dark" ? "active" : null)" aria-label="Use dark theme" aria-pressed="@(State.Mode == "dark")" @onclick='() => SetModeAsync("dark")'><span aria-hidden="true">◐</span></button>
+        <button type="button" class="@(State.Mode == "auto" ? "active" : null)" aria-label="Use system theme" aria-pressed="@(State.Mode == "auto")" @onclick='() => SetModeAsync("auto")'><span aria-hidden="true">A</span></button>
+    </div>
+</div>
+
+@code {
+    private async Task SetModeAsync(string mode)
+    {
+        State.Mode = mode;
+        var theme = PlaybookCatalog.Themes.First(value => value.Key == State.Theme);
+        var isDark = mode == "dark" || mode == "auto" && await JsRuntime.InvokeAsync<bool>("playbookTheme.prefersDark");
+        ThemeService.ThemeConfiguration = State.Mode switch
+        {
+            "light" => DesignThemeMode.Light,
+            "dark" => DesignThemeMode.Dark,
+            _ => DesignThemeMode.System
+        };
+        ThemeService.CurrentThemeMode = isDark ? ThemeMode.Dark : ThemeMode.Light;
+    }
+}

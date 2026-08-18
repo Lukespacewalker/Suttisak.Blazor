@@ -1,5 +1,6 @@
 export function getTheme() {
-    const raw = localStorage.getItem("fluentui-blazor:theme-settings");
+    const raw = localStorage.getItem("suttisak-blazor:theme-settings")
+        ?? localStorage.getItem("fluentui-blazor:theme-settings");
     if (!raw) return "system";
 
     try {
@@ -31,11 +32,13 @@ export function initializeColorScheme() {
     mediaQuery ??= window.matchMedia("(prefers-color-scheme: dark)");
     mediaQuery.onchange = update;
     window.addEventListener("storage", event => {
-        if (event.key === "fluentui-blazor:theme-settings") update();
+        if (event.key === "suttisak-blazor:theme-settings" || event.key === "fluentui-blazor:theme-settings") update();
     });
     update();
 }
 
 export function setColorScheme(mode) {
-    applyColorScheme(String(mode).toLowerCase());
+    const normalized = String(mode).toLowerCase();
+    localStorage.setItem("suttisak-blazor:theme-settings", JSON.stringify({ mode: normalized }));
+    applyColorScheme(normalized);
 }

@@ -13,7 +13,7 @@
 <PageTitle>@Manage_razor.Email</PageTitle>
 
 
-<IdentityManageShell Title="@Manage_razor.Email" Description="@Text["EmailDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.Email" Description="@Text["EmailDescription"]" ActiveUrl="@StaticPageUrl" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Email) })">
 <StatusMessage Message="@_message" />
 <FormGrid Columns="1">
@@ -23,30 +23,30 @@
         </form>
         <EditForm Model="Input" FormName="change-email" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
-            <FluentValidationSummary class="text-danger" role="alert" />
+            <FormValidationSummary class="text-danger" role="alert" />
             @if (_isEmailConfirmed)
             {
-                <FluentTextInput Value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=TextInputAppearance.Outline Style="width: 100%">
+                <AppTextBox Value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Style="width: 100%">
                     <span slot="end">✓</span>
-                </FluentTextInput>
+                </AppTextBox>
             }
             else
             {
-                <FluentTextInput value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
-                <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</AppButton>
+                <AppTextBox value="@_email" Placeholder="@Email_razor.EmailPlaceholder" ReadOnly Label="@Email_razor.EmailLabel" Style="width: 100%" />
+                <AppButton Type="submit" Variant="AppButtonVariant.Primary" Form="send-verification-form" Style="width: 100%">@Email_razor.SendVerificationButton</AppButton>
             }
-            <FluentTextInput 
+            <AppTextBox
                 Name="Input.NewEmail" 
                 @bind-Value="Input!.NewEmail" AutoComplete="email" Required="true" Placeholder="@Email_razor.NewEmailPlaceholder" Label="@Email_razor.NewEmailLabel" Style="width: 100%" />
             <!-- TODO : Restore Fluent Validation Message Later-->
-            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</AppButton>
+            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@Email_razor.ChangeEmailButton</AppButton>
         </EditForm>
     </div>
 </FormGrid>
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.Mail();
+    public static string StaticPageIcon { get; set; } = "Mail";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.Email;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.Email);

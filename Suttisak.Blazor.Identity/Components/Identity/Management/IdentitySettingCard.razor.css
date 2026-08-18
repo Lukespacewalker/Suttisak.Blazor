@@ -25,5 +25,5 @@
 .identity-setting-card__actions ::deep .identity-card-action--danger:hover { background: var(--app-danger-soft); }
 .identity-setting-card--danger { border-color: var(--app-danger-border); background: var(--app-danger-soft); }
 .identity-setting-card--danger .identity-setting-card__icon { color: var(--app-danger); background: var(--app-danger-soft); }
-@media (max-width: 600px) { .identity-setting-card { grid-template-columns: auto minmax(0, 1fr); } .identity-setting-card__actions { grid-column: 1 / -1; justify-content: stretch; } .identity-setting-card__actions ::deep fluent-button, .identity-setting-card__actions ::deep a { flex: 1; } }
+@media (max-width: 600px) { .identity-setting-card { grid-template-columns: auto minmax(0, 1fr); } .identity-setting-card__actions { grid-column: 1 / -1; justify-content: stretch; } .identity-setting-card__actions ::deep .app-button, .identity-setting-card__actions ::deep a { flex: 1; } }
 @media (prefers-reduced-motion: reduce) { .identity-setting-card { transition: none; } }

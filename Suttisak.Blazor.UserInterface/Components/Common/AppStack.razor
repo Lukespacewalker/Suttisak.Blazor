@@ -1,0 +1,28 @@
+<div class="@CssClass" style="@CssStyle" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Direction { get; set; } = "Vertical";
+    [Parameter] public string? Gap { get; set; }
+    [Parameter] public string? Align { get; set; }
+    [Parameter] public string? Justify { get; set; }
+    [Parameter] public bool Wrap { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsHorizontal => string.Equals(Direction, "Horizontal", StringComparison.OrdinalIgnoreCase);
+    private string CssClass => string.IsNullOrWhiteSpace(Class) ? "app-stack" : $"app-stack {Class}";
+    private string CssStyle => string.Join(';', new[]
+    {
+        "display:flex",
+        $"flex-direction:{(IsHorizontal ? "row" : "column")}",
+        string.IsNullOrWhiteSpace(Gap) ? null : $"gap:{Gap}",
+        string.IsNullOrWhiteSpace(Align) ? null : $"align-items:{Align}",
+        string.IsNullOrWhiteSpace(Justify) ? null : $"justify-content:{Justify}",
+        Wrap ? "flex-wrap:wrap" : null,
+        Style
+    }.Where(value => !string.IsNullOrWhiteSpace(value)));
+}

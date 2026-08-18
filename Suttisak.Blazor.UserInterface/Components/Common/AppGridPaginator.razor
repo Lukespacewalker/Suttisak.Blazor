@@ -1,0 +1,37 @@
+@implements IDisposable
+
+<nav class="app-grid-paginator" aria-label="@AriaLabel">
+    <span class="app-grid-paginator__summary">@Summary</span>
+    <div class="app-grid-paginator__controls">
+        <button type="button" disabled="@(State.CurrentPageIndex == 0)" @onclick="PreviousAsync">Previous</button>
+        <span aria-live="polite">Page @(State.CurrentPageIndex + 1) of @PageCount</span>
+        <button type="button" disabled="@(State.LastPageIndex is null || State.CurrentPageIndex >= State.LastPageIndex)" @onclick="NextAsync">Next</button>
+    </div>
+</nav>
+
+@code {
+    [Parameter, EditorRequired] public AppGridPaginationState State { get; set; } = default!;
+    [Parameter] public string AriaLabel { get; set; } = "Grid pagination";
+    private AppGridPaginationState? _subscribedState;
+
+    private int PageCount => Math.Max(1, (State.LastPageIndex ?? 0) + 1);
+    private string Summary => State.TotalItemCount is null
+        ? "Rows are loading"
+        : $"{State.TotalItemCount} {(State.TotalItemCount == 1 ? "row" : "rows")}";
+
+    protected override void OnParametersSet()
+    {
+        if (ReferenceEquals(_subscribedState, State)) return;
+        if (_subscribedState is not null) _subscribedState.StateChanged -= HandleStateChanged;
+        _subscribedState = State;
+        _subscribedState.StateChanged += HandleStateChanged;
+    }
+
+    private Task PreviousAsync() => State.SetCurrentPageIndexAsync(State.CurrentPageIndex - 1);
+    private Task NextAsync() => State.SetCurrentPageIndexAsync(State.CurrentPageIndex + 1);
+    private void HandleStateChanged() => _ = InvokeAsync(StateHasChanged);
+    public void Dispose()
+    {
+        if (_subscribedState is not null) _subscribedState.StateChanged -= HandleStateChanged;
+    }
+}

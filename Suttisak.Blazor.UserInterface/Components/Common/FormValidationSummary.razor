@@ -1,3 +1,8 @@
-<div class="form-validation-summary" role="alert" aria-live="assertive">
-    <FluentValidationSummary />
+<div class="form-validation-summary" role="alert" aria-live="assertive" @attributes="AdditionalAttributes">
+    <ValidationSummary />
 </div>
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

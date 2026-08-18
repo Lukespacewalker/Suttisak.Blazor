@@ -1,0 +1,13 @@
+<span class="@CssClass" style="@StyleValue" aria-hidden="true"></span>
+
+@code {
+    [Parameter] public string? Width { get; set; }
+    [Parameter] public string? Height { get; set; }
+    [Parameter] public bool Circle { get; set; }
+    [Parameter] public bool Shimmer { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+
+    private string CssClass => string.Join(' ', new[] { "app-skeleton", Circle ? "app-skeleton--circle" : null, Shimmer ? "app-skeleton--shimmer" : null, Class }.Where(value => !string.IsNullOrWhiteSpace(value)));
+    private string StyleValue => string.Join(';', new[] { Width is null ? null : $"inline-size:{Width}", Height is null ? null : $"block-size:{Height}", Style }.Where(value => !string.IsNullOrWhiteSpace(value)));
+}

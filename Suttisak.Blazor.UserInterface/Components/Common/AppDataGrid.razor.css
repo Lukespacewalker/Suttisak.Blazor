@@ -1,6 +1,6 @@
 .app-data-grid__toolbar { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; padding: .75rem; border-bottom: 1px solid var(--app-border); background: var(--app-surface-muted); }
 .app-data-grid__viewport { min-width: 0; overflow: auto; }
-.app-data-grid__viewport ::deep fluent-data-grid,
+.app-data-grid__viewport ::deep .app-grid,
 .app-data-grid__viewport ::deep .app-quick-grid { min-width: 42rem; }
 .app-data-grid__footer { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; padding: .7rem .85rem; border-top: 1px solid var(--app-border); background: var(--app-surface-muted); }
 

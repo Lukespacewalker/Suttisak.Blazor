@@ -30,19 +30,20 @@ else
 }
 
 @code {
-    [Parameter] public Icon? IconStart { get; set; }
+    [Parameter] public string? IconStartName { get; set; }
+    [Parameter] public int IconStartSize { get; set; } = 20;
     [Parameter] public RenderFragment? IconStartContent { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public Icon? IconEnd { get; set; }
+    [Parameter] public string? IconEndName { get; set; }
+    [Parameter] public int IconEndSize { get; set; } = 20;
     [Parameter] public RenderFragment? IconEndContent { get; set; }
     [Parameter] public AppButtonVariant Variant { get; set; } = AppButtonVariant.Secondary;
-    [Parameter] public ButtonAppearance? Appearance { get; set; }
     [Parameter] public AppButtonSize Size { get; set; } = AppButtonSize.Standard;
     [Parameter] public bool IconOnly { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool Busy { get; set; }
     [Parameter] public bool Loading { get; set; }
-    [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
+    [Parameter] public string Type { get; set; } = "button";
     [Parameter] public string? Href { get; set; }
     [Parameter] public string? AriaLabel { get; set; }
     [Parameter] public string? Title { get; set; }
@@ -73,7 +74,7 @@ else
             builder.AddAttribute(sequence++, "aria-hidden", "true");
             builder.CloseElement();
         }
-        else if (IconStartContent is not null || IconStart is not null)
+        else if (IconStartContent is not null || !string.IsNullOrWhiteSpace(IconStartName))
         {
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "app-button__icon");
@@ -81,10 +82,11 @@ else
             {
                 builder.AddContent(sequence++, IconStartContent);
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(IconStartName))
             {
-                builder.OpenComponent<FluentIcon<Icon>>(sequence++);
-                builder.AddAttribute(sequence++, nameof(FluentIcon<Icon>.Value), IconStart);
+                builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(sequence++);
+                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Name), IconStartName);
+                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Size), IconStartSize);
                 builder.CloseComponent();
             }
             builder.CloseElement();
@@ -98,7 +100,7 @@ else
             builder.CloseElement();
         }
 
-        if (!IsBusy && (IconEndContent is not null || IconEnd is not null))
+        if (!IsBusy && (IconEndContent is not null || !string.IsNullOrWhiteSpace(IconEndName)))
         {
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "app-button__icon");
@@ -106,10 +108,11 @@ else
             {
                 builder.AddContent(sequence++, IconEndContent);
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(IconEndName))
             {
-                builder.OpenComponent<FluentIcon<Icon>>(sequence++);
-                builder.AddAttribute(sequence++, nameof(FluentIcon<Icon>.Value), IconEnd);
+                builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(sequence++);
+                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Name), IconEndName);
+                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Size), IconEndSize);
                 builder.CloseComponent();
             }
             builder.CloseElement();
@@ -122,13 +125,6 @@ else
     private bool IsBusy => Busy || Loading;
     private string? EffectiveTitle => Title ?? ToolTip;
     private string? ColorStyle => string.IsNullOrWhiteSpace(Color) ? null : $"color:{Color}";
-    private string HtmlType => Type == ButtonType.Submit ? "submit" : Type == ButtonType.Reset ? "reset" : "button";
-    private AppButtonVariant EffectiveVariant => Variant != AppButtonVariant.Secondary || Appearance is null
-        ? Variant
-        : Appearance switch
-        {
-            ButtonAppearance.Primary => AppButtonVariant.Primary,
-            ButtonAppearance.Subtle or ButtonAppearance.Transparent => AppButtonVariant.Subtle,
-            _ => AppButtonVariant.Secondary
-        };
+    private string HtmlType => Type.ToLowerInvariant() is "submit" or "reset" ? Type.ToLowerInvariant() : "button";
+    private AppButtonVariant EffectiveVariant => Variant;
 }

@@ -38,6 +38,10 @@
     color: var(--app-accent);
 }
 
+.status-panel__spinner { width: 1.5rem; height: 1.5rem; border: 2px solid var(--app-border); border-top-color: var(--app-brand); border-radius: 50%; animation: status-panel-spin .7s linear infinite; }
+@keyframes status-panel-spin { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) { .status-panel__spinner { animation: none; } }
+
 .status-panel--success { border-color: var(--app-success-border); }
 .status-panel--warning { border-color: var(--app-warning-border); }
 .status-panel--error { border-color: var(--app-danger-border); }

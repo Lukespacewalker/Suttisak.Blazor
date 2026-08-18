@@ -1,18 +1,70 @@
 @inherits AppInputBase<bool>
 
 <div class="@ContainerClass">
-    <label class="app-choice app-choice--checkbox" for="@InputId">
+    <label class="app-choice app-choice--checkbox@(EffectiveCheckState is null ? " app-choice--indeterminate" : string.Empty)" for="@InputId">
         <input id="@InputId" class="app-choice__native @CssClass" type="checkbox" name="@NameAttributeValue"
-               value="true" checked="@CurrentValue" required="@Required" disabled="@Disabled"
+               value="true" checked="@EffectiveCheckState.GetValueOrDefault()" required="@Required" disabled="@Disabled"
+               aria-checked="@(EffectiveCheckState is null ? "mixed" : EffectiveCheckState.Value ? "true" : "false")"
                aria-invalid="@HasValidationError" aria-describedby="@DescribedBy"
+               @onclick="HandleClick" @onclick:preventDefault="UseCheckState"
                @onchange="HandleChange" @attributes="AdditionalAttributes" />
-        <span class="app-choice__control" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="m4 9 3 3 7-7" /></svg></span>
-        <span class="app-choice__content"><strong>@Label</strong>@if (!string.IsNullOrWhiteSpace(Description)) { <small id="@DescriptionId">@Description</small> }</span>
+        <span class="app-choice__control" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="m4 9 3 3 7-7" /></svg><i class="app-choice__mixed"></i></span>
+        <span class="app-choice__content">
+            @if (LabelTemplate is not null)
+            {
+                @LabelTemplate
+            }
+            else if (ChildContent is not null)
+            {
+                @ChildContent
+            }
+            else if (!string.IsNullOrWhiteSpace(Label))
+            {
+                <strong>@Label</strong>
+            }
+            @if (!string.IsNullOrWhiteSpace(Description)) { <small id="@DescriptionId">@Description</small> }
+        </span>
     </label>
     <AppInputSupport ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
 </div>
 
 @code {
-    private void HandleChange(ChangeEventArgs args) => CurrentValue = args.Value is bool value && value;
+    [Parameter] public bool ThreeState { get; set; }
+    [Parameter] public bool ShowIndeterminate { get; set; } = true;
+    [Parameter] public bool ThreeStateOrderUncheckToIntermediate { get; set; }
+    [Parameter] public bool? CheckState { get; set; }
+    [Parameter] public EventCallback<bool?> CheckStateChanged { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? LabelTemplate { get; set; }
+
+    private bool UseCheckState => ThreeState || CheckStateChanged.HasDelegate;
+    private bool? EffectiveCheckState => UseCheckState ? (ShowIndeterminate ? CheckState : CheckState.GetValueOrDefault()) : CurrentValue;
+
+    private async Task HandleClick(MouseEventArgs _)
+    {
+        if (!UseCheckState || Disabled)
+        {
+            return;
+        }
+
+        var next = CheckState switch
+        {
+            true when ThreeStateOrderUncheckToIntermediate => false,
+            false when ThreeStateOrderUncheckToIntermediate => (bool?)null,
+            null when ThreeStateOrderUncheckToIntermediate => true,
+            true => (bool?)null,
+            null => false,
+            _ => true
+        };
+        await CheckStateChanged.InvokeAsync(next);
+    }
+
+    private void HandleChange(ChangeEventArgs args)
+    {
+        if (!UseCheckState)
+        {
+            CurrentValue = args.Value is bool value && value;
+        }
+    }
     protected override bool TryParseValueFromString(string? value, out bool result, out string validationErrorMessage) { result = bool.TryParse(value, out var parsed) && parsed; validationErrorMessage = null!; return true; }
 }

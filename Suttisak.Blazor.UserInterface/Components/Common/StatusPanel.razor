@@ -4,11 +4,11 @@
          aria-live="@AriaLive">
     @if (Loading)
     {
-        <FluentSpinner />
+        <span class="status-panel__spinner" aria-hidden="true"></span>
     }
-    else if (Icon is not null)
+    else if (!string.IsNullOrWhiteSpace(IconName))
     {
-        <span class="status-panel__icon" aria-hidden="true"><FluentIcon Value="@Icon" /></span>
+        <span class="status-panel__icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@IconName" Size="@IconSize" /></span>
     }
     <h2>@Title</h2>
     @if (!string.IsNullOrWhiteSpace(Message))
@@ -24,7 +24,8 @@
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Message { get; set; }
-    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? IconName { get; set; }
+    [Parameter] public int IconSize { get; set; } = 24;
     [Parameter] public bool Loading { get; set; }
     [Parameter] public bool Compact { get; set; }
     [Parameter] public string Role { get; set; } = "status";

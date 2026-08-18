@@ -1,0 +1,16 @@
+@inherits AppInputBase<bool>
+
+<div class="@ContainerClass">
+    <label class="app-choice app-choice--switch" for="@InputId">
+        <input id="@InputId" class="app-choice__native @CssClass" type="checkbox" name="@NameAttributeValue" checked="@CurrentValue"
+               disabled="@Disabled" aria-invalid="@HasValidationError" aria-describedby="@DescribedBy" @onchange="HandleChange" @attributes="AdditionalAttributes" />
+        <span class="app-choice__switch" aria-hidden="true"></span>
+        @if (!string.IsNullOrWhiteSpace(Label)) { <span class="app-choice__content"><strong>@Label</strong></span> }
+    </label>
+    <AppInputSupport Description="@Description" DescriptionId="@DescriptionId" ValidationMessage="@ValidationMessage" ValidationId="@ValidationId" ShowValidationMessage="@ShowValidationMessage" />
+</div>
+
+@code {
+    private void HandleChange(ChangeEventArgs args) => CurrentValue = args.Value is bool value && value;
+    protected override bool TryParseValueFromString(string? value, out bool result, out string validationErrorMessage) { result = bool.TryParse(value, out var parsed) && parsed; validationErrorMessage = null!; return true; }
+}

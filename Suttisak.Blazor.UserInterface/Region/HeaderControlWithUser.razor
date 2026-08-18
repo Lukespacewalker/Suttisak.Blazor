@@ -4,13 +4,13 @@
 
 <div class="header-user-controls @(CompactOnMobile ? "header-user-controls--mobile-hidden" : null)">
     <PreferencesSelector />
-    <FluentSpacer Width="6px" />
+    <span aria-hidden="true" style="width:6px"></span>
     <AuthorizeView>
         <Authorized>
             <ProfileMenu LoginText="@LoginText" LogoutText="@LogoutText" ProfileImageUrl="@ProfileImageUrl" />
         </Authorized>
         <NotAuthorized>
-            <AppButton IconStart="@(new Icons.Regular.Size24.Key())"
+            <AppButton IconStartName="Key" IconStartSize="24"
                        Variant="AppButtonVariant.Primary"
                        OnClick="@(_ => OnClickHandler())">
                 @Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)

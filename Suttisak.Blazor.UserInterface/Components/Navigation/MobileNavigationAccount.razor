@@ -22,18 +22,18 @@
                 else
                 {
                     <span class="mobile-nav-account__avatar mobile-nav-account__avatar--fallback" aria-hidden="true">
-                        <FluentIcon Value="@(new Icons.Regular.Size24.PersonCircle())" />
+                        <Suttisak.Blazor.Icons.Icon Name="PersonCircle" Size="24" />
                     </span>
                 }
                 <span class="mobile-nav-account__name">@GetDisplayName(authenticationState.User)</span>
                 <button type="button" class="mobile-nav-account__action" @onclick="Logout" title="@LogoutLabel" aria-label="@LogoutLabel">
-                    <FluentIcon Value="@(new Icons.Regular.Size20.SignOut())" />
+                    <Suttisak.Blazor.Icons.Icon Name="SignOut" Size="20" />
                 </button>
             </div>
         </Authorized>
         <NotAuthorized>
             <button type="button" class="mobile-nav-account__signin" @onclick="Login">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Key())" />
+                <Suttisak.Blazor.Icons.Icon Name="Key" Size="20" />
                 <span>@LoginLabel</span>
             </button>
         </NotAuthorized>

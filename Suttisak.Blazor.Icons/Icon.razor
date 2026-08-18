@@ -1,0 +1,51 @@
+@namespace Suttisak.Blazor.Icons
+
+<svg class="@CssClass"
+     viewBox="0 0 @ViewBoxSize @ViewBoxSize"
+     width="@Size"
+     height="@Size"
+     role="@Role"
+     aria-hidden="@AriaHidden"
+     aria-label="@AriaLabel"
+     focusable="false"
+     style="@EffectiveStyle"
+     fill="currentColor"
+     @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <title>@Title</title>
+    }
+    @((MarkupString)SvgPath)
+</svg>
+
+@code {
+    /// <summary>The icon key. Unknown keys render a neutral information icon rather than disappearing.</summary>
+    [Parameter, EditorRequired] public string Name { get; set; } = string.Empty;
+    [Parameter] public int Size { get; set; } = 20;
+    [Parameter] public IconVariant Variant { get; set; } = IconVariant.Regular;
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    /// <summary>Accepts a legacy color token while applications move to CSS custom properties.</summary>
+    [Parameter] public object? Color { get; set; }
+    [Parameter] public string? CustomColor { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.IsNullOrWhiteSpace(Class) ? "app-icon" : $"app-icon {Class}";
+    private string Role => string.IsNullOrWhiteSpace(AriaLabel) && string.IsNullOrWhiteSpace(Title) ? "presentation" : "img";
+    private string AriaHidden => Role == "presentation" ? "true" : "false";
+    private string SvgPath => IconPaths.Get(Name, Variant);
+    private int ViewBoxSize => IconPaths.GetViewBoxSize(Name, Variant);
+    private string? EffectiveStyle => string.Join(';', new[] { Style, IconColor is null ? null : $"color:{IconColor}" }.Where(value => !string.IsNullOrWhiteSpace(value)));
+    private string? IconColor => !string.IsNullOrWhiteSpace(CustomColor)
+        ? CustomColor
+        : Color?.ToString() switch
+        {
+            "Primary" => "var(--app-brand, currentColor)",
+            "Error" => "var(--status-error, #b42318)",
+            "Warning" => "var(--status-warning, #b54708)",
+            "Success" => "var(--status-success, #027a48)",
+            _ => null
+        };
+}

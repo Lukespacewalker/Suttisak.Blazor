@@ -1,0 +1,42 @@
+@using System.Globalization
+@typeparam TValue
+
+<label class="app-choice app-choice--radio @Class" for="@InputId">
+    <input id="@InputId" class="app-choice__native" type="radio" name="@Group.Name"
+           value="@Format(Value)" checked="@IsSelected" required="@Group.Required"
+           disabled="@(Group.Disabled || Disabled)" aria-invalid="@Group.HasValidationError"
+           aria-describedby="@Group.DescribedBy" @onchange="HandleChange" @attributes="AdditionalAttributes" />
+    <span class="app-choice__control" aria-hidden="true"><i></i></span>
+    <span class="app-choice__content">
+        @if (LabelTemplate is not null)
+        {
+            @LabelTemplate
+        }
+        else if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else if (!string.IsNullOrWhiteSpace(Label))
+        {
+            <strong>@Label</strong>
+        }
+    </span>
+</label>
+
+@code {
+    [CascadingParameter] private AppRadioGroupContext<TValue> Group { get; set; } = null!;
+    [Parameter, EditorRequired] public TValue Value { get; set; } = default!;
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? LabelTemplate { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _generatedId = $"app-radio-{Guid.NewGuid():N}";
+    private string InputId => Id ?? _generatedId;
+    private bool IsSelected => EqualityComparer<TValue>.Default.Equals(Group.CurrentValue, Value);
+    private static string Format(TValue value) => BindConverter.FormatValue(value, CultureInfo.CurrentCulture)?.ToString() ?? string.Empty;
+    private Task HandleChange(ChangeEventArgs _) => Group.SetValueAsync(Value);
+}
