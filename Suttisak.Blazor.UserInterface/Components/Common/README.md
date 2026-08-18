@@ -22,6 +22,14 @@ migrated one screen at a time.
 Supply exactly one of `Items` or `ItemsProvider`. When `Virtualize` is enabled,
 all rows must have the fixed height supplied by `ItemSize`. Use `ItemKey` for a
 stable primary key so Blazor retains row identity across sorting and refreshes.
+For sources with tens of thousands of rows, prefer `Virtualize="true"` with an
+`ItemsProvider` (or a provider-backed `IQueryable`) and keep `OverscanCount`
+small, usually between 2 and 8. The provider receives only the visible range,
+so it should apply `StartIndex`/`Count` at the data source rather than loading
+the complete result set. `AppGrid<TGridItem>` applies the same query-side
+`Count`/`Skip`/`Take` optimization for paginated property columns; template
+column sorting remains a client-side fallback because its `SortBy` is a
+delegate.
 
 ## Dependency-free data grid
 
@@ -241,7 +249,7 @@ Use `AppNumberInput<TValue>` and `AppSwitch` for numeric and boolean form
 fields; like the other `AppInputBase` controls, both bind to the surrounding
 `EditContext` and display validation feedback.
 
-The shared text box, text area, select, radio group, and checkbox inherit from
+The shared text box, text area, select, multi-select, radio group, and checkbox inherit from
 Blazor's `InputBase<TValue>`. They participate in the surrounding `EditContext`,
 receive the standard `modified`, `valid`, and `invalid` field classes, and show
 the first validation message beside the field. They do not depend on a specific
@@ -261,7 +269,14 @@ empty icon space.
 <AppSelect TValue="string" Label="Department" Options="DepartmentOptions" @bind-Value="model.Department">
     <IconContent><Icon Name="Building" Size="20" /></IconContent>
 </AppSelect>
+
+<AppMultiSelect TValue="string" Label="Roles" Options="RoleOptions" @bind-Value="model.Roles" />
 ```
+
+`AppMultiSelect<TValue>` accepts `@bind-Value` as its primary `IEnumerable<TValue>`
+contract. `@bind-SelectedItems` remains supported for compatibility and now
+participates in the same `EditContext`, field-change, CSS-state, ARIA, and
+validation-message pipeline. Do not supply both bindings to one instance.
 
 ```razor
 <EditForm Model="@model" OnValidSubmit="SaveAsync">
@@ -305,8 +320,13 @@ direct month and year selectors, while the time and date-time popups respect
 `IncludeSeconds="true"`, the native step and popup second choices use
 `SecondStep` (one second by default). Set
 `Mode="AppCalendarPickerMode.Native"` on `AppCalendarPicker` when the
-operating-system calendar is preferred. Accessible trigger labels can be
-customized with `OpenCalendarLabel`, `OpenTimeLabel`, and `OpenDateTimeLabel`.
+operating-system calendar is preferred. All visible picker text, screen-reader
+labels, browser time-zone validation messages, and the locale used for
+JavaScript-rendered month/day names can be provided through `AppPickerText`.
+This deliberately accepts application-owned localized strings rather than
+imposing a resource system on the shared library. The existing
+`OpenCalendarLabel`, `OpenTimeLabel`, and `OpenDateTimeLabel` parameters remain
+available as per-control trigger overrides.
 
 ```razor
 <AppCalendarPicker Label="Date of birth"
@@ -318,6 +338,44 @@ customized with `OpenCalendarLabel`, `OpenTimeLabel`, and `OpenDateTimeLabel`.
                    MinuteStep="15"
                    Required="true" />
 ```
+
+For example, construct the text from the consuming application's
+`IStringLocalizer` (or any localization service) and reuse it for every picker:
+
+```razor
+@using System.Globalization
+@inject IStringLocalizer<SharedResources> Text
+
+<AppDateTimePicker Label="@Text[\"Appointment\"]"
+                   Text="@pickerText"
+                   Name="Appointment.StartsAt" />
+
+@code {
+    private AppPickerText pickerText => new()
+    {
+        Locale = CultureInfo.CurrentUICulture.Name,
+        OpenDateTimeLabel = Text["Open appointment picker"],
+        PreviousMonthLabel = Text["Previous month"],
+        NextMonthLabel = Text["Next month"],
+        MonthLabel = Text["Month"],
+        YearLabel = Text["Year"],
+        HourLabel = Text["Hour"],
+        MinuteLabel = Text["Minute"],
+        SecondLabel = Text["Second"],
+        NowLabel = Text["Now"],
+        CancelLabel = Text["Cancel"],
+        ApplyLabel = Text["Apply"],
+        InvalidLocalTimeMessage = Text["This local time does not exist in the browser time zone."],
+        AmbiguousLocalTimeMessage = Text["This local time occurs twice when the clock changes. Choose another time."]
+    };
+}
+```
+
+`AppPickerText` also exposes dialog headings, `ChooseTimeLabel`,
+`BrowserLocalTimeLabel`, and `TimeLabel`; omitted properties retain the English
+defaults. Pass a BCP 47 value such as `th-TH` to `Locale` to format the
+progressively enhanced calendar with that locale. Native browser inputs still
+follow the user's browser and operating-system settings.
 
 The combined picker posts four fields under the supplied name:
 `LocalDateTime`, `UtcDateTime`, `TimeZoneId`, and `UtcOffsetMinutes`. Bind these

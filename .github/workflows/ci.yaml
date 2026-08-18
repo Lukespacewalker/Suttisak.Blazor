@@ -10,6 +10,9 @@ on:
       - 'Suttisak.Blazor.Identity.Core/**'
       - 'Suttisak.Blazor.Identity.Generator/**'
       - 'Suttisak.Blazor.UserInterface/**'
+      - 'Suttisak.Blazor.UserInterface.Tests/**'
+      - 'Suttisak.Blazor.Playbook/**'
+      - 'Suttisak.Blazor.Playbook.E2ETests/**'
       - '*.slnx'
       - '**/*.props'
       - '**/*.targets'
@@ -33,19 +36,50 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: Suttisak.Blazor.Playbook.E2ETests/package-lock.json
+
       - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('Suttisak.Blazor.Icons/**/*.csproj', 'Suttisak.Blazor.Identity/**/*.csproj', 'Suttisak.Blazor.Identity.Core/**/*.csproj', 'Suttisak.Blazor.Identity.Generator/**/*.csproj', 'Suttisak.Blazor.UserInterface/**/*.csproj', '**/*.props', '**/*.targets', 'global.json', '**/NuGet.config') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.props', '**/*.targets', 'global.json', '**/NuGet.config') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Restore package graph once
-        run: dotnet restore Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj -p:Configuration=Release
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('Suttisak.Blazor.Playbook.E2ETests/package-lock.json') }}
 
-      - name: Build package graph once
-        run: dotnet build Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj --configuration Release --no-restore -p:ContinuousIntegrationBuild=true
+      - name: Restore solution graph once
+        run: dotnet restore Suttisak.Blazor.slnx -p:Configuration=Release
+
+      - name: Build solution graph once
+        run: dotnet build Suttisak.Blazor.slnx --configuration Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Test shared components
+        run: dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj --configuration Release --no-build --no-restore
+
+      - name: Install Playwright test dependencies
+        working-directory: Suttisak.Blazor.Playbook.E2ETests
+        run: npm ci
+
+      - name: Install Playwright browser
+        working-directory: Suttisak.Blazor.Playbook.E2ETests
+        run: npx playwright install --with-deps chromium
+
+      - name: Test the real Playbook in Chromium
+        working-directory: Suttisak.Blazor.Playbook.E2ETests
+        env:
+          PLAYBOOK_CONFIGURATION: Release
+          PLAYBOOK_NO_BUILD: true
+        run: npm test
 
       - name: Generate NuGet package
         run: |

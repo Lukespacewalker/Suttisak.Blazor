@@ -23,8 +23,11 @@
     [Parameter] public IQueryable<TGridItem>? Items { get; set; }
     [Parameter] public Microsoft.AspNetCore.Components.QuickGrid.GridItemsProvider<TGridItem>? ItemsProvider { get; set; }
     [Parameter] public Microsoft.AspNetCore.Components.QuickGrid.PaginationState? Pagination { get; set; }
+    /// <summary>Renders only rows around the viewport. Use this for very large sources.</summary>
     [Parameter] public bool Virtualize { get; set; }
+    /// <summary>Fixed row height, in pixels, required when <see cref="Virtualize"/> is enabled.</summary>
     [Parameter] public float ItemSize { get; set; } = 44;
+    /// <summary>Additional rows rendered before and after the viewport.</summary>
     [Parameter] public int OverscanCount { get; set; } = 3;
     [Parameter] public Func<TGridItem, object> ItemKey { get; set; } = item => item!;
     [Parameter] public Func<TGridItem, string?>? RowClass { get; set; }
@@ -46,9 +49,14 @@
                 $"{nameof(AppQuickGrid<TGridItem>)} requires either {nameof(Items)} or {nameof(ItemsProvider)}, but not both.");
         }
 
-        if (Virtualize && ItemSize <= 0)
+        if (Virtualize && (!float.IsFinite(ItemSize) || ItemSize <= 0))
         {
-            throw new InvalidOperationException($"{nameof(ItemSize)} must be greater than zero when virtualization is enabled.");
+            throw new InvalidOperationException($"{nameof(ItemSize)} must be a finite value greater than zero when virtualization is enabled.");
+        }
+
+        if (OverscanCount < 0)
+        {
+            throw new InvalidOperationException($"{nameof(OverscanCount)} must not be negative.");
         }
     }
 }

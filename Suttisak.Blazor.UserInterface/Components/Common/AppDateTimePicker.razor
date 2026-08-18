@@ -7,6 +7,21 @@
      data-time-minute-step="@Math.Max(1, MinuteStep)"
      data-time-second-step="@Math.Max(1, SecondStep)"
      data-time-include-seconds="@IncludeSeconds.ToString().ToLowerInvariant()"
+     data-picker-locale="@Text.Locale"
+     data-picker-datetime-dialog-label="@Text.DateTimePickerDialogLabel"
+     data-picker-previous-month-label="@Text.PreviousMonthLabel"
+     data-picker-next-month-label="@Text.NextMonthLabel"
+     data-picker-month-label="@Text.MonthLabel"
+     data-picker-year-label="@Text.YearLabel"
+     data-picker-time-label="@Text.TimeLabel"
+     data-picker-hour-label="@Text.HourLabel"
+     data-picker-minute-label="@Text.MinuteLabel"
+     data-picker-second-label="@Text.SecondLabel"
+     data-picker-now-label="@Text.NowLabel"
+     data-picker-cancel-label="@Text.CancelLabel"
+     data-picker-apply-label="@Text.ApplyLabel"
+     data-picker-invalid-local-time-message="@Text.InvalidLocalTimeMessage"
+     data-picker-ambiguous-local-time-message="@Text.AmbiguousLocalTimeMessage"
      @attributes="ContainerAttributes">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
@@ -31,7 +46,7 @@
                data-browser-local-datetime
                @onchange="HandleChangeAsync"
                @attributes="InputAttributes" />
-        <button class="app-form-control__picker-trigger" type="button" data-datetime-trigger aria-label="@OpenDateTimeLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
+        <button class="app-form-control__picker-trigger" type="button" data-datetime-trigger aria-label="@EffectiveOpenDateTimeLabel" aria-haspopup="dialog" aria-expanded="false" disabled="@Disabled">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z" /><path d="M12 12v3l2 1.2" /></svg>
         </button>
     </div>
@@ -40,7 +55,7 @@
     <input type="hidden" name="@OffsetName" data-browser-offset-minutes />
     <div class="app-form-control__timezone" id="@TimeZoneDescriptionId">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.3 2.5 3.5 5.5 3.5 9s-1.2 6.5-3.5 9c-2.3-2.5-3.5-5.5-3.5-9S9.7 5.5 12 3Z" /></svg>
-        <span data-browser-timezone-label>Browser local time</span>
+        <span data-browser-timezone-label>@Text.BrowserLocalTimeLabel</span>
     </div>
     @if (!string.IsNullOrWhiteSpace(Description))
     {
@@ -64,7 +79,10 @@
     [Parameter] public bool Required { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public DayOfWeek FirstDayOfWeek { get; set; } = DayOfWeek.Monday;
-    [Parameter] public string OpenDateTimeLabel { get; set; } = "Open date and time picker";
+    /// <summary>Localized text for the popup and browser time-zone validation. Defaults preserve the English UI.</summary>
+    [Parameter] public AppPickerText Text { get; set; } = new();
+    /// <summary>Overrides <see cref="AppPickerText.OpenDateTimeLabel"/> for this trigger.</summary>
+    [Parameter] public string? OpenDateTimeLabel { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? ContainerAttributes { get; set; }
@@ -77,6 +95,7 @@
     private string TimeZoneName => $"{FieldName}.TimeZoneId";
     private string OffsetName => $"{FieldName}.UtcOffsetMinutes";
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
+    private string EffectiveOpenDateTimeLabel => OpenDateTimeLabel ?? Text.OpenDateTimeLabel;
     private string TimeZoneDescriptionId => $"{InputId}-timezone";
     private string DescriptionIds => string.Join(' ', new[] { TimeZoneDescriptionId, DescriptionId }.Where(value => value is not null));
     private int Step => IncludeSeconds ? Math.Max(1, SecondStep) : Math.Max(1, MinuteStep) * 60;

@@ -45,3 +45,21 @@ assets:
 - Marketing component reference and examples: [`Suttisak.Blazor.UserInterface/Components/Marketing/README.md`](Suttisak.Blazor.UserInterface/Components/Marketing/README.md)
 - Reader/result experience components: [`Suttisak.Blazor.UserInterface/Components/Experience/README.md`](Suttisak.Blazor.UserInterface/Components/Experience/README.md)
 - Live Component Gallery and Landing Page Sandbox: `dotnet run --project Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj`
+
+## Component verification
+
+The fast component suite uses bUnit:
+
+```powershell
+dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj
+```
+
+The Playbook browser suite exercises the compiled WebAssembly application, including axe accessibility checks and the 100,000-row virtual-grid specimen:
+
+```powershell
+Push-Location Suttisak.Blazor.Playbook.E2ETests
+npm install
+npm run install:browsers
+npm test
+Pop-Location
+```

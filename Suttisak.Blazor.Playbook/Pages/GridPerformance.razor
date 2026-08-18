@@ -1,0 +1,40 @@
+@page "/grid-performance"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<PageTitle>Virtual grid performance · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="component-browser" data-testid="virtual-grid-demo">
+        <header class="component-browser__intro">
+            <div>
+                <span class="playbook-kicker">100,000 records · bounded DOM</span>
+                <h1>Virtual grid.<br /><em>Real component, large source.</em></h1>
+            </div>
+            <p>This specimen uses the shared AppQuickGrid with virtualization enabled. Only rows around the viewport are rendered, even though the source contains 100,000 records.</p>
+        </header>
+
+        <section class="component-browser__section" aria-labelledby="virtual-grid-title">
+            <header><span>01 / Performance</span><h2 id="virtual-grid-title">AppQuickGrid</h2><code>Virtualize="true"</code></header>
+            <div class="component-browser__stage">
+                <AppQuickGrid TGridItem="DemoRecord"
+                              Items="Records"
+                              Virtualize="true"
+                              ItemSize="40"
+                              OverscanCount="3"
+                              ItemKey="record => record.Id"
+                              AriaLabel="100000 virtual records">
+                    <PropertyColumn TGridItem="DemoRecord" TProp="int" Property="record => record.Id" Title="Identifier" />
+                    <PropertyColumn TGridItem="DemoRecord" TProp="string" Property="record => record.Name" Title="Name" />
+                </AppQuickGrid>
+            </div>
+        </section>
+    </main>
+</PlaybookShell>
+
+@code {
+    private static readonly IQueryable<DemoRecord> Records = Enumerable.Range(1, 100_000)
+        .Select(id => new DemoRecord(id, $"Record {id:N0}"))
+        .AsQueryable();
+
+    private sealed record DemoRecord(int Id, string Name);
+}

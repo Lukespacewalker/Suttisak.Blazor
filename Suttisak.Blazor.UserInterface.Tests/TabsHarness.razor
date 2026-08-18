@@ -1,0 +1,12 @@
+@namespace Suttisak.Blazor.UserInterface.Tests
+@using Suttisak.Blazor.UserInterface.Components.Common
+
+<AppTabs AriaLabel="Record sections" @bind-ActiveId="_activeId">
+    <AppTab Id="summary" Label="Summary"><p>Summary</p></AppTab>
+    <AppTab Id="history" Label="History"><p>History</p></AppTab>
+    <AppTab Id="notes" Label="Notes"><p>Notes</p></AppTab>
+</AppTabs>
+
+@code {
+    private string? _activeId = "summary";
+}

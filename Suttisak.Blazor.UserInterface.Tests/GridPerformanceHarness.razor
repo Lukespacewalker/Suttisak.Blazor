@@ -1,0 +1,19 @@
+@namespace Suttisak.Blazor.UserInterface.Tests
+@using Suttisak.Blazor.UserInterface.Components.Common
+
+<AppGrid TGridItem="GridRow"
+         Items="Items"
+         Pagination="Pagination"
+         AriaLabel="Large records">
+    <AppGridPropertyColumn TGridItem="GridRow" TProperty="int"
+                           Property="@(row => row.Id)"
+                           Title="Identifier"
+                           IsDefaultSortColumn="true" />
+</AppGrid>
+
+@code {
+    [Parameter, EditorRequired] public IQueryable<GridRow> Items { get; set; } = default!;
+    [Parameter, EditorRequired] public AppGridPaginationState Pagination { get; set; } = default!;
+
+    public sealed record GridRow(int Id);
+}

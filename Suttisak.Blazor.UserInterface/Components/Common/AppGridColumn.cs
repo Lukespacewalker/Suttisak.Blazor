@@ -20,6 +20,13 @@ public abstract class AppGridColumn<TGridItem> : ComponentBase, IDisposable
     internal virtual string ColumnId => Title ?? GetType().Name;
     internal abstract RenderFragment<TGridItem> CellTemplate { get; }
     internal virtual object? GetSortValue(TGridItem item) => null;
+    internal virtual bool SupportsQuerySort => false;
+    /// <summary>
+    /// Applies this column's sort to an <see cref="IQueryable{T}"/> when the
+    /// column has a provider-translatable expression. Columns backed by a
+    /// delegate keep the client-side fallback in <see cref="AppGrid{TGridItem}"/>.
+    /// </summary>
+    internal virtual IQueryable<TGridItem> ApplyQuerySort(IQueryable<TGridItem> source, bool descending) => source;
     internal virtual string HeaderText => Title ?? string.Empty;
 
     protected override void OnParametersSet()

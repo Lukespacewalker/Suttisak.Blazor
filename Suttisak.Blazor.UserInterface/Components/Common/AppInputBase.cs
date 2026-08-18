@@ -15,7 +15,8 @@ public abstract class AppInputBase<TValue> : InputBase<TValue>
     /// </summary>
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        if (!parameters.TryGetValue<Expression<Func<TValue>>>(nameof(ValueExpression), out var valueExpression) || valueExpression is null)
+        if ((!parameters.TryGetValue<Expression<Func<TValue>>>(nameof(ValueExpression), out var valueExpression) || valueExpression is null)
+            && ValueExpression is null)
         {
             ValueExpression = () => _unboundValue;
         }
