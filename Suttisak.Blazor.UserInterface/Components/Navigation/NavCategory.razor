@@ -14,7 +14,7 @@
             <button class="nav-category__toggle" type="button" @onclick="ToggleExpanded" aria-expanded="@Expanded"
                     aria-label="Toggle @Title submenu">
                 <span class="nav-category__chevron @(Expanded ? "expanded" : "")">
-                    <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())"></FluentIcon>
+                    <Suttisak.Blazor.Icons.Icon Name="ChevronRight" Size="20" />
                 </span>
             </button>
         </div>
@@ -25,7 +25,7 @@
             <span class="nav-category__icon">@IconMarkup</span>
             <span class="nav-category__label">@Title</span>
             <span class="nav-category__chevron @(Expanded ? "expanded" : "")">
-                <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())"></FluentIcon>
+                <Suttisak.Blazor.Icons.Icon Name="ChevronRight" Size="20" />
             </span>
         </button>
     }
@@ -49,11 +49,8 @@
     [Parameter]
     public string Title { get; set; } = string.Empty;
 
-    [Parameter]
-    public Icon? IconRest { get; set; }
-
-    [Parameter]
-    public Icon? IconActive { get; set; }
+    [Parameter] public string? IconRestName { get; set; }
+    [Parameter] public string? IconActiveName { get; set; }
 
     [Parameter]
     public bool Expanded { get; set; }
@@ -64,16 +61,18 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    private RenderFragment? IconMarkup => DisplayIcon is null
+    private RenderFragment? IconMarkup => string.IsNullOrWhiteSpace(DisplayIconName)
         ? null
         : builder =>
         {
-            builder.OpenComponent<FluentIcon<Icon>>(0);
-            builder.AddAttribute(1, "Value", DisplayIcon);
+            builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(0);
+            builder.AddAttribute(1, nameof(Suttisak.Blazor.Icons.Icon.Name), DisplayIconName);
+            builder.AddAttribute(2, nameof(Suttisak.Blazor.Icons.Icon.Size), 20);
+            builder.AddAttribute(3, nameof(Suttisak.Blazor.Icons.Icon.Variant), IsActive ? Suttisak.Blazor.Icons.IconVariant.Filled : Suttisak.Blazor.Icons.IconVariant.Regular);
             builder.CloseComponent();
         };
 
-    private Icon? DisplayIcon => IsActive ? IconActive ?? IconRest : IconRest;
+    private string? DisplayIconName => IsActive ? IconActiveName ?? IconRestName : IconRestName;
 
     private bool HasHref => !string.IsNullOrWhiteSpace(Href);
 

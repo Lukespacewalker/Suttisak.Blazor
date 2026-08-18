@@ -12,7 +12,7 @@
 <PageTitle>@Manage_razor.TwoFactorAuthentication</PageTitle>
 
 
-<IdentityManageShell Title="@Manage_razor.TwoFactorAuthentication" Description="@Text["TwoFactorDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.TwoFactorAuthentication" Description="@Text["TwoFactorDescription"]" ActiveUrl="@StaticPageUrl" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.TwoFactorAuthentication) })">
 <StatusMessage />
 @if (_canTrack)
@@ -43,7 +43,7 @@
 
         <IdentitySettingCard Title="@Manage_razor.TwoFactorAuthentication"
                              Description="@Text["TwoFactorDescription"]"
-                             Icon="@(new Icons.Regular.Size20.KeyMultiple())">
+                             IconName="KeyMultiple">
             <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
             <Actions>
                 <a class="identity-card-action" href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes">@TwoFactorAuthentication_razor.ResetRecoveryCodes</a>
@@ -53,12 +53,12 @@
 
         @if (_isMachineRemembered)
         {
-            <IdentitySettingCard Title="@TwoFactorAuthentication_razor.ForgetBrowserButton" Icon="@(new Icons.Regular.Size20.Desktop())">
+            <IdentitySettingCard Title="@TwoFactorAuthentication_razor.ForgetBrowserButton" IconName="Desktop">
                 <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
                 <Actions>
                     <form @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync" method="post">
                         <AntiforgeryToken />
-                        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@TwoFactorAuthentication_razor.ForgetBrowserButton</AppButton>
+                        <AppButton Type="submit" Variant="AppButtonVariant.Secondary">@TwoFactorAuthentication_razor.ForgetBrowserButton</AppButton>
                     </form>
                 </Actions>
             </IdentitySettingCard>
@@ -67,7 +67,7 @@
 
     <IdentitySettingCard Title="@TwoFactorAuthentication_razor.AuthenticatorAppHeader"
                          Description="@Text["TwoFactorDescription"]"
-                         Icon="@(new Icons.Regular.Size20.Phone())">
+                         IconName="Phone">
         <Badge><IdentityStatusBadge Tone="@(_hasAuthenticator ? "success" : "warning")">@(_hasAuthenticator ? Text["Enabled"] : Text["NotConfigured"])</IdentityStatusBadge></Badge>
         <Actions>
             <a class="identity-card-action" href="@IdentityRoutes.Account.Manage.EnableAuthenticator">@(_hasAuthenticator ? TwoFactorAuthentication_razor.SetupAuthenticatorApp : TwoFactorAuthentication_razor.AddAuthenticatorApp)</a>
@@ -89,7 +89,7 @@ else
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.KeyMultiple();
+    public static string StaticPageIcon { get; set; } = "KeyMultiple";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.TwoFactorAuthentication;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.TwoFactorAuthentication);

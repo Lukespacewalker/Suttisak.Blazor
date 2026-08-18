@@ -83,7 +83,7 @@
         {
             if (!string.Equals(current[index].Title, next[index].Title, StringComparison.Ordinal)
                 || !string.Equals(current[index].Url, next[index].Url, StringComparison.Ordinal)
-                || current[index].Icon?.GetType() != next[index].Icon?.GetType()) return false;
+                || !string.Equals(current[index].IconName, next[index].IconName, StringComparison.Ordinal)) return false;
         }
         return true;
     }

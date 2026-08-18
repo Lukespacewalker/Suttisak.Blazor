@@ -80,7 +80,8 @@
     </main>
 
     <AppDialog TInput="string" TResult="bool" @ref="_dialog"
-               Title="Publish this component?" Description="This is a live confirmation Dialog specimen.">
+               Title="Publish this component?" Description="This is a live confirmation Dialog specimen."
+               Mode="AppDialogMode.Information" PreventDismissOnOutsideClick="true">
         <Body Context="dialog"><p><strong>@dialog.Value</strong> will be visible to every consuming application.</p></Body>
         <Footer Context="dialog">
             <AppButton OnClick="@(_ => dialog.CancelAsync())">Keep as draft</AppButton>

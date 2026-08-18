@@ -17,8 +17,8 @@
                type="date"
                name="@Name"
                value="@FormattedValue"
-               min="@Format(Min)"
-               max="@Format(Max)"
+               min="@FormattedMin"
+               max="@FormattedMax"
                required="@Required"
                disabled="@Disabled"
                aria-describedby="@DescriptionId"
@@ -42,10 +42,15 @@
     [Parameter] public string? Description { get; set; }
     [Parameter] public DateOnly? Value { get; set; }
     [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
+    /// <summary>DateTime-compatible binding for applications whose model uses DateTime?.</summary>
+    [Parameter] public DateTime? DateTimeValue { get; set; }
+    [Parameter] public EventCallback<DateTime?> DateTimeValueChanged { get; set; }
     [Parameter] public string? Name { get; set; }
     [Parameter] public string? Id { get; set; }
     [Parameter] public DateOnly? Min { get; set; }
     [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public DateTime? DateTimeMin { get; set; }
+    [Parameter] public DateTime? DateTimeMax { get; set; }
     [Parameter] public bool Required { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public string? Class { get; set; }
@@ -58,9 +63,13 @@
     private readonly string _generatedId = $"app-date-{Guid.NewGuid():N}";
     private string InputId => Id ?? _generatedId;
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
-    private string? FormattedValue => Format(Value);
+    private bool UsesDateTimeValue => DateTimeValueChanged.HasDelegate;
+    private string? FormattedValue => UsesDateTimeValue ? Format(DateTimeValue) : Format(Value);
+    private string? FormattedMin => UsesDateTimeValue ? Format(DateTimeMin) : Format(Min);
+    private string? FormattedMax => UsesDateTimeValue ? Format(DateTimeMax) : Format(Max);
 
     private static string? Format(DateOnly? value) => value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    private static string? Format(DateTime? value) => value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
     private Task HandleChangeAsync(ChangeEventArgs args)
     {
@@ -68,6 +77,12 @@
         var value = DateOnly.TryParseExact(text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? parsed
             : (DateOnly?)null;
-        return ValueChanged.InvokeAsync(value);
+        var existingTime = DateTimeValue is { } current
+            ? TimeOnly.FromTimeSpan(current.TimeOfDay)
+            : TimeOnly.MinValue;
+        var kind = DateTimeValue?.Kind ?? DateTimeKind.Unspecified;
+        return UsesDateTimeValue
+            ? DateTimeValueChanged.InvokeAsync(value is null ? null : value.Value.ToDateTime(existingTime, kind))
+            : ValueChanged.InvokeAsync(value);
     }
 }

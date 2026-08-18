@@ -5,9 +5,9 @@
 
 <form @formname="@FormName" @onsubmit="OnSubmit" method="post">
 	<AntiforgeryToken />
-    <AppButton IconStart="@(new Icons.Regular.Size20.PersonPasskey())"
-                  Type="ButtonType.Submit"
-				  Appearance="@Appearance"
+    <AppButton IconStartName="PersonPasskey" IconStartSize="20"
+                  Type="submit"
+				  Variant="@Variant"
                   Name="__passkeySubmit" 
                   @attributes="AdditionalAttributes">@ChildContent</AppButton>
 	<passkey-submit operation="@Operation"
@@ -23,7 +23,7 @@
 @code {
 	private AntiforgeryTokenSet? _tokens;
 
-	[Parameter] public ButtonAppearance Appearance { get; set; } = ButtonAppearance.Default;
+	[Parameter] public AppButtonVariant Variant { get; set; } = AppButtonVariant.Secondary;
 
 	[Parameter, EditorRequired]
 	public EventCallback OnSubmit { get; set; }

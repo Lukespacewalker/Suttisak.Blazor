@@ -8,13 +8,13 @@
             <PageHeader>
                 <PageHeading Title="Good morning, Kanda"
                              Description="A compact home for daily operations, recent activity, and the work that needs attention."
-                             Icon="@(new Icons.Regular.Size24.Home())">
+                             IconName="@("Home")">
                     <Breadcrumbs>
                         <AppBreadcrumb Items="@OverviewBreadcrumbs" />
                     </Breadcrumbs>
                     <PageActions>
                         <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
-                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Table())" /></IconStartContent>
+                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Table" Size="20"  /></IconStartContent>
                             <ChildContent>Open records</ChildContent>
                         </AppButton>
                     </PageActions>
@@ -26,7 +26,7 @@
                 <section class="demo-overview-card demo-overview-card--feature">
                     <span class="demo-overview-card__index">01 / RECORDS</span>
                     <h2>Keep the day moving.</h2>
-                    <p>Review the live FluentDataGrid, add a record, edit it, or open its complete detail view.</p>
+                    <p>Review the live data grid, add a record, edit it, or open its complete detail view.</p>
                     <a class="demo-text-link" href="application-shell/records">Manage records <span aria-hidden="true">→</span></a>
                 </section>
                 <section class="demo-overview-card">
@@ -50,6 +50,6 @@
 @code {
     private readonly Breadcrumb[] OverviewBreadcrumbs =
     [
-        new(new Icons.Regular.Size16.Home(), null, "Overview")
+        new("Home", null, "Overview")
     ];
 }

@@ -10,7 +10,7 @@
 <PageTitle>@Manage_razor.Profile</PageTitle>
 
 
-<IdentityManageShell Title="@Manage_razor.Profile" Description="@Text["ProfileDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.Profile" Description="@Text["ProfileDescription"]" ActiveUrl="@StaticPageUrl" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.Profile) })">
 <StatusMessage />
 
@@ -23,18 +23,18 @@
     <div>
         <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
-            <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextInput Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Appearance=TextInputAppearance.Outline Style="width: 100%" />
-            <FluentTextInput Name="Input.PhoneNumber" @bind-Value="Input!.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
+            <FormValidationSummary class="text-danger" role="alert" />
+            <AppTextBox Value="@_username" Placeholder="@Profile_razor.UsernamePlaceholder" Disabled="true" Label="@Profile_razor.UsernameLabel" Style="width: 100%" />
+            <AppTextBox Name="Input.PhoneNumber" @bind-Value="Input!.PhoneNumber" Placeholder="@Profile_razor.PhoneNumberPlaceholder" Label="@Profile_razor.PhoneNumberLabel" Style="width: 100%" />
             <!-- TODO : Restore Fluent Validation Message Later-->
-            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@Profile_razor.SaveButton</AppButton>
+            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@Profile_razor.SaveButton</AppButton>
         </EditForm>
     </div>
 </FormGrid>
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.PersonAccounts();
+    public static string StaticPageIcon { get; set; } = "PersonAccounts";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.Profile;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.Profile);

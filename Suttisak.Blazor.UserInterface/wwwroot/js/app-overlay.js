@@ -9,7 +9,9 @@ function initialize(element) {
     });
 
     element.addEventListener("click", event => {
-        if (event.target === element && element.dataset.dismissible === "true") element.close();
+        if (event.target === element
+            && element.dataset.dismissible === "true"
+            && element.dataset.preventOutsideDismiss !== "true") element.close();
     });
 }
 

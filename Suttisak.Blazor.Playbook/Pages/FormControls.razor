@@ -84,7 +84,7 @@
                         </FormField>
                     </FormGrid>
                     <div class="form-playbook__submit-row">
-                        <AppButton Type="ButtonType.Submit" Variant="AppButtonVariant.Primary">Validate and save</AppButton>
+                        <AppButton Type="submit" Variant="AppButtonVariant.Primary">Validate and save</AppButton>
                         @if (_saved) { <span class="form-playbook__saved">All fields are valid.</span> }
                         else { <span>Validation text is owned by EditContext and rendered inside each component.</span> }
                     </div>
@@ -121,7 +121,7 @@
                     </FormField>
                 </FormGrid>
                 <div class="form-playbook__submit-row">
-                    <AppButton Type="ButtonType.Submit" Variant="AppButtonVariant.Primary">Submit as a normal HTML form</AppButton>
+                    <AppButton Type="submit" Variant="AppButtonVariant.Primary">Submit as a normal HTML form</AppButton>
                     <span>In this Playbook the form uses GET so its payload can be inspected safely in the address bar.</span>
                 </div>
             </form>

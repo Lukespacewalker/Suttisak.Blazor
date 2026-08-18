@@ -9,7 +9,7 @@
             <PageHeader>
                 @if (Record is null)
                 {
-                    <PageHeading Title="Record not found" Description="This demo record may have been removed." Icon="@(new Icons.Regular.Size24.Warning())">
+                    <PageHeading Title="Record not found" Description="This demo record may have been removed." IconName="@("Warning")">
                         <Breadcrumbs><AppBreadcrumb Items="@MissingBreadcrumbs" /></Breadcrumbs>
                         <PageActions><AppButton Href="application-shell/records">Back to records</AppButton></PageActions>
                     </PageHeading>
@@ -20,12 +20,12 @@
                                  SectionTitle="Program records"
                                  SectionDescription="@($"Record #{Record.Id}")"
                                  Description="A focused detail page using the same compact heading, breadcrumb trail, and toolbar contract."
-                                 Icon="@(new Icons.Regular.Size24.Document())">
+                                 IconName="@("Document")">
                         <Breadcrumbs><AppBreadcrumb Items="@DetailBreadcrumbs" /></Breadcrumbs>
                         <PageActions>
                             <AppButton Href="application-shell/records">Back to list</AppButton>
                             <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
-                                <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Edit())" /></IconStartContent>
+                                <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Edit" Size="20"  /></IconStartContent>
                                 <ChildContent>Edit record</ChildContent>
                             </AppButton>
                         </PageActions>
@@ -72,14 +72,14 @@
 
     private Breadcrumb[] DetailBreadcrumbs =>
     [
-        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new("Home", "/application-shell", "Overview"),
         new(null, "/application-shell/records", "Records"),
         new(null, null, Record?.Name ?? "Detail")
     ];
 
     private readonly Breadcrumb[] MissingBreadcrumbs =
     [
-        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new("Home", "/application-shell", "Overview"),
         new(null, "/application-shell/records", "Records"),
         new(null, null, "Not found")
     ];

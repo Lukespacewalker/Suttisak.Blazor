@@ -80,7 +80,8 @@
 .page-heading__section-actions,
 .page-heading__page-actions {
     display: flex;
-    min-width: min-content;
+    min-width: 0;
+    flex: 0 0 auto;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;

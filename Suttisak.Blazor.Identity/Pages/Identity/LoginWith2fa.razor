@@ -20,12 +20,10 @@
             <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
             <input type="hidden" name="RememberMe" value="@RememberMe" />
             <DataAnnotationsValidator />
-            <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextInput Name="Input.TwoFactorCode" @bind-Value="Input!.TwoFactorCode" class="form-control" AutoComplete="off" Label="@LoginWith2fa_razor.AuthenticatorCodeLabel" Style="width: 100%;" />
-            @*<FluentValidationMessage For="() => Input.TwoFactorCode" class="text-danger" />*@
-            @* TODO: restore FluentValidationMessage later in RC3 *@
-            <FluentCheckbox Name="Input.RememberMachine" @bind-Value="Input!.RememberMachine" Label="@LoginWith2fa_razor.RememberMachineLabel" Style="width: 100%;" />
-            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@LoginWith2fa_razor.LoginButton</AppButton>
+            <FormValidationSummary class="text-danger" role="alert" />
+            <AppTextBox Name="Input.TwoFactorCode" @bind-Value="Input!.TwoFactorCode" class="form-control" AutoComplete="off" Label="@LoginWith2fa_razor.AuthenticatorCodeLabel" Style="width: 100%;" />
+            <AppCheckbox Name="Input.RememberMachine" @bind-Value="Input!.RememberMachine" Label="@LoginWith2fa_razor.RememberMachineLabel" Style="width: 100%;" />
+            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@LoginWith2fa_razor.LoginButton</AppButton>
         </EditForm>
     </div>
 </FormGrid>

@@ -9,11 +9,12 @@
 <SectionContent SectionName="@CommonSections.PageTitle">
     <PageHeading SectionTitle="@Text["AccountCenter"]"
                  SectionDescription="@Text["AccountCenterCaption"]"
-                 SectionIcon="@(new Icons.Regular.Size20.PersonCircle())"
+                 SectionIconName="PersonCircle"
                  SectionActions="@SectionActions"
                  Title="@Title"
                  Description="@Description"
-                 Icon="@Icon"
+                 IconName="@IconName"
+                 IconSize="@IconSize"
                  PageActions="@PageActions">
         <Breadcrumbs><AppBreadcrumb Items="@BreadcrumbItems" /></Breadcrumbs>
         <Navigation>
@@ -25,18 +26,18 @@
                                Embedded="true">
                 <ChildContent>
                     <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Root"
-                                           Icon="@(new Icons.Regular.Size20.Home())"
+                                           IconName="Home"
                                            ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Root)"
                                            Match="NavLinkMatch.All">@Text["Overview"]</IdentityManageNavLink>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Profile" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Profile)" Icon="@(new Icons.Regular.Size20.PersonAccounts())">@Manage_razor.Profile</IdentityManageNavLink>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Email" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Email)" Icon="@(new Icons.Regular.Size20.Mail())">@Manage_razor.Email</IdentityManageNavLink>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ChangePassword" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ChangePassword)" Icon="@(new Icons.Regular.Size20.Password())">@Manage_razor.ChangePassword</IdentityManageNavLink>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.TwoFactorAuthentication)" Icon="@(new Icons.Regular.Size20.KeyMultiple())">@Manage_razor.TwoFactorAuthentication</IdentityManageNavLink>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Passkeys" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Passkeys)" Icon="@(new Icons.Regular.Size20.PersonPasskey())">@Manage_razor.Passkeys</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Profile" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Profile)" IconName="PersonAccounts">@Manage_razor.Profile</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Email" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Email)" IconName="Mail">@Manage_razor.Email</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ChangePassword" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ChangePassword)" IconName="Password">@Manage_razor.ChangePassword</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.TwoFactorAuthentication)" IconName="KeyMultiple">@Manage_razor.TwoFactorAuthentication</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.Passkeys" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.Passkeys)" IconName="PersonPasskey">@Manage_razor.Passkeys</IdentityManageNavLink>
                 </ChildContent>
                 <Overflow>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ExternalLogins" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ExternalLogins)" Icon="@(new Icons.Regular.Size20.GlobeSurface())">@Manage_razor.ExternalLogins</IdentityManageNavLink>
-                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.PersonalData" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.PersonalData)" Icon="@(new Icons.Regular.Size20.DatabasePerson())">@Manage_razor.PersonalData</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.ExternalLogins" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.ExternalLogins)" IconName="GlobeSurface">@Manage_razor.ExternalLogins</IdentityManageNavLink>
+                    <IdentityManageNavLink Href="@IdentityRoutes.Account.Manage.PersonalData" ForceActive="@(ActiveUrl == IdentityRoutes.Account.Manage.PersonalData)" IconName="DatabasePerson">@Manage_razor.PersonalData</IdentityManageNavLink>
                 </Overflow>
             </SectionNavigation>
         </Navigation>
@@ -60,7 +61,8 @@
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Description { get; set; }
     [Parameter] public string? ActiveUrl { get; set; }
-    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? IconName { get; set; }
+    [Parameter] public int IconSize { get; set; } = 20;
     [Parameter] public IEnumerable<Breadcrumb> BreadcrumbItems { get; set; } = Array.Empty<Breadcrumb>();
     [Parameter] public RenderFragment? SectionActions { get; set; }
     [Parameter] public RenderFragment? PageActions { get; set; }

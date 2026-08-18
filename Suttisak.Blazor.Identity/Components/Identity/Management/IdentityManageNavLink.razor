@@ -1,13 +1,13 @@
 @using Microsoft.AspNetCore.Components.Routing
 
 <NavLink href="@Href" Match="@Match" class="@CssClass">
-    <FluentIcon Value="@Icon" aria-hidden="true" />
+    <Suttisak.Blazor.Icons.Icon Name="@IconName" Size="20" />
     <span>@ChildContent</span>
 </NavLink>
 
 @code {
     [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
-    [Parameter, EditorRequired] public Icon Icon { get; set; } = default!;
+    [Parameter, EditorRequired] public string IconName { get; set; } = string.Empty;
     [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
     [Parameter] public bool ForceActive { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;

@@ -1,4 +1,4 @@
-<FluentCard Class="@CssClassValue"
+<div class="@CssClassValue"
             Style="@Style"
             role="@(OnClick.HasDelegate ? "button" : null)"
             tabindex="@(OnClick.HasDelegate ? 0 : null)"
@@ -31,7 +31,7 @@
     {
         <footer class="app-card__footer">@Footer</footer>
     }
-</FluentCard>
+</div>
 
 @code {
     [Parameter] public string? Title { get; set; }

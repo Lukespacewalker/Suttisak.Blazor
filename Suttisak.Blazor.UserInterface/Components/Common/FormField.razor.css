@@ -1,8 +1,4 @@
 .form-field { grid-column: span var(--form-field-span); min-width: 0; }
-.form-field ::deep fluent-text-field,
-.form-field ::deep fluent-select,
-.form-field ::deep fluent-text-area,
-.form-field ::deep fluent-number-field,
-.form-field ::deep fluent-date-picker { width: 100%; }
+.form-field ::deep .app-form-control { width: 100%; }
 
 @media (max-width: 700px) { .form-field { grid-column: 1 / -1; } }

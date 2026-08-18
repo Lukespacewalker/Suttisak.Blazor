@@ -9,14 +9,14 @@
             <PageHeader>
                 <PageHeading SectionTitle="Worapat Sukjai"
                              SectionDescription="HN 004829 · 42 years · Annual checkup 2026"
-                             SectionIcon="@(new Icons.Regular.Size20.Person())"
+                             SectionIconName="@("Person")"
                              Title="@SectionTitle"
                              Description="One participant context with clear sibling views for checkup work, interpreted results, and documents."
-                             Icon="@SectionIcon">
+                             IconName="@SectionIcon">
                     <Breadcrumbs><AppBreadcrumb Items="@PersonBreadcrumbs" /></Breadcrumbs>
                     <SectionActions>
                         <AppButton Variant="AppButtonVariant.Subtle">
-                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.People())" /></IconStartContent>
+                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="People" Size="20"  /></IconStartContent>
                             <ChildContent>Change participant</ChildContent>
                         </AppButton>
                     </SectionActions>
@@ -24,27 +24,27 @@
                         <PageActionToolbar Role="group" AriaLabel="Participant actions">
                             <PrimaryAction>
                                 <AppButton Variant="AppButtonVariant.Primary">
-                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Save())" /></IconStartContent>
+                                    <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Save" Size="20"  /></IconStartContent>
                                     <ChildContent>Save changes</ChildContent>
                                 </AppButton>
                             </PrimaryAction>
                             <SupportingActions>
                                 <AppButton Href="application-shell/records">
-                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.ArrowLeft())" /></IconStartContent>
+                                    <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowLeft" Size="20"  /></IconStartContent>
                                     <ChildContent>Back</ChildContent>
                                 </AppButton>
                                 <AppButton>
-                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Print())" /></IconStartContent>
+                                    <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Print" Size="20"  /></IconStartContent>
                                     <ChildContent>Print</ChildContent>
                                 </AppButton>
                             </SupportingActions>
                             <OverflowActions>
                                 <AppButton Variant="AppButtonVariant.Subtle">
-                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Archive())" /></IconStartContent>
+                                    <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Archive" Size="20"  /></IconStartContent>
                                     <ChildContent>Archive record</ChildContent>
                                 </AppButton>
                                 <AppButton Variant="AppButtonVariant.Danger">
-                                    <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Delete())" /></IconStartContent>
+                                    <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Delete" Size="20"  /></IconStartContent>
                                     <ChildContent>Delete record</ChildContent>
                                 </AppButton>
                             </OverflowActions>
@@ -57,23 +57,23 @@
                                            OverflowActive="@IsOverflowSection"
                                            Embedded="true">
                             <ChildContent>
-                                <NavLink href="application-shell/person" Match="NavLinkMatch.All"><FluentIcon Value="@(new Icons.Regular.Size20.Person())" /> Overview</NavLink>
-                                <NavLink href="application-shell/person/profile"><FluentIcon Value="@(new Icons.Regular.Size20.PersonAccounts())" /> Profile</NavLink>
-                                <NavLink href="application-shell/person/checkups"><FluentIcon Value="@(new Icons.Regular.Size20.BoardHeart())" /> Checkup data</NavLink>
-                                <NavLink href="application-shell/person/results"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentHeart())" /> Results <span class="person-nav-count">2</span></NavLink>
-                                <NavLink href="application-shell/person/documents"><FluentIcon Value="@(new Icons.Regular.Size20.DocumentPdf())" /> Documents</NavLink>
-                                <NavLink href="application-shell/person/appointments"><FluentIcon Value="@(new Icons.Regular.Size20.Calendar())" /> Appointments</NavLink>
+                                <NavLink href="application-shell/person" Match="NavLinkMatch.All"><Suttisak.Blazor.Icons.Icon Name="Person" Size="20"  /> Overview</NavLink>
+                                <NavLink href="application-shell/person/profile"><Suttisak.Blazor.Icons.Icon Name="PersonAccounts" Size="20"  /> Profile</NavLink>
+                                <NavLink href="application-shell/person/checkups"><Suttisak.Blazor.Icons.Icon Name="BoardHeart" Size="20"  /> Checkup data</NavLink>
+                                <NavLink href="application-shell/person/results"><Suttisak.Blazor.Icons.Icon Name="DocumentHeart" Size="20"  /> Results <span class="person-nav-count">2</span></NavLink>
+                                <NavLink href="application-shell/person/documents"><Suttisak.Blazor.Icons.Icon Name="DocumentPdf" Size="20"  /> Documents</NavLink>
+                                <NavLink href="application-shell/person/appointments"><Suttisak.Blazor.Icons.Icon Name="Calendar" Size="20"  /> Appointments</NavLink>
                             </ChildContent>
                             <Overflow>
-                                <NavLink href="application-shell/person/exposure-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Exposure history</NavLink>
-                                <NavLink href="application-shell/person/work-restrictions"><FluentIcon Value="@(new Icons.Regular.Size20.Shield())" /> Work restrictions</NavLink>
-                                <NavLink href="application-shell/person/referrals"><FluentIcon Value="@(new Icons.Regular.Size20.People())" /> Referrals</NavLink>
-                                <NavLink href="application-shell/person/certificates"><FluentIcon Value="@(new Icons.Regular.Size20.Document())" /> Certificates</NavLink>
-                                <NavLink href="application-shell/person/notes"><FluentIcon Value="@(new Icons.Regular.Size20.Note())" /> Notes</NavLink>
-                                <NavLink href="application-shell/person/attachments"><FluentIcon Value="@(new Icons.Regular.Size20.Attach())" /> Attachments</NavLink>
-                                <NavLink href="application-shell/person/audit-history"><FluentIcon Value="@(new Icons.Regular.Size20.History())" /> Audit history</NavLink>
-                                <NavLink href="application-shell/person/consent"><FluentIcon Value="@(new Icons.Regular.Size20.Signature())" /> Consent</NavLink>
-                                <NavLink href="application-shell/person/access-control"><FluentIcon Value="@(new Icons.Regular.Size20.LockClosed())" /> Access control</NavLink>
+                                <NavLink href="application-shell/person/exposure-history"><Suttisak.Blazor.Icons.Icon Name="History" Size="20"  /> Exposure history</NavLink>
+                                <NavLink href="application-shell/person/work-restrictions"><Suttisak.Blazor.Icons.Icon Name="Shield" Size="20"  /> Work restrictions</NavLink>
+                                <NavLink href="application-shell/person/referrals"><Suttisak.Blazor.Icons.Icon Name="People" Size="20"  /> Referrals</NavLink>
+                                <NavLink href="application-shell/person/certificates"><Suttisak.Blazor.Icons.Icon Name="Document" Size="20"  /> Certificates</NavLink>
+                                <NavLink href="application-shell/person/notes"><Suttisak.Blazor.Icons.Icon Name="Note" Size="20"  /> Notes</NavLink>
+                                <NavLink href="application-shell/person/attachments"><Suttisak.Blazor.Icons.Icon Name="Attach" Size="20"  /> Attachments</NavLink>
+                                <NavLink href="application-shell/person/audit-history"><Suttisak.Blazor.Icons.Icon Name="History" Size="20"  /> Audit history</NavLink>
+                                <NavLink href="application-shell/person/consent"><Suttisak.Blazor.Icons.Icon Name="Signature" Size="20"  /> Consent</NavLink>
+                                <NavLink href="application-shell/person/access-control"><Suttisak.Blazor.Icons.Icon Name="LockClosed" Size="20"  /> Access control</NavLink>
                             </Overflow>
                         </SectionNavigation>
                     </Navigation>
@@ -93,10 +93,10 @@
                                 @foreach (var group in CheckupGroups)
                                 {
                                     <article>
-                                        <span class="person-checkup-icon"><FluentIcon Value="@group.Icon" /></span>
+                                        <span class="person-checkup-icon"><Suttisak.Blazor.Icons.Icon Name="@group.Icon" Size="20" /></span>
                                         <div><strong>@group.Title</strong><small>@group.Description</small></div>
                                         <span class="demo-status @(group.Complete ? "demo-status--complete" : "demo-status--in-review")">@(group.Complete ? "Complete" : "Needs review")</span>
-                                        <button type="button" aria-label="Edit @group.Title">Edit</button>
+                                        <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" AriaLabel="@($"Edit {group.Title}")">Edit</AppButton>
                                     </article>
                                 }
                             </div>
@@ -132,16 +132,16 @@
                         case "documents":
                             <section class="person-section-heading">
                                 <div><span>DOCUMENTS</span><h2>Reports and attachments</h2><p>Generated summaries and source files for this checkup period.</p></div>
-                                <button class="demo-action-button demo-action-button--primary" type="button">Upload document</button>
+                                <AppButton Variant="AppButtonVariant.Primary" Class="demo-action-button demo-action-button--primary">Upload document</AppButton>
                             </section>
                             <div class="person-document-list">
                                 @foreach (var document in Documents)
                                 {
                                     <article>
-                                        <span><FluentIcon Value="@(new Icons.Regular.Size24.DocumentPdf())" /></span>
+                                        <span><Suttisak.Blazor.Icons.Icon Name="DocumentPdf" Size="24"  /></span>
                                         <div><strong>@document.Name</strong><small>@document.Meta</small></div>
                                         <span class="demo-status @document.StatusClass">@document.Status</span>
-                                        <button type="button">Open</button>
+                                        <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact">Open</AppButton>
                                     </article>
                                 }
                             </div>
@@ -222,32 +222,32 @@
     }
 
     private string SectionTitle => PersonSections.First(item => item.Key == ActiveSection).Label;
-    private Icon SectionIcon => ActiveSection switch
+    private string SectionIcon => ActiveSection switch
     {
-        "profile" => new Icons.Regular.Size24.PersonAccounts(),
-        "checkups" => new Icons.Regular.Size24.BoardHeart(),
-        "results" => new Icons.Regular.Size24.DocumentHeart(),
-        "documents" => new Icons.Regular.Size24.DocumentPdf(),
-        "appointments" => new Icons.Regular.Size24.Calendar(),
-        _ => new Icons.Regular.Size24.Person()
+        "profile" => "PersonAccounts",
+        "checkups" => "BoardHeart",
+        "results" => "DocumentHeart",
+        "documents" => "DocumentPdf",
+        "appointments" => "Calendar",
+        _ => "Person"
     };
     private bool IsOverflowSection => Array.FindIndex(PersonSections, item => item.Key == ActiveSection) >= 6;
     private string OverflowLabel => IsOverflowSection ? SectionTitle : "More";
 
     private Breadcrumb[] PersonBreadcrumbs =>
     [
-        new(new Icons.Regular.Size16.Home(), "/application-shell", "Overview"),
+        new("Home", "/application-shell", "Overview"),
         new(null, "/application-shell/person", "Individual health"),
         new(null, null, SectionTitle)
     ];
 
     private readonly CheckupGroup[] CheckupGroups =
     [
-        new("Basic information", "Identity, employment, and visit details", new Icons.Regular.Size20.Person(), true),
-        new("Vital signs", "Blood pressure, pulse, height, and weight", new Icons.Regular.Size20.BoardHeart(), true),
-        new("Audiometry", "Pure-tone hearing thresholds", new Icons.Regular.Size20.DocumentHeart(), false),
-        new("Vision", "Distance, near, color, and depth perception", new Icons.Regular.Size20.Eye(), true),
-        new("Clinical conclusion", "Fitness decision and physician notes", new Icons.Regular.Size20.Document(), false)
+        new("Basic information", "Identity, employment, and visit details", "Person", true),
+        new("Vital signs", "Blood pressure, pulse, height, and weight", "BoardHeart", true),
+        new("Audiometry", "Pure-tone hearing thresholds", "DocumentHeart", false),
+        new("Vision", "Distance, near, color, and depth perception", "Eye", true),
+        new("Clinical conclusion", "Fitness decision and physician notes", "Document", false)
     ];
 
     private readonly DocumentItem[] Documents =
@@ -257,6 +257,6 @@
         new("Fitness certificate.pdf", "Waiting for physician signature", "Pending", "demo-status--in-review")
     ];
 
-    private sealed record CheckupGroup(string Title, string Description, Icon Icon, bool Complete);
+    private sealed record CheckupGroup(string Title, string Description, string Icon, bool Complete);
     private sealed record DocumentItem(string Name, string Meta, string Status, string StatusClass);
 }

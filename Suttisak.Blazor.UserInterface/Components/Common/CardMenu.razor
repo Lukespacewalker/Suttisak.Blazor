@@ -1,10 +1,6 @@
-@using Microsoft.FluentUI.AspNetCore.Components.Extensions
-@inherits FluentCard
 @inject NavigationManager NavigationManager
 
 <div id="@Id"
-	 appearance="@Appearance.ToAttributeValue(CardAppearance.Default, returnEmptyAsNull: true)"
-	 shadow="@Shadow.ToAttributeValue(CardShadow.Default, returnEmptyAsNull: true)"
 	 class="@ClassValue"
 	 style="@StyleValue"
 	 role="@Role"
@@ -13,9 +9,9 @@
 	 @onclick="@ClickHandlerAsync"
 	 @onkeydown="KeyDownHandlerAsync"
 	 @attributes="@AdditionalAttributes">
-    @if (Icon is not null)
+    @if (!string.IsNullOrWhiteSpace(IconName))
     {
-        <FluentIcon Value="Icon" Style="flex:0 0 auto;height:30px;width:30px;" Color="Color.Primary" />
+        <Suttisak.Blazor.Icons.Icon Name="@IconName" Size="@IconSize" Style="flex:0 0 auto" />
     }
     <div style="flex:1 1 auto;">
         @if (Title is not null)
@@ -28,15 +24,26 @@
         }
         @ChildContent
     </div>
-    <FluentIcon Value="@(new Icons.Regular.Size20.ChevronRight())" Style="flex:0 0 auto" Color="Color.Default" />
+    <Suttisak.Blazor.Icons.Icon Name="ChevronRight" Size="20" Style="flex:0 0 auto" />
 </div>
 @code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public string? Role { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
     [Parameter] public string? Url { get; set; }
 
-    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public string? IconName { get; set; }
+    [Parameter] public int IconSize { get; set; } = 20;
 
     [Parameter] public string? Title { get; set; }
-	[Parameter] public string? Subtitle { get; set; }
+    [Parameter] public string? Subtitle { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string ClassValue => string.Join(' ', new[] { "card-menu", Class }.Where(value => !string.IsNullOrWhiteSpace(value)));
+    private string? StyleValue => Style;
 
     /// <summary />
     internal async Task ClickHandlerAsync(MouseEventArgs args)

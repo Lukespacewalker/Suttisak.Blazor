@@ -52,22 +52,22 @@
                     <PageHeading Title="Assessment periods" Description="Create, publish, and archive assessment windows.">
                         <PageActions>
                             <AppButton Variant="AppButtonVariant.Primary">
-                                <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStartContent>
+                                <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="20"  /></IconStartContent>
                                 <ChildContent>New period</ChildContent>
                             </AppButton>
                         </PageActions>
                     </PageHeading>
                     <Toolbar AriaLabel="Assessment actions">
                         <AppButton Variant="AppButtonVariant.Primary">
-                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Add())" /></IconStartContent>
+                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="20"  /></IconStartContent>
                             <ChildContent>Shared primary action</ChildContent>
                         </AppButton>
                         <AppButton>
-                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.Filter())" /></IconStartContent>
+                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Filter" Size="20"  /></IconStartContent>
                             <ChildContent>Filter</ChildContent>
                         </AppButton>
                         <AppButton>
-                            <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.ArrowDownload())" /></IconStartContent>
+                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowDownload" Size="20"  /></IconStartContent>
                             <ChildContent>Export</ChildContent>
                         </AppButton>
                         <span class="playbook-toolbar-spacer"></span>
@@ -79,8 +79,8 @@
                     </div>
                     <FormSection Title="Period details" Description="A shared form section and responsive grid.">
                         <FormGrid Columns="2">
-                            <label class="playbook-field">Name<input value="Annual review 2026" /></label>
-                            <label class="playbook-field">Status<select><option>Draft</option><option>Published</option></select></label>
+                            <AppTextBox Label="Name" Value="Annual review 2026" />
+                            <AppSelect TValue="string" Label="Status" Value="@( "Draft" )" Options="@PeriodStatusOptions" />
                         </FormGrid>
                     </FormSection>
                     <div class="playbook-card-grid">
@@ -104,7 +104,7 @@
                     <StatusPanel Title="Nothing to review yet" Message="Completed submissions will appear here." Variant="empty">
                         <Actions>
                             <AppButton>
-                                <IconStartContent><FluentIcon Value="@(new Icons.Regular.Size20.ArrowClockwise())" /></IconStartContent>
+                                <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowClockwise" Size="20"  /></IconStartContent>
                                 <ChildContent>Refresh</ChildContent>
                             </AppButton>
                         </Actions>
@@ -145,4 +145,10 @@
 
 @code {
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+
+    private static readonly AppSelectOption<string>[] PeriodStatusOptions =
+    [
+        new("Draft", "Draft"),
+        new("Published", "Published")
+    ];
 }

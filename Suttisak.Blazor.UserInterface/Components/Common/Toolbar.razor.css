@@ -14,20 +14,18 @@
     container-type: inline-size;
 }
 
-.toolbar ::deep fluent-search,
-.toolbar ::deep fluent-text-field {
+.toolbar ::deep .app-form-control {
     min-width: min(18rem, 100%);
 }
 
 /* Keep the actions together at tablet/medium desktop widths.  The filter moves
    to a deliberate second row instead of forcing every action into its own row. */
 @container (max-width: 78rem) {
-    .toolbar ::deep fluent-divider[vertical] {
+    .toolbar ::deep .app-divider[aria-orientation="vertical"] {
         display: none;
     }
 
-    .toolbar ::deep fluent-search,
-    .toolbar ::deep fluent-text-field {
+    .toolbar ::deep .app-form-control {
         flex: 1 1 100%;
         min-width: 0;
     }
@@ -39,12 +37,11 @@
         padding: 0.75rem;
     }
 
-    .toolbar ::deep fluent-button {
+    .toolbar ::deep .app-button {
         flex: 1 1 auto;
     }
 
-    .toolbar ::deep fluent-search,
-    .toolbar ::deep fluent-text-field {
+    .toolbar ::deep .app-form-control {
         flex: 1 1 100%;
         min-width: 0;
     }

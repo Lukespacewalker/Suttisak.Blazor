@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         services.Configure(configuration);
         services.AddScoped<IThemeService, ThemeService>();
         services.AddBrowserTimeProvider();
+        services.AddAppOverlays();
         return services;
     }
 }

@@ -1,5 +1,5 @@
 @typeparam TUser where TUser : class
-@inherits FluentDialogInstance
+@inherits AppOverlayInstance<bool>
 
 @inject UserManager<TUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -11,11 +11,15 @@
     </FeedbackBanner>
 }
 
-<FluentDialogBody>
-    <FluentTextInput Label="@RenamePasskey_razor.PasskeyNameLabel" 
+<div class="app-overlay-form">
+    <AppTextBox Label="@RenamePasskey_razor.PasskeyNameLabel"
     @bind-Value:get="Passkey.Name" 
     @bind-Value:set="value => Passkey.Name = value?.Trim()" aria-required="true" Placeholder="@RenamePasskey_razor.PasskeyNamePlaceholder" />
-</FluentDialogBody>
+    <FormActions>
+        <AppButton Variant="AppButtonVariant.Secondary" OnClick="CancelAsync">Cancel</AppButton>
+        <AppButton Variant="AppButtonVariant.Primary" OnClick="SaveAsync">Save</AppButton>
+    </FormActions>
+</div>
 
 @code {
 
@@ -24,23 +28,16 @@
 
     private bool _showError;
 
-    protected override async Task OnActionClickedAsync(bool primary)
+    private async Task SaveAsync()
     {
-        if (primary)
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = await UserManager.GetUserAsync(authState.User);
+        var passkeyResult = await UserManager.AddOrUpdatePasskeyAsync(user!, Passkey);
+        if (!passkeyResult.Succeeded)
         {
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var user = await UserManager.GetUserAsync(authState.User);
-            var passkeyResult = await UserManager.AddOrUpdatePasskeyAsync(user!, Passkey);
-            if (!passkeyResult.Succeeded)
-            {
-                _showError = true;
-                return;
-            }
-            await DialogInstance.CloseAsync();
+            _showError = true;
+            return;
         }
-        else
-        {
-            await DialogInstance.CancelAsync();
-        }
+        await CloseAsync(true);
     }
 }

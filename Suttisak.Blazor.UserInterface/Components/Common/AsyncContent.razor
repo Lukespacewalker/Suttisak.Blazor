@@ -17,7 +17,7 @@
         }
         else
         {
-            <StatusPanel Title="@EmptyTitle" Message="@EmptyMessage" Icon="@EmptyIcon" />
+            <StatusPanel Title="@EmptyTitle" Message="@EmptyMessage" IconName="@EmptyIconName" IconSize="@EmptyIconSize" />
         }
         break;
     case AsyncContentState.Error:
@@ -29,7 +29,8 @@
         {
             <StatusPanel Title="@ErrorTitle"
                          Message="@ErrorMessage"
-                         Icon="@ErrorIcon"
+                         IconName="@ErrorIconName"
+                         IconSize="@ErrorIconSize"
                          Intent="FeedbackIntent.Error"
                          Role="alert"
                          AriaLive="assertive"
@@ -51,10 +52,12 @@
     [Parameter] public string? LoadingMessage { get; set; }
     [Parameter] public string EmptyTitle { get; set; } = "No content yet";
     [Parameter] public string? EmptyMessage { get; set; }
-    [Parameter] public Icon? EmptyIcon { get; set; }
+    [Parameter] public string? EmptyIconName { get; set; }
+    [Parameter] public int EmptyIconSize { get; set; } = 24;
     [Parameter] public string ErrorTitle { get; set; } = "We couldn't load this content";
     [Parameter] public string? ErrorMessage { get; set; }
-    [Parameter] public Icon? ErrorIcon { get; set; }
+    [Parameter] public string? ErrorIconName { get; set; }
+    [Parameter] public int ErrorIconSize { get; set; } = 24;
     [Parameter] public string RetryLabel { get; set; } = "Try again";
     [Parameter] public EventCallback OnRetry { get; set; }
 

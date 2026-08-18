@@ -14,36 +14,28 @@
                     <p>The generator owns routes. The application owns brand, language, actions, and support guidance.</p>
                 </div>
 
-                <label>
-                    <span>Status</span>
-                    <select @bind="StatusCode">
-                        <option value="403">403 · Forbidden</option>
-                        <option value="404">404 · Not found</option>
-                        <option value="500">500 · Server error</option>
-                    </select>
-                </label>
+                <AppSelect TValue="int" Label="Status" Options="@StatusOptions" @bind-Value="StatusCode" />
 
                 <div class="custom-error-editor__row">
-                    <label><span>Brand name</span><input @bind="Options.BrandName" @bind:event="oninput" /></label>
-                    <label><span>Eyebrow</span><input @bind="Current.Eyebrow" @bind:event="oninput" /></label>
+                    <AppTextBox Label="Brand name" @bind-Value="Options.BrandName" />
+                    <AppTextBox Label="Eyebrow" @bind-Value="Current.Eyebrow" />
                 </div>
-                <label><span>Title</span><input @bind="Current.Title" @bind:event="oninput" /></label>
-                <label><span>Message</span><textarea rows="4" @bind="Current.Message" @bind:event="oninput"></textarea></label>
+                <AppTextBox Label="Title" @bind-Value="Current.Title" />
+                <AppTextArea Label="Message" Rows="4" @bind-Value="Current.Message" />
 
                 <div class="custom-error-editor__row">
-                    <label><span>Primary action</span><input @bind="Current.PrimaryActionLabel" @bind:event="oninput" /></label>
-                    <label><span>Home path</span><input @bind="Options.HomeHref" @bind:event="oninput" /></label>
+                    <AppTextBox Label="Primary action" @bind-Value="Current.PrimaryActionLabel" />
+                    <AppTextBox Label="Home path" @bind-Value="Options.HomeHref" />
                 </div>
-                <label><span>Footer guidance</span><input @bind="Current.FooterText" @bind:event="oninput" /></label>
+                <AppTextBox Label="Footer guidance" @bind-Value="Current.FooterText" />
 
-                <label class="custom-error-editor__check">
-                    <input type="checkbox" @bind="Options.ShowRequestId" />
-                    <span>Show incident reference for support</span>
-                </label>
+                <div class="custom-error-editor__check">
+                    <AppCheckbox Label="Show incident reference for support" @bind-Value="Options.ShowRequestId" />
+                </div>
 
                 <div class="custom-error-editor__actions">
-                    <button type="button" @onclick="UseSelectedApp">Use selected app</button>
-                    <button type="button" @onclick="ResetCopy">Reset copy</button>
+                    <AppButton Variant="AppButtonVariant.Primary" OnClick="UseSelectedApp">Use selected app</AppButton>
+                    <AppButton OnClick="ResetCopy">Reset copy</AppButton>
                 </div>
 
                 <details class="custom-error-editor__code">
@@ -66,6 +58,13 @@
     private StatusRouteOptions Options { get; set; } = new();
     private StatusRoutePageOptions Current => Options.Resolve(StatusCode);
 
+    private static readonly AppSelectOption<int>[] StatusOptions =
+    [
+        new(403, "403 · Forbidden"),
+        new(404, "404 · Not found"),
+        new(500, "500 · Server error")
+    ];
+
     protected override void OnInitialized() => UseSelectedApp();
 
     private void UseSelectedApp()
@@ -86,7 +85,7 @@
         builder.Services.AddSuttisakStatusRoutes(options =>
         {
             options.BrandName = "{{Options.BrandName}}";
-            options.LogoUrl = "/assets/logo.png";
+            options.LogoUrl = "/assets/logo.webp";
             options.HomeHref = "{{Options.HomeHref}}";
             options.Error.Title = "{{Options.Error.Title}}";
             options.Error.Message = "{{Options.Error.Message}}";

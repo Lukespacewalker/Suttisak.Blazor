@@ -6,25 +6,25 @@
 <PageTitle>@Manage_razor.PersonalData</PageTitle>
 
 
-<IdentityManageShell Title="@Manage_razor.PersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@StaticPageUrl" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.PersonalData" Description="@Text["PersonalDataDescription"]" ActiveUrl="@StaticPageUrl" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(StaticPageIcon, null, Manage_razor.PersonalData) })">
 <StatusMessage />
 
 <div class="identity-settings-list">
     <IdentitySettingCard Title="@PersonalData_razor.DownloadButton"
                          Description="@PersonalData_razor.Description"
-                         Icon="@(new Icons.Regular.Size20.ArrowDownload())">
+                         IconName="ArrowDownload">
         <Actions>
         <form action="@IdentityRoutes.Api.DownloadPersonalData" method="post">
             <AntiforgeryToken />
-            <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Outline">@PersonalData_razor.DownloadButton</AppButton>
+            <AppButton Type="submit" Variant="AppButtonVariant.Secondary">@PersonalData_razor.DownloadButton</AppButton>
         </form>
         </Actions>
     </IdentitySettingCard>
 
     <IdentitySettingCard Title="@PersonalData_razor.DeleteLink"
                          Description="@PersonalData_razor.Warning"
-                         Icon="@(new Icons.Regular.Size20.Delete())"
+                         IconName="Delete"
                          CssClass="identity-setting-card--danger">
         <Actions><a class="identity-card-action identity-card-action--danger" href="@IdentityRoutes.Account.Manage.DeletePersonalData">@PersonalData_razor.DeleteLink</a></Actions>
     </IdentitySettingCard>
@@ -33,7 +33,7 @@
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.DatabasePerson();
+    public static string StaticPageIcon { get; set; } = "DatabasePerson";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.PersonalData;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.PersonalData);

@@ -15,7 +15,7 @@
 
 <PageTitle>@Manage_razor.EnableAuthenticator</PageTitle>
 
-<IdentityManageShell Title="@Manage_razor.EnableAuthenticator" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Icon="@StaticPageIcon"
+<IdentityManageShell Title="@Manage_razor.EnableAuthenticator" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.EnableAuthenticator) })">
 
 @if (_recoveryCodes is not null)
@@ -52,10 +52,8 @@ else
 
                     <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
-                        <FluentTextInput Name="Input.Code" @bind-Value="Input!.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
-                        @*<FluentValidationMessage For="() => Input.Code" class="text-danger" />*@
-                        @* TODO: restore FluentValidationMessage later in RC3 *@
-                        <AppButton Type="ButtonType.Submit" Appearance="ButtonAppearance.Primary" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</AppButton>
+                        <AppTextBox Name="Input.Code" @bind-Value="Input!.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
+                        <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</AppButton>
                         <ValidationSummary class="text-danger" role="alert" />
                     </EditForm>
                 </li>
@@ -67,7 +65,7 @@ else
 </IdentityManageShell>
 
 @code {
-    public static Icon StaticPageIcon { get; set; } = new Icons.Regular.Size20.KeyMultiple();
+    public static string StaticPageIcon { get; set; } = "KeyMultiple";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.EnableAuthenticator;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.EnableAuthenticator);

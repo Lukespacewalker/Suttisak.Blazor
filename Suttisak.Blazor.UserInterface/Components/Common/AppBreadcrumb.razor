@@ -9,13 +9,26 @@
             var href = isCurrent ? null : item.Url;
 
             <li class="app-breadcrumb__item">
-                <FluentBreadcrumbItem Href="@href" aria-current="@(isCurrent ? "page" : null)">
-                    @if (item.Icon is not null)
-                    {
-                        <FluentIcon Value="@item.Icon" aria-hidden="true" />
-                    }
-                    <span class="app-breadcrumb__label">@item.Title</span>
-                </FluentBreadcrumbItem>
+                @if (href is not null)
+                {
+                    <a href="@href">
+                        @if (!string.IsNullOrWhiteSpace(item.IconName))
+                        {
+                            <Suttisak.Blazor.Icons.Icon Name="@item.IconName" Size="16" />
+                        }
+                        <span class="app-breadcrumb__label">@item.Title</span>
+                    </a>
+                }
+                else
+                {
+                    <span aria-current="page">
+                        @if (!string.IsNullOrWhiteSpace(item.IconName))
+                        {
+                            <Suttisak.Blazor.Icons.Icon Name="@item.IconName" Size="16" />
+                        }
+                        <span class="app-breadcrumb__label">@item.Title</span>
+                    </span>
+                }
             </li>
         }
     </ol>
