@@ -1,22 +1,36 @@
-.card-menu:hover {
+.card-menu:hover:not([disabled]):not([aria-disabled="true"]) {
     background: var(--app-surface-hover);
     box-shadow: 0 12px 40px var(--app-glass-shadow);
     cursor: pointer;
 }
 .card-menu {
+    width: 100%;
+    box-sizing: border-box;
     background: var(--app-glass-surface-strong);
     backdrop-filter: blur(20px) saturate(200%);
     border: 1px solid var(--app-glass-border);
     box-shadow: 0 8px 32px var(--app-glass-shadow);
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    border-radius: var(--borderRadius2XLarge);
+    border-radius: var(--app-radius-lg);
     padding: calc(var(--design-unit) * 4px) !important;
     gap: calc(var(--design-unit) * 4px);
     display: flex;
     flex-direction: row;
     align-items: center;
+    color: var(--app-foreground);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
 }
 
+.card-menu:focus-visible {
+    outline: 2px solid var(--app-focus-ring, var(--app-brand));
+    outline-offset: 2px;
+}
+
+.card-menu[disabled],
+.card-menu[aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
+
     .card-menu .subtitle {
-        color: var(--colorNeutralForeground2);
+        color: var(--app-foreground-muted);
     }

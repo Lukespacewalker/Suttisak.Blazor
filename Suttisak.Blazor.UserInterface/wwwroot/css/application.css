@@ -98,6 +98,7 @@ textarea {
     --app-radius-md: .75rem;
     --app-radius-lg: 1rem;
     --app-radius-xl: 1.5rem;
+    --app-radius-round: 999px;
     --app-shadow-sm: 0 1px 2px rgb(15 23 42 / .06);
     --app-shadow-md: 0 12px 32px rgb(15 23 42 / .10);
     --app-shadow-lg: 0 24px 64px rgb(15 23 42 / .14);
@@ -134,7 +135,14 @@ html body {
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-    outline: none;
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+        outline-color: Highlight;
+    }
 }
 
 body h1,
@@ -290,7 +298,7 @@ samp {
     box-sizing: border-box;
     padding: 0;
     border: 1px solid var(--app-glass-border);
-    border-radius: var(--borderRadius2XLarge, var(--app-radius-lg));
+    border-radius: var(--app-radius-lg);
     background: var(--app-glass-surface-strong);
     box-shadow: var(--app-shadow-md);
     backdrop-filter: blur(20px) saturate(180%);

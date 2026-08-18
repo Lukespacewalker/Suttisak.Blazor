@@ -6,7 +6,7 @@
     box-sizing: border-box;
     padding: 0;
     border: 1px solid var(--app-glass-border);
-    border-radius: var(--borderRadius2XLarge, 1rem);
+    border-radius: var(--app-radius-lg);
     background: var(--app-glass-surface-strong);
     box-shadow: 0 8px 32px var(--app-glass-shadow);
     backdrop-filter: blur(20px) saturate(180%);
@@ -27,7 +27,7 @@
 
 .data-grid-container ::deep .app-grid th,
 .data-grid-container ::deep .app-quick-grid th {
-    color: var(--app-foreground-muted, var(--colorNeutralForeground3));
+    color: var(--app-foreground-muted);
     font-size: .75rem;
     font-weight: 700;
     letter-spacing: .04em;

@@ -23,6 +23,6 @@
     }
 }
 
-body[data-color-scheme="dark"] .hero.background {
+:root[data-theme="dark"] .hero.background {
     background: url(/assets/backgrounds/gradient-dark.svg)
 }

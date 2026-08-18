@@ -115,7 +115,7 @@
         transform: translateX(-100%);
         width: min(85vw, 320px);
         border: 1px solid var(--app-glass-border);
-        border-radius: 0 var(--borderRadius2XLarge) var(--borderRadius2XLarge) 0;
+        border-radius: 0 var(--app-radius-lg) var(--app-radius-lg) 0;
         box-shadow: 0 8px 32px var(--app-glass-shadow);
     }
 

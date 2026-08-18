@@ -64,14 +64,14 @@
         place-items: center;
         flex: 0 0 auto;
         border: 0;
-        border-radius: var(--borderRadiusCircular);
+        border-radius: var(--app-radius-round);
         background: transparent;
         color: var(--app-foreground-muted);
         cursor: pointer;
     }
 
     .mobile-nav-account__action:hover {
-        background: var(--colorNeutralBackground1Hover, var(--app-surface-muted));
+        background: var(--app-surface-muted);
         color: var(--app-foreground);
     }
 

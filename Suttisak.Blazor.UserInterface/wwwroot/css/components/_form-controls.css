@@ -129,7 +129,7 @@
 .app-form-control__calendar-trigger:hover,
 .app-form-control__picker-trigger:hover { background: var(--app-accent-soft); }
 .app-form-control__calendar-trigger:focus-visible,
-.app-form-control__picker-trigger:focus-visible { outline: none; }
+.app-form-control__picker-trigger:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .app-form-control__calendar-trigger:disabled,
 .app-form-control__picker-trigger:disabled { cursor: not-allowed; opacity: .45; }
 .app-form-control__calendar-trigger svg,
@@ -172,7 +172,7 @@
 .app-calendar-popup__day.is-today { box-shadow: inset 0 0 0 1px var(--app-accent-border); color: var(--app-accent); }
 .app-calendar-popup__day.is-selected { background: var(--app-brand); color: var(--app-on-brand); box-shadow: 0 .3rem .8rem var(--app-shadow-color); }
 .app-calendar-popup__day:disabled { opacity: .28; cursor: not-allowed; }
-.app-calendar-popup button:focus-visible { outline: none; }
+.app-calendar-popup button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 .app-picker-popup {
     position: fixed;
@@ -210,7 +210,7 @@
 .app-picker-popup__button--primary { background: var(--app-brand); color: var(--app-on-brand); box-shadow: 0 .25rem .7rem var(--app-shadow-color); }
 .app-picker-popup__button--primary:hover { filter: brightness(1.04); }
 .app-picker-popup__button:disabled { cursor: not-allowed; opacity: .4; box-shadow: none; }
-.app-picker-popup button:focus-visible { outline: none; }
+.app-picker-popup button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 .app-datetime-popup { width: min(21.25rem, calc(100vw - 1rem)); }
 .app-datetime-popup__time { display: flex; align-items: end; gap: .3rem; margin-top: .65rem; padding: .65rem .2rem .75rem; border-top: 1px solid var(--app-grid-line); }
@@ -251,7 +251,7 @@ fieldset.app-form-control { margin: 0; padding: 0; border: 0; }
 .app-radio-group--horizontal { grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
 .app-choice { position: relative; display: flex; min-width: 0; align-items: flex-start; gap: .65rem; padding: .72rem; border: 1px solid var(--app-border); border-radius: .7rem; background: var(--app-surface); color: var(--app-foreground); cursor: pointer; transition: border-color .16s ease, background-color .16s ease, transform .16s ease; }
 .app-choice:hover { border-color: var(--app-accent-border); background: var(--app-surface-hover); transform: translateY(-1px); }
-.app-choice:has(.app-choice__native:focus-visible) { outline: none; }
+.app-choice:has(.app-choice__native:focus-visible) { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .app-choice:has(.app-choice__native:checked) { border-color: var(--app-accent-border); background: var(--app-accent-soft); }
 .app-choice:has(.app-choice__native:disabled) { cursor: not-allowed; opacity: .52; transform: none; }
 .app-choice__native { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
@@ -274,7 +274,7 @@ fieldset.app-form-control { margin: 0; padding: 0; border: 0; }
 
 @media (forced-colors: active) {
     .app-form-control__input-wrap { border-color: CanvasText; }
-    .app-form-control__input-wrap:focus-within { outline: none; }
+    .app-form-control__input-wrap:focus-within { outline: 2px solid Highlight; outline-offset: 2px; }
 }
 
 @media (max-width: 24rem) {

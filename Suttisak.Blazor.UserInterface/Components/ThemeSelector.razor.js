@@ -1,44 +1,86 @@
-export function getTheme() {
-    const raw = localStorage.getItem("suttisak-blazor:theme-settings")
-        ?? localStorage.getItem("fluentui-blazor:theme-settings");
-    if (!raw) return "system";
+const storageKey = "suttisak-blazor:theme-settings";
+const systemTheme = matchMedia("(prefers-color-scheme: dark)");
+const subscribers = new Map();
+let nextSubscriptionId = 0;
+let listenersAttached = false;
 
+function normalizePreference(value) {
+    const preference = String(value).toLowerCase();
+    return preference === "light" || preference === "dark" ? preference : "system";
+}
+
+function getPreference() {
     try {
-        const mode = JSON.parse(raw)?.mode;
-        return mode === "light" || mode === "dark" ? mode : "system";
+        return normalizePreference(JSON.parse(localStorage.getItem(storageKey) ?? "{}")?.mode);
     } catch {
         return "system";
     }
 }
 
-let mediaQuery;
-
-function resolveColorScheme(mode) {
-    return mode === "dark" || (mode === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+function resolveScheme(preference) {
+    return preference === "dark" || preference === "system" && systemTheme.matches
         ? "dark"
         : "light";
 }
 
-function applyColorScheme(mode) {
-    const scheme = resolveColorScheme(mode);
-    document.documentElement.dataset.colorScheme = scheme;
-    document.documentElement.style.colorScheme = scheme;
-    document.body?.setAttribute("data-color-scheme", scheme);
-    document.body?.setAttribute("data-theme", scheme);
+function applyTheme(preference = getPreference()) {
+    const normalizedPreference = normalizePreference(preference);
+    const scheme = resolveScheme(normalizedPreference);
+    const root = document.documentElement;
+
+    if (root.getAttribute("data-theme") !== scheme) {
+        root.setAttribute("data-theme", scheme);
+    }
+
+    return { preference: normalizedPreference, scheme };
 }
 
-export function initializeColorScheme() {
-    const update = () => applyColorScheme(getTheme());
-    mediaQuery ??= window.matchMedia("(prefers-color-scheme: dark)");
-    mediaQuery.onchange = update;
-    window.addEventListener("storage", event => {
-        if (event.key === "suttisak-blazor:theme-settings" || event.key === "fluentui-blazor:theme-settings") update();
+function notifySubscribers(state) {
+    for (const subscriber of subscribers.values()) {
+        subscriber.invokeMethodAsync("UpdateTheme", state.preference, state.scheme).catch(() => {
+            // A disposed interactive circuit is removed on component disposal.
+        });
+    }
+}
+
+function publishTheme() {
+    const state = applyTheme();
+    notifySubscribers(state);
+    return state;
+}
+
+function attachListeners() {
+    if (listenersAttached) return;
+    listenersAttached = true;
+
+    systemTheme.addEventListener?.("change", () => {
+        if (getPreference() === "system") publishTheme();
     });
-    update();
+    addEventListener("storage", event => {
+        if (event.key === storageKey) publishTheme();
+    });
 }
 
-export function setColorScheme(mode) {
-    const normalized = String(mode).toLowerCase();
-    localStorage.setItem("suttisak-blazor:theme-settings", JSON.stringify({ mode: normalized }));
-    applyColorScheme(normalized);
+export function subscribeTheme(subscriber) {
+    const subscriptionId = ++nextSubscriptionId;
+    subscribers.set(subscriptionId, subscriber);
+    attachListeners();
+    return { subscriptionId, ...applyTheme() };
+}
+
+export function unsubscribeTheme(subscriptionId) {
+    subscribers.delete(subscriptionId);
+}
+
+export function setTheme(preference) {
+    const normalizedPreference = normalizePreference(preference);
+    try {
+        localStorage.setItem(storageKey, JSON.stringify({ mode: normalizedPreference }));
+    } catch {
+        // Applying the choice still works when persistent storage is unavailable.
+    }
+
+    const state = applyTheme(normalizedPreference);
+    notifySubscribers(state);
+    return state;
 }

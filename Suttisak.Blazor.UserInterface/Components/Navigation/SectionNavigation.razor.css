@@ -109,7 +109,7 @@
 .section-navigation__overflow.is-active > summary::after { background: var(--app-accent); }
 .section-navigation__items ::deep a:focus-visible,
 .section-navigation__overflow > summary:focus-visible,
-.section-navigation__mobile-trigger:focus-visible { outline: none; }
+.section-navigation__mobile-trigger:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 
 .section-navigation__overflow {
     position: relative;
@@ -199,5 +199,5 @@
     .section-navigation,
     .section-navigation__overflow-panel { background: Canvas; }
     .section-navigation__items ::deep a.active,
-    .section-navigation__overflow.is-active > summary { outline: none; }
+    .section-navigation__overflow.is-active > summary { outline: 2px solid Highlight; outline-offset: 2px; }
 }

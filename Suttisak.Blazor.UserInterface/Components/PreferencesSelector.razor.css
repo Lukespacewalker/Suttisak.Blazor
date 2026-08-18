@@ -20,7 +20,7 @@
     height: 44px;
     place-items: center;
     border: 1px solid var(--app-glass-border);
-    border-radius: var(--borderRadiusCircular);
+    border-radius: var(--app-radius-round);
     background: transparent;
     color: var(--app-foreground);
     cursor: pointer;
@@ -33,7 +33,7 @@
 
 .preferences-selector__mobile > summary:hover,
 .preferences-selector__mobile[open] > summary {
-    background: var(--colorNeutralBackground1Hover, var(--app-surface-muted));
+    background: var(--app-surface-muted);
 }
 
 .preferences-selector__popover {

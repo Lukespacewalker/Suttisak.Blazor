@@ -12,7 +12,7 @@
 .app-quick-paginator ::deep .go-last::before { content: '»'; }
 .app-quick-paginator ::deep button::before { color: currentColor; font-size: 1.35rem; line-height: 1; }
 .app-quick-paginator ::deep button:not(:disabled):hover { border-color: var(--app-border); background-color: var(--app-surface-hover); }
-.app-quick-paginator ::deep button:focus-visible { outline: none; }
+.app-quick-paginator ::deep button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .app-quick-paginator ::deep button:disabled { opacity: .38; cursor: default; }
 @media (max-width: 30rem) {
     .app-quick-paginator ::deep .paginator { justify-content: center; }
