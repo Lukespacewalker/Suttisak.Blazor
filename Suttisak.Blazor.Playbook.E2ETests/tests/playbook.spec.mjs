@@ -35,6 +35,22 @@ test.describe('UI Playbook shared-component contracts', () => {
     await expect(panels.filter({ hasText: 'Parameters are explicit Razor properties' })).toBeVisible();
   });
 
+  test('Component Browser indexes the complete Razor catalog and exposes live inputs', async ({ page }) => {
+    await page.goto('/component-browser');
+
+    await expect(page.locator('.component-browser__directory > section a')).toHaveCount(90);
+    await expect(page.locator('#app-text-box input')).toBeVisible();
+    await expect(page.locator('#app-number-input input[type="number"]')).toBeVisible();
+    await expect(page.locator('#app-multi-select select[multiple]')).toBeVisible();
+    await expect(page.locator('#app-calendar-picker input')).toBeVisible();
+
+    const search = page.getByRole('searchbox', { name: 'Find a component' });
+    await search.fill('AppTextBox');
+    const sidebar = page.locator('.component-browser__sidebar');
+    await expect(sidebar.getByRole('link', { name: 'AppTextBox' })).toBeVisible();
+    await expect(sidebar.getByRole('link', { name: 'AppButton' })).toHaveCount(0);
+  });
+
   test('A 100k-row AppQuickGrid keeps the browser DOM bounded', async ({ page }) => {
     await page.goto('/grid-performance');
     const grid = page.locator('table[aria-label="100000 virtual records"]');
@@ -85,7 +101,7 @@ test.describe('UI Playbook shared-component contracts', () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   });
 
-  for (const path of ['/', '/component-browser', '/form-controls', '/landing', '/access/login']) {
+  for (const path of ['/', '/component-browser', '/form-controls', '/grid-performance', '/landing', '/access/login']) {
     test(`has no serious or critical axe violations on ${path}`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator('main')).toBeVisible();
