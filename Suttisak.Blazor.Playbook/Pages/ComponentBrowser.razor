@@ -1,4 +1,5 @@
 @page "/component-browser"
+@page "/components"
 
 <PageTitle>Component browser · Suttisak.Blazor UI Playbook</PageTitle>
 
@@ -12,15 +13,23 @@
             <p>Each specimen is a running shared-library component. Change a value, open an overlay, dismiss feedback, or switch tabs to see its real behavior in the current application theme.</p>
         </header>
 
-        <nav class="component-browser__jump" aria-label="Component categories">
-            <a href="#actions">Actions</a>
-            <a href="#overlays">Overlays</a>
-            <a href="#navigation">Navigation</a>
-            <a href="#feedback">Feedback</a>
-        </nav>
+        <div class="component-browser__workspace">
+        <aside class="component-browser__sidebar">
+            <nav aria-label="Components">
+                <div><span>Actions</span><a href="#app-button">AppButton</a></div>
+                <div><span>Overlays</span><a href="#app-dialog">AppDialog &amp; AppDrawer</a></div>
+                <div><span>Navigation</span><a href="#app-tabs">AppTabs</a></div>
+                <div><span>Feedback</span><a href="#app-feedback">AppProgress</a><a href="#app-feedback">FeedbackBanner</a></div>
+            </nav>
+            <p><strong>6 live contracts</strong><span>More components can join this catalog without expanding the top navigation.</span></p>
+        </aside>
 
-        <section id="actions" class="component-browser__section" aria-labelledby="actions-title">
-            <header><span>01 / Actions</span><h2 id="actions-title">AppButton</h2><code>&lt;AppButton&gt;</code></header>
+        <div class="component-browser__content">
+
+        <section id="actions" class="component-browser__category" aria-labelledby="actions-title">
+            <header><span>01 / Category</span><h2 id="actions-title">Actions</h2></header>
+        <article id="app-button" class="component-browser__section" aria-labelledby="app-button-title">
+            <header><span>Component</span><h3 id="app-button-title">AppButton</h3><code>&lt;AppButton&gt;</code></header>
             <div class="component-browser__stage">
                 <div class="component-browser__button-row">
                     <AppButton Variant="AppButtonVariant.Primary" OnClick="Increment">Add item</AppButton>
@@ -28,11 +37,18 @@
                     <AppButton Variant="AppButtonVariant.Danger" OnClick="ClearCount">Clear</AppButton>
                 </div>
                 <output class="component-browser__readout" aria-live="polite"><strong>@_itemCount</strong><span>items staged</span></output>
+                <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;AppButton Variant="AppButtonVariant.Primary"
+           OnClick="SaveAsync"&gt;
+    Save changes
+&lt;/AppButton&gt;</code></pre></div>
             </div>
+        </article>
         </section>
 
-        <section id="overlays" class="component-browser__section" aria-labelledby="overlays-title">
-            <header><span>02 / Overlays</span><h2 id="overlays-title">Dialog &amp; Drawer</h2><code>ShowAsync(value)</code></header>
+        <section id="overlays" class="component-browser__category" aria-labelledby="overlays-title">
+            <header><span>02 / Category</span><h2 id="overlays-title">Overlays</h2></header>
+        <article id="app-dialog" class="component-browser__section" aria-labelledby="app-dialog-title">
+            <header><span>Components</span><h3 id="app-dialog-title">Dialog &amp; Drawer</h3><code>ShowAsync(value)</code></header>
             <div class="component-browser__stage component-browser__stage--split">
                 <div>
                     <h3>AppDialog</h3>
@@ -45,11 +61,20 @@
                     <AppButton OnClick="OpenDrawerAsync">Open details drawer</AppButton>
                 </div>
                 <p class="component-browser__result" aria-live="polite">@_overlayResult</p>
+                <div class="component-browser__usage"><span>Usage</span><pre><code>var result = await _dialog.ShowAsync(model);
+
+if (result.HasValue)
+{
+    await SaveAsync(result.Value);
+}</code></pre></div>
             </div>
+        </article>
         </section>
 
-        <section id="navigation" class="component-browser__section" aria-labelledby="navigation-title">
-            <header><span>03 / Navigation</span><h2 id="navigation-title">AppTabs</h2><code>&lt;AppTabs&gt;</code></header>
+        <section id="navigation" class="component-browser__category" aria-labelledby="navigation-title">
+            <header><span>03 / Category</span><h2 id="navigation-title">Navigation</h2></header>
+        <article id="app-tabs" class="component-browser__section" aria-labelledby="app-tabs-title">
+            <header><span>Component</span><h3 id="app-tabs-title">AppTabs</h3><code>&lt;AppTabs&gt;</code></header>
             <div class="component-browser__stage">
                 <AppTabs AriaLabel="Component browser preview tabs" @bind-ActiveId="_activeTab">
                     <AppTab Id="overview" Label="Overview"><p class="component-browser__tab-copy">A compact view for the most important component information.</p></AppTab>
@@ -57,11 +82,19 @@
                     <AppTab Id="accessibility" Label="Accessibility"><p class="component-browser__tab-copy">Keyboard focus and semantic controls remain part of the shared component contract.</p></AppTab>
                 </AppTabs>
                 <p class="component-browser__result" aria-live="polite">Active tab: @_activeTab</p>
+                <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;AppTabs AriaLabel="Record sections"
+         @@bind-ActiveId="activeTab"&gt;
+    &lt;AppTab Id="overview" Label="Overview"&gt;...&lt;/AppTab&gt;
+    &lt;AppTab Id="activity" Label="Activity"&gt;...&lt;/AppTab&gt;
+&lt;/AppTabs&gt;</code></pre></div>
             </div>
+        </article>
         </section>
 
-        <section id="feedback" class="component-browser__section" aria-labelledby="feedback-title">
-            <header><span>04 / Feedback</span><h2 id="feedback-title">Progress &amp; feedback</h2><code>Value / Intent</code></header>
+        <section id="feedback" class="component-browser__category" aria-labelledby="feedback-title">
+            <header><span>04 / Category</span><h2 id="feedback-title">Feedback</h2></header>
+        <article id="app-feedback" class="component-browser__section" aria-labelledby="app-feedback-title">
+            <header><span>Components</span><h3 id="app-feedback-title">Progress &amp; feedback</h3><code>Value / Intent</code></header>
             <div class="component-browser__stage component-browser__feedback-stage">
                 <div class="component-browser__progress-control">
                     <label for="progress-value">Import progress <strong>@_progress%</strong></label>
@@ -76,8 +109,16 @@
                 {
                     <AppButton Variant="AppButtonVariant.Subtle" OnClick="RestoreFeedback">Restore feedback banner</AppButton>
                 }
+                <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;AppProgress Value="68" AriaLabel="Import progress" /&gt;
+
+&lt;FeedbackBanner Intent="FeedbackIntent.Success"
+                Title="Import complete"
+                Dismissible="true" /&gt;</code></pre></div>
             </div>
+        </article>
         </section>
+        </div>
+        </div>
     </main>
 
     <AppDialog TInput="string" TResult="bool" @ref="_dialog"
