@@ -1,154 +1,61 @@
 @page "/"
 @inject PlaybookState State
 
-<PageTitle>Components · Suttisak.Blazor UI Playbook</PageTitle>
+<PageTitle>Suttisak.Blazor UI Playbook</PageTitle>
 
 <PlaybookShell>
-    <main id="top" class="playbook-canvas">
-        <aside class="playbook-index" aria-label="Component categories">
-            <span>Live gallery / 05</span>
-            <a href="#experience">01 Experience</a>
-            <a href="#workflow">02 Workflow</a>
-            <a href="#feedback">03 Feedback</a>
-            <a href="#marketing">04 Marketing</a>
-            <a href="#tokens">05 Color contract</a>
-        </aside>
-
-        <div class="playbook-sheet">
-            <section class="playbook-intro">
-                <div>
-                    <span class="playbook-kicker">Component gallery · @CurrentTheme.Name</span>
-                    <h1>Real components.<br /><em>Every product voice.</em></h1>
+    <main class="playbook-home">
+        <section class="playbook-home__hero" aria-labelledby="playbook-home-title">
+            <div class="playbook-home__hero-copy">
+                <span class="playbook-kicker">Shared UI system · @CurrentTheme.Name</span>
+                <h1 id="playbook-home-title">Build once.<br /><em>Speak every product.</em></h1>
+                <p>Explore live Razor components, learn their contracts, and test complete integration patterns against every application theme.</p>
+                <div class="playbook-home__actions">
+                    <a class="playbook-home__primary-action" href="components">Browse components <span aria-hidden="true">→</span></a>
+                    <a class="playbook-home__secondary-action" href="application-shell">Open an integrated example</a>
                 </div>
-                <p>These are live Razor components from the shared library—not screenshots. Switch application, scheme, or preview width to exercise the same contract in place.</p>
-            </section>
+            </div>
+            <div class="playbook-home__signal" aria-label="Playbook capabilities">
+                <span class="playbook-home__signal-label">One contract / six voices</span>
+                <div class="playbook-home__signal-orbit" aria-hidden="true"><strong>SB</strong></div>
+                <div class="playbook-preferences playbook-home__preferences"><span>Try the theme</span><ThemeSelector /></div>
+                <ul>
+                    <li><strong>Live</strong><span>Interactive specimens</span></li>
+                    <li><strong>Adaptive</strong><span>Theme and viewport controls</span></li>
+                    <li><strong>Practical</strong><span>Full-page patterns</span></li>
+                </ul>
+            </div>
+        </section>
 
-            <SpecimenSection Id="experience" Number="01" Title="Experience" Description="Reader-first components for results, reports, education, and guidance.">
-                <div class="playbook-stack playbook-stack--loose">
-                    <ExperienceHeader Eyebrow="ANNUAL WELLBEING REVIEW"
-                                      Title="Your result"
-                                      Emphasis="in plain language"
-                                      Description="A reader-first summary that gives the outcome context before showing detailed measurements."
-                                      Watermark="@CurrentTheme.ShortName"
-                                      VisualIsDecorative="false">
-                        <Details><div class="playbook-meta"><span>12 Aug 2026</span><span>8 measures complete</span></div></Details>
-                        <Visual><div class="playbook-score"><span>82</span><strong>On track</strong><small>overall score</small></div></Visual>
-                    </ExperienceHeader>
+        <section class="playbook-home__start" aria-labelledby="start-title">
+            <header><span class="playbook-kicker">Start exploring</span><h2 id="start-title">Choose the level you need.</h2></header>
+            <div class="playbook-home__path-grid">
+                <a href="components" class="playbook-home__path playbook-home__path--featured">
+                    <span>01 / Components</span><h3>Inspect the building blocks</h3>
+                    <p>Pick a component from the sidebar, use the live preview, then copy the Razor usage pattern.</p><strong>Open component browser →</strong>
+                </a>
+                <a href="form-controls" class="playbook-home__path">
+                    <span>02 / Forms</span><h3>Connect real inputs</h3>
+                    <p>See validation and enhanced form behavior in a focused integration sandbox.</p><strong>View form pattern →</strong>
+                </a>
+                <a href="application-shell" class="playbook-home__path">
+                    <span>03 / Application</span><h3>Study the complete shell</h3>
+                    <p>Move through responsive navigation, records, details, and an individual workspace.</p><strong>Launch application shell →</strong>
+                </a>
+            </div>
+        </section>
 
-                    <div class="playbook-card-grid">
-                        <ExperienceCard Elevated="true"><h3>What this means</h3><p>Your latest result is within the expected range for this review.</p></ExperienceCard>
-                        <ExperienceCard Accent="false" Interactive="true"><h3>Your next action</h3><p>Review the recommendations and choose one practical change.</p></ExperienceCard>
-                    </div>
-
-                    <ExperienceDisclosureGroup>
-                        <ExperienceDisclosure Heading="Recommended next step" Recommended="true" BadgeText="Start here" Expanded="true"><p>Turn the result into one clear action that can be completed this week.</p></ExperienceDisclosure>
-                        <ExperienceDisclosure Heading="How the score was calculated"><p>The score combines completed measures using the application’s published rules.</p></ExperienceDisclosure>
-                    </ExperienceDisclosureGroup>
-                </div>
-            </SpecimenSection>
-
-            <SpecimenSection Id="workflow" Number="02" Title="Workflow & forms" Description="Compact hierarchy and actions for CRUD and administration screens.">
-                <div class="playbook-stack">
-                    <PageHeading Title="Assessment periods" Description="Create, publish, and archive assessment windows.">
-                        <PageActions>
-                            <AppButton Variant="AppButtonVariant.Primary">
-                                <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="20"  /></IconStartContent>
-                                <ChildContent>New period</ChildContent>
-                            </AppButton>
-                        </PageActions>
-                    </PageHeading>
-                    <Toolbar AriaLabel="Assessment actions">
-                        <AppButton Variant="AppButtonVariant.Primary">
-                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="20"  /></IconStartContent>
-                            <ChildContent>Shared primary action</ChildContent>
-                        </AppButton>
-                        <AppButton>
-                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Filter" Size="20"  /></IconStartContent>
-                            <ChildContent>Filter</ChildContent>
-                        </AppButton>
-                        <AppButton>
-                            <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowDownload" Size="20"  /></IconStartContent>
-                            <ChildContent>Export</ChildContent>
-                        </AppButton>
-                        <span class="playbook-toolbar-spacer"></span>
-                        <Pill>12 active</Pill>
-                    </Toolbar>
-                    <div class="playbook-preferences" aria-label="Preference selector specimens">
-                        <span>Theme</span><ThemeSelector />
-                        <span>Language</span><CultureSelector />
-                    </div>
-                    <FormSection Title="Period details" Description="A shared form section and responsive grid.">
-                        <FormGrid Columns="2">
-                            <AppTextBox Label="Name" Value="Annual review 2026" />
-                            <AppSelect TValue="string" Label="Status" Value="@( "Draft" )" Options="@PeriodStatusOptions" />
-                        </FormGrid>
-                    </FormSection>
-                    <div class="playbook-card-grid">
-                        <AppCard Title="Bangkok" Description="7 completed · 2 in progress" Interactive="true"><p>Current reporting period</p></AppCard>
-                        <AppCard Title="Rayong" Description="4 completed · 1 in progress"><p>Ready for review</p></AppCard>
-                    </div>
-                    <AppTabs aria-label="Record sections">
-                        <AppTab Label="Overview"><p>Summary content stays inside the shared tab treatment.</p></AppTab>
-                        <AppTab Label="Activity"><p>Recent changes and audit activity.</p></AppTab>
-                        <AppTab Label="Documents"><p>Files and supporting evidence.</p></AppTab>
-                    </AppTabs>
-                </div>
-            </SpecimenSection>
-
-            <SpecimenSection Id="feedback" Number="03" Title="Feedback & status" Description="Semantic states stay stable across all product identities.">
-                <div class="playbook-feedback-grid">
-                    <FeedbackBanner Intent="FeedbackIntent.Info" Title="Draft saved" Message="Changes are visible only to administrators." />
-                    <FeedbackBanner Intent="FeedbackIntent.Success" Title="Published" Message="Participants can now view this result." />
-                    <FeedbackBanner Intent="FeedbackIntent.Warning" Title="Needs review" Message="Two measurements are outside the expected range." />
-                    <FeedbackBanner Intent="FeedbackIntent.Error" Title="Could not sync" Message="Try again after checking the connection." />
-                    <StatusPanel Title="Nothing to review yet" Message="Completed submissions will appear here." Variant="empty">
-                        <Actions>
-                            <AppButton>
-                                <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowClockwise" Size="20"  /></IconStartContent>
-                                <ChildContent>Refresh</ChildContent>
-                            </AppButton>
-                        </Actions>
-                    </StatusPanel>
-                    <AppLoading Title="Loading participant record" Message="Preparing the latest results…" />
-                    <AppCard Title="Import progress" Description="A semantic progress treatment that follows every app palette.">
-                        <AppProgress Value="68" AriaLabel="Import progress" />
-                    </AppCard>
-                </div>
-            </SpecimenSection>
-
-            <SpecimenSection Id="marketing" Number="04" Title="Marketing" Description="Composable primitives used by the Landing Page Sandbox.">
-                <MarketingSectionHeader Title="A product story with shared structure" Description="Cards, proof, steps, actions, product frames, and calls to action use the same app palette." Compact="true">
-                    <Eyebrow><span class="playbook-kicker">MARKETING PRIMITIVES</span></Eyebrow>
-                </MarketingSectionHeader>
-                <div class="playbook-marketing-grid">
-                    <MarketingCard Title="Guided workflow" Featured="true"><ChildContent><p>Give each role the next action and enough context to complete it.</p></ChildContent></MarketingCard>
-                    <MarketingCard Title="Readable results"><ChildContent><p>Translate measurements into a useful, personal explanation.</p></ChildContent></MarketingCard>
-                    <MarketingCard Title="Accessible by default"><ChildContent><p>Keep focus, contrast, motion, and narrow screens in the contract.</p></ChildContent></MarketingCard>
-                </div>
-                <div class="playbook-action-row">
-                    <MarketingActionLink Href="landing">Open the landing sandbox</MarketingActionLink>
-                    <MarketingActionLink Href="#tokens" Variant="MarketingActionVariant.Secondary">Inspect tokens</MarketingActionLink>
-                </div>
-            </SpecimenSection>
-
-            <SpecimenSection Id="tokens" Number="05" Title="Color contract" Description="Only semantic roles consumed by the shared library remain.">
-                <div class="token-grid">
-                    @foreach (var token in PlaybookCatalog.ColorTokens)
-                    {
-                        <article class="token-card"><span class="token-swatch" style="background: var(@token);"></span><code>@token</code></article>
-                    }
-                </div>
-            </SpecimenSection>
-        </div>
+        <section class="playbook-home__contract" aria-labelledby="contract-title">
+            <div><span class="playbook-kicker">The library contract</span><h2 id="contract-title">Product identity changes.<br />Behavior does not.</h2></div>
+            <div class="playbook-home__contract-list">
+                <article><span>Theme</span><p>Switch application and color mode from the workbench bar. Every specimen responds in place.</p></article>
+                <article><span>Access</span><p>Keyboard focus, semantic state, narrow screens, and reduced motion stay part of the component contract.</p></article>
+                <article><span>Ownership</span><p>The library owns structure and behavior. Consuming applications keep their copy, routes, and assets.</p></article>
+            </div>
+        </section>
     </main>
 </PlaybookShell>
 
 @code {
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
-
-    private static readonly AppSelectOption<string>[] PeriodStatusOptions =
-    [
-        new("Draft", "Draft"),
-        new("Published", "Published")
-    ];
 }
