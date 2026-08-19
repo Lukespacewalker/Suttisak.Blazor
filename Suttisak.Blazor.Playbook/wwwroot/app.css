@@ -228,7 +228,7 @@ select { font: inherit; }
 .landing-dashboard__top span { width: .45rem; height: .45rem; border-radius: 50%; background: var(--app-border); }
 .landing-dashboard__top b { margin-left: auto; color: var(--app-accent); font-size: .66rem; letter-spacing: .08em; }
 .landing-dashboard__body { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1rem; padding: 2rem .5rem 1.5rem; }
-.landing-dashboard__score { display: grid; width: 7rem; aspect-ratio: 1; place-items: center; align-content: center; border: 1px solid var(--app-accent-border); border-radius: 50%; background: var(--app-accent-soft); color: var(--app-accent); }
+.landing-dashboard__score { display: grid; width: 7rem; aspect-ratio: 1; place-items: center; align-content: center; border: 1px solid var(--app-accent-border); border-radius: 50%; background: var(--app-accent-soft); color: color-mix(in srgb, var(--app-accent) 72%, var(--app-foreground)); }
 .landing-dashboard__score strong { font-size: 2.8rem; line-height: 1; }
 .landing-dashboard__score span { margin-top: .25rem; font-size: .72rem; font-weight: 800; }
 .landing-dashboard__copy small,
@@ -244,7 +244,7 @@ select { font: inherit; }
 .landing-section { padding: clamp(4rem, 8vw, 8rem) 0; scroll-margin-top: 6rem; }
 .landing-section--muted { background: var(--app-surface-muted); }
 .landing-section--cta { padding-block: clamp(3rem, 6vw, 6rem); }
-.landing-card-number { display: grid; width: 3rem; height: 3rem; place-items: center; border-radius: .7rem 1.25rem; background: var(--app-accent-soft); color: var(--app-accent); font-weight: 900; }
+.landing-card-number { display: grid; width: 3rem; height: 3rem; place-items: center; border-radius: .7rem 1.25rem; background: var(--app-accent-soft); color: color-mix(in srgb, var(--app-accent) 72%, var(--app-foreground)); font-weight: 900; }
 .landing-split { display: grid; grid-template-columns: minmax(0, .75fr) minmax(20rem, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
 .landing-footer { padding: 1.5rem 0; border-top: 1px solid var(--app-border); color: var(--app-foreground-muted); }
 .landing-footer > * { display: flex; justify-content: space-between; gap: 1rem; }
@@ -290,12 +290,9 @@ select { font: inherit; }
 .access-heading h1 { margin: .6rem 0 .55rem; color: var(--app-foreground); font-family: var(--app-font-heading); font-size: clamp(2rem, 3.8cqi, 3.2rem); line-height: .98; letter-spacing: -.045em; }
 .access-heading p { margin: 0; color: var(--app-foreground-muted); font-size: .84rem; line-height: 1.55; }
 .access-provider-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: 1.65rem; }
-.access-provider-grid button,
-.access-passkey-action { display: inline-flex; min-height: 2.85rem; align-items: center; justify-content: center; gap: .6rem; border: 1px solid var(--app-border); border-radius: .65rem; background: var(--app-background); color: var(--app-foreground); font: inherit; font-size: .76rem; font-weight: 780; cursor: pointer; }
-.access-provider-grid button:hover,
-.access-passkey-action:hover { border-color: var(--app-accent-border); background: var(--app-surface-hover); color: var(--app-accent); }
-.access-provider-grid svg,
-.access-passkey-action svg { width: 1rem; height: 1rem; fill: currentColor; }
+.access-provider-grid button { display: inline-flex; min-height: 2.85rem; align-items: center; justify-content: center; gap: .6rem; border: 1px solid var(--app-border); border-radius: .65rem; background: var(--app-background); color: var(--app-foreground); font: inherit; font-size: .76rem; font-weight: 780; cursor: pointer; }
+.access-provider-grid button:hover { border-color: var(--app-accent-border); background: var(--app-surface-hover); color: var(--app-accent); }
+.access-provider-grid svg { width: 1rem; height: 1rem; fill: currentColor; }
 .access-divider { display: flex; align-items: center; gap: .8rem; margin: 1.35rem 0; color: var(--app-foreground-muted); font-size: .67rem; }
 .access-divider::before,
 .access-divider::after { height: 1px; flex: 1; background: var(--app-border); content: ""; }
@@ -313,11 +310,10 @@ select { font: inherit; }
 .access-text-action { padding: 0; border: 0; background: transparent; color: var(--app-accent); font: inherit; font-size: .7rem; font-weight: 780; cursor: pointer; }
 .access-primary-action { display: inline-flex; min-height: 2.9rem; box-sizing: border-box; align-items: center; justify-content: center; padding: .72rem 1rem; border: 1px solid var(--app-brand); border-radius: .65rem; background: var(--app-brand); color: var(--app-on-brand); font: inherit; font-size: .78rem; font-weight: 850; text-decoration: none; cursor: pointer; box-shadow: 0 .55rem 1.25rem var(--app-shadow-color); }
 .access-primary-action:hover { filter: brightness(1.06); }
-.access-passkey-action { width: 100%; }
 .access-switch { display: flex; align-items: center; justify-content: center; gap: .65rem; margin: 1.3rem 0 0; color: var(--app-foreground-muted); font-size: .72rem; text-align: center; }
 .access-switch a { display: inline-flex; min-height: 2.55rem; align-items: center; justify-content: center; padding: 0 .95rem; border: 1px solid var(--app-accent); border-radius: 999px; color: var(--app-accent); font-weight: 850; text-decoration: none; transition: background .16s ease, color .16s ease, transform .16s ease; }
 .access-switch a:hover, .access-switch a:focus-visible { background: var(--app-accent); color: var(--app-on-brand); transform: translateY(-1px); }
-.access-demo-note { margin: .6rem 0 0; color: var(--app-foreground-muted); font-size: .62rem; text-align: center; opacity: .72; }
+.access-demo-note { margin: .6rem 0 0; color: var(--app-foreground-muted); font-size: .62rem; font-weight: 650; text-align: center; }
 .access-story { position: relative; display: flex; min-width: 0; overflow: hidden; flex-direction: column; justify-content: space-between; padding: clamp(2rem, 5cqi, 5rem); background: var(--app-brand); color: var(--app-on-brand); isolation: isolate; }
 .access-story::before { position: absolute; z-index: -1; width: 34rem; height: 34rem; border: 1px solid currentColor; border-radius: 50%; opacity: .13; content: ""; inset: -12rem -10rem auto auto; }
 .access-story::after { position: absolute; z-index: -1; width: 20rem; height: 20rem; border: 5rem solid var(--app-brand-secondary-soft); border-radius: 50%; opacity: .45; content: ""; inset: auto auto -9rem -9rem; }
