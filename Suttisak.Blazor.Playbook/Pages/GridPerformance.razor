@@ -1,40 +1,138 @@
 @page "/grid-performance"
 @using Microsoft.AspNetCore.Components.QuickGrid
 
-<PageTitle>Virtual grid performance · Suttisak.Blazor UI Playbook</PageTitle>
+<PageTitle>Data grid · Suttisak.Blazor UI Playbook</PageTitle>
 
 <PlaybookShell>
-    <main class="component-browser" data-testid="virtual-grid-demo">
-        <header class="component-browser__intro">
-            <div>
-                <span class="playbook-kicker">100,000 records · bounded DOM</span>
-                <h1>Virtual grid.<br /><em>Real component, large source.</em></h1>
+    <main class="grid-lab" data-testid="virtual-grid-demo">
+        <header class="grid-lab__hero">
+            <div class="grid-lab__hero-copy">
+                <span class="playbook-kicker">Data operations / performance lab</span>
+                <h1>Large data.<br /><em>Calm interface.</em></h1>
+                <p>A production-shaped AppDataGrid around a virtualized AppQuickGrid. Search, filter, sort, and scan a 100,000-record source while the browser keeps only a small row window in the DOM.</p>
             </div>
-            <p>This specimen uses the shared AppQuickGrid with virtualization enabled. Only rows around the viewport are rendered, even though the source contains 100,000 records.</p>
+            <dl class="grid-lab__metrics" aria-label="Virtual grid performance contract">
+                <div><dt>Source</dt><dd>100,000</dd><dd class="grid-lab__metric-note">typed records</dd></div>
+                <div><dt>Row</dt><dd>40<small>px</small></dd><dd class="grid-lab__metric-note">fixed item size</dd></div>
+                <div><dt>Overscan</dt><dd>3</dd><dd class="grid-lab__metric-note">rows each side</dd></div>
+                <div><dt>DOM</dt><dd>&lt;200</dd><dd class="grid-lab__metric-note">rows under test</dd></div>
+            </dl>
         </header>
 
-        <section class="component-browser__section" aria-labelledby="virtual-grid-title">
-            <header><span>01 / Performance</span><h2 id="virtual-grid-title">AppQuickGrid</h2><code>Virtualize="true"</code></header>
-            <div class="component-browser__stage">
-                <AppQuickGrid TGridItem="DemoRecord"
-                              Items="Records"
-                              Virtualize="true"
-                              ItemSize="40"
-                              OverscanCount="3"
-                              ItemKey="record => record.Id"
-                              AriaLabel="100000 virtual records">
-                    <PropertyColumn TGridItem="DemoRecord" TProp="int" Property="record => record.Id" Title="Identifier" />
-                    <PropertyColumn TGridItem="DemoRecord" TProp="string" Property="record => record.Name" Title="Name" />
-                </AppQuickGrid>
+        <section class="grid-lab__showcase" aria-labelledby="virtual-grid-title">
+            <header class="grid-lab__section-heading">
+                <div><span>01 / Live specimen</span><h2 id="virtual-grid-title">Assessment register</h2><p>A realistic command surface composed from the shared grid primitives.</p></div>
+                <div class="grid-lab__health"><i aria-hidden="true"></i><span>Virtualization active</span></div>
+            </header>
+
+            <AppDataGrid AriaLabel="Assessment register">
+                <Search>
+                    <AppTextBox Label="Search records" Placeholder="Name, program, or owner" @bind-Value="_search" />
+                </Search>
+                <Filters>
+                    <AppSelect TValue="string" Label="Status" Options="@StatusOptions" @bind-Value="_status" />
+                </Filters>
+                <Actions>
+                    <AppButton>
+                        <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowDownload" Size="18" /></IconStartContent>
+                        <ChildContent>Export view</ChildContent>
+                    </AppButton>
+                    <AppButton Variant="AppButtonVariant.Primary">
+                        <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="18" /></IconStartContent>
+                        <ChildContent>New assessment</ChildContent>
+                    </AppButton>
+                </Actions>
+                <Toolbar>
+                    <div class="grid-lab__toolbar-summary"><strong>@FilteredCount.ToString("N0")</strong><span>matching records</span></div>
+                    <div class="grid-lab__legend" aria-label="Status legend"><span><i class="is-active"></i>Active</span><span><i class="is-review"></i>Needs review</span><span><i class="is-complete"></i>Complete</span></div>
+                </Toolbar>
+                <ChildContent>
+                    <AppQuickGrid TGridItem="GridRecord"
+                                  Items="VisibleRecords"
+                                  Virtualize="true"
+                                  ItemSize="40"
+                                  OverscanCount="3"
+                                  ItemKey="record => record.Id"
+                                  RowClass="RecordRowClass"
+                                  Style="height: 34rem;"
+                                  AriaLabel="100000 virtual records">
+                        <PropertyColumn TGridItem="GridRecord" TProp="int" Property="record => record.Id" Title="ID" Sortable="true" />
+                        <TemplateColumn TGridItem="GridRecord" Title="Assessment" Context="record">
+                            <div class="grid-lab__record"><strong>@record.Name</strong><span>@record.Program</span></div>
+                        </TemplateColumn>
+                        <PropertyColumn TGridItem="GridRecord" TProp="string" Property="record => record.Owner" Title="Owner" Sortable="true" />
+                        <TemplateColumn TGridItem="GridRecord" Title="Status" Context="record">
+                            <span class="grid-lab__status @StatusClass(record.Status)"><i aria-hidden="true"></i>@record.Status</span>
+                        </TemplateColumn>
+                        <PropertyColumn TGridItem="GridRecord" TProp="DateTime" Property="record => record.UpdatedOn" Title="Updated" Format="yyyy-MM-dd" Sortable="true" />
+                        <TemplateColumn TGridItem="GridRecord" Title="" Context="record">
+                            <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" AriaLabel="@($"Open {record.Name}")">Open</AppButton>
+                        </TemplateColumn>
+                    </AppQuickGrid>
+                </ChildContent>
+                <Footer><span class="grid-lab__footnote"><i aria-hidden="true"></i>Only the viewport and overscan buffer are rendered</span></Footer>
+                <Pagination><code>Virtualize="true" · ItemSize="40" · OverscanCount="3"</code></Pagination>
+            </AppDataGrid>
+        </section>
+
+        <section class="grid-lab__implementation" aria-labelledby="implementation-title">
+            <div class="grid-lab__recipe">
+                <span>02 / Implementation</span>
+                <h2 id="implementation-title">The performance contract is explicit.</h2>
+                <pre><code>&lt;AppDataGrid AriaLabel="Assessment register"&gt;
+    &lt;AppQuickGrid TGridItem="Assessment"
+                  Items="Records"
+                  Virtualize="true"
+                  ItemSize="40"
+                  OverscanCount="3"
+                  ItemKey="record =&gt; record.Id"&gt;
+        ...
+    &lt;/AppQuickGrid&gt;
+&lt;/AppDataGrid&gt;</code></pre>
             </div>
+            <ol class="grid-lab__rules">
+                <li><span>01</span><div><strong>Keep row geometry fixed</strong><p>Virtualization needs a stable ItemSize so the scroll range remains accurate.</p></div></li>
+                <li><span>02</span><div><strong>Query only the visible window</strong><p>For remote data, apply StartIndex and Count at the data source rather than loading everything.</p></div></li>
+                <li><span>03</span><div><strong>Preserve row identity</strong><p>ItemKey keeps focus, selection, and rendered state stable while sorting or refreshing.</p></div></li>
+            </ol>
         </section>
     </main>
 </PlaybookShell>
 
 @code {
-    private static readonly IQueryable<DemoRecord> Records = Enumerable.Range(1, 100_000)
-        .Select(id => new DemoRecord(id, $"Record {id:N0}"))
-        .AsQueryable();
+    private static readonly string[] Programs = ["Audiometry", "Ergonomics", "Wellbeing", "Occupational health", "Fatigue"];
+    private static readonly string[] Owners = ["Narin P.", "Mali S.", "Kanda T.", "Preecha R.", "Suda K."];
+    private static readonly string[] Statuses = ["Active", "Needs review", "Complete", "Draft"];
+    private static readonly GridRecord[] Records = Enumerable.Range(1, 100_000)
+        .Select(id => new GridRecord(
+            id,
+            $"Assessment {id:N0}",
+            Programs[(id - 1) % Programs.Length],
+            Owners[(id - 1) % Owners.Length],
+            Statuses[(id - 1) % Statuses.Length],
+            new DateTime(2026, 8, 19).AddDays(-(id % 45))))
+        .ToArray();
 
-    private sealed record DemoRecord(int Id, string Name);
+    private static readonly AppSelectOption<string>[] StatusOptions =
+    [
+        new("All", "All statuses"), new("Active", "Active"), new("Needs review", "Needs review"),
+        new("Complete", "Complete"), new("Draft", "Draft")
+    ];
+
+    private string? _search;
+    private string _status = "All";
+
+    private IEnumerable<GridRecord> FilteredRecords => Records.Where(record =>
+        (_status == "All" || record.Status == _status)
+        && (string.IsNullOrWhiteSpace(_search)
+            || record.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || record.Program.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || record.Owner.Contains(_search, StringComparison.OrdinalIgnoreCase)));
+
+    private IQueryable<GridRecord> VisibleRecords => FilteredRecords.AsQueryable();
+    private int FilteredCount => FilteredRecords.Count();
+    private static string RecordRowClass(GridRecord record) => $"grid-row--{StatusClass(record.Status)}";
+    private static string StatusClass(string status) => status.ToLowerInvariant().Replace(' ', '-');
+
+    private sealed record GridRecord(int Id, string Name, string Program, string Owner, string Status, DateTime UpdatedOn);
 }
