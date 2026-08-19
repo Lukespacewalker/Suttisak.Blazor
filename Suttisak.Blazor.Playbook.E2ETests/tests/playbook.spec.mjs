@@ -64,7 +64,28 @@ test.describe('UI Playbook shared-component contracts', () => {
     expect(layout.scrollBehavior).toBe('auto');
   });
 
-  for (const path of ['/', '/component-browser', '/form-controls']) {
+  test('Login keeps Microsoft and Passkey aligned with monochrome icons', async ({ page }) => {
+    await page.goto('/access/login');
+
+    const providers = page.locator('.access-provider-grid button');
+    await expect(providers).toHaveCount(2);
+    await expect(providers.nth(0)).toContainText('Microsoft');
+    await expect(providers.nth(1)).toContainText('Passkey');
+
+    const desktop = await providers.evaluateAll(buttons => ({
+      top: buttons.map(button => button.getBoundingClientRect().top),
+      fills: buttons.map(button => getComputedStyle(button.querySelector('svg')).fill)
+    }));
+    expect(Math.abs(desktop.top[0] - desktop.top[1])).toBeLessThan(1);
+    expect(new Set(desktop.fills).size).toBe(1);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    const mobileTop = await providers.evaluateAll(buttons => buttons.map(button => button.getBoundingClientRect().top));
+    expect(mobileTop[1]).toBeGreaterThan(mobileTop[0]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  });
+
+  for (const path of ['/', '/component-browser', '/form-controls', '/landing', '/access/login']) {
     test(`has no serious or critical axe violations on ${path}`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator('main')).toBeVisible();
