@@ -37,6 +37,27 @@
     private readonly string _generatedId = $"app-radio-{Guid.NewGuid():N}";
     private string InputId => Id ?? _generatedId;
     private bool IsSelected => EqualityComparer<TValue>.Default.Equals(Group.CurrentValue, Value);
-    private static string Format(TValue value) => BindConverter.FormatValue(value, CultureInfo.CurrentCulture)?.ToString() ?? string.Empty;
+    private static string Format(TValue value)
+    {
+        if (value is null)
+        {
+            return string.Empty;
+        }
+
+        // BindConverter's type-converter path can receive Nullable<T> or the
+        // abstract Enum base type even though the value is boxed as T. Format
+        // the boxed value directly with the current culture instead. This
+        // covers nullable enums, Enum-valued reflection components, and
+        // identifiers such as Guid? while retaining the converter's existing
+        // behavior for other non-nullable types.
+        if (value is Enum || Nullable.GetUnderlyingType(typeof(TValue)) is not null)
+        {
+            return value is IFormattable formattable
+                ? formattable.ToString(null, CultureInfo.CurrentCulture) ?? string.Empty
+                : value.ToString() ?? string.Empty;
+        }
+
+        return BindConverter.FormatValue(value, CultureInfo.CurrentCulture)?.ToString() ?? string.Empty;
+    }
     private Task HandleChange(ChangeEventArgs _) => Group.SetValueAsync(Value);
 }
