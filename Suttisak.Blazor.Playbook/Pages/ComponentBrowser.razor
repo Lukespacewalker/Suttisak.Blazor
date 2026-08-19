@@ -15,19 +15,66 @@
 
         <div class="component-browser__workspace">
         <aside class="component-browser__sidebar">
+            <label class="component-browser__search">
+                <span>Find a component</span>
+                <input type="search" placeholder="Button, input, grid…" @bind="_catalogSearch" @bind:event="oninput" />
+            </label>
             <nav aria-label="Components">
-                <div><span>Actions</span><a href="#app-button">AppButton</a></div>
-                <div><span>Overlays</span><a href="#app-dialog">AppDialog &amp; AppDrawer</a></div>
-                <div><span>Navigation</span><a href="#app-tabs">AppTabs</a></div>
-                <div><span>Feedback</span><a href="#app-feedback">AppProgress</a><a href="#app-feedback">FeedbackBanner</a></div>
+                @foreach (var group in FilteredCatalog)
+                {
+                    <details open="@(group.Name == "Forms & inputs" || !string.IsNullOrWhiteSpace(_catalogSearch))">
+                        <summary><span>@group.Name</span><small>@group.Items.Count</small></summary>
+                        <div>
+                            @foreach (var item in group.Items)
+                            {
+                                <a href="@item.Href">@item.Name</a>
+                            }
+                        </div>
+                    </details>
+                }
             </nav>
-            <p><strong>6 live contracts</strong><span>More components can join this catalog without expanding the top navigation.</span></p>
+            <p><strong>@CatalogComponentCount catalog entries</strong><span>Every Razor component in the library is indexed; consumer-facing controls include live specimens or a linked full-page pattern.</span></p>
         </aside>
 
         <div class="component-browser__content">
 
+        <section id="forms" class="component-browser__category" aria-labelledby="forms-title">
+            <header><span>01 / Category</span><h2 id="forms-title">Forms &amp; inputs</h2></header>
+            <article class="component-browser__section component-browser__section--wide" aria-labelledby="input-controls-title">
+                <header><span>11 live controls</span><h3 id="input-controls-title">Input controls</h3><code>AppInputBase&lt;TValue&gt;</code></header>
+                <div class="component-browser__stage component-browser__input-grid">
+                    <div id="app-text-box" class="component-browser__input-specimen"><h4>AppTextBox</h4><AppTextBox Label="Display name" Description="Single-line text with optional icon and validation." Placeholder="Enter a name" @bind-Value="_textValue" /><code>&lt;AppTextBox Label="Display name" @@bind-Value="model.Name" /&gt;</code></div>
+                    <div id="app-text-area" class="component-browser__input-specimen"><h4>AppTextArea</h4><AppTextArea Label="Notes" Description="Multi-line content with a character limit." Placeholder="Add context…" Rows="3" MaxLength="160" @bind-Value="_noteValue" /><code>&lt;AppTextArea Label="Notes" Rows="3" @@bind-Value="model.Note" /&gt;</code></div>
+                    <div id="app-number-input" class="component-browser__input-specimen"><h4>AppNumberInput</h4><AppNumberInput TValue="int" Label="Capacity" Description="Typed numeric value with range and step." Min="0" Max="100" Step="5" @bind-Value="_numberValue" /><code>&lt;AppNumberInput TValue="int" Min="0" Max="100" @@bind-Value="model.Capacity" /&gt;</code></div>
+                    <div id="app-select" class="component-browser__input-specimen"><h4>AppSelect + AppSelectItem</h4><AppSelect TValue="string" Label="Department" Description="Single selection from typed options." Placeholder="Choose a department" Options="@DepartmentOptions" @bind-Value="_selectedDepartment" /><code>&lt;AppSelect TValue="string" Options="DepartmentOptions" @@bind-Value="model.Department" /&gt;</code></div>
+                    <div id="app-multi-select" class="component-browser__input-specimen"><h4>AppMultiSelect</h4><AppMultiSelect TValue="string" Label="Roles" Description="Select more than one typed option." Options="@RoleOptions" @bind-SelectedItems="_selectedRoles" /><code>&lt;AppMultiSelect TValue="string" Options="RoleOptions" @@bind-SelectedItems="model.Roles" /&gt;</code></div>
+                    <div id="app-radio-group" class="component-browser__input-specimen"><h4>AppRadioGroup + AppRadio</h4><AppRadioGroup TValue="string" Label="Contact channel" Description="A related set of exclusive choices." Orientation="Horizontal" Options="@ContactOptions" @bind-Value="_selectedContact" /><code>&lt;AppRadioGroup TValue="string" Options="ContactOptions" @@bind-Value="model.Channel" /&gt;</code></div>
+                    <div id="app-checkbox" class="component-browser__input-specimen"><h4>AppCheckbox</h4><AppCheckbox Label="Information is correct" @bind-Value="_confirmed" /><p class="component-browser__input-note">Boolean or optional three-state confirmation.</p><code>&lt;AppCheckbox Label="Confirm" @@bind-Value="model.Confirmed" /&gt;</code></div>
+                    <div id="app-switch" class="component-browser__input-specimen"><h4>AppSwitch</h4><AppSwitch Label="Email notifications" Description="Immediate on/off preference." @bind-Value="_notificationsEnabled" /><code>&lt;AppSwitch Label="Notifications" @@bind-Value="model.Enabled" /&gt;</code></div>
+                    <div id="app-calendar-picker" class="component-browser__input-specimen"><h4>AppCalendarPicker</h4><AppCalendarPicker Label="Appointment date" Description="Native-first date with themed popup." @bind-Value="_dateValue" /><code>&lt;AppCalendarPicker Label="Date" @@bind-Value="model.Date" /&gt;</code></div>
+                    <div id="app-time-picker" class="component-browser__input-specimen"><h4>AppTimePicker</h4><AppTimePicker Label="Start time" Description="Minute and optional second steps." MinuteStep="15" @bind-Value="_timeValue" /><code>&lt;AppTimePicker MinuteStep="15" @@bind-Value="model.Time" /&gt;</code></div>
+                    <div id="app-date-time-picker" class="component-browser__input-specimen"><h4>AppDateTimePicker</h4><AppDateTimePicker Label="Follow-up" Description="Browser-local date and time contract." MinuteStep="15" @bind-Value="_dateTimeValue" /><code>&lt;AppDateTimePicker MinuteStep="15" @@bind-Value="model.StartsAt" /&gt;</code></div>
+                </div>
+            </article>
+            <article id="form-composition" class="component-browser__section component-browser__section--wide" aria-labelledby="form-composition-title">
+                <header><span>Composition</span><h3 id="form-composition-title">Form structure</h3><code>FormSection / Grid / Field / Actions</code></header>
+                <div class="component-browser__stage">
+                    <FormSection Title="Contact details" Description="Form primitives own layout while inputs own value and validation behavior.">
+                        <FormGrid Columns="2"><FormField><AppTextBox Label="Email" Value="person@example.com" /></FormField><FormField><AppSelect TValue="string" Label="Department" Value="@("Clinical")" Options="@DepartmentOptions" /></FormField></FormGrid>
+                        <FormActions><SecondaryActions><AppButton Variant="AppButtonVariant.Subtle">Cancel</AppButton></SecondaryActions><ChildContent><AppButton Variant="AppButtonVariant.Primary">Save changes</AppButton></ChildContent></FormActions>
+                    </FormSection>
+                    <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;FormSection Title="Contact details"&gt;
+    &lt;FormGrid Columns="2"&gt;
+        &lt;FormField&gt;...&lt;/FormField&gt;
+    &lt;/FormGrid&gt;
+    &lt;FormActions&gt;...&lt;/FormActions&gt;
+&lt;/FormSection&gt;</code></pre></div>
+                </div>
+            </article>
+        </section>
+
         <section id="actions" class="component-browser__category" aria-labelledby="actions-title">
-            <header><span>01 / Category</span><h2 id="actions-title">Actions</h2></header>
+            <header><span>02 / Category</span><h2 id="actions-title">Actions</h2></header>
         <article id="app-button" class="component-browser__section" aria-labelledby="app-button-title">
             <header><span>Component</span><h3 id="app-button-title">AppButton</h3><code>&lt;AppButton&gt;</code></header>
             <div class="component-browser__stage">
@@ -46,7 +93,7 @@
         </section>
 
         <section id="overlays" class="component-browser__category" aria-labelledby="overlays-title">
-            <header><span>02 / Category</span><h2 id="overlays-title">Overlays</h2></header>
+            <header><span>03 / Category</span><h2 id="overlays-title">Overlays</h2></header>
         <article id="app-dialog" class="component-browser__section" aria-labelledby="app-dialog-title">
             <header><span>Components</span><h3 id="app-dialog-title">Dialog &amp; Drawer</h3><code>ShowAsync(value)</code></header>
             <div class="component-browser__stage component-browser__stage--split">
@@ -72,7 +119,7 @@ if (result.HasValue)
         </section>
 
         <section id="navigation" class="component-browser__category" aria-labelledby="navigation-title">
-            <header><span>03 / Category</span><h2 id="navigation-title">Navigation</h2></header>
+            <header><span>04 / Category</span><h2 id="navigation-title">Navigation</h2></header>
         <article id="app-tabs" class="component-browser__section" aria-labelledby="app-tabs-title">
             <header><span>Component</span><h3 id="app-tabs-title">AppTabs</h3><code>&lt;AppTabs&gt;</code></header>
             <div class="component-browser__stage">
@@ -92,7 +139,7 @@ if (result.HasValue)
         </section>
 
         <section id="feedback" class="component-browser__category" aria-labelledby="feedback-title">
-            <header><span>04 / Category</span><h2 id="feedback-title">Feedback</h2></header>
+            <header><span>05 / Category</span><h2 id="feedback-title">Feedback</h2></header>
         <article id="app-feedback" class="component-browser__section" aria-labelledby="app-feedback-title">
             <header><span>Components</span><h3 id="app-feedback-title">Progress &amp; feedback</h3><code>Value / Intent</code></header>
             <div class="component-browser__stage component-browser__feedback-stage">
@@ -116,6 +163,23 @@ if (result.HasValue)
                 Dismissible="true" /&gt;</code></pre></div>
             </div>
         </article>
+        </section>
+
+        <section id="library-directory" class="component-browser__category component-browser__directory" aria-labelledby="library-directory-title">
+            <header><span>Complete index</span><h2 id="library-directory-title">All @CatalogComponentCount Razor components</h2></header>
+            <p class="component-browser__directory-intro">The index includes public building blocks, composition helpers, full layouts, and the infrastructure components that support them. “Live here” opens a specimen above; “Pattern page” opens the complete integration context.</p>
+            @foreach (var group in CatalogGroups)
+            {
+                <section aria-labelledby="@($"directory-{group.Name.Replace(' ', '-').Replace('&', 'a').ToLowerInvariant()}")">
+                    <h3 id="@($"directory-{group.Name.Replace(' ', '-').Replace('&', 'a').ToLowerInvariant()}")">@group.Name <span>@group.Items.Count</span></h3>
+                    <div>
+                        @foreach (var item in group.Items)
+                        {
+                            <a href="@item.Href"><strong>@item.Name</strong><span>@CoverageLabel(item)</span></a>
+                        }
+                    </div>
+                </section>
+            }
         </section>
         </div>
         </div>
@@ -153,6 +217,116 @@ if (result.HasValue)
     private string? _activeTab = "overview";
     private string? _drawerNote;
     private string _overlayResult = "No overlay result yet.";
+    private string _catalogSearch = string.Empty;
+    private string? _textValue = "Kanda S.";
+    private string? _noteValue = "Follow up after the annual review.";
+    private int _numberValue = 40;
+    private string? _selectedDepartment = "Clinical";
+    private IEnumerable<string> _selectedRoles = ["Reviewer", "Coordinator"];
+    private string? _selectedContact = "Email";
+    private bool _confirmed = true;
+    private bool _notificationsEnabled = true;
+    private DateOnly? _dateValue = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
+    private TimeOnly? _timeValue = new(9, 30);
+    private DateTime? _dateTimeValue = DateTime.SpecifyKind(DateTime.Today.AddDays(7).AddHours(10), DateTimeKind.Unspecified);
+
+    private static readonly AppSelectOption<string>[] DepartmentOptions =
+    [
+        new("Airside", "Airside operations"), new("Clinical", "Clinical services"), new("People", "People and culture")
+    ];
+
+    private static readonly AppSelectOption<string>[] RoleOptions =
+    [
+        new("Reviewer", "Reviewer"), new("Coordinator", "Coordinator"), new("Administrator", "Administrator")
+    ];
+
+    private static readonly AppSelectOption<string>[] ContactOptions =
+    [
+        new("Email", "Email"), new("Phone", "Phone"), new("App", "In-app message")
+    ];
+
+    private static readonly CatalogGroup[] CatalogGroups =
+    [
+        new("Forms & inputs",
+        [
+            new("AppTextBox", "#app-text-box"), new("AppTextArea", "#app-text-area"), new("AppNumberInput", "#app-number-input"),
+            new("AppSelect", "#app-select"), new("AppSelectItem", "#app-select"), new("AppMultiSelect", "#app-multi-select"),
+            new("AppRadioGroup", "#app-radio-group"), new("AppRadio", "#app-radio-group"), new("AppCheckbox", "#app-checkbox"),
+            new("AppSwitch", "#app-switch"), new("AppCalendarPicker", "#app-calendar-picker"), new("AppTimePicker", "#app-time-picker"),
+            new("AppDateTimePicker", "#app-date-time-picker"), new("FormSection", "#form-composition"), new("FormGrid", "#form-composition"),
+            new("FormField", "#form-composition"), new("FormActions", "#form-composition"), new("FormValidationSummary", "form-controls#edit-form-title")
+        ]),
+        new("Actions & surfaces",
+        [
+            new("AppButton", "#app-button"), new("AppCard", "#library-directory"), new("AppDivider", "#library-directory"),
+            new("AppStack", "#library-directory"), new("CardMenu", "#library-directory"), new("CompanyFooter", "#library-directory"),
+            new("Hero", "#library-directory"), new("Pill", "#library-directory"), new("Toolbar", "#library-directory"),
+            new("PageActionToolbar", "application-shell"), new("PageHeading", "application-shell")
+        ]),
+        new("Data & display",
+        [
+            new("AppBreadcrumb", "#library-directory"), new("AppDataGrid", "grid-performance"), new("AppGrid", "grid-performance"),
+            new("AppGridPaginator", "grid-performance"), new("AppGridPropertyColumn", "grid-performance"), new("AppGridSelectColumn", "grid-performance"),
+            new("AppGridTemplateColumn", "grid-performance"), new("AppPagination", "#library-directory"), new("AppQuickGrid", "grid-performance"),
+            new("AppQuickPaginator", "grid-performance"), new("DataGridContainer", "grid-performance"), new("PageBreadcrumbs", "application-shell")
+        ]),
+        new("Feedback & async",
+        [
+            new("AppLoading", "#app-feedback"), new("AppProgress", "#app-feedback"), new("AppSkeleton", "#library-directory"),
+            new("AsyncContent", "#library-directory"), new("FeedbackBanner", "#app-feedback"), new("StatusPanel", "#library-directory")
+        ]),
+        new("Overlays",
+        [
+            new("AppDialog", "#app-dialog"), new("AppDrawer", "#app-dialog")
+        ]),
+        new("Navigation",
+        [
+            new("AppTabs", "#app-tabs"), new("AppTab", "#app-tabs"), new("Nav", "application-shell"), new("NavCategory", "application-shell"),
+            new("NavItem", "application-shell"), new("NavSubmenu", "application-shell"), new("SectionNavigation", "application-shell/person"),
+            new("MobileNavigationAccount", "application-shell"), new("ProfileMenu", "application-shell")
+        ]),
+        new("Preferences & time",
+        [
+            new("CultureSelector", "#library-directory"), new("PreferencesSelector", "#library-directory"), new("ThemeSelector", "/"),
+            new("InitializeTimeZone", "form-controls#timezone-title"), new("LocalTime", "#library-directory")
+        ]),
+        new("Experience",
+        [
+            new("ExperienceCard", "#library-directory"), new("ExperienceDisclosure", "#library-directory"),
+            new("ExperienceDisclosureGroup", "#library-directory"), new("ExperienceHeader", "#library-directory")
+        ]),
+        new("Marketing",
+        [
+            new("MarketingActionLink", "landing"), new("MarketingCallToAction", "landing"), new("MarketingCard", "landing"),
+            new("MarketingContainer", "landing"), new("MarketingFeatureGrid", "landing"), new("MarketingHero", "landing"),
+            new("MarketingPage", "landing"), new("MarketingProductFrame", "landing"), new("MarketingProofItem", "landing"),
+            new("MarketingProofStrip", "landing"), new("MarketingSectionHeader", "landing"), new("MarketingStep", "landing"),
+            new("MarketingStepList", "landing")
+        ]),
+        new("Application layouts",
+        [
+            new("AccessPageLayout", "access/login"), new("ApplicationShellV2", "application-shell"), new("HeaderFooterLayout", "#library-directory"),
+            new("IdentityLayout", "access/login"), new("LandingLayout", "landing"), new("MainLayoutV2", "application-shell"), new("RootLayout", "#library-directory")
+        ]),
+        new("Infrastructure",
+        [
+            new("AppInputSupport", "#library-directory"), new("AppOverlayHost", "#app-dialog"), new("LayoutMobileMenuButtonWrapper", "application-shell")
+        ])
+    ];
+
+    private IEnumerable<CatalogGroup> FilteredCatalog => string.IsNullOrWhiteSpace(_catalogSearch)
+        ? CatalogGroups
+        : CatalogGroups.Select(group => new CatalogGroup(group.Name,
+            group.Items.Where(item => item.Name.Contains(_catalogSearch, StringComparison.OrdinalIgnoreCase)).ToArray()))
+            .Where(group => group.Items.Count > 0);
+
+    private static int CatalogComponentCount => CatalogGroups.Sum(group => group.Items.Count);
+    private static string CoverageLabel(CatalogItem item) => item.Href switch
+    {
+        "#library-directory" => "Catalog entry",
+        var href when href.StartsWith('#') => "Live here",
+        _ => "Pattern page"
+    };
 
     private void Increment() => _itemCount++;
     private void ResetCount() => _itemCount = 3;
@@ -171,4 +345,7 @@ if (result.HasValue)
         var result = await _drawer!.ShowAsync("AppDrawer");
         _overlayResult = result.HasValue ? "Drawer was completed." : "Drawer was cancelled.";
     }
+
+    private sealed record CatalogItem(string Name, string Href);
+    private sealed record CatalogGroup(string Name, IReadOnlyList<CatalogItem> Items);
 }

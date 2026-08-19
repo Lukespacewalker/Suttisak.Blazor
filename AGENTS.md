@@ -11,7 +11,7 @@ When changing the reusable UI library, follow this sequence:
 5. Once the package is available, update every Release `PackageReference` for `Suttisak.Blazor.UserInterface` in these six consuming repositories, then commit and push each repository:
    - `AudiogramIQ`
    - `BafsWorkout`
-   - `OccMedCheckUpBlazor`
+   - `HealthInsight`
    - `CoeKPI`
    - `ErgoTrack`
    - `MentalInsight`
