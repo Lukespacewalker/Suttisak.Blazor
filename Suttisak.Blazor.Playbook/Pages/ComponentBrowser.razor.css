@@ -1,16 +1,28 @@
-.component-browser { width: min(100% - 2rem, 82rem); margin: 0 auto; padding: clamp(2rem, 5vw, 5.5rem) 0 6rem; }
+.component-browser { width: min(100% - 2rem, 92rem); margin: 0 auto; padding: clamp(2rem, 5vw, 5.5rem) 0 6rem; }
 .component-browser__intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(16rem, .65fr); align-items: end; gap: 3rem; padding: 0 clamp(.5rem, 2vw, 1.5rem) 2.5rem; border-bottom: 1px solid var(--app-border); }
 .component-browser__intro h1 { margin: .45rem 0 0; font-family: var(--app-font-heading); font-size: clamp(3rem, 6vw, 5.6rem); line-height: .88; letter-spacing: -.065em; }
 .component-browser__intro h1 em { color: var(--app-accent); font-style: normal; }
 .component-browser__intro p { max-width: 38rem; margin: 0 0 .35rem; color: var(--app-foreground-muted); font-size: 1rem; line-height: 1.7; }
-.component-browser__jump { display: flex; flex-wrap: wrap; gap: .5rem; padding: 1.25rem clamp(.5rem, 2vw, 1.5rem); border-bottom: 1px solid var(--app-grid-line); }
-.component-browser__jump a { padding: .4rem .7rem; border: 1px solid var(--app-border); border-radius: 99rem; color: var(--app-foreground-muted); font-size: .78rem; font-weight: 750; text-decoration: none; }
-.component-browser__jump a:hover, .component-browser__jump a:focus-visible { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-foreground); outline: none; }
-.component-browser__section { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: clamp(1.25rem, 4vw, 4rem); padding: clamp(2rem, 5vw, 4rem) clamp(.5rem, 2vw, 1.5rem); border-bottom: 1px solid var(--app-border); }
-.component-browser__section > header span { display: block; color: var(--app-accent); font-size: .7rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.component-browser__section h2 { margin: .35rem 0 .65rem; font-family: var(--app-font-heading); font-size: 1.7rem; letter-spacing: -.035em; }
-.component-browser__section code { color: var(--app-foreground-muted); font-size: .76rem; }
-.component-browser__stage { min-width: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--app-border); border-radius: 1rem; background: linear-gradient(135deg, var(--app-brand-soft), transparent 45%), var(--app-surface); box-shadow: 0 1rem 2.5rem var(--app-shadow-color); }
+.component-browser__workspace { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.component-browser__sidebar { position: sticky; top: 5.8rem; max-height: calc(100dvh - 7rem); padding: 1.5rem .5rem 1rem; overflow-y: auto; }
+.component-browser__sidebar nav { display: grid; gap: 1.35rem; }
+.component-browser__sidebar nav div { display: grid; gap: .2rem; }
+.component-browser__sidebar nav span { margin-bottom: .2rem; color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+.component-browser__sidebar a { padding: .42rem .55rem; border-left: 2px solid transparent; border-radius: 0 .45rem .45rem 0; color: var(--app-foreground-muted); font-size: .78rem; font-weight: 680; text-decoration: none; }
+.component-browser__sidebar a:hover, .component-browser__sidebar a:focus-visible { border-left-color: var(--app-accent); background: var(--app-accent-soft); color: var(--app-foreground); outline: none; }
+.component-browser__sidebar > p { display: grid; gap: .25rem; margin: 2rem 0 0; padding: 1rem .55rem 0; border-top: 1px solid var(--app-border); }
+.component-browser__sidebar > p strong { font-size: .7rem; }
+.component-browser__sidebar > p span { color: var(--app-foreground-muted); font-size: .65rem; line-height: 1.5; }
+.component-browser__content { min-width: 0; }
+.component-browser__category { scroll-margin-top: 5.5rem; padding: 3.5rem 0 1rem; border-bottom: 1px solid var(--app-border); }
+.component-browser__category > header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.35rem; }
+.component-browser__category > header span { color: var(--app-accent); font-size: .65rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.component-browser__category > header h2 { margin: 0; font-family: var(--app-font-heading); font-size: clamp(2rem, 4vw, 3.4rem); letter-spacing: -.045em; }
+.component-browser__section { scroll-margin-top: 5.5rem; display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 3rem); padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid var(--app-border); border-radius: 1.15rem; background: var(--app-surface-muted); }
+.component-browser__section > header span { display: block; color: var(--app-accent); font-size: .6rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.component-browser__section h3 { margin: .35rem 0 .65rem; font-family: var(--app-font-heading); font-size: 1.45rem; letter-spacing: -.035em; }
+.component-browser__section > header code { color: var(--app-foreground-muted); font-size: .72rem; }
+.component-browser__stage { min-width: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--app-border); border-radius: .85rem; background: linear-gradient(135deg, var(--app-brand-soft), transparent 45%), var(--app-surface); box-shadow: 0 1rem 2.5rem var(--app-shadow-color); }
 .component-browser__stage--split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
 .component-browser__stage--split > div { display: grid; align-content: start; gap: .8rem; }
 .component-browser__stage h3 { margin: 0; font-size: 1rem; }
@@ -26,5 +38,9 @@
 .component-browser__progress-control label { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; }
 .component-browser__progress-control label strong { color: var(--app-accent); }
 .component-browser__progress-control input { width: 100%; accent-color: var(--app-accent); }
+.component-browser__usage { grid-column: 1 / -1; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--app-border); }
+.component-browser__usage > span { display: block; margin-bottom: .6rem; color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.component-browser__usage pre { margin: 0; padding: 1rem; border-radius: .6rem; overflow-x: auto; background: var(--app-background); color: var(--app-foreground); font-size: .73rem; line-height: 1.65; }
+@media (max-width: 64rem) { .component-browser__workspace { grid-template-columns: 1fr; gap: 0; } .component-browser__sidebar { position: sticky; z-index: 10; top: 4.5rem; max-height: none; margin-inline: -.25rem; padding: .65rem .25rem; border-bottom: 1px solid var(--app-border); background: var(--app-background); overflow-x: auto; } .component-browser__sidebar nav { display: flex; gap: .4rem; } .component-browser__sidebar nav div { display: contents; } .component-browser__sidebar nav span, .component-browser__sidebar > p { display: none; } .component-browser__sidebar a { flex: 0 0 auto; padding: .45rem .65rem; border: 1px solid var(--app-border); border-radius: 99rem; } }
 @media (max-width: 50rem) { .component-browser__intro, .component-browser__section { grid-template-columns: 1fr; gap: 1.25rem; } .component-browser__intro { align-items: start; } }
-@media (max-width: 34rem) { .component-browser { width: min(100% - 1rem, 82rem); padding-top: 2rem; } .component-browser__stage--split { grid-template-columns: 1fr; } .component-browser__section { padding-inline: 0; } }
+@media (max-width: 34rem) { .component-browser { width: min(100% - 1rem, 92rem); padding-top: 2rem; } .component-browser__stage--split { grid-template-columns: 1fr; } .component-browser__category { padding-top: 2.5rem; } .component-browser__section { padding: 1rem; } }
