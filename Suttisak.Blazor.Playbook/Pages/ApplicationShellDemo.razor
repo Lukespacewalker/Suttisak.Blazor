@@ -1,17 +1,14 @@
 @page "/application-shell"
 
-<PageTitle>Application Shell V2 · UI Playbook</PageTitle>
+<PageTitle>Application Shell · UI Playbook</PageTitle>
 
 <PlaybookShell>
     <div class="application-shell-workbench">
-        <DemoApplicationShell>
+        <DemoApplicationShell BreadcrumbItems="@OverviewBreadcrumbs">
             <PageHeader>
                 <PageHeading Title="Good morning, Kanda"
                              Description="A compact home for daily operations, recent activity, and the work that needs attention."
                              IconName="@("Home")">
-                    <Breadcrumbs>
-                        <AppBreadcrumb Items="@OverviewBreadcrumbs" />
-                    </Breadcrumbs>
                     <PageActions>
                         <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
                             <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Table" Size="20"  /></IconStartContent>

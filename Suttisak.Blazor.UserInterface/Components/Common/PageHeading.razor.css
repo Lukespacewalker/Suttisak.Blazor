@@ -28,14 +28,6 @@
     pointer-events: none;
 }
 
-.page-heading__breadcrumbs {
-    padding: .65rem 1rem .55rem;
-    border-bottom: 1px solid var(--app-border);
-    background: color-mix(in srgb, var(--app-surface-muted) 76%, transparent);
-    color: var(--app-foreground-muted);
-    font-size: .78rem;
-}
-
 .page-heading__section {
     display: flex;
     min-width: 0;
@@ -141,7 +133,6 @@
 }
 
 @container page-heading (max-width: 40rem) {
-    .page-heading__breadcrumbs { padding-inline: .8rem; overflow-x: auto; }
     .page-heading__section { align-items: flex-start; flex-wrap: wrap; padding: .7rem .8rem; }
     .page-heading__section-actions { width: 100%; min-width: 0; justify-content: flex-start; padding-top: .15rem; }
     .page-heading__body { align-items: flex-start; flex-wrap: wrap; padding: .8rem; }

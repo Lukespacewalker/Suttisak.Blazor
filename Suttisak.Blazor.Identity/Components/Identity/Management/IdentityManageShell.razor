@@ -6,6 +6,8 @@
 @using Suttisak.Blazor.UserInterface.Layouts
 @inject IStringLocalizer<IdentityManageShell> Text
 
+<PageBreadcrumbs Items="@BreadcrumbItems" />
+
 <SectionContent SectionName="@CommonSections.PageTitle">
     <PageHeading SectionTitle="@Text["AccountCenter"]"
                  SectionDescription="@Text["AccountCenterCaption"]"
@@ -16,7 +18,6 @@
                  IconName="@IconName"
                  IconSize="@IconSize"
                  PageActions="@PageActions">
-        <Breadcrumbs><AppBreadcrumb Items="@BreadcrumbItems" /></Breadcrumbs>
         <Navigation>
             <SectionNavigation AriaLabel="@Text["AccountNavigation"]"
                                CurrentSectionLabel="@CurrentSectionLabel"
