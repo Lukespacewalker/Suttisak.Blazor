@@ -27,7 +27,7 @@ to own its logo, routes, localized labels, preference behavior, and profile UI.
 <ApplicationShell>
     <Brand>@* product logo and name *@</Brand>
     <Navigation>@* application NavLinks *@</Navigation>
-    <ThemeSwitcher><ThemeSelector /></ThemeSwitcher>
+    <ThemeSwitcher><ThemeSwitcher /></ThemeSwitcher>
     <LanguageSwitcher><CultureSelector /></LanguageSwitcher>
     <Profile>@* authenticated profile control *@</Profile>
     <Heading>

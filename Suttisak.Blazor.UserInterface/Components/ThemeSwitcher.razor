@@ -23,12 +23,12 @@
 </div>
 
 @code {
-    private readonly DotNetObjectReference<ThemeSelector> _reference;
+    private readonly DotNetObjectReference<ThemeSwitcher> _reference;
     private IJSObjectReference? _module;
     private long? _subscriptionId;
     private DesignThemeMode _currentThemeMode = DesignThemeMode.System;
 
-    public ThemeSelector()
+    public ThemeSwitcher()
     {
         _reference = DotNetObjectReference.Create(this);
     }
@@ -39,10 +39,18 @@
 
         _module = await JsRuntime.InvokeAsync<IJSObjectReference>(
             "import",
-            "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSelector.razor.js");
+            "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSwitcher.razor.js");
         var state = await _module.InvokeAsync<ThemeState>("subscribeTheme", _reference);
         _subscriptionId = state.SubscriptionId;
         ApplyThemeState(state.Preference, state.Scheme);
+    }
+
+    protected override void OnInitialized()
+    {
+        // A selector can be recreated when Blazor switches layouts during navigation.
+        // Preserve the choice already made in the current interactive scope until the
+        // browser preference is read after rendering.
+        _currentThemeMode = ThemeService.ThemeConfiguration;
     }
 
     [JSInvokable]
