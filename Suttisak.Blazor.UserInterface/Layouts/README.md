@@ -2,8 +2,8 @@
 
 `Layouts.Shared.MainLayout` composes the public `ApplicationShell` used by the
 application family. Consuming applications provide product-owned
-content through the existing header, navigation, message, breadcrumb, and page
-title sections.
+content through the existing heading, navigation, message, breadcrumb, and body
+sections.
 
 The shell provides:
 
@@ -14,7 +14,7 @@ The shell provides:
   that depend on a particular DOM hierarchy.
 
 Applications should inherit `Layouts.Shared.MainLayout` and should not recreate
-the outer shell. Pages provide headings through `CommonSections.PageTitle` and
+the outer shell. Pages provide headings through `CommonSections.PageHeading` and
 place inline application feedback in `MainLayout.MessageBarSection`.
 
 ## ApplicationShell
@@ -30,9 +30,11 @@ to own its logo, routes, localized labels, preference behavior, and profile UI.
     <ThemeSwitcher><ThemeSelector /></ThemeSwitcher>
     <LanguageSwitcher><CultureSelector /></LanguageSwitcher>
     <Profile>@* authenticated profile control *@</Profile>
-    <PageHeader>
-        <PageHeading Title="Participants">...</PageHeading>
-    </PageHeader>
+    <Heading>
+        <ApplicationPageHeading>
+            <PageHeading Title="Participants">...</PageHeading>
+        </ApplicationPageHeading>
+    </Heading>
     <ChildContent>@Body</ChildContent>
 </ApplicationShell>
 ```
@@ -69,8 +71,8 @@ and icons:
 ```
 
 `PageBreadcrumbs` sends page-owned data to `MainLayout`. The layout is the only
-breadcrumb renderer and owns the breadcrumb `nav` landmark inside
-`ApplicationShell`. `AppBreadcrumb` renders only its ordered list, treats the last item
+breadcrumb renderer and composes it with the active `PageHeading` or
+`ExperienceHeading` through `ApplicationPageHeading`. `AppBreadcrumb` renders only its ordered list, treats the last item
 as the current page, removes its link, and applies `aria-current="page"`.
 Applications remain responsible for localizing breadcrumb titles and can
 configure `BreadcrumbLabel` and `SkipLinkText` through `BlazorUIOptions`.

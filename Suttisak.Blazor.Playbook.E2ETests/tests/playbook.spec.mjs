@@ -101,7 +101,23 @@ test.describe('UI Playbook shared-component contracts', () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   });
 
-  for (const path of ['/', '/component-browser', '/form-controls', '/grid-performance', '/landing', '/access/login']) {
+  test('Breadcrumbs form one visual surface with the active page heading', async ({ page }) => {
+    await page.goto('/application-shell');
+
+    const breadcrumbs = page.locator('.application-page-heading__breadcrumbs');
+    const heading = page.locator('.application-page-heading__visual .page-heading');
+    await expect(breadcrumbs).toBeVisible();
+    await expect(heading).toBeVisible();
+
+    const geometry = await page.locator('.application-page-heading').evaluate(surface => {
+      const breadcrumbBox = surface.querySelector('.application-page-heading__breadcrumbs').getBoundingClientRect();
+      const headingBox = surface.querySelector('.page-heading').getBoundingClientRect();
+      return { seam: Math.abs(breadcrumbBox.bottom - headingBox.top) };
+    });
+    expect(geometry.seam).toBeLessThanOrEqual(2);
+  });
+
+  for (const path of ['/', '/component-browser', '/form-controls', '/grid-performance', '/landing', '/access/login', '/application-shell']) {
     test(`has no serious or critical axe violations on ${path}`, async ({ page }) => {
       await page.goto(path);
       await expect(page.locator('main')).toBeVisible();

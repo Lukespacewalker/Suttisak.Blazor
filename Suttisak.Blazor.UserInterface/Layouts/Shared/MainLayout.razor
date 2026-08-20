@@ -39,16 +39,12 @@
                                  ProfileImageUrl="@GlobalDesign.Value.ProfileImageUrl"
                                  @rendermode="HeaderRenderMode" />
         </Profile>
-        <PageHeader>
+        <Heading>
             <SectionOutlet SectionId="MessageBarSection" />
-            @if (_breadcrumbs.Length > 0)
-            {
-                <nav class="main-layout__breadcrumbs" aria-label="@GlobalDesign.Value.BreadcrumbLabel">
-                    <AppBreadcrumb Items="@_breadcrumbs" />
-                </nav>
-            }
-            <SectionOutlet SectionName="@CommonSections.PageTitle" />
-        </PageHeader>
+            <ApplicationPageHeading Breadcrumbs="@_breadcrumbs" BreadcrumbLabel="@GlobalDesign.Value.BreadcrumbLabel">
+                <SectionOutlet SectionName="@CommonSections.PageHeading" />
+            </ApplicationPageHeading>
+        </Heading>
         <ChildContent>@Body</ChildContent>
     </ApplicationShell>
 </CascadingValue>

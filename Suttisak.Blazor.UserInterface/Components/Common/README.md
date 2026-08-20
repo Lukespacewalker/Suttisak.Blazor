@@ -236,7 +236,7 @@ the surrounding account, participant, case, or workspace without creating a
 second heading landmark. Keep labels, routes, and action behavior in the
 consuming application. Responsive changes follow each component's own container width, so
 embedded previews and constrained application panes behave like real mobile
-layouts even when the browser viewport is wide. Use `ExperienceHeader` for reader-facing results, education, and
+layouts even when the browser viewport is wide. Use `ExperienceHeading` for reader-facing results, education, and
 guidance pages.
 
 Use `AsyncContentState.Loading`, `Ready`, `Empty`, and `Error` to give pages one

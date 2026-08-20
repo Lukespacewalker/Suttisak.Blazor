@@ -1,0 +1,81 @@
+.application-page-heading {
+    container: application-page-heading / inline-size;
+    display: grid;
+    min-width: 0;
+}
+
+.application-page-heading__breadcrumbs {
+    position: relative;
+    z-index: 51;
+    min-width: 0;
+    overflow-x: auto;
+    padding: .64rem 1rem .58rem;
+    border: 1px solid var(--app-accent-border);
+    border-radius: .2rem 1.15rem .2rem 1.15rem;
+    background:
+        linear-gradient(115deg, var(--app-accent-soft), transparent 62%),
+        color-mix(in srgb, var(--app-surface-muted) 90%, var(--app-surface));
+    color: var(--app-foreground-muted);
+    box-shadow: 0 .45rem 1.35rem color-mix(in srgb, var(--app-shadow-color) 60%, transparent);
+    font-size: .78rem;
+    scrollbar-width: thin;
+}
+
+.application-page-heading__breadcrumbs::before {
+    position: absolute;
+    inset-block: .45rem;
+    inset-inline-start: .32rem;
+    width: .18rem;
+    border-radius: 99rem;
+    background: var(--app-accent);
+    content: "";
+    opacity: .72;
+}
+
+.application-page-heading__breadcrumbs ::deep .app-breadcrumb__item:last-child {
+    color: var(--app-foreground);
+}
+
+.application-page-heading__visual {
+    min-width: 0;
+}
+
+.application-page-heading__visual:empty {
+    display: none;
+}
+
+.application-page-heading--with-breadcrumbs:has(.application-page-heading__visual:not(:empty))
+    .application-page-heading__breadcrumbs {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    border-bottom-color: var(--app-border);
+    box-shadow: none;
+}
+
+.application-page-heading--with-breadcrumbs:has(.application-page-heading__visual:not(:empty))
+    .application-page-heading__visual {
+    margin-top: -1px;
+}
+
+.application-page-heading--with-breadcrumbs
+    .application-page-heading__visual:not(:empty) ::deep .page-heading,
+.application-page-heading--with-breadcrumbs
+    .application-page-heading__visual:not(:empty) ::deep .experience-heading {
+    border-top: 0;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+}
+
+@container application-page-heading (max-width: 40rem) {
+    .application-page-heading__breadcrumbs {
+        padding: .56rem .8rem .52rem;
+        font-size: .74rem;
+    }
+}
+
+@media (forced-colors: active) {
+    .application-page-heading__breadcrumbs {
+        background: Canvas;
+        color: CanvasText;
+    }
+}
