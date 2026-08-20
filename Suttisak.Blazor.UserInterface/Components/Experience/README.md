@@ -4,13 +4,13 @@ Components for general-audience result, report, education, and guidance pages.
 They are intentionally more expressive than the compact `PageHeading` used by
 CRUD and administration screens.
 
-## `ExperienceHeader`
+## `ExperienceHeading`
 
-`ExperienceHeader` owns the responsive reader-facing hero treatment. The
+`ExperienceHeading` owns the responsive reader-facing hero treatment. The
 application owns its wording, watermark, result details, and product visual.
 
 ```razor
-<ExperienceHeader Eyebrow="Assessment result"
+<ExperienceHeading Eyebrow="Assessment result"
                   Title="Your annual check"
                   Emphasis="is ready"
                   Description="A plain-language summary of the latest result."
@@ -18,7 +18,7 @@ application owns its wording, watermark, result details, and product visual.
                   VisualIsDecorative="false">
     <Details><span>12 August 2026</span></Details>
     <Visual><ResultScore Value="82" /></Visual>
-</ExperienceHeader>
+</ExperienceHeading>
 ```
 
 Keep `VisualIsDecorative="true"` for atmospheric artwork that may sit behind
@@ -26,7 +26,7 @@ the copy on narrow screens. Set it to `false` for meaningful scores, charts, or
 status visuals; the mobile layout then reserves a separate visual row so the
 content cannot overlap details or body copy.
 
-Use `PageHeading` for task-oriented CRUD/admin pages. Use `ExperienceHeader`
+Use `PageHeading` for task-oriented CRUD/admin pages. Use `ExperienceHeading`
 when the page's primary job is helping a person understand results, guidance,
 or a narrative report.
 

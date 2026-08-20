@@ -1,0 +1,28 @@
+@using Suttisak.Blazor.UserInterface.Models
+
+<div class="@CssClassValue">
+    @if (_breadcrumbs.Length > 0)
+    {
+        <nav class="application-page-heading__breadcrumbs" aria-label="@BreadcrumbLabel">
+            <AppBreadcrumb Items="@_breadcrumbs" />
+        </nav>
+    }
+    <div class="application-page-heading__visual">@ChildContent</div>
+</div>
+
+@code {
+    private Breadcrumb[] _breadcrumbs = Array.Empty<Breadcrumb>();
+
+    [Parameter] public IEnumerable<Breadcrumb>? Breadcrumbs { get; set; }
+    [Parameter] public string BreadcrumbLabel { get; set; } = "Breadcrumb";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string CssClassValue => _breadcrumbs.Length > 0
+        ? "application-page-heading application-page-heading--with-breadcrumbs"
+        : "application-page-heading";
+
+    protected override void OnParametersSet()
+    {
+        _breadcrumbs = Breadcrumbs?.ToArray() ?? Array.Empty<Breadcrumb>();
+    }
+}

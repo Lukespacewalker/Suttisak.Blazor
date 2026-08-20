@@ -66,22 +66,18 @@
     <NavigationFooter>
         <div class="demo-app-nav-footer"><i></i><span><strong>@(IsThai ? "ระบบพร้อมใช้งาน" : "All systems ready")</strong><small>@(IsThai ? "ตรวจสอบเมื่อสักครู่" : "Last checked just now")</small></span></div>
     </NavigationFooter>
-    <PageHeader>
-        @if (BreadcrumbItems?.Any() == true)
-        {
-            <nav class="demo-application-shell__breadcrumbs" aria-label="Breadcrumb">
-                <AppBreadcrumb Items="@BreadcrumbItems" />
-            </nav>
-        }
-        @PageHeader
-    </PageHeader>
+    <Heading>
+        <ApplicationPageHeading Breadcrumbs="@BreadcrumbItems">
+            @PageHeading
+        </ApplicationPageHeading>
+    </Heading>
     <ChildContent>@ChildContent</ChildContent>
 </ApplicationShell>
 
 @code {
     [Inject] private DemoRecordStore Store { get; set; } = default!;
     [Parameter] public IEnumerable<Breadcrumb>? BreadcrumbItems { get; set; }
-    [Parameter] public RenderFragment? PageHeader { get; set; }
+    [Parameter] public RenderFragment? PageHeading { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
