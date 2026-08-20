@@ -187,13 +187,14 @@ actions last.
 ## Page composition
 
 ```razor
+<PageBreadcrumbs Items="@breadcrumbs" />
+
 <PageHeading SectionTitle="Assessment workspace"
              SectionDescription="Administration"
              SectionIcon="@(new Icons.Regular.Size20.Briefcase())"
              Title="Participants"
              Description="Manage people in the current assessment period"
              Icon="@(new Icons.Regular.Size24.People())">
-    <Breadcrumbs><AppBreadcrumb Items="@breadcrumbs" /></Breadcrumbs>
     <SectionActions>
         <AppButton Variant="AppButtonVariant.Subtle">Workspace settings</AppButton>
     </SectionActions>
@@ -226,8 +227,9 @@ actions last.
 </AsyncContent>
 ```
 
-`PageHeading` is the application hierarchy contract for CRUD and administration
-pages. It renders breadcrumb context, optional section identity and
+`PageHeading` is the visual heading contract for CRUD and administration
+pages. Declare breadcrumb data separately with `PageBreadcrumbs`; `MainLayout`
+renders that trail before the heading. `PageHeading` renders optional section identity and
 `SectionActions`, the current page title and `PageActions`, then optional sibling
 `Navigation`. The page title remains the single `h1`; `SectionTitle` identifies
 the surrounding account, participant, case, or workspace without creating a

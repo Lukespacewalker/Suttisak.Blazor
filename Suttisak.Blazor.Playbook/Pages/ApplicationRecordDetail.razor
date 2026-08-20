@@ -1,16 +1,15 @@
 @page "/application-shell/records/{Id:int}"
 @inject DemoRecordStore Store
 
-<PageTitle>@(Record is null ? "Record not found" : Record.Name) · Application Shell V2</PageTitle>
+<PageTitle>@(Record is null ? "Record not found" : Record.Name) · Application Shell</PageTitle>
 
 <PlaybookShell>
     <div class="application-shell-workbench">
-        <DemoApplicationShell>
+        <DemoApplicationShell BreadcrumbItems="@CurrentBreadcrumbs">
             <PageHeader>
                 @if (Record is null)
                 {
                     <PageHeading Title="Record not found" Description="This demo record may have been removed." IconName="@("Warning")">
-                        <Breadcrumbs><AppBreadcrumb Items="@MissingBreadcrumbs" /></Breadcrumbs>
                         <PageActions><AppButton Href="application-shell/records">Back to records</AppButton></PageActions>
                     </PageHeading>
                 }
@@ -21,7 +20,6 @@
                                  SectionDescription="@($"Record #{Record.Id}")"
                                  Description="A focused detail page using the same compact heading, breadcrumb trail, and toolbar contract."
                                  IconName="@("Document")">
-                        <Breadcrumbs><AppBreadcrumb Items="@DetailBreadcrumbs" /></Breadcrumbs>
                         <PageActions>
                             <AppButton Href="application-shell/records">Back to list</AppButton>
                             <AppButton Href="application-shell/records" Variant="AppButtonVariant.Primary">
@@ -69,6 +67,7 @@
 @code {
     [Parameter] public int Id { get; set; }
     private DemoRecord? Record => Store.Find(Id);
+    private IEnumerable<Breadcrumb> CurrentBreadcrumbs => Record is null ? MissingBreadcrumbs : DetailBreadcrumbs;
 
     private Breadcrumb[] DetailBreadcrumbs =>
     [

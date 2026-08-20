@@ -1,11 +1,4 @@
 <header class="@CssClassValue" aria-labelledby="@HeadingIdValue" @attributes="AdditionalAttributes">
-    @if (Breadcrumbs is not null)
-    {
-        <nav class="page-heading__breadcrumbs" aria-label="@BreadcrumbLabel">
-            @Breadcrumbs
-        </nav>
-    }
-
     @if (!string.IsNullOrWhiteSpace(SectionTitle))
     {
         <div class="page-heading__section">
@@ -72,12 +65,10 @@
     [Parameter] public string? SectionDescription { get; set; }
     [Parameter] public string? SectionIconName { get; set; }
     [Parameter] public int SectionIconSize { get; set; } = 20;
-    [Parameter] public RenderFragment? Breadcrumbs { get; set; }
     [Parameter] public RenderFragment? SectionActions { get; set; }
     [Parameter] public RenderFragment? PageActions { get; set; }
     [Parameter] public RenderFragment? Navigation { get; set; }
     [Parameter] public string? HeadingId { get; set; }
-    [Parameter] public string BreadcrumbLabel { get; set; } = "Breadcrumb";
     [Parameter] public string SectionActionsLabel { get; set; } = "Section actions";
     [Parameter] public string PageActionsLabel { get; set; } = "Page actions";
     [Parameter] public string? CssClass { get; set; }

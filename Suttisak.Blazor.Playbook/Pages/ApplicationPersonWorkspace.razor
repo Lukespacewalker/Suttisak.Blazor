@@ -5,7 +5,7 @@
 
 <PlaybookShell>
     <div class="application-shell-workbench">
-        <DemoApplicationShell>
+        <DemoApplicationShell BreadcrumbItems="@PersonBreadcrumbs">
             <PageHeader>
                 <PageHeading SectionTitle="Worapat Sukjai"
                              SectionDescription="HN 004829 · 42 years · Annual checkup 2026"
@@ -13,7 +13,6 @@
                              Title="@SectionTitle"
                              Description="One participant context with clear sibling views for checkup work, interpreted results, and documents."
                              IconName="@SectionIcon">
-                    <Breadcrumbs><AppBreadcrumb Items="@PersonBreadcrumbs" /></Breadcrumbs>
                     <SectionActions>
                         <AppButton Variant="AppButtonVariant.Subtle">
                             <IconStartContent><Suttisak.Blazor.Icons.Icon Name="People" Size="20"  /></IconStartContent>

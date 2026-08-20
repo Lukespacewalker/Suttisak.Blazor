@@ -2,7 +2,7 @@
 @inject IThemeService ThemeService
 @inject IJSRuntime JsRuntime
 
-<ApplicationShellV2 MainContentId="demo-application-main"
+<ApplicationShell MainContentId="demo-application-main"
                     NavigationLabel="Demo application navigation"
                     MenuButtonLabel="Open demo navigation"
                     CloseMenuLabel="Close demo navigation">
@@ -13,7 +13,7 @@
         </NavLink>
     </Brand>
     <HeaderActions>
-        <span class="demo-app-environment">Playbook / V2</span>
+        <span class="demo-app-environment">Playbook</span>
     </HeaderActions>
     <ThemeSwitcher>
         <div class="theme-selector" aria-label="Theme">
@@ -66,12 +66,21 @@
     <NavigationFooter>
         <div class="demo-app-nav-footer"><i></i><span><strong>@(IsThai ? "ระบบพร้อมใช้งาน" : "All systems ready")</strong><small>@(IsThai ? "ตรวจสอบเมื่อสักครู่" : "Last checked just now")</small></span></div>
     </NavigationFooter>
-    <PageHeader>@PageHeader</PageHeader>
+    <PageHeader>
+        @if (BreadcrumbItems?.Any() == true)
+        {
+            <nav class="demo-application-shell__breadcrumbs" aria-label="Breadcrumb">
+                <AppBreadcrumb Items="@BreadcrumbItems" />
+            </nav>
+        }
+        @PageHeader
+    </PageHeader>
     <ChildContent>@ChildContent</ChildContent>
-</ApplicationShellV2>
+</ApplicationShell>
 
 @code {
     [Inject] private DemoRecordStore Store { get; set; } = default!;
+    [Parameter] public IEnumerable<Breadcrumb>? BreadcrumbItems { get; set; }
     [Parameter] public RenderFragment? PageHeader { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 

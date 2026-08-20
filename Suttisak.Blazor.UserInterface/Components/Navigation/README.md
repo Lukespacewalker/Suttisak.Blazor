@@ -45,7 +45,7 @@ Set `Embedded="true"` when the navigation is supplied through
 surface, section identity, and section-level actions, while
 `SectionNavigation` renders only the sibling destinations.
 
-Keep global destinations in `ApplicationShellV2.Navigation`. Keep only sibling
+Keep global destinations in `ApplicationShell.Navigation`. Keep only sibling
 views of the current entity in `SectionNavigation`; do not repeat the primary
 navigation. The application owns routes, localized labels, icons, and actions.
 In the standard composition, put the current entity in
