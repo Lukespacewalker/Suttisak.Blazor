@@ -1,11 +1,11 @@
 @page "/application-shell/records"
 @inject DemoRecordStore Store
 
-<PageTitle>Records · Application Shell V2</PageTitle>
+<PageTitle>Records · Application Shell</PageTitle>
 
 <PlaybookShell>
     <div class="application-shell-workbench">
-        <DemoApplicationShell>
+        <DemoApplicationShell BreadcrumbItems="@RecordBreadcrumbs">
             <PageHeader>
                 <PageHeading Title="Program records"
                              SectionTitle="Operations"
@@ -13,7 +13,6 @@
                              SectionIconName="@("Briefcase")"
                              Description="Create, review, update, and remove records from one focused workspace."
                              IconName="@("Table")">
-                    <Breadcrumbs><AppBreadcrumb Items="@RecordBreadcrumbs" /></Breadcrumbs>
                     <PageActions>
                         <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => CreateRecord())">
                             <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="20"  /></IconStartContent>

@@ -1,6 +1,6 @@
 # Application layouts
 
-`Layouts.Shared.MainLayoutV2` composes the public `ApplicationShellV2` used by the
+`Layouts.Shared.MainLayout` composes the public `ApplicationShell` used by the
 application family. Consuming applications provide product-owned
 content through the existing header, navigation, message, breadcrumb, and page
 title sections.
@@ -13,18 +13,18 @@ The shell provides:
 - an explicit `.app-page` contract for padding and focus rather than selectors
   that depend on a particular DOM hierarchy.
 
-Applications should inherit `Layouts.Shared.MainLayoutV2` and should not recreate
+Applications should inherit `Layouts.Shared.MainLayout` and should not recreate
 the outer shell. Pages provide headings through `CommonSections.PageTitle` and
 place inline application feedback in `MainLayout.MessageBarSection`.
 
-## ApplicationShellV2
+## ApplicationShell
 
-`ApplicationShellV2` is the current application shell. The former V1 shell and
-layout were removed after every consuming application migrated. The shell owns responsive structure only; the application continues
+`ApplicationShell` is the current application shell. Earlier versioned shells and
+layouts were removed after every consuming application migrated. The shell owns responsive structure only; the application continues
 to own its logo, routes, localized labels, preference behavior, and profile UI.
 
 ```razor
-<ApplicationShellV2>
+<ApplicationShell>
     <Brand>@* product logo and name *@</Brand>
     <Navigation>@* application NavLinks *@</Navigation>
     <ThemeSwitcher><ThemeSelector /></ThemeSwitcher>
@@ -34,7 +34,7 @@ to own its logo, routes, localized labels, preference behavior, and profile UI.
         <PageHeading Title="Participants">...</PageHeading>
     </PageHeader>
     <ChildContent>@Body</ChildContent>
-</ApplicationShellV2>
+</ApplicationShell>
 ```
 
 The required `ThemeSwitcher`, `LanguageSwitcher`, and `Profile` slots keep
@@ -68,9 +68,9 @@ and icons:
 }
 ```
 
-`PageBreadcrumbs` sends page-owned data to `MainLayoutV2`. The layout is the only
-breadcrumb renderer, while `ApplicationShellV2` owns the breadcrumb `nav`
-landmark. `AppBreadcrumb` renders only its ordered list, treats the last item
+`PageBreadcrumbs` sends page-owned data to `MainLayout`. The layout is the only
+breadcrumb renderer and owns the breadcrumb `nav` landmark inside
+`ApplicationShell`. `AppBreadcrumb` renders only its ordered list, treats the last item
 as the current page, removes its link, and applies `aria-current="page"`.
 Applications remain responsible for localizing breadcrumb titles and can
 configure `BreadcrumbLabel` and `SkipLinkText` through `BlazorUIOptions`.

@@ -1,4 +1,4 @@
-.main-layout-v2__brand {
+.main-layout__brand {
     display: flex;
     min-width: 0;
     align-items: center;
@@ -7,14 +7,14 @@
     text-decoration: none;
 }
 
-.main-layout-v2__brand img {
+.main-layout__brand img {
     width: 2.2rem;
     height: 2.2rem;
     flex: 0 0 auto;
     object-fit: contain;
 }
 
-.main-layout-v2__brand span {
+.main-layout__brand span {
     min-width: 0;
     overflow: hidden;
     font-size: .9rem;
@@ -23,9 +23,9 @@
     white-space: nowrap;
 }
 
-.main-layout-v2__breadcrumbs { margin-bottom: .65rem; }
+.main-layout__breadcrumbs { margin-bottom: .65rem; }
 
-@container app-shell-v2 (max-width: 30rem) {
-    .main-layout-v2__brand span { max-width: 8.5rem; font-size: .78rem; }
-    .main-layout-v2__brand img { width: 1.9rem; height: 1.9rem; }
+@container app-shell (max-width: 30rem) {
+    .main-layout__brand span { max-width: 8.5rem; font-size: .78rem; }
+    .main-layout__brand img { width: 1.9rem; height: 1.9rem; }
 }

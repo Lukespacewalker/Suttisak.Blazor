@@ -17,5 +17,5 @@
 .profile-menu__panel button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .profile-menu__panel button svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .profile-menu__login { color: var(--app-accent); font-size: .75rem; font-weight: 750; text-decoration: none; }
-@container app-shell-v2 (max-width: 30rem) { .profile-menu summary strong, .profile-menu summary .profile-menu__chevron { display: none; } }
+@container app-shell (max-width: 30rem) { .profile-menu summary strong, .profile-menu summary .profile-menu__chevron { display: none; } }
 @media (prefers-reduced-motion: reduce) { .profile-menu__chevron { transition: none; } }

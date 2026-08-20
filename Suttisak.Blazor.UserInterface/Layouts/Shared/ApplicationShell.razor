@@ -1,8 +1,8 @@
-<a class="app-shell-v2__skip-link" href="#@MainContentId">@SkipLinkText</a>
+<a class="app-shell__skip-link" href="#@MainContentId">@SkipLinkText</a>
 
-<div class="@CssClassValue" data-app-shell-v2 @attributes="AdditionalAttributes">
-    <header class="app-shell-v2__header">
-        <button class="app-shell-v2__menu-button app-shell-v2__menu-button--desktop is-open"
+<div class="@CssClassValue" data-app-shell @attributes="AdditionalAttributes">
+    <header class="app-shell__header">
+        <button class="app-shell__menu-button app-shell__menu-button--desktop is-open"
                 type="button"
                 aria-label="@CollapseNavigationLabel"
                 data-shell-action="desktop"
@@ -13,7 +13,7 @@
             <span></span><span></span><span></span>
         </button>
 
-        <button class="app-shell-v2__menu-button app-shell-v2__menu-button--mobile"
+        <button class="app-shell__menu-button app-shell__menu-button--mobile"
                 type="button"
                 aria-label="@MenuButtonLabel"
                 data-shell-action="mobile"
@@ -24,34 +24,34 @@
             <span></span><span></span><span></span>
         </button>
 
-        <div class="app-shell-v2__brand">@Brand</div>
+        <div class="app-shell__brand">@Brand</div>
 
         @if (HeaderActions is not null)
         {
-            <div class="app-shell-v2__header-actions">@HeaderActions</div>
+            <div class="app-shell__header-actions">@HeaderActions</div>
         }
-        <div class="app-shell-v2__preferences">
+        <div class="app-shell__preferences">
             @if (ThemeSwitcher is not null)
             {
-                <div class="app-shell-v2__preference app-shell-v2__preference--theme">@ThemeSwitcher</div>
+                <div class="app-shell__preference app-shell__preference--theme">@ThemeSwitcher</div>
             }
             @if (LanguageSwitcher is not null)
             {
-                <div class="app-shell-v2__preference app-shell-v2__preference--language">@LanguageSwitcher</div>
+                <div class="app-shell__preference app-shell__preference--language">@LanguageSwitcher</div>
             }
         </div>
         @if (Profile is not null)
         {
-            <div class="app-shell-v2__profile">@Profile</div>
+            <div class="app-shell__profile">@Profile</div>
         }
     </header>
 
-    <div class="app-shell-v2__frame">
+    <div class="app-shell__frame">
         <aside id="@NavigationIdValue"
-               class="app-shell-v2__navigation"
+               class="app-shell__navigation"
                aria-label="@NavigationLabel">
-            <div class="app-shell-v2__navigation-scroll">
-                <div class="app-shell-v2__navigation-preferences" aria-label="@MobilePreferencesLabel">
+            <div class="app-shell__navigation-scroll">
+                <div class="app-shell__navigation-preferences" aria-label="@MobilePreferencesLabel">
                     <div>
                         <span>@MobileThemeLabel</span>
                         @ThemeSwitcher
@@ -65,27 +65,27 @@
             </div>
             @if (NavigationFooter is not null)
             {
-                <div class="app-shell-v2__navigation-footer">@NavigationFooter</div>
+                <div class="app-shell__navigation-footer">@NavigationFooter</div>
             }
         </aside>
 
-        <button class="app-shell-v2__scrim"
+        <button class="app-shell__scrim"
                 type="button"
                 data-shell-action="close"
                 aria-label="@CloseMenuLabel"></button>
 
-        <main id="@MainContentId" class="app-shell-v2__main" tabindex="-1">
+        <main id="@MainContentId" class="app-shell__main" tabindex="-1">
             @if (PageHeader is not null)
             {
-                <div class="app-shell-v2__page-header">@PageHeader</div>
+                <div class="app-shell__page-header">@PageHeader</div>
             }
-            <div class="app-shell-v2__content">@ChildContent</div>
+            <div class="app-shell__content">@ChildContent</div>
         </main>
     </div>
 </div>
 
 @code {
-    private readonly string _generatedNavigationId = $"app-shell-v2-navigation-{Guid.NewGuid():N}";
+    private readonly string _generatedNavigationId = $"app-shell-navigation-{Guid.NewGuid():N}";
     [Parameter, EditorRequired] public RenderFragment Brand { get; set; } = default!;
     [Parameter, EditorRequired] public RenderFragment Navigation { get; set; } = default!;
     [Parameter] public RenderFragment? HeaderActions { get; set; }
@@ -95,7 +95,7 @@
     [Parameter] public RenderFragment? NavigationFooter { get; set; }
     [Parameter] public RenderFragment? PageHeader { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
-    [Parameter] public string MainContentId { get; set; } = "app-shell-v2-main";
+    [Parameter] public string MainContentId { get; set; } = "app-shell-main";
     [Parameter] public string? NavigationId { get; set; }
     [Parameter] public string SkipLinkText { get; set; } = "Skip to main content";
     [Parameter] public string NavigationLabel { get; set; } = "Primary navigation";
@@ -112,7 +112,6 @@
 
     private string NavigationIdValue => NavigationId ?? _generatedNavigationId;
     private string CssClassValue => string.IsNullOrWhiteSpace(Class)
-        ? "app-shell-v2"
-        : $"app-shell-v2 {Class}";
-
+        ? "app-shell"
+        : $"app-shell {Class}";
 }
