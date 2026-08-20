@@ -428,7 +428,7 @@ Load the bootstrap script in the document `<head>` before application styles:
 
 The script resolves the persisted `light`, `dark`, or `system` preference before
 first paint. It writes the resolved scheme to one contract only:
-`html[data-theme="light"]` or `html[data-theme="dark"]`. `ThemeSelector`
+`html[data-theme="light"]` or `html[data-theme="dark"]`. `ThemeSwitcher`
 keeps that attribute current for system-preference and cross-tab changes once it
 is interactive. Applications should use semantic CSS tokens for their accent
 colors and retain their `<meta name="theme-color">`; do not add theme attributes
