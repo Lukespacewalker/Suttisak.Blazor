@@ -1,5 +1,39 @@
 # Navigation components
 
+## Primary navigation
+
+Compose application navigation from `NavGroup`, `NavItem`, and `NavSubmenu`.
+The application owns labels, routes, authorization, badges, and footer content;
+the shared components own spacing, hierarchy, active states, and responsive
+behavior.
+
+```razor
+<Nav Embedded="true" AccountLabel="Account">
+    <ChildContent>
+        <NavGroup Label="Workspace">
+            <NavItem Href="/" Match="NavLinkMatch.All"
+                     IconRestName="Home" IconActiveName="Home">Overview</NavItem>
+            <NavItem Href="/records" IconRestName="Table" IconActiveName="Table">
+                <ChildContent>Records</ChildContent>
+                <TrailingContent>@RecordCount</TrailingContent>
+            </NavItem>
+        </NavGroup>
+        <NavGroup Label="Manage">
+            <NavSubmenu Label="Administration" IconName="Settings">
+                <NavItem Href="/admin/users" IconRestName="People">Users</NavItem>
+                <NavItem Href="/admin/roles" IconRestName="PersonLock">Roles</NavItem>
+            </NavSubmenu>
+        </NavGroup>
+    </ChildContent>
+    <AccountContent>@* application-owned account destinations *@</AccountContent>
+</Nav>
+```
+
+Use `NavItem.TrailingContent` for compact counts or status badges. Use
+`MainLayout.NavigationFooterSection` for product-owned status, help, or
+environment information. Do not recreate navigation group, item, or active-state
+CSS in consuming applications or the Playbook.
+
 ## NavSubmenu
 
 Use `NavSubmenu` for a collapsible group inside the primary side navigation.
@@ -9,11 +43,11 @@ interaction also work during static server rendering.
 
 ```razor
 <NavSubmenu Label="Administration"
-            Icon="@(new Icons.Regular.Size20.Settings())"
+            IconName="Settings"
             Active="@IsAdministrationRoute"
             Expanded="@IsAdministrationRoute">
-    <NavLink href="admin/users">Users</NavLink>
-    <NavLink href="admin/roles">Roles</NavLink>
+    <NavItem Href="admin/users" IconRestName="People">Users</NavItem>
+    <NavItem Href="admin/roles" IconRestName="PersonLock">Roles</NavItem>
 </NavSubmenu>
 ```
 
@@ -64,9 +98,7 @@ container widths the component replaces the horizontal rail with one current-
 section trigger and renders both fragments in a scrollable menu. Both menus use
 native `details` and `summary`, so they remain operable during static SSR before
 Blazor interactivity is available.
-# Navigation components
-
-`NavItem` and `NavCategory` accept `IconRestName` and `IconActiveName` for
+`NavItem` accepts `IconRestName` and `IconActiveName` for
 icons from `Suttisak.Blazor.Icons`. Use the same semantic name for both states
 unless a filled active state adds useful meaning; selection itself is already
 communicated by the active menu style and `aria-current`.

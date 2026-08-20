@@ -4,15 +4,17 @@
     @if (Embedded)
     {
         <div class="nav-panel nav-panel--embedded">
+            <div class="nav-panel__primary">@ChildContent</div>
             @if (AccountContent is not null)
             {
                 <AuthorizeView>
                     <Authorized>
-                        <div class="nav-panel__account">@AccountContent</div>
+                        <div class="nav-panel__account">
+                            <NavGroup Label="@AccountLabel">@AccountContent</NavGroup>
+                        </div>
                     </Authorized>
                 </AuthorizeView>
             }
-            <div class="nav-panel__primary">@ChildContent</div>
         </div>
     }
     else
@@ -41,7 +43,9 @@
                 {
                     <AuthorizeView>
                         <Authorized>
-                            <div class="nav-panel__account">@AccountContent</div>
+                            <div class="nav-panel__account">
+                                <NavGroup Label="@AccountLabel">@AccountContent</NavGroup>
+                            </div>
                         </Authorized>
                     </AuthorizeView>
                 }
@@ -69,6 +73,8 @@
 
     [Parameter]
     public RenderFragment? AccountContent { get; set; }
+
+    [Parameter] public string AccountLabel { get; set; } = "Account";
 
     [Parameter]
     public bool Embedded { get; set; }
