@@ -1,10 +1,10 @@
 <header @attributes="AdditionalAttributes"
         class="@CssClassValue"
         aria-labelledby="@HeadingIdValue">
-    <div class="experience-header__copy">
+    <div class="experience-heading__copy">
         @if (!string.IsNullOrWhiteSpace(Eyebrow))
         {
-            <span class="experience-header__eyebrow">@Eyebrow</span>
+            <span class="experience-heading__eyebrow">@Eyebrow</span>
         }
         <h1 id="@HeadingIdValue">
             @Title
@@ -16,28 +16,28 @@
         </h1>
         @if (!string.IsNullOrWhiteSpace(Description))
         {
-            <p class="experience-header__lead">@Description</p>
+            <p class="experience-heading__lead">@Description</p>
         }
         @if (Details is not null)
         {
-            <div class="experience-header__details">@Details</div>
+            <div class="experience-heading__details">@Details</div>
         }
     </div>
 
-    <div class="experience-header__visual" aria-hidden="@VisualIsDecorative.ToString().ToLowerInvariant()">
-        <span class="experience-header__orbit experience-header__orbit--one"></span>
-        <span class="experience-header__orbit experience-header__orbit--two"></span>
+    <div class="experience-heading__visual" aria-hidden="@VisualIsDecorative.ToString().ToLowerInvariant()">
+        <span class="experience-heading__orbit experience-heading__orbit--one"></span>
+        <span class="experience-heading__orbit experience-heading__orbit--two"></span>
         @Visual
     </div>
 
     @if (!string.IsNullOrWhiteSpace(Watermark))
     {
-        <span class="experience-header__watermark" aria-hidden="true">@Watermark</span>
+        <span class="experience-heading__watermark" aria-hidden="true">@Watermark</span>
     }
 </header>
 
 @code {
-    private readonly string _generatedHeadingId = $"experience-header-{Guid.NewGuid():N}";
+    private readonly string _generatedHeadingId = $"experience-heading-{Guid.NewGuid():N}";
 
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Eyebrow { get; set; }
@@ -55,8 +55,8 @@
     private string HeadingIdValue => HeadingId ?? _generatedHeadingId;
     private string CssClassValue => string.Join(' ', new[]
     {
-        "experience-header",
-        !VisualIsDecorative && Visual is not null ? "experience-header--visual-content" : null,
+        "experience-heading",
+        !VisualIsDecorative && Visual is not null ? "experience-heading--visual-content" : null,
         Class
     }.Where(value => !string.IsNullOrWhiteSpace(value)));
 }

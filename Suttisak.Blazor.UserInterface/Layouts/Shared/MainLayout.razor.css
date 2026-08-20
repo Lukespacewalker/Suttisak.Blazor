@@ -23,8 +23,6 @@
     white-space: nowrap;
 }
 
-.main-layout__breadcrumbs { margin-bottom: .65rem; }
-
 @container app-shell (max-width: 30rem) {
     .main-layout__brand span { max-width: 8.5rem; font-size: .78rem; }
     .main-layout__brand img { width: 1.9rem; height: 1.9rem; }

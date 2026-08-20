@@ -75,9 +75,9 @@
                 aria-label="@CloseMenuLabel"></button>
 
         <main id="@MainContentId" class="app-shell__main" tabindex="-1">
-            @if (PageHeader is not null)
+            @if (Heading is not null)
             {
-                <div class="app-shell__page-header">@PageHeader</div>
+                <div class="app-shell__page-heading">@Heading</div>
             }
             <div class="app-shell__content">@ChildContent</div>
         </main>
@@ -93,7 +93,7 @@
     [Parameter, EditorRequired] public RenderFragment LanguageSwitcher { get; set; } = default!;
     [Parameter, EditorRequired] public RenderFragment Profile { get; set; } = default!;
     [Parameter] public RenderFragment? NavigationFooter { get; set; }
-    [Parameter] public RenderFragment? PageHeader { get; set; }
+    [Parameter] public RenderFragment? Heading { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
     [Parameter] public string MainContentId { get; set; } = "app-shell-main";
     [Parameter] public string? NavigationId { get; set; }

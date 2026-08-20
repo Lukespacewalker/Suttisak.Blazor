@@ -6,7 +6,7 @@
 <PlaybookShell>
     <div class="application-shell-workbench">
         <DemoApplicationShell BreadcrumbItems="@CurrentBreadcrumbs">
-            <PageHeader>
+            <PageHeading>
                 @if (Record is null)
                 {
                     <PageHeading Title="Record not found" Description="This demo record may have been removed." IconName="@("Warning")">
@@ -29,7 +29,7 @@
                         </PageActions>
                     </PageHeading>
                 }
-            </PageHeader>
+            </PageHeading>
             <ChildContent>
             @if (Record is null)
             {
