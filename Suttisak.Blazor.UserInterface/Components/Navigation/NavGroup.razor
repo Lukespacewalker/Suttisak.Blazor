@@ -1,0 +1,19 @@
+<div class="@CssClassValue" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <span class="nav-group__label">@Label</span>
+    }
+    <div class="nav-group__items">@ChildContent</div>
+</div>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue => string.IsNullOrWhiteSpace(Class)
+        ? "nav-group"
+        : $"nav-group {Class}";
+}

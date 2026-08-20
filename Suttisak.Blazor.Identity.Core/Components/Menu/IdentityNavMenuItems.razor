@@ -4,7 +4,8 @@
 
 @if (ShowManageChildren)
 {
-	<NavCategory Style="@Style" IconRestName="PersonCircle" Href="@IdentityRoutes.Account.Manage.Root" Title="@IdentityNavMenuItems_razor.Account">
+	<NavSubmenu Style="@Style" IconName="PersonCircle" Label="@IdentityNavMenuItems_razor.Account" Expanded="true">
+		<NavItem IconRestName="Home" Href="@IdentityRoutes.Account.Manage.Root">@IdentityNavMenuItems_razor.Manage</NavItem>
 		<NavItem IconRestName="PersonAccounts" Href="@IdentityRoutes.Account.Manage.Profile" >@IdentityNavMenuItems_razor.Profile</NavItem>
 		<NavItem IconRestName="Mail" Href="@IdentityRoutes.Account.Manage.Email">@IdentityNavMenuItems_razor.Email</NavItem>
 		<NavItem IconRestName="Password" Href="@IdentityRoutes.Account.Manage.ChangePassword">@IdentityNavMenuItems_razor.Password</NavItem>
@@ -12,7 +13,7 @@
 		<NavItem IconRestName="KeyMultiple" Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@IdentityNavMenuItems_razor._2FA</NavItem>
 		<NavItem IconRestName="PersonPasskey" Href="@IdentityRoutes.Account.Manage.Passkeys">@IdentityNavMenuItems_razor.Passkeys</NavItem>
 		<NavItem IconRestName="DatabasePerson" Href="@IdentityRoutes.Account.Manage.PersonalData">@IdentityNavMenuItems_razor.PersonalData</NavItem>
-	</NavCategory>
+	</NavSubmenu>
 }
 else
 {

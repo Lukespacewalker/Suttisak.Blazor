@@ -39,29 +39,23 @@
         </details>
     </Profile>
     <Navigation>
-        <div class="demo-app-nav-group">
-            <span>@(IsThai ? "พื้นที่ทำงาน" : "Workspace")</span>
-            <NavLink href="application-shell" Match="NavLinkMatch.All">
-                <Suttisak.Blazor.Icons.Icon Name="Home" Size="20"  /> @(IsThai ? "ภาพรวม" : "Overview")
-            </NavLink>
-            <NavLink href="application-shell/records">
-                <Suttisak.Blazor.Icons.Icon Name="Table" Size="20"  /> @(IsThai ? "รายการ" : "Records")
-                <small>@RecordCount</small>
-            </NavLink>
-            <NavLink href="application-shell/person">
-                <Suttisak.Blazor.Icons.Icon Name="Person" Size="20"  /> @(IsThai ? "สุขภาพรายบุคคล" : "Individual health")
-            </NavLink>
-        </div>
-        <div class="demo-app-nav-group">
-            <span>@(IsThai ? "จัดการ" : "Manage")</span>
-            <NavSubmenu Label="@(IsThai ? "การดูแลระบบ" : "Administration")"
-                        IconName="@("Settings")"
-                        Badge="3">
-                <a href="#demo-team"><Suttisak.Blazor.Icons.Icon Name="People" Size="20"  /> @(IsThai ? "ทีม" : "Team")</a>
-                <a href="#demo-permissions"><Suttisak.Blazor.Icons.Icon Name="PersonLock" Size="20"  /> @(IsThai ? "สิทธิ์" : "Permissions")</a>
-                <a href="#demo-settings"><Suttisak.Blazor.Icons.Icon Name="Settings" Size="20"  /> @(IsThai ? "การตั้งค่า" : "Settings")</a>
-            </NavSubmenu>
-        </div>
+        <Nav Embedded="true">
+            <NavGroup Label="@(IsThai ? "พื้นที่ทำงาน" : "Workspace")">
+                <NavItem Href="application-shell" Match="NavLinkMatch.All" IconRestName="Home" IconActiveName="Home">@(IsThai ? "ภาพรวม" : "Overview")</NavItem>
+                <NavItem Href="application-shell/records" IconRestName="Table" IconActiveName="Table">
+                    <ChildContent>@(IsThai ? "รายการ" : "Records")</ChildContent>
+                    <TrailingContent>@RecordCount</TrailingContent>
+                </NavItem>
+                <NavItem Href="application-shell/person" IconRestName="Person" IconActiveName="Person">@(IsThai ? "สุขภาพรายบุคคล" : "Individual health")</NavItem>
+            </NavGroup>
+            <NavGroup Label="@(IsThai ? "จัดการ" : "Manage")">
+                <NavSubmenu Label="@(IsThai ? "การดูแลระบบ" : "Administration")" IconName="Settings" Badge="3">
+                    <NavItem Href="application-shell/records" IconRestName="People" IconActiveName="People">@(IsThai ? "ทีม" : "Team")</NavItem>
+                    <NavItem Href="application-shell/person" IconRestName="PersonLock" IconActiveName="PersonLock">@(IsThai ? "สิทธิ์" : "Permissions")</NavItem>
+                    <NavItem Href="application-shell/person/settings" IconRestName="Settings" IconActiveName="Settings">@(IsThai ? "การตั้งค่า" : "Settings")</NavItem>
+                </NavSubmenu>
+            </NavGroup>
+        </Nav>
     </Navigation>
     <NavigationFooter>
         <div class="demo-app-nav-footer"><i></i><span><strong>@(IsThai ? "ระบบพร้อมใช้งาน" : "All systems ready")</strong><small>@(IsThai ? "ตรวจสอบเมื่อสักครู่" : "Last checked just now")</small></span></div>
