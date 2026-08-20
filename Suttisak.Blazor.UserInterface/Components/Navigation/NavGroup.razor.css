@@ -1,0 +1,28 @@
+.nav-group {
+    display: grid;
+    min-width: 0;
+    gap: .25rem;
+}
+
+.nav-group + .nav-group {
+    margin-top: 1.5rem;
+}
+
+.nav-group__label {
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 .65rem .4rem;
+    color: var(--app-foreground-muted);
+    font-size: .61rem;
+    font-weight: 850;
+    letter-spacing: .13em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.nav-group__items {
+    display: grid;
+    min-width: 0;
+    gap: .25rem;
+}

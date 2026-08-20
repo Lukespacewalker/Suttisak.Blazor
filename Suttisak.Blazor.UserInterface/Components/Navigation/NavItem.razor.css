@@ -31,6 +31,17 @@
     flex: 0 0 auto;
 }
 
+.nav-item__trailing {
+    min-width: 1.35rem;
+    min-height: 1.35rem;
+    padding-inline: .35rem;
+    border-radius: 99rem;
+    background: var(--app-surface-muted);
+    color: inherit;
+    font-size: .62rem;
+    font-weight: 800;
+}
+
 .nav-item__label {
     flex: 1 1 auto;
     overflow: hidden;

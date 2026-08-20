@@ -83,9 +83,8 @@
 
 .nav-panel__primary,
 .nav-panel__account {
-    display: flex;
-    flex-direction: column;
-    padding-left: .25rem;
+    display: grid;
+    min-width: 0;
 }
 
 .nav-panel__primary {
@@ -94,6 +93,8 @@
 
 .nav-panel__account {
     order: 2;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--app-glass-border);
 }
 

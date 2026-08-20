@@ -117,6 +117,14 @@ test.describe('UI Playbook shared-component contracts', () => {
     expect(geometry.seam).toBeLessThanOrEqual(2);
   });
 
+  test('Application navigation uses the shared group and item contract', async ({ page }) => {
+    await page.goto('/application-shell');
+
+    await expect(page.locator('.nav-group__label').first()).toHaveText('Workspace');
+    await expect(page.getByRole('link', { name: 'Overview' })).toHaveClass(/nav-item--active/);
+    await expect(page.locator('.demo-app-nav-group')).toHaveCount(0);
+  });
+
   for (const path of ['/', '/component-browser', '/form-controls', '/grid-performance', '/landing', '/access/login', '/application-shell']) {
     test(`has no serious or critical axe violations on ${path}`, async ({ page }) => {
       await page.goto(path);

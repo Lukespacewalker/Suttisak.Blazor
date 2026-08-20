@@ -28,6 +28,9 @@
         <Navigation>
             <SectionOutlet SectionId="NavigationSection" />
         </Navigation>
+        <NavigationFooter>
+            <SectionOutlet SectionId="NavigationFooterSection" />
+        </NavigationFooter>
         <ThemeSwitcher>
             <ThemeSelector @rendermode="HeaderRenderMode" />
         </ThemeSwitcher>
@@ -52,6 +55,7 @@
 @code {
     public static object HeaderSection = new();
     public static object NavigationSection = new();
+    public static object NavigationFooterSection = new();
     public static object MessageBarSection = new();
 
     private Breadcrumb[] _breadcrumbs = Array.Empty<Breadcrumb>();
