@@ -51,17 +51,26 @@ else
         _ = OnQueueChangedAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!_openAfterRender || _current is null) return;
+        if (!_openAfterRender || _current is null) return Task.CompletedTask;
 
         _openAfterRender = false;
         var request = _current;
+        var resultTask = request.Kind == AppOverlayKind.Drawer
+            ? _drawer!.ShowAsync(request)
+            : _dialog!.ShowAsync(request);
+        _ = CompleteRequestAsync(request, resultTask);
+        return Task.CompletedTask;
+    }
+
+    private async Task CompleteRequestAsync(
+        AppOverlayRequest request,
+        Task<AppOverlayResult<object>> resultTask)
+    {
         try
         {
-            var result = request.Kind == AppOverlayKind.Drawer
-                ? await _drawer!.ShowAsync(request)
-                : await _dialog!.ShowAsync(request);
+            var result = await resultTask;
             request.Complete(result.IsCancelled
                 ? AppOverlayResult<object?>.Cancelled()
                 : AppOverlayResult<object?>.FromValue(result.Value));
@@ -112,21 +121,26 @@ else
         builder.OpenComponent<CascadingValue<AppOverlayController>>(2);
         builder.AddAttribute(3, nameof(CascadingValue<AppOverlayController>.Value), request.Controller);
         builder.AddAttribute(4, nameof(CascadingValue<AppOverlayController>.IsFixed), true);
+        builder.AddAttribute(5, nameof(CascadingValue<AppOverlayController>.ChildContent), RenderOverlayContent(request));
+        builder.CloseComponent();
+    };
+
+    private RenderFragment RenderOverlayContent(AppOverlayRequest request) => builder =>
+    {
         if (request.ComponentType is not null)
         {
-            builder.OpenComponent(5, request.ComponentType);
+            builder.OpenComponent(0, request.ComponentType);
             if (request.Parameters is not null)
             {
-                builder.AddMultipleAttributes(6, request.Parameters.Select(parameter =>
+                builder.AddMultipleAttributes(1, request.Parameters.Select(parameter =>
                     new KeyValuePair<string, object>(parameter.Key, parameter.Value!)));
             }
             builder.CloseComponent();
         }
         else if (request.Fragments is not null)
         {
-            builder.AddContent(7, request.Fragments.Body(request.Controller!));
+            builder.AddContent(2, request.Fragments.Body(request.Controller!));
         }
-        builder.CloseComponent();
     };
 
     private RenderFragment? RenderFooter(AppOverlayRequest request)
