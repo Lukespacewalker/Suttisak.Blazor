@@ -4,14 +4,14 @@
 @inject IdentityUserAccessor<TUser> UserAccessor
 @inject IStringLocalizer<IdentityManageShell> Text
 
-<PageTitle>@Manage_razor.Manage</PageTitle>
+<PageTitle>@Text["AccountCenter"]</PageTitle>
 
 
 <IdentityManageShell Title="@Text["Overview"]"
                      Description="@Text["OverviewDescription"]"
                      ActiveUrl="@IdentityRoutes.Account.Manage.Root"
                      IconName="@StaticPageIcon"
-                     BreadcrumbItems="@(new[] { new Breadcrumb(StaticPageIcon, null, Manage_razor.Manage) })">
+                     BreadcrumbItems="@(new[] { new Breadcrumb(StaticPageIcon, null, Text["AccountCenter"]) })">
     <StatusMessage />
 
     <div class="identity-overview-grid">
