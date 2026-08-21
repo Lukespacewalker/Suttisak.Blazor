@@ -125,6 +125,34 @@ test.describe('UI Playbook shared-component contracts', () => {
     await expect(page.locator('.demo-app-nav-group')).toHaveCount(0);
   });
 
+  test('Mobile application navigation stays in the viewport and scrolls independently', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 360 });
+    await page.goto('/application-shell/person');
+    const menuButton = page.getByRole('button', { name: 'Open demo navigation' });
+    await expect(menuButton).toBeVisible();
+    await page.addStyleTag({ content: '.playbook-bar { display: none !important; } .application-shell-workbench { overflow: visible !important; }' });
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+
+    const pageScrollBeforeOpening = await page.evaluate(() => window.scrollY);
+    expect(pageScrollBeforeOpening).toBeGreaterThan(0);
+
+    await menuButton.click();
+    const navigation = page.locator('.app-shell__navigation');
+    await expect(navigation).toHaveClass(/is-open/);
+
+    const geometry = await navigation.evaluate(element => {
+      const box = element.getBoundingClientRect();
+      return { top: box.top, bottom: box.bottom, viewportHeight: window.innerHeight };
+    });
+    expect(geometry.top).toBeGreaterThanOrEqual(0);
+    expect(geometry.bottom).toBeLessThanOrEqual(geometry.viewportHeight + 1);
+
+    const navigationScroll = navigation.locator('.app-shell__navigation-scroll');
+    await navigationScroll.evaluate(element => element.scrollTo(0, element.scrollHeight));
+    expect(await navigationScroll.evaluate(element => element.scrollTop)).toBeGreaterThan(0);
+    expect(await page.evaluate(() => window.scrollY)).toBe(pageScrollBeforeOpening);
+  });
+
   for (const path of ['/', '/component-browser', '/form-controls', '/grid-performance', '/landing', '/access/login', '/application-shell']) {
     test(`has no serious or critical axe violations on ${path}`, async ({ page }) => {
       await page.goto(path);
