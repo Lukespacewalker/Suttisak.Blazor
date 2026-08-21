@@ -5,7 +5,7 @@
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
   <data name="AccountNavigation" xml:space="preserve"><value>Account navigation</value></data>
-  <data name="AccountCenter" xml:space="preserve"><value>Account center</value></data>
+  <data name="AccountCenter" xml:space="preserve"><value>Account Center</value></data>
   <data name="AccountCenterCaption" xml:space="preserve"><value>Identity &amp; security</value></data>
   <data name="Overview" xml:space="preserve"><value>Overview</value></data>
   <data name="SignInAndSecurity" xml:space="preserve"><value>Sign-in &amp; security</value></data>
