@@ -17,14 +17,15 @@
             <details class="playbook-nav-group">
                 <summary class="@(IsComponentsActive ? "active" : null)">Components <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
-                    <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Live previews, detail routes, and Razor usage</span></a>
-                    <span class="playbook-nav-group__label">Browse by category</span>
+                    <a class="playbook-nav-group__lead" href="catalog"><strong>Documentation catalog</strong><span>Searchable metadata and deep component routes</span></a>
+                    <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Live previews and integration specimens</span></a>
+                    <span class="playbook-nav-group__label">Browse live categories</span>
                     <a href="components#forms">Forms &amp; inputs</a>
                     <a href="components#actions">Actions</a>
                     <a href="components#overlays">Overlays</a>
                     <a href="components#navigation">Navigation</a>
                     <a href="components#feedback">Feedback</a>
-                    <span class="playbook-nav-group__label">Deep links</span>
+                    <span class="playbook-nav-group__label">Deep-link example</span>
                     <NavLink href="components/app-button">AppButton documentation</NavLink>
                 </div>
             </details>
@@ -70,7 +71,7 @@
     private static string Active(string value, string candidate) =>
         value == candidate ? "is-active" : string.Empty;
     private string CurrentPath => Navigation.ToBaseRelativePath(Navigation.Uri).Split('?', '#')[0].Trim('/');
-    private bool IsComponentsActive => CurrentPath is "components" or "component-browser"
+    private bool IsComponentsActive => CurrentPath is "components" or "component-browser" or "catalog"
         || CurrentPath.StartsWith("components/", StringComparison.Ordinal);
     private bool IsPatternsActive => CurrentPath is "form-controls" or "grid-performance" or "landing" or "application-shell"
         || CurrentPath.StartsWith("access/", StringComparison.Ordinal)
