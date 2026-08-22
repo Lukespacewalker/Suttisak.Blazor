@@ -13,30 +13,34 @@
 
         <nav class="playbook-nav" aria-label="Playbook pages">
             <NavLink href="" Match="NavLinkMatch.All">Home</NavLink>
+            <NavLink href="foundations">Foundations</NavLink>
             <details class="playbook-nav-group">
                 <summary class="@(IsComponentsActive ? "active" : null)">Components <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
-                    <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Live previews and Razor usage</span></a>
+                    <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Live previews, detail routes, and Razor usage</span></a>
                     <span class="playbook-nav-group__label">Browse by category</span>
                     <a href="components#forms">Forms &amp; inputs</a>
                     <a href="components#actions">Actions</a>
                     <a href="components#overlays">Overlays</a>
                     <a href="components#navigation">Navigation</a>
                     <a href="components#feedback">Feedback</a>
+                    <span class="playbook-nav-group__label">Deep links</span>
+                    <NavLink href="components/app-button">AppButton documentation</NavLink>
                 </div>
             </details>
             <details class="playbook-nav-group">
-                <summary class="@(IsIntegrateActive ? "active" : null)">Integrate <span aria-hidden="true">⌄</span></summary>
+                <summary class="@(IsPatternsActive ? "active" : null)">Patterns <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
                     <span class="playbook-nav-group__label">Focused patterns</span>
                     <NavLink href="form-controls">Form controls</NavLink>
                     <NavLink href="grid-performance">Virtual grid</NavLink>
-                    <span class="playbook-nav-group__label">Full-page examples</span>
+                    <span class="playbook-nav-group__label">Templates</span>
                     <NavLink href="landing">Landing page</NavLink>
                     <NavLink href="access/login">Access flows</NavLink>
                     <NavLink href="application-shell">Application shell</NavLink>
                 </div>
             </details>
+            <NavLink href="guidelines">Guidelines</NavLink>
         </nav>
 
         <div class="playbook-control">
@@ -66,8 +70,9 @@
     private static string Active(string value, string candidate) =>
         value == candidate ? "is-active" : string.Empty;
     private string CurrentPath => Navigation.ToBaseRelativePath(Navigation.Uri).Split('?', '#')[0].Trim('/');
-    private bool IsComponentsActive => CurrentPath is "components" or "component-browser";
-    private bool IsIntegrateActive => CurrentPath is "form-controls" or "grid-performance" or "landing" or "application-shell"
+    private bool IsComponentsActive => CurrentPath is "components" or "component-browser"
+        || CurrentPath.StartsWith("components/", StringComparison.Ordinal);
+    private bool IsPatternsActive => CurrentPath is "form-controls" or "grid-performance" or "landing" or "application-shell"
         || CurrentPath.StartsWith("access/", StringComparison.Ordinal)
         || CurrentPath.StartsWith("application-shell/", StringComparison.Ordinal);
     private string ColorSchemeValue => State.Mode == "auto" ? "light dark" : State.Mode;
