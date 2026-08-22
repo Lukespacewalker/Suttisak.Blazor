@@ -33,7 +33,7 @@
                 <article><strong>@ComponentCount</strong><span>Catalogued components</span><p>Every current Razor building block has a machine-readable catalog entry.</p></article>
                 <article><strong>@InteractiveCount</strong><span>Linked live specimens</span><p>Components with an in-browser specimen on the canonical Component Browser.</p></article>
                 <article><strong>@StableCount</strong><span>Stable contracts</span><p>Components intended for normal consumption without experimental churn.</p></article>
-                <article><strong>@PlaybookCatalog.Themes.Count</strong><span>Application themes</span><p>The same component contracts exercised against multiple product identities.</p></article>
+                <article><strong>@ThemeCount</strong><span>Application themes</span><p>The same component contracts exercised against multiple product identities.</p></article>
             </div>
             <div class="playbook-home__dashboard-links">
                 <a href="components/app-button"><span>Deep-link example</span><strong>AppButton documentation →</strong></a>
@@ -77,4 +77,5 @@
     private static int ComponentCount => PlaybookComponentCatalog.All.Count;
     private static int InteractiveCount => PlaybookComponentCatalog.All.Count(component => component.HasLiveSpecimen);
     private static int StableCount => PlaybookComponentCatalog.All.Count(component => component.Status == PlaybookComponentStatus.Stable);
+    private static int ThemeCount => PlaybookCatalog.Themes.Count();
 }
