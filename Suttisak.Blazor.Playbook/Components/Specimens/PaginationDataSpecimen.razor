@@ -33,9 +33,9 @@
                               ItemSize="44"
                               OverscanCount="@_overscan"
                               AriaLabel="QuickGrid records table">
-                    <PropertyColumn Property="@(record => record.Id)" Title="ID" />
-                    <PropertyColumn Property="@(record => record.Name)" Title="Record" />
-                    <PropertyColumn Property="@(record => record.Status)" Title="Status" />
+                    <PropertyColumn TGridItem="PageRecord" TProp="int" Property="@(record => record.Id)" Title="ID" />
+                    <PropertyColumn TGridItem="PageRecord" TProp="string" Property="@(record => record.Name)" Title="Record" />
+                    <PropertyColumn TGridItem="PageRecord" TProp="string" Property="@(record => record.Status)" Title="Status" />
                 </AppQuickGrid>
                 <AppQuickPaginator State="@_quickPagination" data-testid="quick-paginator" />
             </DataGridContainer>
@@ -114,10 +114,10 @@
         _status = $"AppPagination now shows {size} rows per page.";
     }
 
-    private async Task ChangeQuickPageSizeAsync(ChangeEventArgs args)
+    private void ChangeQuickPageSizeAsync(ChangeEventArgs args)
     {
         if (!int.TryParse(args.Value?.ToString(), out var size)) return;
-        await _quickPagination.SetItemsPerPageAsync(size);
+        _quickPagination.ItemsPerPage = size;
         _status = $"QuickGrid now shows {size} rows per page.";
     }
 
