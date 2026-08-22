@@ -24,17 +24,18 @@ test('AppStack controls direction, spacing, and wrapping without changing childr
   await page.goto('/components/app-stack');
 
   const stack = page.getByTestId('layout-stack');
-  await expect(stack).toHaveClass(/app-stack--vertical/);
-  await expect(stack).toHaveCSS('--app-stack-gap', '1rem');
+  await expect(stack).toHaveCSS('flex-direction', 'column');
+  await expect(stack).toHaveCSS('gap', '16px');
+  await expect(stack).toHaveCSS('flex-wrap', 'wrap');
 
   await page.getByLabel('Stack direction').selectOption('Horizontal');
-  await expect(stack).toHaveClass(/app-stack--horizontal/);
+  await expect(stack).toHaveCSS('flex-direction', 'row');
 
   await page.getByLabel('Gap').selectOption('0.5rem');
-  await expect(stack).toHaveCSS('--app-stack-gap', '0.5rem');
+  await expect(stack).toHaveCSS('gap', '8px');
 
   await page.getByLabel('Wrap horizontal content').uncheck();
-  await expect(stack).not.toHaveClass(/app-stack--wrap/);
+  await expect(stack).toHaveCSS('flex-wrap', 'nowrap');
 });
 
 test('interactive AppCard supports keyboard activation and active state', async ({ page }) => {
@@ -42,14 +43,17 @@ test('interactive AppCard supports keyboard activation and active state', async 
 
   const card = page.getByRole('button', { name: 'Review queue card' });
   await expect(card).toHaveAttribute('tabindex', '0');
+  await expect(card).toHaveAttribute('aria-pressed', 'false');
   await card.focus();
   await card.press('Enter');
   await expect(page.getByTestId('layout-status')).toHaveText('Card activated.');
-  await expect(card).toHaveClass(/app-card--active/);
+  await expect(card).toHaveClass(/is-active/);
+  await expect(card).toHaveAttribute('aria-pressed', 'true');
 
   await card.press('Space');
   await expect(page.getByTestId('layout-status')).toHaveText('Card deactivated.');
-  await expect(card).not.toHaveClass(/app-card--active/);
+  await expect(card).not.toHaveClass(/is-active/);
+  await expect(card).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('interactive card can be removed while the content surface stays non-interactive', async ({ page }) => {
@@ -61,16 +65,18 @@ test('interactive card can be removed while the content surface stays non-intera
   await expect(page.getByTestId('surface-card')).not.toHaveAttribute('role', 'button');
 });
 
-test('AppDivider exposes horizontal and vertical separator orientation', async ({ page }) => {
+test('AppDivider exposes native horizontal and explicit vertical separator semantics', async ({ page }) => {
   await page.goto('/components/app-divider');
 
-  const divider = page.getByTestId('layout-divider');
-  await expect(divider).toHaveAttribute('role', 'separator');
-  await expect(divider).toHaveAttribute('aria-orientation', 'horizontal');
+  let divider = page.getByTestId('layout-divider');
+  await expect(divider).toHaveJSProperty('tagName', 'HR');
+  await expect(divider).not.toHaveAttribute('aria-orientation', 'vertical');
 
   await page.getByLabel('Vertical divider').check();
+  divider = page.getByTestId('layout-divider');
+  await expect(divider).toHaveJSProperty('tagName', 'SPAN');
+  await expect(divider).toHaveAttribute('role', 'separator');
   await expect(divider).toHaveAttribute('aria-orientation', 'vertical');
-  await expect(divider).toHaveClass(/app-divider--vertical/);
 });
 
 test('Toolbar groups actions and invokes the primary action', async ({ page }) => {
