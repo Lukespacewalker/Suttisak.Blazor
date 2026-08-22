@@ -1,0 +1,125 @@
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Pagination and QuickGrid controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <DataGridContainer AriaLabel="Paged records example" TabIndex="0" data-testid="data-grid-container">
+                <AppGrid TGridItem="PageRecord"
+                         Items="@PagedRecords"
+                         Pagination="@_appPagination"
+                         AriaLabel="Paged records table"
+                         ItemKey="@(record => record.Id)">
+                    <AppGridPropertyColumn TGridItem="PageRecord" TProperty="int"
+                                           Property="@(record => record.Id)" Title="ID" />
+                    <AppGridPropertyColumn TGridItem="PageRecord" TProperty="string"
+                                           Property="@(record => record.Name)" Title="Record" />
+                </AppGrid>
+                <AppPagination State="@_appPagination"
+                               AriaLabel="Record pagination"
+                               PreviousLabel="Previous page"
+                               NextLabel="Next page"
+                               CurrentPageIndexChanged="OnAppPageChanged">
+                    <SummaryTemplate>
+                        <span data-testid="app-pagination-summary">Page @(_appPagination.CurrentPageIndex + 1) of @AppMaximumPage</span>
+                    </SummaryTemplate>
+                </AppPagination>
+            </DataGridContainer>
+
+            <DataGridContainer AriaLabel="QuickGrid records example" TabIndex="0" data-testid="quick-grid-container">
+                <AppQuickGrid TGridItem="PageRecord"
+                              Items="@QuickRecords"
+                              Pagination="@_quickPagination"
+                              Virtualize="@_virtualize"
+                              ItemSize="44"
+                              OverscanCount="@_overscan"
+                              AriaLabel="QuickGrid records table">
+                    <PropertyColumn Property="@(record => record.Id)" Title="ID" />
+                    <PropertyColumn Property="@(record => record.Name)" Title="Record" />
+                    <PropertyColumn Property="@(record => record.Status)" Title="Status" />
+                </AppQuickGrid>
+                <AppQuickPaginator State="@_quickPagination" data-testid="quick-paginator" />
+            </DataGridContainer>
+
+            <p class="component-specimen__status" role="status" aria-live="polite" data-testid="pagination-status">@_status</p>
+        </div>
+    </Preview>
+    <Controls>
+        <label>App rows per page
+            <select value="@_appPagination.ItemsPerPage" @onchange="ChangeAppPageSizeAsync">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="6">6</option>
+            </select>
+        </label>
+        <label>QuickGrid rows per page
+            <select value="@_quickPagination.ItemsPerPage" @onchange="ChangeQuickPageSizeAsync">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="6">6</option>
+            </select>
+        </label>
+        <label>
+            <input type="checkbox" @bind="_virtualize" />
+            Virtualize QuickGrid
+        </label>
+        <label>Overscan rows
+            <select @bind="_overscan">
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+            </select>
+        </label>
+    </Controls>
+    <States>
+        <article><span>AppPagination</span><strong>Shared application paging</strong><small>Uses AppGridPaginationState and clamps page boundaries.</small></article>
+        <article><span>QuickGrid</span><strong>Framework-backed paging</strong><small>Uses QuickGrid PaginationState and optional virtualization.</small></article>
+        <article><span>Container</span><strong>Focusable data region</strong><small>Provides a named section around scrollable or paged data.</small></article>
+        <article><span>Boundaries</span><strong>Previous / next</strong><small>Native disabled states prevent paging before page 1 or after the final page.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private readonly AppGridPaginationState _appPagination = new(2);
+    private readonly PaginationState _quickPagination = new() { ItemsPerPage = 2 };
+    private bool _virtualize;
+    private int _overscan = 3;
+    private string _status = "Both paginators start on page 1.";
+
+    private static readonly PageRecord[] Records =
+    [
+        new(201, "Annual surveillance", "Active"),
+        new(202, "Ergonomic review", "In review"),
+        new(203, "Wellness cohort", "Draft"),
+        new(204, "Respirator follow-up", "Active"),
+        new(205, "Recovery study", "Complete"),
+        new(206, "Movement campaign", "Complete")
+    ];
+
+    private IQueryable<PageRecord> PagedRecords => Records.AsQueryable();
+    private IQueryable<PageRecord> QuickRecords => Records.AsQueryable();
+    private int AppMaximumPage => Math.Max(1, (_appPagination.LastPageIndex ?? 0) + 1);
+
+    private Task OnAppPageChanged(int index)
+    {
+        _status = $"AppPagination moved to page {index + 1}.";
+        return Task.CompletedTask;
+    }
+
+    private async Task ChangeAppPageSizeAsync(ChangeEventArgs args)
+    {
+        if (!int.TryParse(args.Value?.ToString(), out var size)) return;
+        await _appPagination.SetItemsPerPageAsync(size);
+        _status = $"AppPagination now shows {size} rows per page.";
+    }
+
+    private async Task ChangeQuickPageSizeAsync(ChangeEventArgs args)
+    {
+        if (!int.TryParse(args.Value?.ToString(), out var size)) return;
+        await _quickPagination.SetItemsPerPageAsync(size);
+        _status = $"QuickGrid now shows {size} rows per page.";
+    }
+
+    private sealed record PageRecord(int Id, string Name, string Status);
+}
