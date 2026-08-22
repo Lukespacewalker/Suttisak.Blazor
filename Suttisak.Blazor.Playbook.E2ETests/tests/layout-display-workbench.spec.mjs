@@ -25,13 +25,13 @@ test('AppStack controls direction, spacing, and wrapping without changing childr
 
   const stack = page.getByTestId('layout-stack');
   await expect(stack).toHaveClass(/app-stack--vertical/);
-  await expect(stack).toHaveCSS('--app-stack-gap', '16px');
+  await expect(stack).toHaveCSS('--app-stack-gap', '1rem');
 
   await page.getByLabel('Stack direction').selectOption('Horizontal');
   await expect(stack).toHaveClass(/app-stack--horizontal/);
 
   await page.getByLabel('Gap').selectOption('0.5rem');
-  await expect(stack).toHaveCSS('--app-stack-gap', '8px');
+  await expect(stack).toHaveCSS('--app-stack-gap', '0.5rem');
 
   await page.getByLabel('Wrap horizontal content').uncheck();
   await expect(stack).not.toHaveClass(/app-stack--wrap/);
