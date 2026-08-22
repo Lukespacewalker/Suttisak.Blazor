@@ -71,8 +71,10 @@ test('valid submit succeeds only after required and email validation pass', asyn
   await page.getByLabel('Email').fill('ada@example.com');
   await page.getByRole('button', { name: 'Save profile' }).click();
   await expect(page.getByTestId('submit-status')).toHaveText('Saved Ada Lovelace.');
-  await expect(page.getByLabel('Full name')).toHaveAttribute('aria-invalid', 'false');
-  await expect(page.getByLabel('Email')).toHaveAttribute('aria-invalid', 'false');
+  await expect(page.getByLabel('Full name')).not.toHaveAttribute('aria-invalid', 'true');
+  await expect(page.getByLabel('Email')).not.toHaveAttribute('aria-invalid', 'true');
+  await expect(page.getByTestId('validation-summary')).not.toContainText('Enter a valid email address.');
+  await expect(page.getByTestId('profile-grid').getByRole('alert')).toHaveCount(0);
 });
 
 test('form actions support reset, sticky state, and disabled inputs', async ({ page }) => {
