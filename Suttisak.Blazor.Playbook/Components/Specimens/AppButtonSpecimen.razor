@@ -1,0 +1,32 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppButton controls">
+    <Preview>
+        <div class="component-specimen__demo component-specimen__demo--center">
+            <AppButton Variant="@_variant" Size="@_size" Disabled="@_disabled" Loading="@_loading">@_text</AppButton>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Text<input @bind="_text" @bind:event="oninput" /></label>
+        <label>Variant<select @bind="_variant">@foreach (var value in Enum.GetValues<AppButtonVariant>()) { <option value="@value">@value</option> }</select></label>
+        <label>Size<select @bind="_size">@foreach (var value in Enum.GetValues<AppButtonSize>()) { <option value="@value">@value</option> }</select></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_loading" /> Loading</label>
+    </Controls>
+    <States>
+        <article><span>Primary</span><AppButton Variant="AppButtonVariant.Primary">Save changes</AppButton></article>
+        <article><span>Secondary</span><AppButton Variant="AppButtonVariant.Secondary">Save changes</AppButton></article>
+        <article><span>Subtle</span><AppButton Variant="AppButtonVariant.Subtle">Save changes</AppButton></article>
+        <article><span>Danger</span><AppButton Variant="AppButtonVariant.Danger">Delete</AppButton></article>
+        <article><span>Disabled</span><AppButton Disabled="true">Unavailable</AppButton></article>
+        <article><span>Loading</span><AppButton Loading="true">Saving</AppButton></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _text = "Save changes";
+    private AppButtonVariant _variant = AppButtonVariant.Primary;
+    private AppButtonSize _size = AppButtonSize.Standard;
+    private bool _disabled;
+    private bool _loading;
+}

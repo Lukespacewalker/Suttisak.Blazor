@@ -1,0 +1,31 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppTextBox controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppTextBox @bind-Value="_value" Label="@_label" Placeholder="@_placeholder" Description="@_description" Required="@_required" Disabled="@_disabled" />
+        </div>
+    </Preview>
+    <Controls>
+        <label>Value<input @bind="_value" @bind:event="oninput" /></label>
+        <label>Label<input @bind="_label" @bind:event="oninput" /></label>
+        <label>Placeholder<input @bind="_placeholder" @bind:event="oninput" /></label>
+        <label>Description<input @bind="_description" @bind:event="oninput" /></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+    </Controls>
+    <States>
+        <article><span>Default</span><AppTextBox Value="Ada Lovelace" Label="Full name" Description="Use your legal name." /></article>
+        <article><span>Required</span><AppTextBox Value="" Label="Email" Placeholder="name@example.com" Required="true" /></article>
+        <article><span>Disabled</span><AppTextBox Value="Read only context" Label="System value" Disabled="true" /></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string? _value = "Ada Lovelace";
+    private string? _label = "Full name";
+    private string? _placeholder = "Enter a name";
+    private string? _description = "Shown exactly as it will appear in the record.";
+    private bool _required;
+    private bool _disabled;
+}
