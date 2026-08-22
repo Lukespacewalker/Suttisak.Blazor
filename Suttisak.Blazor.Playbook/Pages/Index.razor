@@ -12,7 +12,7 @@
                 <p>Explore live Razor components, learn their contracts, and test complete integration patterns against every application theme.</p>
                 <div class="playbook-home__actions">
                     <a class="playbook-home__primary-action" href="components">Browse components <span aria-hidden="true">→</span></a>
-                    <a class="playbook-home__secondary-action" href="application-shell">Open an integrated example</a>
+                    <a class="playbook-home__secondary-action" href="foundations">Open foundations</a>
                 </div>
             </div>
             <div class="playbook-home__signal" aria-label="Playbook capabilities">
@@ -27,20 +27,35 @@
             </div>
         </section>
 
+        <section class="playbook-home__dashboard" aria-labelledby="dashboard-title">
+            <header><span class="playbook-kicker">Library pulse</span><h2 id="dashboard-title">Know the system before changing it.</h2></header>
+            <div class="playbook-home__metrics">
+                <article><strong>@ComponentCount</strong><span>Catalogued components</span><p>Every current Razor building block has a machine-readable catalog entry.</p></article>
+                <article><strong>@InteractiveCount</strong><span>Linked live specimens</span><p>Components with an in-browser specimen on the canonical Component Browser.</p></article>
+                <article><strong>@StableCount</strong><span>Stable contracts</span><p>Components intended for normal consumption without experimental churn.</p></article>
+                <article><strong>@PlaybookCatalog.Themes.Count</strong><span>Application themes</span><p>The same component contracts exercised against multiple product identities.</p></article>
+            </div>
+            <div class="playbook-home__dashboard-links">
+                <a href="components/app-button"><span>Deep-link example</span><strong>AppButton documentation →</strong></a>
+                <a href="guidelines"><span>Definition of done</span><strong>Accessibility, theming &amp; agent rules →</strong></a>
+                <a href="component-manifest.json"><span>For agents</span><strong>Machine-readable manifest →</strong></a>
+            </div>
+        </section>
+
         <section class="playbook-home__start" aria-labelledby="start-title">
             <header><span class="playbook-kicker">Start exploring</span><h2 id="start-title">Choose the level you need.</h2></header>
             <div class="playbook-home__path-grid">
-                <a href="components" class="playbook-home__path playbook-home__path--featured">
-                    <span>01 / Components</span><h3>Inspect the building blocks</h3>
-                    <p>Pick a component from the sidebar, use the live preview, then copy the Razor usage pattern.</p><strong>Open component browser →</strong>
+                <a href="foundations" class="playbook-home__path">
+                    <span>01 / Foundations</span><h3>Learn the design language</h3>
+                    <p>Inspect semantic color, type, spacing, radius, and motion contracts before styling a component.</p><strong>Open design tokens →</strong>
                 </a>
-                <a href="form-controls" class="playbook-home__path">
-                    <span>02 / Forms</span><h3>Connect real inputs</h3>
-                    <p>See validation and enhanced form behavior in a focused integration sandbox.</p><strong>View form pattern →</strong>
+                <a href="components" class="playbook-home__path playbook-home__path--featured">
+                    <span>02 / Components</span><h3>Inspect the building blocks</h3>
+                    <p>Browse the complete catalog, use live previews, then jump into deep-linkable component documentation.</p><strong>Open component browser →</strong>
                 </a>
                 <a href="application-shell" class="playbook-home__path">
-                    <span>03 / Application</span><h3>Study the complete shell</h3>
-                    <p>Move through responsive navigation, records, details, and an individual workspace.</p><strong>Launch application shell →</strong>
+                    <span>03 / Patterns</span><h3>Study complete composition</h3>
+                    <p>Move through responsive navigation, records, access flows, forms, grids, and application-level integration.</p><strong>Launch application shell →</strong>
                 </a>
             </div>
         </section>
@@ -51,6 +66,7 @@
                 <article><span>Theme</span><p>Switch application and color mode from the workbench bar. Every specimen responds in place.</p></article>
                 <article><span>Access</span><p>Keyboard focus, semantic state, narrow screens, and reduced motion stay part of the component contract.</p></article>
                 <article><span>Ownership</span><p>The library owns structure and behavior. Consuming applications keep their copy, routes, and assets.</p></article>
+                <article><span>Agents</span><p>Humans and AI inspect the same catalog before introducing new UI primitives or parallel styling.</p></article>
             </div>
         </section>
     </main>
@@ -58,4 +74,7 @@
 
 @code {
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+    private static int ComponentCount => PlaybookComponentCatalog.All.Count;
+    private static int InteractiveCount => PlaybookComponentCatalog.All.Count(component => component.HasLiveSpecimen);
+    private static int StableCount => PlaybookComponentCatalog.All.Count(component => component.Status == PlaybookComponentStatus.Stable);
 }
