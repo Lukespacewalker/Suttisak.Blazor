@@ -19,7 +19,13 @@ public static class PlaybookSpecimenRegistry
             ["AppTabs"] = new(typeof(AppTabs), typeof(AppTabsSpecimen)),
             ["AppBreadcrumb"] = new(typeof(AppBreadcrumb), typeof(AppBreadcrumbSpecimen)),
             ["AppDialog"] = new(typeof(AppDialog<string, string>), typeof(AppDialogSpecimen)),
-            ["AppDrawer"] = new(typeof(AppDrawer<string, string>), typeof(AppDrawerSpecimen))
+            ["AppDrawer"] = new(typeof(AppDrawer<string, string>), typeof(AppDrawerSpecimen)),
+            ["AppDataGrid"] = new(typeof(AppDataGrid), typeof(AppDataGridSpecimen)),
+            ["AppGrid"] = new(typeof(AppGrid<DemoRecord>), typeof(AppDataGridSpecimen)),
+            ["AppGridPaginator"] = new(typeof(AppGridPaginator), typeof(AppDataGridSpecimen)),
+            ["AppGridPropertyColumn"] = new(typeof(AppGridPropertyColumn<DemoRecord, string>), typeof(AppDataGridSpecimen)),
+            ["AppGridSelectColumn"] = new(typeof(AppGridSelectColumn<DemoRecord>), typeof(AppDataGridSpecimen)),
+            ["AppGridTemplateColumn"] = new(typeof(AppGridTemplateColumn<DemoRecord>), typeof(AppDataGridSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>
