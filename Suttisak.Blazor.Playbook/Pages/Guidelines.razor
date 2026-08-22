@@ -1,0 +1,60 @@
+@page "/guidelines"
+
+<PageTitle>Guidelines · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="guidelines-page">
+        <header class="guidelines-page__hero">
+            <span class="playbook-kicker">Shared UI guardrails</span>
+            <h1>Ship the contract,<br /><em>not the screenshot.</em></h1>
+            <p>A component is complete only when its behavior survives themes, keyboard navigation, constrained containers, asynchronous state, and application-owned content.</p>
+        </header>
+
+        <section class="guidelines-page__section" aria-labelledby="accessibility-guide-title">
+            <header><span>01</span><div><h2 id="accessibility-guide-title">Accessibility</h2><p>Accessibility is a component API concern, not a final audit pass.</p></div></header>
+            <div class="guidelines-page__cards">
+                <article><strong>Native first</strong><p>Prefer the semantic HTML element that already owns the expected browser and assistive-technology behavior.</p></article>
+                <article><strong>Keyboard complete</strong><p>Tab, Enter, Space, arrows, and Escape must follow the interaction model of the control, including overlays and composite widgets.</p></article>
+                <article><strong>Focus visible</strong><p>Every interactive state must preserve a visible focus indicator in product themes and forced-colors mode.</p></article>
+                <article><strong>Relationships explicit</strong><p>Labels, descriptions, errors, headings, panels, and controls must remain connected through semantic attributes.</p></article>
+            </div>
+        </section>
+
+        <section class="guidelines-page__section" aria-labelledby="theming-guide-title">
+            <header><span>02</span><div><h2 id="theming-guide-title">Theming</h2><p>Products own identity. The library owns semantic roles and behavior.</p></div></header>
+            <div class="guidelines-page__split">
+                <div><h3>Library owns</h3><ul><li>Semantic token names</li><li>Component structure</li><li>Interaction behavior</li><li>Responsive contracts</li><li>Focus and feedback semantics</li></ul></div>
+                <div><h3>Application owns</h3><ul><li>Brand color values</li><li>Copy and localization</li><li>Routes and authorization</li><li>Product imagery and marks</li><li>Domain-specific composition</li></ul></div>
+            </div>
+        </section>
+
+        <section class="guidelines-page__section" aria-labelledby="responsive-guide-title">
+            <header><span>03</span><div><h2 id="responsive-guide-title">Responsive behavior</h2><p>Shared components should respond to the space they receive instead of assuming which device owns the page.</p></div></header>
+            <div class="guidelines-page__checks">
+                <span>375 px constrained preview</span><span>768 px constrained preview</span><span>Long localized content</span><span>200% text zoom</span><span>Reduced motion</span><span>Light and dark themes</span>
+            </div>
+        </section>
+
+        <section class="guidelines-page__section" aria-labelledby="status-guide-title">
+            <header><span>04</span><div><h2 id="status-guide-title">Component maturity</h2><p>Status communicates how aggressively consumers and agents may depend on a public contract.</p></div></header>
+            <div class="guidelines-page__status-grid">
+                <article><strong>Stable</strong><p>Public contract is intended for normal consumption. Breaking changes require deliberate migration.</p></article>
+                <article><strong>Beta</strong><p>Useful and testable, but public API or composition may still move as integration evidence grows.</p></article>
+                <article><strong>Experimental</strong><p>Exploration only. Do not make it a broad dependency without explicitly accepting churn.</p></article>
+                <article><strong>Deprecated</strong><p>Existing consumers may remain temporarily, but new code should use the documented replacement.</p></article>
+            </div>
+        </section>
+
+        <section class="guidelines-page__section guidelines-page__agent" aria-labelledby="agent-guide-title">
+            <header><span>05</span><div><h2 id="agent-guide-title">AI / agent workflow</h2><p>The Playbook is also a machine-facing map of what already exists.</p></div></header>
+            <ol>
+                <li><strong>Search the component catalog first.</strong><span>Do not introduce raw markup or a new component until existing primitives and patterns have been checked.</span></li>
+                <li><strong>Open the component detail route.</strong><span>Inspect status, API metadata, states, responsive behavior, and related components before composing a page.</span></li>
+                <li><strong>Use semantic tokens.</strong><span>Never hard-code a product palette into reusable library CSS.</span></li>
+                <li><strong>Update the Playbook with public API changes.</strong><span>A component that cannot be discovered or exercised here is only half integrated.</span></li>
+                <li><strong>Run component and browser verification.</strong><span>Build, bUnit, Playwright, axe, mobile width, reduced motion, and theme checks form one definition of done.</span></li>
+            </ol>
+            <a href="component-manifest.json">Open machine-readable component manifest →</a>
+        </section>
+    </main>
+</PlaybookShell>
