@@ -44,7 +44,16 @@ assets:
 - Repository guidance for agents: [`Suttisak.Blazor.UserInterface/AGENTS.md`](Suttisak.Blazor.UserInterface/AGENTS.md)
 - Marketing component reference and examples: [`Suttisak.Blazor.UserInterface/Components/Marketing/README.md`](Suttisak.Blazor.UserInterface/Components/Marketing/README.md)
 - Reader/result experience components: [`Suttisak.Blazor.UserInterface/Components/Experience/README.md`](Suttisak.Blazor.UserInterface/Components/Experience/README.md)
-- Live Component Gallery and Landing Page Sandbox: `dotnet run --project Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj`
+- Run the design-system Playbook: `dotnet run --project Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj`
+
+The Playbook is both a human and machine-facing component workbench:
+
+- `/catalog` — searchable metadata-driven component documentation index.
+- `/components` — live Component Browser and integration specimens.
+- `/components/{slug}` — deep-linkable component detail pages with status, responsive preview, API metadata, states, and relationships.
+- `/foundations` — semantic color, typography, spacing, radius, and motion contracts.
+- `/guidelines` — accessibility, theming, responsive, maturity, and agent workflow rules.
+- `/component-manifest.json` — machine-readable 90-component map for agents and tooling.
 
 ## Component verification
 
@@ -54,7 +63,7 @@ The fast component suite uses bUnit:
 dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj
 ```
 
-The Playbook browser suite exercises the compiled WebAssembly application, including axe accessibility checks and the 100,000-row virtual-grid specimen:
+The Playbook browser suite exercises the compiled WebAssembly application, including axe accessibility checks, component documentation routes, manifest integrity, and the 100,000-row virtual-grid specimen:
 
 ```powershell
 Push-Location Suttisak.Blazor.Playbook.E2ETests
@@ -63,3 +72,5 @@ npm run install:browsers
 npm test
 Pop-Location
 ```
+
+Pull requests that touch the UI library or Playbook run the same build, bUnit, Chromium, and accessibility verification in `.github/workflows/playbook-pr.yaml`.
