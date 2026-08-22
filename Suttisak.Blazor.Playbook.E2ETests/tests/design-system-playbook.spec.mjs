@@ -37,6 +37,40 @@ test('AppButton detail route exposes controls, states, and runtime API metadata'
   ).toBeLessThanOrEqual(376);
 });
 
+test('AppTextBox detail route exposes inherited input API and live controls', async ({ page }) => {
+  await page.goto('/components/app-text-box');
+
+  await expect(page.getByRole('heading', { level: 1, name: 'AppTextBox' })).toBeVisible();
+  await expect(page.getByRole('complementary', { name: 'AppTextBox controls' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'Label' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'Placeholder' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'Disabled' })).toBeVisible();
+
+  await page.getByLabel('Value', { exact: true }).fill('Grace Hopper');
+  await expect(page.getByRole('textbox', { name: 'Full name' }).first()).toHaveValue('Grace Hopper');
+});
+
+test('AppCheckbox detail route keeps control state wired to the live specimen', async ({ page }) => {
+  await page.goto('/components/app-checkbox');
+
+  await expect(page.getByRole('complementary', { name: 'AppCheckbox controls' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'ThreeState' })).toBeVisible();
+
+  const previewCheckbox = page.getByRole('checkbox', { name: /Email me updates/i }).first();
+  await expect(previewCheckbox).toBeChecked();
+  await page.getByLabel('Checked', { exact: true }).uncheck();
+  await expect(previewCheckbox).not.toBeChecked();
+});
+
+test('AppSelect detail route exposes generic runtime API metadata', async ({ page }) => {
+  await page.goto('/components/app-select');
+
+  await expect(page.getByRole('complementary', { name: 'AppSelect controls' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'Options' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'Placeholder' })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Region' }).first()).toHaveValue('th');
+});
+
 test('Foundations exposes semantic tokens instead of a parallel palette', async ({ page }) => {
   await page.goto('/foundations');
 
@@ -57,7 +91,16 @@ test('Guidelines publishes the agent-first component discovery workflow', async 
   await expect(manifestLink).toHaveAttribute('href', 'component-manifest.json');
 });
 
-for (const path of ['/components/app-button', '/foundations', '/guidelines']) {
+for (const path of [
+  '/components/app-button',
+  '/components/app-text-box',
+  '/components/app-text-area',
+  '/components/app-select',
+  '/components/app-checkbox',
+  '/components/app-switch',
+  '/foundations',
+  '/guidelines'
+]) {
   test(`new Playbook surface has no serious or critical axe violations on ${path}`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('main')).toBeVisible();
