@@ -45,8 +45,8 @@
                     <h3>Date</h3>
                     <AppCalendarPicker Label="Appointment date"
                                        Description="Date-only value with native input and optional themed popup."
-                                       Min="@new DateOnly(2026, 1, 1)"
-                                       Max="@new DateOnly(2027, 12, 31)"
+                                       Min="@CalendarMin"
+                                       Max="@CalendarMax"
                                        Mode="@_calendarMode"
                                        FirstDayOfWeek="@DayOfWeek.Monday"
                                        Text="@PickerText"
@@ -121,6 +121,9 @@
 
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private static DateOnly CalendarMin { get; } = new(2026, 1, 1);
+    private static DateOnly CalendarMax { get; } = new(2027, 12, 31);
 
     private int _capacity = 45;
     private IEnumerable<string> _selectedRoles = new[] { "Reviewer", "Approver" };
