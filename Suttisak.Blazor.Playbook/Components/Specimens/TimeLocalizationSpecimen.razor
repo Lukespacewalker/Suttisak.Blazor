@@ -1,5 +1,4 @@
 @using System.Globalization
-@inject(Key = nameof(BrowserTimeProvider)) TimeProvider BrowserClock
 
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Time and localization controls">
     <Preview>
@@ -58,6 +57,9 @@
 </ComponentSpecimenLayout>
 
 @code {
+    [Inject(Key = nameof(BrowserTimeProvider))]
+    public TimeProvider BrowserClock { get; set; } = null!;
+
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
     private static readonly DateTimeOffset Instant = new(2026, 8, 23, 0, 0, 0, TimeSpan.Zero);
