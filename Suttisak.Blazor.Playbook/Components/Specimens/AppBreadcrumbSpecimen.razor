@@ -1,0 +1,63 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppBreadcrumb controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppBreadcrumb Items="@Items" />
+        </div>
+    </Preview>
+    <Controls>
+        <label>Depth
+            <select @bind="_depth">
+                <option value="2">2 levels</option>
+                <option value="3">3 levels</option>
+                <option value="4">4 levels</option>
+            </select>
+        </label>
+        <label>Current page<input @bind="_currentTitle" @bind:event="oninput" /></label>
+    </Controls>
+    <States>
+        <article><span>Short trail</span><AppBreadcrumb Items="@ShortItems" /></article>
+        <article><span>Deep trail</span><AppBreadcrumb Items="@DeepItems" /></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _depth = "3";
+    private string _currentTitle = "Quarterly report";
+
+    private IReadOnlyList<Breadcrumb> Items
+    {
+        get
+        {
+            var depth = int.TryParse(_depth, out var value) ? value : 3;
+            var all = new List<Breadcrumb>
+            {
+                new(null, "/", "Home"),
+                new(null, "/workspace", "Workspace"),
+                new(null, "/workspace/reports", "Reports"),
+                new(null, null, _currentTitle)
+            };
+            return depth switch
+            {
+                <= 2 => [all[0], all[3]],
+                3 => [all[0], all[2], all[3]],
+                _ => all
+            };
+        }
+    }
+
+    private static readonly IReadOnlyList<Breadcrumb> ShortItems =
+    [
+        new(null, "/", "Home"),
+        new(null, null, "Profile")
+    ];
+
+    private static readonly IReadOnlyList<Breadcrumb> DeepItems =
+    [
+        new(null, "/", "Home"),
+        new(null, "/workspace", "Workspace"),
+        new(null, "/workspace/projects", "Projects"),
+        new(null, null, "Apollo")
+    ];
+}
