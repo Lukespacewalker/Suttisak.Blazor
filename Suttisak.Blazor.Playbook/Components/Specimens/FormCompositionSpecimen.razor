@@ -3,7 +3,7 @@
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Form composition controls">
     <Preview>
         <div class="component-specimen__demo">
-            <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+            <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" novalidate>
                 <DataAnnotationsValidator />
                 <FormSection Title="Review profile"
                              Description="A complete EditForm using shared layout, inputs, validation, and actions."
