@@ -13,9 +13,9 @@
         <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
     </Controls>
     <States>
-        <article><span>Selected</span><AppSelect TValue="string" Value="th" Label="Region" Options="@Options" /></article>
-        <article><span>Required</span><AppSelect TValue="string" Value="" Label="Region" Placeholder="Choose a region" Options="@Options" Required="true" /></article>
-        <article><span>Disabled</span><AppSelect TValue="string" Value="jp" Label="Region" Options="@Options" Disabled="true" /></article>
+        <article><span>Selected</span><AppSelect TValue="string" Value="@("th")" Label="Region" Options="@Options" /></article>
+        <article><span>Required</span><AppSelect TValue="string" Value="@string.Empty" Label="Region" Placeholder="Choose a region" Options="@Options" Required="true" /></article>
+        <article><span>Disabled</span><AppSelect TValue="string" Value="@("jp")" Label="Region" Options="@Options" Disabled="true" /></article>
     </States>
 </ComponentSpecimenLayout>
 
