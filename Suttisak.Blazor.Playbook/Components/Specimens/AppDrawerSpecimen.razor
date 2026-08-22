@@ -16,7 +16,7 @@
                 </Body>
                 <Footer Context="drawer">
                     <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
-                    <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => drawer.CloseAsync("Saved"))">Save</AppButton>
+                    <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => SaveAsync(drawer))">Save</AppButton>
                 </Footer>
             </AppDrawer>
         </div>
@@ -50,4 +50,6 @@
         var result = await _drawer!.ShowAsync("Playbook");
         _lastResult = result.HasValue ? $"Result: {result.Value}" : "Result: cancelled";
     }
+
+    private static Task SaveAsync(AppOverlayContext<string, string> drawer) => drawer.CloseAsync("Saved");
 }
