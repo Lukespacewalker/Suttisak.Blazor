@@ -1,0 +1,185 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Advanced input controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <div class="component-specimen__demo-grid">
+                <section>
+                    <h3>Number</h3>
+                    <AppNumberInput TValue="int"
+                                    Label="Capacity"
+                                    Description="A typed integer constrained to a practical range."
+                                    Min="0"
+                                    Max="100"
+                                    Step="5"
+                                    Required="@_required"
+                                    Disabled="@_disabled"
+                                    @bind-Value="_capacity" />
+                    <p role="status">Capacity: @_capacity</p>
+                </section>
+
+                <section>
+                    <h3>Multiple selection</h3>
+                    <AppMultiSelect TValue="string"
+                                    Label="Review roles"
+                                    Description="Choose every role that participates in the review."
+                                    Options="@RoleOptions"
+                                    Required="@_required"
+                                    Disabled="@_disabled"
+                                    @bind-SelectedItems="_selectedRoles" />
+                    <p role="status">Roles: @SelectedRolesText</p>
+                </section>
+
+                <section>
+                    <h3>Exclusive choice</h3>
+                    <AppRadioGroup TValue="string"
+                                   Label="Contact channel"
+                                   Description="Only one channel can be selected."
+                                   Orientation="@(_horizontalRadios ? "Horizontal" : "Vertical")"
+                                   Options="@ContactOptions"
+                                   Required="@_required"
+                                   Disabled="@_disabled"
+                                   @bind-Value="_contactChannel" />
+                    <p role="status">Channel: @_contactChannel</p>
+                </section>
+
+                <section>
+                    <h3>Date</h3>
+                    <AppCalendarPicker Label="Appointment date"
+                                       Description="Date-only value with native input and optional themed popup."
+                                       Min="@CalendarMin"
+                                       Max="@CalendarMax"
+                                       Mode="@_calendarMode"
+                                       FirstDayOfWeek="@DayOfWeek.Monday"
+                                       Text="@PickerText"
+                                       Required="@_required"
+                                       Disabled="@_disabled"
+                                       @bind-Value="_appointmentDate" />
+                    <p role="status">Date: @(_appointmentDate?.ToString("yyyy-MM-dd") ?? "none")</p>
+                </section>
+
+                <section>
+                    <h3>Time</h3>
+                    <AppTimePicker Label="Start time"
+                                   Description="Time-only value with configurable minute and second precision."
+                                   MinuteStep="@_minuteStep"
+                                   SecondStep="5"
+                                   IncludeSeconds="@_includeSeconds"
+                                   Text="@PickerText"
+                                   Required="@_required"
+                                   Disabled="@_disabled"
+                                   @bind-Value="_startTime" />
+                    <p role="status">Time: @FormatTime(_startTime)</p>
+                </section>
+
+                <section>
+                    <h3>Browser-local date and time</h3>
+                    <AppDateTimePicker Label="Follow-up"
+                                       Description="Local date-time plus browser time-zone metadata for transport."
+                                       Name="FollowUp"
+                                       MinuteStep="@_minuteStep"
+                                       SecondStep="5"
+                                       IncludeSeconds="@_includeSeconds"
+                                       FirstDayOfWeek="@DayOfWeek.Monday"
+                                       Text="@PickerText"
+                                       Required="@_required"
+                                       Disabled="@_disabled"
+                                       @bind-Value="_followUp" />
+                    <p role="status">Follow-up: @FormatDateTime(_followUp)</p>
+                </section>
+            </div>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Minute step
+            <select @bind="_minuteStep">
+                <option value="1">1 minute</option>
+                <option value="5">5 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+            </select>
+        </label>
+        <label>Calendar mode
+            <select @bind="_calendarMode">
+                @foreach (var mode in Enum.GetValues<AppCalendarPickerMode>())
+                {
+                    <option value="@mode">@mode</option>
+                }
+            </select>
+        </label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_includeSeconds" /> Include seconds</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_horizontalRadios" /> Horizontal radios</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_thaiText" /> Thai picker text</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+    </Controls>
+    <States>
+        <article><span>Typed value</span><strong>Number input</strong><small>Culture-aware parsing with native min, max, and step constraints</small></article>
+        <article><span>Many choices</span><strong>Multi-select</strong><small>Typed collection binding without collapsing multiple values into one string</small></article>
+        <article><span>One choice</span><strong>Radio group</strong><small>Native radio exclusivity, fieldset semantics, and keyboard behavior</small></article>
+        <article><span>Local time</span><strong>Date and time pickers</strong><small>Invariant transport values with localized progressive-enhancement labels</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private static DateOnly CalendarMin { get; } = new(2026, 1, 1);
+    private static DateOnly CalendarMax { get; } = new(2027, 12, 31);
+
+    private int _capacity = 45;
+    private IEnumerable<string> _selectedRoles = new[] { "Reviewer", "Approver" };
+    private string _contactChannel = "Email";
+    private DateOnly? _appointmentDate = new(2026, 9, 15);
+    private TimeOnly? _startTime = new(9, 30);
+    private DateTime? _followUp = new(2026, 9, 15, 9, 30, 0, DateTimeKind.Unspecified);
+    private int _minuteStep = 15;
+    private bool _includeSeconds;
+    private bool _horizontalRadios = true;
+    private bool _thaiText;
+    private bool _required;
+    private bool _disabled;
+    private AppCalendarPickerMode _calendarMode = AppCalendarPickerMode.Popup;
+
+    private static IReadOnlyList<AppSelectOption<string>> RoleOptions { get; } =
+    [
+        new("Reviewer", "Reviewer"),
+        new("Approver", "Approver"),
+        new("Observer", "Observer"),
+        new("Archived", "Archived", Disabled: true)
+    ];
+
+    private static IReadOnlyList<AppSelectOption<string>> ContactOptions { get; } =
+    [
+        new("Email", "Email"),
+        new("Phone", "Phone"),
+        new("Portal", "Portal")
+    ];
+
+    private static AppPickerText ThaiPickerText { get; } = new()
+    {
+        Locale = "th-TH",
+        OpenCalendarLabel = "เปิดปฏิทิน",
+        OpenTimeLabel = "เปิดตัวเลือกเวลา",
+        OpenDateTimeLabel = "เปิดตัวเลือกวันที่และเวลา",
+        CalendarDialogLabel = "ปฏิทิน",
+        TimePickerDialogLabel = "เลือกเวลา",
+        DateTimePickerDialogLabel = "เลือกวันที่และเวลา",
+        PreviousMonthLabel = "เดือนก่อนหน้า",
+        NextMonthLabel = "เดือนถัดไป",
+        MonthLabel = "เดือน",
+        YearLabel = "ปี",
+        TimeLabel = "เวลา",
+        ChooseTimeLabel = "เลือกเวลา",
+        BrowserLocalTimeLabel = "เวลาท้องถิ่นของเบราว์เซอร์",
+        HourLabel = "ชั่วโมง",
+        MinuteLabel = "นาที",
+        SecondLabel = "วินาที",
+        NowLabel = "ตอนนี้",
+        CancelLabel = "ยกเลิก",
+        ApplyLabel = "ใช้"
+    };
+
+    private AppPickerText PickerText => _thaiText ? ThaiPickerText : new AppPickerText { Locale = "en-US" };
+    private string SelectedRolesText => string.Join(", ", _selectedRoles.OrderBy(value => value));
+    private string FormatTime(TimeOnly? value) => value?.ToString(_includeSeconds ? "HH:mm:ss" : "HH:mm") ?? "none";
+    private string FormatDateTime(DateTime? value) => value?.ToString(_includeSeconds ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-ddTHH:mm") ?? "none";
+}
