@@ -1,0 +1,51 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppDialog controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppButton OnClick="@(_ => OpenAsync())">Open dialog</AppButton>
+            @if (!string.IsNullOrWhiteSpace(_lastResult))
+            {
+                <p aria-live="polite">@_lastResult</p>
+            }
+            <AppDialog TInput="string" TResult="string" @ref="_dialog"
+                       Title="@_title" Description="@_description"
+                       Mode="@_mode" Dangerous="@_dangerous"
+                       Dismissible="@_dismissible" PreventDismissOnOutsideClick="@_preventOutsideDismiss">
+                <Body Context="dialog">
+                    <p>Review <strong>@dialog.Value</strong> before continuing.</p>
+                </Body>
+                <Footer Context="dialog">
+                    <AppButton OnClick="@(_ => dialog.CancelAsync())">Cancel</AppButton>
+                    <AppButton Variant="@( _dangerous ? AppButtonVariant.Danger : AppButtonVariant.Primary )"
+                               OnClick="@(_ => dialog.CloseAsync("Confirmed"))">Confirm</AppButton>
+                </Footer>
+            </AppDialog>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Title<input @bind="_title" @bind:event="oninput" /></label>
+        <label>Description<input @bind="_description" @bind:event="oninput" /></label>
+        <label>Mode<select @bind="_mode">@foreach (var value in Enum.GetValues<AppDialogMode>()) { <option value="@value">@value</option> }</select></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_dangerous" /> Dangerous</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_dismissible" /> Dismissible</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_preventOutsideDismiss" /> Prevent outside dismiss</label>
+    </Controls>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private AppDialog<string, string>? _dialog;
+    private string _title = "Publish changes?";
+    private string? _description = "Confirm the action before the update becomes visible to everyone.";
+    private AppDialogMode _mode = AppDialogMode.Information;
+    private bool _dangerous;
+    private bool _dismissible = true;
+    private bool _preventOutsideDismiss;
+    private string? _lastResult;
+
+    private async Task OpenAsync()
+    {
+        var result = await _dialog!.ShowAsync("the current workspace");
+        _lastResult = result.HasValue ? $"Result: {result.Value}" : "Result: cancelled";
+    }
+}
