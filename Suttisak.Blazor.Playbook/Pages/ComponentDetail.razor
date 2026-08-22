@@ -1,0 +1,146 @@
+@page "/components/{Slug}"
+
+<PageTitle>@(Component is null ? "Component not found" : $"{Component.Name} · UI Playbook")</PageTitle>
+
+<PlaybookShell>
+    <main class="component-detail">
+        @if (Component is null)
+        {
+            <section class="component-detail__not-found">
+                <span class="playbook-kicker">Component documentation</span>
+                <h1>That component is not in the catalog.</h1>
+                <p>The URL may be stale, or the component has not been registered with the Playbook metadata yet.</p>
+                <a href="components">Return to Component Browser</a>
+            </section>
+        }
+        else
+        {
+            <nav class="component-detail__breadcrumbs" aria-label="Breadcrumb">
+                <a href="components">Components</a><span aria-hidden="true">/</span><span>@Component.Category</span><span aria-hidden="true">/</span><strong>@Component.Name</strong>
+            </nav>
+
+            <header class="component-detail__hero">
+                <div>
+                    <span class="playbook-kicker">@Component.Category</span>
+                    <h1>@Component.Name</h1>
+                    <p>@Component.Summary</p>
+                </div>
+                <div class="component-detail__meta">
+                    <span class="component-detail__status component-detail__status--@Component.Status.ToString().ToLowerInvariant()">@Component.Status</span>
+                    <span>@Component.SourceArea</span>
+                    @if (Component.HasLiveSpecimen)
+                    {
+                        <a href="@PlaybookComponentCatalog.ResolveExistingHref(Component)">Open current specimen ↗</a>
+                    }
+                    else
+                    {
+                        <a href="@Component.ExistingHref">Open integration pattern ↗</a>
+                    }
+                </div>
+            </header>
+
+            <section class="component-detail__section" aria-labelledby="preview-title">
+                <header>
+                    <div><span>01 / Preview</span><h2 id="preview-title">Interactive contract</h2></div>
+                    <div class="component-detail__viewport" aria-label="Preview width">
+                        <button class="@ViewportClass("mobile")" @onclick='() => _viewport = "mobile"'>375</button>
+                        <button class="@ViewportClass("tablet")" @onclick='() => _viewport = "tablet"'>768</button>
+                        <button class="@ViewportClass("desktop")" @onclick='() => _viewport = "desktop"'>1280</button>
+                        <button class="@ViewportClass("full")" @onclick='() => _viewport = "full"'>Full</button>
+                    </div>
+                </header>
+                <div class="component-detail__lab">
+                    <div class="component-detail__preview-frame component-detail__preview-frame--@_viewport">
+                        @if (Component.Name == "AppButton")
+                        {
+                            <div class="component-detail__button-demo">
+                                <AppButton Variant="@_buttonVariant" Size="@_buttonSize" Disabled="@_buttonDisabled" Loading="@_buttonLoading">@_buttonText</AppButton>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="component-detail__generic-preview">
+                                <strong>@Component.Name</strong>
+                                <p>The canonical live or pattern example remains linked above. This detail route now owns documentation, status, API metadata, relationships, and design-system guidance.</p>
+                            </div>
+                        }
+                    </div>
+
+                    @if (Component.Name == "AppButton")
+                    {
+                        <aside class="component-detail__controls" aria-label="AppButton controls">
+                            <span>Controls</span>
+                            <label>Text<input @bind="_buttonText" /></label>
+                            <label>Variant<select @bind="_buttonVariant">@foreach (var value in Enum.GetValues<AppButtonVariant>()) { <option value="@value">@value</option> }</select></label>
+                            <label>Size<select @bind="_buttonSize">@foreach (var value in Enum.GetValues<AppButtonSize>()) { <option value="@value">@value</option> }</select></label>
+                            <label class="component-detail__check"><input type="checkbox" @bind="_buttonDisabled" /> Disabled</label>
+                            <label class="component-detail__check"><input type="checkbox" @bind="_buttonLoading" /> Loading</label>
+                        </aside>
+                    }
+                </div>
+            </section>
+
+            @if (Component.Name == "AppButton")
+            {
+                <section class="component-detail__section" aria-labelledby="states-title">
+                    <header><div><span>02 / States</span><h2 id="states-title">State matrix</h2></div></header>
+                    <div class="component-detail__states">
+                        <article><span>Primary</span><AppButton Variant="AppButtonVariant.Primary">Save changes</AppButton></article>
+                        <article><span>Secondary</span><AppButton Variant="AppButtonVariant.Secondary">Save changes</AppButton></article>
+                        <article><span>Subtle</span><AppButton Variant="AppButtonVariant.Subtle">Save changes</AppButton></article>
+                        <article><span>Danger</span><AppButton Variant="AppButtonVariant.Danger">Delete</AppButton></article>
+                        <article><span>Disabled</span><AppButton Disabled="true">Unavailable</AppButton></article>
+                        <article><span>Loading</span><AppButton Loading="true">Saving</AppButton></article>
+                    </div>
+                </section>
+            }
+
+            <section class="component-detail__section" aria-labelledby="api-title">
+                <header><div><span>03 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where the catalog supplies one, so public API changes are visible without duplicating a handwritten table.</p></header>
+                <ComponentParameterTable ComponentType="@Component.RuntimeType" />
+            </section>
+
+            <section class="component-detail__section" aria-labelledby="accessibility-title">
+                <header><div><span>04 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div></header>
+                <div class="component-detail__quality-grid">
+                    <article><strong>Keyboard</strong><p>Interactive controls must remain reachable and usable without a pointing device.</p></article>
+                    <article><strong>Focus</strong><p>Focus visibility is part of the shared component contract and must survive every product theme.</p></article>
+                    <article><strong>Semantics</strong><p>Prefer native elements and preserve labels, roles, state, and relationships exposed to assistive technology.</p></article>
+                    <article><strong>Responsive</strong><p>Verify narrow containers, long content, reduced motion, light mode, and dark mode before treating a change as complete.</p></article>
+                </div>
+            </section>
+
+            <section class="component-detail__section" aria-labelledby="related-title">
+                <header><div><span>05 / Compose</span><h2 id="related-title">Related components</h2></div></header>
+                <div class="component-detail__related">
+                    @foreach (var related in RelatedComponents)
+                    {
+                        <a href="@related.DetailHref"><strong>@related.Name</strong><span>@related.Summary</span></a>
+                    }
+                </div>
+            </section>
+
+            <footer class="component-detail__footer">
+                <span>Machine-readable ID</span><code>@Component.Slug</code><span>Tags</span><p>@string.Join(" · ", Component.Tags)</p>
+            </footer>
+        }
+    </main>
+</PlaybookShell>
+
+@code {
+    [Parameter] public string? Slug { get; set; }
+
+    private string _viewport = "desktop";
+    private string _buttonText = "Save changes";
+    private AppButtonVariant _buttonVariant = AppButtonVariant.Primary;
+    private AppButtonSize _buttonSize = AppButtonSize.Standard;
+    private bool _buttonDisabled;
+    private bool _buttonLoading;
+
+    private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
+    private IEnumerable<PlaybookComponentDefinition> RelatedComponents => Component is null
+        ? []
+        : PlaybookComponentCatalog.All.Where(candidate => candidate.Category == Component.Category && candidate.Slug != Component.Slug).Take(6);
+
+    private string ViewportClass(string candidate) => candidate == _viewport ? "is-active" : string.Empty;
+}
