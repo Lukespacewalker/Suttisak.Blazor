@@ -15,8 +15,8 @@
                 </Body>
                 <Footer Context="dialog">
                     <AppButton OnClick="@(_ => dialog.CancelAsync())">Cancel</AppButton>
-                    <AppButton Variant="@( _dangerous ? AppButtonVariant.Danger : AppButtonVariant.Primary )"
-                               OnClick="@(_ => dialog.CloseAsync("Confirmed"))">Confirm</AppButton>
+                    <AppButton Variant="@(_dangerous ? AppButtonVariant.Danger : AppButtonVariant.Primary)"
+                               OnClick="@(_ => ConfirmAsync(dialog))">Confirm</AppButton>
                 </Footer>
             </AppDialog>
         </div>
@@ -48,4 +48,6 @@
         var result = await _dialog!.ShowAsync("the current workspace");
         _lastResult = result.HasValue ? $"Result: {result.Value}" : "Result: cancelled";
     }
+
+    private static Task ConfirmAsync(AppOverlayContext<string, string> dialog) => dialog.CloseAsync("Confirmed");
 }
