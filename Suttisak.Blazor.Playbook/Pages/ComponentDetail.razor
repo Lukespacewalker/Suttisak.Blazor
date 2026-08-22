@@ -70,7 +70,7 @@
                     {
                         <aside class="component-detail__controls" aria-label="AppButton controls">
                             <span>Controls</span>
-                            <label>Text<input @bind="_buttonText" /></label>
+                            <label>Text<input @bind="_buttonText" @bind:event="oninput" /></label>
                             <label>Variant<select @bind="_buttonVariant">@foreach (var value in Enum.GetValues<AppButtonVariant>()) { <option value="@value">@value</option> }</select></label>
                             <label>Size<select @bind="_buttonSize">@foreach (var value in Enum.GetValues<AppButtonSize>()) { <option value="@value">@value</option> }</select></label>
                             <label class="component-detail__check"><input type="checkbox" @bind="_buttonDisabled" /> Disabled</label>
