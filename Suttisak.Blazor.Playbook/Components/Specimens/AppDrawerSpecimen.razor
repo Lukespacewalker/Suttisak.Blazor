@@ -1,0 +1,53 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppDrawer controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppButton OnClick="@(_ => OpenAsync())">Open drawer</AppButton>
+            @if (!string.IsNullOrWhiteSpace(_lastResult))
+            {
+                <p aria-live="polite">@_lastResult</p>
+            }
+            <AppDrawer TInput="string" TResult="string" @ref="_drawer"
+                       Title="@_title" Description="@_description"
+                       Position="@_position" Size="@_size" Mode="@_mode"
+                       Dismissible="@_dismissible" PreventDismissOnOutsideClick="@_preventOutsideDismiss">
+                <Body Context="drawer">
+                    <p>Edit the settings for <strong>@drawer.Value</strong>.</p>
+                    <AppTextBox Label="Display name" Value="Playbook workspace" />
+                </Body>
+                <Footer Context="drawer">
+                    <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
+                    <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => drawer.CloseAsync("Saved"))">Save</AppButton>
+                </Footer>
+            </AppDrawer>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Title<input @bind="_title" @bind:event="oninput" /></label>
+        <label>Description<input @bind="_description" @bind:event="oninput" /></label>
+        <label>Position<select @bind="_position">@foreach (var value in Enum.GetValues<AppDrawerPosition>()) { <option value="@value">@value</option> }</select></label>
+        <label>Size<select @bind="_size">@foreach (var value in Enum.GetValues<AppDrawerSize>()) { <option value="@value">@value</option> }</select></label>
+        <label>Mode<select @bind="_mode">@foreach (var value in Enum.GetValues<AppDialogMode>()) { <option value="@value">@value</option> }</select></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_dismissible" /> Dismissible</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_preventOutsideDismiss" /> Prevent outside dismiss</label>
+    </Controls>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private AppDrawer<string, string>? _drawer;
+    private string _title = "Workspace settings";
+    private string? _description = "Use a drawer when context should remain visible behind a focused editing surface.";
+    private AppDrawerPosition _position = AppDrawerPosition.End;
+    private AppDrawerSize _size = AppDrawerSize.Standard;
+    private AppDialogMode _mode = AppDialogMode.Default;
+    private bool _dismissible = true;
+    private bool _preventOutsideDismiss;
+    private string? _lastResult;
+
+    private async Task OpenAsync()
+    {
+        var result = await _drawer!.ShowAsync("Playbook");
+        _lastResult = result.HasValue ? $"Result: {result.Value}" : "Result: cancelled";
+    }
+}
