@@ -1,0 +1,62 @@
+name: playbook-pr
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/playbook-pr.yaml'
+      - 'Suttisak.Blazor.UserInterface/**'
+      - 'Suttisak.Blazor.Playbook/**'
+      - 'Suttisak.Blazor.Playbook.E2ETests/**'
+      - 'Suttisak.Blazor.UserInterface.Tests/**'
+      - '*.slnx'
+      - '**/*.props'
+      - '**/*.targets'
+      - 'global.json'
+      - 'NuGet.config'
+      - '**/NuGet.config'
+
+concurrency:
+  group: playbook-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  verify-playbook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: Suttisak.Blazor.Playbook.E2ETests/package-lock.json
+
+      - name: Restore solution
+        run: dotnet restore Suttisak.Blazor.slnx -p:Configuration=Release
+
+      - name: Build solution
+        run: dotnet build Suttisak.Blazor.slnx --configuration Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Test shared components
+        run: dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj --configuration Release --no-build --no-restore
+
+      - name: Install Playbook test dependencies
+        working-directory: Suttisak.Blazor.Playbook.E2ETests
+        run: npm ci
+
+      - name: Install Chromium
+        working-directory: Suttisak.Blazor.Playbook.E2ETests
+        run: npx playwright install --with-deps chromium
+
+      - name: Test Playbook in Chromium
+        working-directory: Suttisak.Blazor.Playbook.E2ETests
+        env:
+          PLAYBOOK_CONFIGURATION: Release
+          PLAYBOOK_NO_BUILD: 'true'
+        run: npm test
