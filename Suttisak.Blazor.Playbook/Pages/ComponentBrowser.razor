@@ -27,7 +27,7 @@
                         <div>
                             @foreach (var item in group.Items)
                             {
-                                <a href="@item.Href">@item.Name</a>
+                                <a href="@ResolveCatalogHref(item)">@item.Name</a>
                             }
                         </div>
                     </details>
@@ -175,7 +175,7 @@ if (result.HasValue)
                     <div>
                         @foreach (var item in group.Items)
                         {
-                            <a href="@item.Href"><strong>@item.Name</strong><span>@CoverageLabel(item)</span></a>
+                            <a href="@ResolveCatalogHref(item)"><strong>@item.Name</strong><span>@CoverageLabel(item)</span></a>
                         }
                     </div>
                 </section>
@@ -209,6 +209,8 @@ if (result.HasValue)
 </PlaybookShell>
 
 @code {
+    private const string ComponentBrowserRoute = "component-browser";
+
     private AppDialog<string, bool>? _dialog;
     private AppDrawer<string, bool>? _drawer;
     private int _itemCount = 3;
@@ -321,6 +323,10 @@ if (result.HasValue)
             .Where(group => group.Items.Count > 0);
 
     private static int CatalogComponentCount => CatalogGroups.Sum(group => group.Items.Count);
+    private static string ResolveCatalogHref(CatalogItem item) => item.Href.StartsWith('#')
+        ? $"{ComponentBrowserRoute}{item.Href}"
+        : item.Href;
+
     private static string CoverageLabel(CatalogItem item) => item.Href switch
     {
         "#library-directory" => "Catalog entry",
