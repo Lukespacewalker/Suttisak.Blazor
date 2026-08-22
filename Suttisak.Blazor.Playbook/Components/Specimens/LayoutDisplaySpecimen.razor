@@ -1,0 +1,101 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Layout and display controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppStack Direction="@_direction"
+                      Gap="@_gap"
+                      Align="stretch"
+                      Wrap="@_wrap"
+                      data-testid="layout-stack">
+                <AppCard Title="Assessment overview"
+                         Description="Composable application surface with header, body, actions, and footer."
+                         IsActive="@_cardActive"
+                         OnClick="@(_cardInteractive ? HandleCardClick : null)"
+                         aria-label="Assessment overview card"
+                         data-testid="layout-card">
+                    <Actions>
+                        <Pill>Ready</Pill>
+                    </Actions>
+                    <ChildContent>
+                        <p>Three records are ready for review and one requires follow-up.</p>
+                        <Toolbar AriaLabel="Assessment actions" data-testid="layout-toolbar">
+                            <AppButton Variant="AppButtonVariant.Primary" OnClick="HandlePrimaryAction">Open review</AppButton>
+                            <AppButton Variant="AppButtonVariant.Secondary">Export</AppButton>
+                        </Toolbar>
+                    </ChildContent>
+                    <Footer>
+                        <small>Updated a few moments ago</small>
+                    </Footer>
+                </AppCard>
+
+                <AppDivider Vertical="@_verticalDivider" data-testid="layout-divider" />
+
+                <CardMenu Title="Participant settings"
+                          Subtitle="Profile, preferences, and access"
+                          AriaLabel="Open participant settings"
+                          Disabled="@_menuDisabled"
+                          OnClick="HandleMenuClick"
+                          data-testid="layout-card-menu" />
+            </AppStack>
+
+            <p role="status" data-testid="layout-status">@_status</p>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Stack direction
+            <select @bind="_direction">
+                <option value="Vertical">Vertical</option>
+                <option value="Horizontal">Horizontal</option>
+            </select>
+        </label>
+        <label>Gap
+            <select @bind="_gap">
+                <option value="0.5rem">Compact</option>
+                <option value="1rem">Comfortable</option>
+                <option value="1.5rem">Spacious</option>
+            </select>
+        </label>
+        <label><input type="checkbox" @bind="_wrap" /> Wrap horizontal content</label>
+        <label><input type="checkbox" @bind="_verticalDivider" /> Vertical divider</label>
+        <label><input type="checkbox" @bind="_cardInteractive" /> Interactive card</label>
+        <label><input type="checkbox" @bind="_cardActive" /> Active card</label>
+        <label><input type="checkbox" @bind="_menuDisabled" /> Disabled card menu</label>
+    </Controls>
+    <States>
+        <article><span>Composition</span><strong>Stack → card → toolbar</strong><small>Layout primitives compose without owning application-specific behavior</small></article>
+        <article><span>Interactive</span><strong>Keyboard-operable surface</strong><small>Cards with click behavior expose button semantics and Enter/Space activation</small></article>
+        <article><span>Separation</span><strong>Semantic divider</strong><small>Horizontal and vertical separators preserve orientation semantics</small></article>
+        <article><span>Menu</span><strong>Native button contract</strong><small>CardMenu keeps disabled behavior and keyboard activation native</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _direction = "Vertical";
+    private string _gap = "1rem";
+    private bool _wrap = true;
+    private bool _verticalDivider;
+    private bool _cardInteractive = true;
+    private bool _cardActive;
+    private bool _menuDisabled;
+    private string _status = "No action yet.";
+
+    private Task HandleCardClick(MouseEventArgs _)
+    {
+        _cardActive = !_cardActive;
+        _status = _cardActive ? "Card activated." : "Card deactivated.";
+        return Task.CompletedTask;
+    }
+
+    private Task HandlePrimaryAction(MouseEventArgs _)
+    {
+        _status = "Primary toolbar action selected.";
+        return Task.CompletedTask;
+    }
+
+    private Task HandleMenuClick(MouseEventArgs _)
+    {
+        _status = "Participant settings selected.";
+        return Task.CompletedTask;
+    }
+}
