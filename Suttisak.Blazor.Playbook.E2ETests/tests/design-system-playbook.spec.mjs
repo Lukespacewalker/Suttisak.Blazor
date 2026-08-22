@@ -54,7 +54,7 @@ test('AppCheckbox detail route keeps control state wired to the live specimen', 
   await page.goto('/components/app-checkbox');
 
   await expect(page.getByRole('complementary', { name: 'AppCheckbox controls' })).toBeVisible();
-  await expect(page.getByRole('rowheader', { name: 'ThreeState' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'ThreeState', exact: true })).toBeVisible();
 
   const previewCheckbox = page.getByRole('checkbox', { name: /Email me updates/i }).first();
   await expect(previewCheckbox).toBeChecked();
