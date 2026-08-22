@@ -1,0 +1,120 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppDataGrid controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppDataGrid AriaLabel="Playbook records"
+                         State="@_state"
+                         LoadingTitle="Loading playbook records"
+                         EmptyTitle="No matching records"
+                         EmptyMessage="Change the search or state controls to bring records back.">
+                <Search>
+                    <AppTextBox Label="Search records" Type="search" Placeholder="Search by record, program, owner, or status"
+                                @bind-Value="_search" />
+                </Search>
+                <Filters>
+                    <span aria-live="polite">@FilteredRecords.Count() matching records</span>
+                </Filters>
+                <Actions>
+                    <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => ClearSearch())">Clear search</AppButton>
+                </Actions>
+                <ChildContent>
+                    <AppGrid TGridItem="DemoRecord"
+                             Items="@FilteredRecords"
+                             Pagination="@_pagination"
+                             SelectionMode="@_selectionMode"
+                             AriaLabel="Playbook records table"
+                             ItemKey="@(record => record.Id)">
+                        @if (_selectionMode != AppGridSelectionMode.None)
+                        {
+                            <AppGridSelectColumn TGridItem="DemoRecord" />
+                        }
+                        <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="int"
+                                               Property="@(record => record.Id)" Title="ID" Sortable="true" />
+                        <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string"
+                                               Property="@(record => record.Name)" Title="Record" Sortable="true" />
+                        <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string"
+                                               Property="@(record => record.Program)" Title="Program" Sortable="true" />
+                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortBy="@(record => record.Status)">
+                            <span>@context.Status</span>
+                        </AppGridTemplateColumn>
+                    </AppGrid>
+                </ChildContent>
+                <Pagination>
+                    <AppGridPaginator State="@_pagination" AriaLabel="Playbook grid pagination" />
+                </Pagination>
+            </AppDataGrid>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Content state
+            <select @bind="_state">
+                @foreach (var value in Enum.GetValues<AsyncContentState>())
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+        </label>
+        <label>Selection
+            <select @bind="_selectionMode">
+                @foreach (var value in Enum.GetValues<AppGridSelectionMode>())
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+        </label>
+        <label>Rows per page
+            <select value="@_pagination.ItemsPerPage" @onchange="ChangePageSizeAsync">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="6">6</option>
+            </select>
+        </label>
+    </Controls>
+    <States>
+        <article><span>Ready</span><strong>Sortable + paged</strong><small>Default production state</small></article>
+        <article><span>Loading</span><strong>Async feedback</strong><small>Uses AsyncContent semantics</small></article>
+        <article><span>Empty</span><strong>No records</strong><small>Explicit empty-state messaging</small></article>
+        <article><span>Selection</span><strong>Keyboard + checkbox</strong><small>Single or multiple row selection</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private readonly AppGridPaginationState _pagination = new(3);
+    private AsyncContentState _state = AsyncContentState.Ready;
+    private AppGridSelectionMode _selectionMode = AppGridSelectionMode.Multiple;
+    private string _search = string.Empty;
+
+    private static readonly DemoRecord[] Records =
+    [
+        new(1048, "Annual hearing surveillance", "Audiometry", "Narin P.", "In review", new DateTime(2026, 8, 12)),
+        new(1047, "North terminal ergonomics", "Ergonomics", "Mali S.", "Active", new DateTime(2026, 8, 11)),
+        new(1046, "Operations wellness cohort", "Wellness", "Kanda T.", "Draft", new DateTime(2026, 8, 9)),
+        new(1045, "Respirator fitness follow-up", "Occupational health", "Preecha R.", "Active", new DateTime(2026, 8, 8)),
+        new(1044, "Shift-work recovery study", "Fatigue", "Suda K.", "Complete", new DateTime(2026, 8, 5)),
+        new(1043, "Office movement campaign", "Wellness", "Arthit W.", "Complete", new DateTime(2026, 8, 1))
+    ];
+
+    private IQueryable<DemoRecord> FilteredRecords => Records
+        .Where(MatchesSearch)
+        .AsQueryable();
+
+    private bool MatchesSearch(DemoRecord record)
+    {
+        var query = _search.Trim();
+        return query.Length == 0
+            || record.Id.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Name.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Program.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Owner.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || record.Status.Contains(query, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void ClearSearch() => _search = string.Empty;
+
+    private async Task ChangePageSizeAsync(ChangeEventArgs args)
+    {
+        if (int.TryParse(args.Value?.ToString(), out var pageSize))
+            await _pagination.SetItemsPerPageAsync(pageSize);
+    }
+}
