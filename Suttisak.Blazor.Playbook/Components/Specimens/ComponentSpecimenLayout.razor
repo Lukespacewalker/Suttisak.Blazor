@@ -1,0 +1,34 @@
+<div class="component-detail__lab">
+    <div class="component-detail__preview-frame component-detail__preview-frame--@Viewport">
+        @Preview
+    </div>
+
+    @if (Controls is not null)
+    {
+        <aside class="component-detail__controls" aria-label="@ControlsLabel">
+            <span>Controls</span>
+            @Controls
+        </aside>
+    }
+</div>
+
+@if (States is not null)
+{
+    <section class="component-specimen__states" aria-labelledby="@StatesHeadingId">
+        <header>
+            <div><span>02 / States</span><h2 id="@StatesHeadingId">State matrix</h2></div>
+        </header>
+        <div class="component-detail__states">
+            @States
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+    [Parameter, EditorRequired] public RenderFragment Preview { get; set; } = default!;
+    [Parameter] public RenderFragment? Controls { get; set; }
+    [Parameter] public RenderFragment? States { get; set; }
+    [Parameter] public string ControlsLabel { get; set; } = "Component controls";
+    [Parameter] public string StatesHeadingId { get; set; } = "states-title";
+}
