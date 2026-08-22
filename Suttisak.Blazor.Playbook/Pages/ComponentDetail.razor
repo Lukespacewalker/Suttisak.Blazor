@@ -28,6 +28,10 @@
                 <div class="component-detail__meta">
                     <span class="component-detail__status component-detail__status--@Component.Status.ToString().ToLowerInvariant()">@Component.Status</span>
                     <span>@Component.SourceArea</span>
+                    @if (HasInteractiveSpecimen)
+                    {
+                        <span>Interactive specimen</span>
+                    }
                     @if (Component.HasLiveSpecimen)
                     {
                         <a href="@PlaybookComponentCatalog.ResolveExistingHref(Component)">Open current specimen ↗</a>
@@ -49,59 +53,31 @@
                         <button class="@ViewportClass("full")" @onclick='() => _viewport = "full"'>Full</button>
                     </div>
                 </header>
-                <div class="component-detail__lab">
-                    <div class="component-detail__preview-frame component-detail__preview-frame--@_viewport">
-                        @if (Component.Name == "AppButton")
-                        {
-                            <div class="component-detail__button-demo">
-                                <AppButton Variant="@_buttonVariant" Size="@_buttonSize" Disabled="@_buttonDisabled" Loading="@_buttonLoading">@_buttonText</AppButton>
-                            </div>
-                        }
-                        else
-                        {
+
+                @if (SpecimenType is not null)
+                {
+                    <DynamicComponent Type="@SpecimenType" Parameters="@SpecimenParameters" />
+                }
+                else
+                {
+                    <div class="component-detail__lab">
+                        <div class="component-detail__preview-frame component-detail__preview-frame--@_viewport">
                             <div class="component-detail__generic-preview">
                                 <strong>@Component.Name</strong>
-                                <p>The canonical live or pattern example remains linked above. This detail route now owns documentation, status, API metadata, relationships, and design-system guidance.</p>
+                                <p>The canonical live or pattern example remains linked above. This detail route owns documentation, status, API metadata, relationships, and design-system guidance while richer executable specimens are added vertically.</p>
                             </div>
-                        }
+                        </div>
                     </div>
-
-                    @if (Component.Name == "AppButton")
-                    {
-                        <aside class="component-detail__controls" aria-label="AppButton controls">
-                            <span>Controls</span>
-                            <label>Text<input @bind="_buttonText" @bind:event="oninput" /></label>
-                            <label>Variant<select @bind="_buttonVariant">@foreach (var value in Enum.GetValues<AppButtonVariant>()) { <option value="@value">@value</option> }</select></label>
-                            <label>Size<select @bind="_buttonSize">@foreach (var value in Enum.GetValues<AppButtonSize>()) { <option value="@value">@value</option> }</select></label>
-                            <label class="component-detail__check"><input type="checkbox" @bind="_buttonDisabled" /> Disabled</label>
-                            <label class="component-detail__check"><input type="checkbox" @bind="_buttonLoading" /> Loading</label>
-                        </aside>
-                    }
-                </div>
+                }
             </section>
 
-            @if (Component.Name == "AppButton")
-            {
-                <section class="component-detail__section" aria-labelledby="states-title">
-                    <header><div><span>02 / States</span><h2 id="states-title">State matrix</h2></div></header>
-                    <div class="component-detail__states">
-                        <article><span>Primary</span><AppButton Variant="AppButtonVariant.Primary">Save changes</AppButton></article>
-                        <article><span>Secondary</span><AppButton Variant="AppButtonVariant.Secondary">Save changes</AppButton></article>
-                        <article><span>Subtle</span><AppButton Variant="AppButtonVariant.Subtle">Save changes</AppButton></article>
-                        <article><span>Danger</span><AppButton Variant="AppButtonVariant.Danger">Delete</AppButton></article>
-                        <article><span>Disabled</span><AppButton Disabled="true">Unavailable</AppButton></article>
-                        <article><span>Loading</span><AppButton Loading="true">Saving</AppButton></article>
-                    </div>
-                </section>
-            }
-
             <section class="component-detail__section" aria-labelledby="api-title">
-                <header><div><span>03 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where the catalog supplies one, so public API changes are visible without duplicating a handwritten table.</p></header>
-                <ComponentParameterTable ComponentType="@Component.RuntimeType" />
+                <header><div><span>@ApiSectionNumber / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where the executable registry supplies one, so public API changes are visible without duplicating a handwritten table.</p></header>
+                <ComponentParameterTable ComponentType="@ResolvedRuntimeType" />
             </section>
 
             <section class="component-detail__section" aria-labelledby="accessibility-title">
-                <header><div><span>04 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div></header>
+                <header><div><span>@QualitySectionNumber / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div></header>
                 <div class="component-detail__quality-grid">
                     <article><strong>Keyboard</strong><p>Interactive controls must remain reachable and usable without a pointing device.</p></article>
                     <article><strong>Focus</strong><p>Focus visibility is part of the shared component contract and must survive every product theme.</p></article>
@@ -111,7 +87,7 @@
             </section>
 
             <section class="component-detail__section" aria-labelledby="related-title">
-                <header><div><span>05 / Compose</span><h2 id="related-title">Related components</h2></div></header>
+                <header><div><span>@ComposeSectionNumber / Compose</span><h2 id="related-title">Related components</h2></div></header>
                 <div class="component-detail__related">
                     @foreach (var related in RelatedComponents)
                     {
@@ -131,13 +107,16 @@
     [Parameter] public string? Slug { get; set; }
 
     private string _viewport = "desktop";
-    private string _buttonText = "Save changes";
-    private AppButtonVariant _buttonVariant = AppButtonVariant.Primary;
-    private AppButtonSize _buttonSize = AppButtonSize.Standard;
-    private bool _buttonDisabled;
-    private bool _buttonLoading;
 
     private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
+    private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
+    private Type? ResolvedRuntimeType => Component is null ? null : PlaybookSpecimenRegistry.RuntimeTypeFor(Component);
+    private bool HasInteractiveSpecimen => SpecimenType is not null;
+    private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = _viewport };
+    private string ApiSectionNumber => HasInteractiveSpecimen ? "03" : "02";
+    private string QualitySectionNumber => HasInteractiveSpecimen ? "04" : "03";
+    private string ComposeSectionNumber => HasInteractiveSpecimen ? "05" : "04";
+
     private IEnumerable<PlaybookComponentDefinition> RelatedComponents => Component is null
         ? []
         : PlaybookComponentCatalog.All.Where(candidate => candidate.Category == Component.Category && candidate.Slug != Component.Slug).Take(6);
