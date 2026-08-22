@@ -1,0 +1,29 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppTabs controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppTabs @bind-ActiveId="_activeId" AriaLabel="Account workspace">
+                <AppTab Id="overview" Label="Overview"><p>Summary content for the selected workspace.</p></AppTab>
+                <AppTab Id="activity" Label="Activity"><p>Recent activity and audit events.</p></AppTab>
+                <AppTab Id="settings" Label="Settings"><p>Configuration and preference controls.</p></AppTab>
+            </AppTabs>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Active tab
+            <select @bind="_activeId">
+                <option value="overview">Overview</option>
+                <option value="activity">Activity</option>
+                <option value="settings">Settings</option>
+            </select>
+        </label>
+    </Controls>
+    <States>
+        <article><span>Three tabs</span><AppTabs AriaLabel="Three tab example"><AppTab Label="One">First panel</AppTab><AppTab Label="Two">Second panel</AppTab><AppTab Label="Three">Third panel</AppTab></AppTabs></article>
+        <article><span>Two tabs</span><AppTabs AriaLabel="Two tab example"><AppTab Label="Summary">Summary panel</AppTab><AppTab Label="Details">Details panel</AppTab></AppTabs></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+    private string? _activeId = "overview";
+}
