@@ -72,11 +72,12 @@ test('AppQuickGrid renders framework-backed paging and responds to page size con
   await page.goto('/components/app-quick-grid');
 
   await expect(page.getByRole('rowheader', { name: 'Virtualize', exact: true })).toBeVisible();
-  await expect(page.getByRole('table', { name: 'QuickGrid records table' })).toBeVisible();
-  await expect(page.getByRole('row')).toHaveCount(3);
+  const quickGrid = page.getByRole('table', { name: 'QuickGrid records table' });
+  await expect(quickGrid).toBeVisible();
+  await expect(quickGrid.getByRole('row')).toHaveCount(3);
 
   await page.getByLabel('QuickGrid rows per page').selectOption('3');
-  await expect(page.getByRole('row')).toHaveCount(4);
+  await expect(quickGrid.getByRole('row')).toHaveCount(4);
   await expect(page.getByTestId('pagination-status')).toHaveText('QuickGrid now shows 3 rows per page.');
 });
 
