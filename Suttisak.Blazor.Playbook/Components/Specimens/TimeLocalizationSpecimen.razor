@@ -20,7 +20,7 @@
                 <dl>
                     <div><dt>UTC instant</dt><dd data-testid="utc-instant">@Instant.UtcDateTime.ToString("O", CultureInfo.InvariantCulture)</dd></div>
                     <div><dt>Culture</dt><dd data-testid="culture-name">@SelectedCulture.Name</dd></div>
-                    <div><dt>Offset</dt><dd data-testid="local-offset">@BrowserClock.GetUtcOffset(Instant)</dd></div>
+                    <div><dt>Offset</dt><dd data-testid="local-offset">@BrowserClock.LocalTimeZone.GetUtcOffset(Instant)</dd></div>
                 </dl>
             </section>
         </div>
