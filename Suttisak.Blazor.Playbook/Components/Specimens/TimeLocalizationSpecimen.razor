@@ -1,0 +1,86 @@
+@using System.Globalization
+
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Time and localization controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <InitializeTimeZone />
+
+            <section aria-labelledby="local-time-heading">
+                <h3 id="local-time-heading">Browser-local instant</h3>
+                <p>
+                    <LocalTime Value="@Instant" Format="@_format" Culture="@SelectedCulture" />
+                </p>
+                <p class="component-specimen__status" role="status" aria-live="polite" data-testid="time-zone-status">
+                    Browser time zone: @BrowserClock.LocalTimeZone.Id
+                </p>
+            </section>
+
+            <section aria-labelledby="utc-contract-heading">
+                <h3 id="utc-contract-heading">Transport contract</h3>
+                <dl>
+                    <div><dt>UTC instant</dt><dd data-testid="utc-instant">@Instant.UtcDateTime.ToString("O", CultureInfo.InvariantCulture)</dd></div>
+                    <div><dt>Culture</dt><dd data-testid="culture-name">@SelectedCulture.Name</dd></div>
+                    <div><dt>Offset</dt><dd data-testid="local-offset">@BrowserClock.LocalTimeZone.GetUtcOffset(Instant)</dd></div>
+                </dl>
+            </section>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Time zone
+            <select value="@_timeZoneId" @onchange="ChangeTimeZone">
+                <option value="UTC">UTC</option>
+                <option value="Asia/Bangkok">Asia/Bangkok</option>
+                <option value="America/Los_Angeles">America/Los_Angeles</option>
+            </select>
+        </label>
+        <label>Culture
+            <select @bind="_cultureName">
+                <option value="en-US">English (United States)</option>
+                <option value="th-TH">ไทย (ประเทศไทย)</option>
+                <option value="ja-JP">日本語 (日本)</option>
+            </select>
+        </label>
+        <label>Format
+            <select @bind="_format">
+                <option value="yyyy-MM-dd HH:mm:ss zzz">ISO-like</option>
+                <option value="dddd, dd MMMM yyyy HH:mm">Long localized</option>
+                <option value="dd MMM yyyy, HH:mm">Compact localized</option>
+            </select>
+        </label>
+    </Controls>
+    <States>
+        <article><span>Prerender</span><strong>UTC fallback</strong><small>BrowserTimeProvider uses UTC until browser detection succeeds.</small></article>
+        <article><span>Hydrated</span><strong>IANA browser zone</strong><small>InitializeTimeZone detects the browser zone through JS once.</small></article>
+        <article><span>Semantic</span><strong>&lt;time datetime="UTC"&gt;</strong><small>The machine-readable instant stays invariant while display text localizes.</small></article>
+        <article><span>Reactive</span><strong>Zone change event</strong><small>LocalTime rerenders when BrowserTimeProvider raises LocalTimeZoneChanged.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Inject(Key = nameof(BrowserTimeProvider))]
+    public TimeProvider BrowserClock { get; set; } = null!;
+
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private static readonly DateTimeOffset Instant = new(2026, 8, 23, 0, 0, 0, TimeSpan.Zero);
+    private string _timeZoneId = "UTC";
+    private string _cultureName = "en-US";
+    private string _format = "yyyy-MM-dd HH:mm:ss zzz";
+
+    private CultureInfo SelectedCulture => CultureInfo.GetCultureInfo(_cultureName);
+
+    protected override void OnInitialized()
+    {
+        _timeZoneId = BrowserClock.LocalTimeZone.Id;
+    }
+
+    private void ChangeTimeZone(ChangeEventArgs args)
+    {
+        var requested = args.Value?.ToString();
+        if (BrowserClock is BrowserTimeProvider browserTimeProvider
+            && browserTimeProvider.SetBrowserTimeZone(requested))
+        {
+            _timeZoneId = requested!;
+        }
+    }
+}
