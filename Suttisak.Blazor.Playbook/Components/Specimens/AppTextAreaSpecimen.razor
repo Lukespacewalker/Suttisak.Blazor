@@ -1,0 +1,31 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppTextArea controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppTextArea @bind-Value="_value" Label="@_label" Placeholder="@_placeholder" Description="@_description" Rows="@_rows" MaxLength="@_maxLength" Disabled="@_disabled" />
+        </div>
+    </Preview>
+    <Controls>
+        <label>Value<textarea rows="3" @bind="_value" @bind:event="oninput"></textarea></label>
+        <label>Label<input @bind="_label" @bind:event="oninput" /></label>
+        <label>Rows<input type="number" min="2" max="10" @bind="_rows" /></label>
+        <label>Max length<input type="number" min="20" max="500" @bind="_maxLength" /></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+    </Controls>
+    <States>
+        <article><span>Default</span><AppTextArea Value="A concise summary of the current situation." Label="Summary" Rows="3" /></article>
+        <article><span>With counter</span><AppTextArea Value="Short note" Label="Note" Rows="3" MaxLength="120" /></article>
+        <article><span>Disabled</span><AppTextArea Value="Archived content" Label="Archived note" Rows="3" Disabled="true" /></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string? _value = "A concise summary of the current situation.";
+    private string? _label = "Summary";
+    private string? _placeholder = "Add context";
+    private string? _description = "Keep this useful for the next person who reads the record.";
+    private int _rows = 4;
+    private int? _maxLength = 240;
+    private bool _disabled;
+}
