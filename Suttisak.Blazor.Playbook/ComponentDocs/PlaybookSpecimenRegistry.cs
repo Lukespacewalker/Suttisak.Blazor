@@ -25,7 +25,13 @@ public static class PlaybookSpecimenRegistry
             ["AppGridPaginator"] = new(typeof(AppGridPaginator), typeof(AppDataGridSpecimen)),
             ["AppGridPropertyColumn"] = new(typeof(AppGridPropertyColumn<DemoRecord, string>), typeof(AppDataGridSpecimen)),
             ["AppGridSelectColumn"] = new(typeof(AppGridSelectColumn<DemoRecord>), typeof(AppDataGridSpecimen)),
-            ["AppGridTemplateColumn"] = new(typeof(AppGridTemplateColumn<DemoRecord>), typeof(AppDataGridSpecimen))
+            ["AppGridTemplateColumn"] = new(typeof(AppGridTemplateColumn<DemoRecord>), typeof(AppDataGridSpecimen)),
+            ["AsyncContent"] = new(typeof(AsyncContent), typeof(FeedbackAsyncSpecimen)),
+            ["AppLoading"] = new(typeof(AppLoading), typeof(FeedbackAsyncSpecimen)),
+            ["AppProgress"] = new(typeof(AppProgress), typeof(FeedbackAsyncSpecimen)),
+            ["AppSkeleton"] = new(typeof(AppSkeleton), typeof(FeedbackAsyncSpecimen)),
+            ["FeedbackBanner"] = new(typeof(FeedbackBanner), typeof(FeedbackAsyncSpecimen)),
+            ["StatusPanel"] = new(typeof(StatusPanel), typeof(FeedbackAsyncSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>
