@@ -36,7 +36,7 @@ test('data grid sorting and pagination execute against the live grid', async ({ 
 test('data grid search and page-size controls recompute visible data', async ({ page }) => {
   await page.goto('/components/app-data-grid');
 
-  await page.getByRole('textbox', { name: 'Search records' }).fill('Wellness');
+  await page.getByRole('searchbox', { name: 'Search records' }).fill('Wellness');
   await expect(page.getByText('2 matching records', { exact: true })).toBeVisible();
   await expect(page.getByText('2 rows', { exact: true })).toBeVisible();
 
