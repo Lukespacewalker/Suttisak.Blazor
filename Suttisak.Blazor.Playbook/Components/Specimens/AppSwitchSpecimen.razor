@@ -1,0 +1,27 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppSwitch controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppSwitch @bind-Value="_value" Label="@_label" Description="@_description" Disabled="@_disabled" />
+        </div>
+    </Preview>
+    <Controls>
+        <label>Label<input @bind="_label" @bind:event="oninput" /></label>
+        <label>Description<input @bind="_description" @bind:event="oninput" /></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_value" /> On</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+    </Controls>
+    <States>
+        <article><span>Off</span><AppSwitch Value="false" Label="Compact mode" /></article>
+        <article><span>On</span><AppSwitch Value="true" Label="Compact mode" /></article>
+        <article><span>Disabled</span><AppSwitch Value="true" Label="Managed setting" Disabled="true" /></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private bool _value = true;
+    private string? _label = "Compact mode";
+    private string? _description = "Reduce whitespace while preserving the same information hierarchy.";
+    private bool _disabled;
+}
