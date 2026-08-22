@@ -1,0 +1,107 @@
+@using System.Reflection
+
+@if (ComponentType is null)
+{
+    <p class="component-parameter-table__empty">API metadata is not wired for this component yet. Use the source and pattern links while its runtime type is added to the catalog.</p>
+}
+else
+{
+    <div class="component-parameter-table__scroll">
+        <table class="component-parameter-table">
+            <thead>
+                <tr>
+                    <th scope="col">Parameter</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Default</th>
+                    <th scope="col">Contract</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var parameter in Parameters)
+                {
+                    <tr>
+                        <th scope="row"><code>@parameter.Name</code></th>
+                        <td><code>@FriendlyType(parameter.PropertyType)</code></td>
+                        <td><code>@DefaultValue(parameter)</code></td>
+                        <td>@Contract(parameter)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter] public Type? ComponentType { get; set; }
+
+    private IReadOnlyList<PropertyInfo> Parameters => ComponentType is null
+        ? []
+        : ComponentType
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(property => property.GetCustomAttribute<ParameterAttribute>() is not null)
+            .OrderBy(property => property.Name)
+            .ToArray();
+
+    private string DefaultValue(PropertyInfo property)
+    {
+        if (ComponentType is null || ComponentType.ContainsGenericParameters)
+        {
+            return "—";
+        }
+
+        try
+        {
+            var instance = Activator.CreateInstance(ComponentType);
+            var value = instance is null ? null : property.GetValue(instance);
+            return value switch
+            {
+                null => "null",
+                bool boolean => boolean ? "true" : "false",
+                string text when string.IsNullOrEmpty(text) => "\"\"",
+                string text => $"\"{text}\"",
+                Enum enumeration => enumeration.ToString(),
+                ValueType valueType => valueType.ToString() ?? "—",
+                _ => "—"
+            };
+        }
+        catch
+        {
+            return "—";
+        }
+    }
+
+    private static string Contract(PropertyInfo property)
+    {
+        var parameter = property.GetCustomAttribute<ParameterAttribute>();
+        if (parameter?.CaptureUnmatchedValues == true)
+        {
+            return "Additional HTML attributes";
+        }
+
+        return property.GetCustomAttribute<EditorRequiredAttribute>() is not null
+            ? "Required"
+            : "Optional";
+    }
+
+    private static string FriendlyType(Type type)
+    {
+        if (type.IsGenericType)
+        {
+            var name = type.Name.Split('`')[0];
+            return $"{name}<{string.Join(", ", type.GetGenericArguments().Select(FriendlyType))}>";
+        }
+
+        if (type.IsArray)
+        {
+            return $"{FriendlyType(type.GetElementType()!)}[]";
+        }
+
+        return type == typeof(string) ? "string"
+            : type == typeof(bool) ? "bool"
+            : type == typeof(int) ? "int"
+            : type == typeof(long) ? "long"
+            : type == typeof(double) ? "double"
+            : type == typeof(decimal) ? "decimal"
+            : type.Name;
+    }
+}

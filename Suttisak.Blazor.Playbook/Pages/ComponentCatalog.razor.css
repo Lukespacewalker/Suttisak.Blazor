@@ -1,0 +1,28 @@
+.component-catalog-page { width: min(100% - 2rem, 88rem); margin: 0 auto; padding: clamp(2rem, 5vw, 5rem) 0 6rem; }
+.component-catalog-page__hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3rem; align-items: end; padding-bottom: 2.5rem; border-bottom: 1px solid var(--app-border); }
+.component-catalog-page__hero h1 { margin: .45rem 0 1rem; font-family: var(--app-font-heading); font-size: clamp(3rem, 7vw, 6rem); line-height: .9; letter-spacing: -.06em; }
+.component-catalog-page__hero h1 em { color: var(--app-accent); font-style: normal; }
+.component-catalog-page__hero p { max-width: 50rem; margin: 0; color: var(--app-foreground-muted); line-height: 1.7; }
+.component-catalog-page__summary { display: grid; justify-items: start; min-width: 12rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
+.component-catalog-page__summary strong { color: var(--app-accent); font-family: var(--app-font-heading); font-size: 2.5rem; line-height: 1; }
+.component-catalog-page__summary span { margin-top: .35rem; color: var(--app-foreground-muted); font-size: .68rem; }
+.component-catalog-page__summary a { margin-top: 1rem; color: var(--app-accent); font-size: .7rem; font-weight: 800; text-decoration: none; }
+.component-catalog-page__search { display: grid; grid-template-columns: 14rem minmax(0, 28rem); gap: 1rem; align-items: center; padding: 1.5rem 0; }
+.component-catalog-page__search span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.component-catalog-page__search input { padding: .65rem .75rem; border: 1px solid var(--app-border); border-radius: .6rem; background: var(--app-surface); color: var(--app-foreground); font: inherit; }
+.component-catalog-page__groups section { padding: 2rem 0; border-top: 1px solid var(--app-border); }
+.component-catalog-page__groups section > header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1rem; }
+.component-catalog-page__groups h2 { margin: 0; font-family: var(--app-font-heading); font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -.035em; }
+.component-catalog-page__groups section > header span { display: grid; min-width: 1.7rem; height: 1.7rem; place-items: center; border-radius: 99rem; background: var(--app-surface-muted); color: var(--app-foreground-muted); font: 800 .65rem var(--app-font-mono); }
+.component-catalog-page__groups section > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
+.component-catalog-page__groups a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .3rem .8rem; min-height: 8rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); color: var(--app-foreground); text-decoration: none; }
+.component-catalog-page__groups a:hover, .component-catalog-page__groups a:focus-visible { border-color: var(--app-accent-border); background: var(--app-accent-soft); outline: none; }
+.component-catalog-page__groups a strong { font-size: .82rem; }
+.component-catalog-page__groups a p, .component-catalog-page__groups a small { grid-column: 1 / -1; margin: 0; color: var(--app-foreground-muted); }
+.component-catalog-page__groups a p { font-size: .7rem; line-height: 1.5; }
+.component-catalog-page__groups a small { align-self: end; font-size: .6rem; }
+.component-catalog-page__status { justify-self: end; padding: .2rem .42rem; border: 1px solid var(--app-border); border-radius: 99rem; color: var(--app-foreground-muted); font-size: .55rem; font-weight: 800; text-transform: uppercase; }
+.component-catalog-page__status--stable { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); }
+@media (max-width: 64rem) { .component-catalog-page__groups section > div { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 46rem) { .component-catalog-page__hero { grid-template-columns: 1fr; } .component-catalog-page__search { grid-template-columns: 1fr; } }
+@media (max-width: 34rem) { .component-catalog-page { width: min(100% - 1rem, 88rem); } .component-catalog-page__groups section > div { grid-template-columns: 1fr; } }
