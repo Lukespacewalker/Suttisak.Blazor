@@ -29,7 +29,7 @@
 .foundations-page__radius-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
 .foundations-page__radius-list article { display: grid; align-content: end; gap: .25rem; min-height: 6rem; padding: .8rem; border: 2px solid var(--app-accent-border); background: var(--app-accent-soft); }
 .foundations-page__radius-list code { font-size: .65rem; }
-.foundations-page__radius-list span { color: var(--app-foreground-muted); font-size: .62rem; }
+.foundations-page__radius-list span { color: var(--app-foreground); font-size: .62rem; }
 .foundations-page__motion-grid, .foundations-page__rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem; }
 .foundations-page__motion-grid article, .foundations-page__rules article { padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .foundations-page__motion-grid strong, .foundations-page__rules strong { color: var(--app-accent); font-size: .78rem; }
