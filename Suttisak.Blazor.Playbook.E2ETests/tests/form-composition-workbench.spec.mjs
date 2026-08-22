@@ -31,6 +31,7 @@ test('invalid submit flows DataAnnotations into summary, inline alerts, and ARIA
   await expect(page.getByTestId('submit-status')).toHaveText('Validation blocked submission.');
 
   const summary = page.getByTestId('validation-summary');
+  const grid = page.getByTestId('profile-grid');
   await expect(summary).toHaveAttribute('role', 'alert');
   await expect(summary).toHaveAttribute('aria-live', 'assertive');
   await expect(summary).toContainText('Full name is required.');
@@ -42,8 +43,8 @@ test('invalid submit flows DataAnnotations into summary, inline alerts, and ARIA
   await expect(email).toHaveAttribute('aria-invalid', 'true');
   await expect(fullName).toHaveAttribute('aria-describedby', /description.*validation|validation.*description/);
   await expect(email).toHaveAttribute('aria-describedby', /description.*validation|validation.*description/);
-  await expect(page.getByRole('alert').filter({ hasText: 'Full name is required.' })).toBeVisible();
-  await expect(page.getByRole('alert').filter({ hasText: 'Email is required.' })).toBeVisible();
+  await expect(grid.getByRole('alert').filter({ hasText: 'Full name is required.' })).toBeVisible();
+  await expect(grid.getByRole('alert').filter({ hasText: 'Email is required.' })).toBeVisible();
 });
 
 test('inline validation can be hidden without removing summary feedback or aria-invalid', async ({ page }) => {
@@ -55,7 +56,7 @@ test('inline validation can be hidden without removing summary feedback or aria-
   await expect(page.getByTestId('validation-summary')).toContainText('Full name is required.');
   await expect(page.getByLabel('Full name')).toHaveAttribute('aria-invalid', 'true');
   await expect(page.getByLabel('Full name')).toHaveAttribute('aria-describedby', /description/);
-  await expect(page.getByRole('alert').filter({ hasText: 'Full name is required.' })).toHaveCount(0);
+  await expect(page.getByTestId('profile-grid').getByRole('alert').filter({ hasText: 'Full name is required.' })).toHaveCount(0);
 });
 
 test('valid submit succeeds only after required and email validation pass', async ({ page }) => {
