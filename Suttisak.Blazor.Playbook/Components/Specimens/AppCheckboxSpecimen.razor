@@ -1,0 +1,30 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppCheckbox controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AppCheckbox @bind-Value="_value" Label="@_label" Description="@_description" Required="@_required" Disabled="@_disabled" />
+        </div>
+    </Preview>
+    <Controls>
+        <label>Label<input @bind="_label" @bind:event="oninput" /></label>
+        <label>Description<input @bind="_description" @bind:event="oninput" /></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_value" /> Checked</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+    </Controls>
+    <States>
+        <article><span>Unchecked</span><AppCheckbox Value="false" Label="Include archived records" /></article>
+        <article><span>Checked</span><AppCheckbox Value="true" Label="Email me updates" /></article>
+        <article><span>Indeterminate</span><AppCheckbox ThreeState="true" CheckState="@( (bool?)null )" Label="Partial selection" /></article>
+        <article><span>Disabled</span><AppCheckbox Value="true" Label="Managed by policy" Disabled="true" /></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private bool _value = true;
+    private string? _label = "Email me updates";
+    private string? _description = "Receive a concise notification when this record changes.";
+    private bool _required;
+    private bool _disabled;
+}
