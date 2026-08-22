@@ -1,0 +1,8 @@
+.component-parameter-table__scroll { overflow-x: auto; border: 1px solid var(--app-border); border-radius: .8rem; }
+.component-parameter-table { width: 100%; border-collapse: collapse; background: var(--app-surface); font-size: .8rem; }
+.component-parameter-table th, .component-parameter-table td { padding: .8rem .9rem; border-bottom: 1px solid var(--app-border); text-align: left; vertical-align: top; }
+.component-parameter-table thead th { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.component-parameter-table tbody tr:last-child th, .component-parameter-table tbody tr:last-child td { border-bottom: 0; }
+.component-parameter-table code { color: var(--app-foreground); font-size: .74rem; }
+.component-parameter-table td { color: var(--app-foreground-muted); }
+.component-parameter-table__empty { margin: 0; padding: 1rem; border: 1px dashed var(--app-border); border-radius: .8rem; color: var(--app-foreground-muted); line-height: 1.6; }
