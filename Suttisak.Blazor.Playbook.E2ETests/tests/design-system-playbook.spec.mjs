@@ -28,9 +28,13 @@ test('AppButton detail route exposes controls, states, and runtime API metadata'
   await page.getByLabel('Text').fill('Publish report');
   await expect(page.getByRole('button', { name: 'Publish report' }).first()).toBeVisible();
 
+  const frame = page.locator('.component-detail__preview-frame');
   await page.getByRole('button', { name: '375' }).click();
-  const frameWidth = await page.locator('.component-detail__preview-frame').evaluate(element => element.getBoundingClientRect().width);
-  expect(frameWidth).toBeLessThanOrEqual(376);
+  await expect(frame).toHaveClass(/component-detail__preview-frame--mobile/);
+  await expect.poll(
+    () => frame.evaluate(element => element.getBoundingClientRect().width),
+    { timeout: 2_000 }
+  ).toBeLessThanOrEqual(376);
 });
 
 test('Foundations exposes semantic tokens instead of a parallel palette', async ({ page }) => {
