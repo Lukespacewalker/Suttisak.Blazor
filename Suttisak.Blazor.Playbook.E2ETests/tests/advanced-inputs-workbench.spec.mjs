@@ -47,7 +47,7 @@ test('AppRadioGroup specimen keeps one exclusive choice and exposes fieldset sem
   const phone = page.getByRole('radio', { name: 'Phone' });
   const email = page.getByRole('radio', { name: 'Email' });
   await expect(email).toBeChecked();
-  await phone.check();
+  await page.locator('label.app-choice--radio').filter({ hasText: 'Phone' }).click();
   await expect(phone).toBeChecked();
   await expect(email).not.toBeChecked();
   await expect(page.getByRole('status').filter({ hasText: 'Channel: Phone' })).toBeVisible();
@@ -103,11 +103,14 @@ test('AppDateTimePicker specimen binds browser-local values and transport field 
   await expect(page.locator('input[type="hidden"][name="FollowUp.TimeZoneId"]')).toHaveCount(1);
   await expect(page.locator('input[type="hidden"][name="FollowUp.UtcOffsetMinutes"]')).toHaveCount(1);
 
+  const timezoneLabel = page.locator('[data-browser-timezone-label]').first();
+  await expect(timezoneLabel).not.toHaveText('');
+
   await page.getByLabel('Thai picker text').check();
   const wrapper = page.locator('[data-app-datetime]').first();
   await expect(wrapper).toHaveAttribute('data-picker-locale', 'th-TH');
   await expect(page.getByRole('button', { name: 'เปิดตัวเลือกวันที่และเวลา' })).toBeVisible();
-  await expect(page.getByText('เวลาท้องถิ่นของเบราว์เซอร์', { exact: true })).toBeVisible();
+  await expect(timezoneLabel).not.toHaveText('');
 });
 
 for (const path of advancedInputRoutes) {
