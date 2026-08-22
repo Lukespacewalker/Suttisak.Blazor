@@ -42,7 +42,13 @@ public static class PlaybookSpecimenRegistry
             ["AppProgress"] = new(typeof(AppProgress), typeof(FeedbackAsyncSpecimen)),
             ["AppSkeleton"] = new(typeof(AppSkeleton), typeof(FeedbackAsyncSpecimen)),
             ["FeedbackBanner"] = new(typeof(FeedbackBanner), typeof(FeedbackAsyncSpecimen)),
-            ["StatusPanel"] = new(typeof(StatusPanel), typeof(FeedbackAsyncSpecimen))
+            ["StatusPanel"] = new(typeof(StatusPanel), typeof(FeedbackAsyncSpecimen)),
+            ["AppCard"] = new(typeof(AppCard), typeof(LayoutDisplaySpecimen)),
+            ["AppStack"] = new(typeof(AppStack), typeof(LayoutDisplaySpecimen)),
+            ["AppDivider"] = new(typeof(AppDivider), typeof(LayoutDisplaySpecimen)),
+            ["Pill"] = new(typeof(Pill), typeof(LayoutDisplaySpecimen)),
+            ["Toolbar"] = new(typeof(Toolbar), typeof(LayoutDisplaySpecimen)),
+            ["CardMenu"] = new(typeof(CardMenu), typeof(LayoutDisplaySpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>
