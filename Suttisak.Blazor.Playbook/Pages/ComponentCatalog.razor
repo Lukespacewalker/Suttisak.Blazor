@@ -1,0 +1,68 @@
+@page "/catalog"
+
+<PageTitle>Component catalog · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="component-catalog-page">
+        <header class="component-catalog-page__hero">
+            <div>
+                <span class="playbook-kicker">Metadata-driven directory</span>
+                <h1>Every component.<br /><em>One map.</em></h1>
+                <p>Use this index when you need documentation and component relationships. Use Component Browser when you want the live gallery and integration specimens.</p>
+            </div>
+            <div class="component-catalog-page__summary">
+                <strong>@PlaybookComponentCatalog.All.Count</strong><span>catalogued components</span>
+                <a href="components">Open live Component Browser →</a>
+            </div>
+        </header>
+
+        <label class="component-catalog-page__search">
+            <span>Find component, category, or tag</span>
+            <input type="search" placeholder="AppButton, navigation, form…" @bind="_search" @bind:event="oninput" />
+        </label>
+
+        <div class="component-catalog-page__groups">
+            @foreach (var group in FilteredGroups)
+            {
+                <section aria-labelledby="@GroupId(group.Key)">
+                    <header><h2 id="@GroupId(group.Key)">@group.Key</h2><span>@group.Count()</span></header>
+                    <div>
+                        @foreach (var component in group)
+                        {
+                            <a href="@component.DetailHref">
+                                <span class="component-catalog-page__status component-catalog-page__status--@component.Status.ToString().ToLowerInvariant()">@component.Status</span>
+                                <strong>@component.Name</strong>
+                                <p>@component.Summary</p>
+                                <small>@string.Join(" · ", component.Tags)</small>
+                            </a>
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    </main>
+</PlaybookShell>
+
+@code {
+    private string _search = string.Empty;
+
+    private IEnumerable<IGrouping<string, PlaybookComponentDefinition>> FilteredGroups =>
+        PlaybookComponentCatalog.All
+            .Where(MatchesSearch)
+            .GroupBy(component => component.Category);
+
+    private bool MatchesSearch(PlaybookComponentDefinition component)
+    {
+        if (string.IsNullOrWhiteSpace(_search))
+        {
+            return true;
+        }
+
+        return component.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || component.Category.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || component.Tags.Any(tag => tag.Contains(_search, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static string GroupId(string category) =>
+        $"catalog-{new string(category.ToLowerInvariant().Select(character => char.IsLetterOrDigit(character) ? character : '-').ToArray())}";
+}

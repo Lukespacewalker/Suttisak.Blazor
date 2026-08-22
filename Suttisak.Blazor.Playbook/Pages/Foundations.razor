@@ -1,0 +1,94 @@
+@page "/foundations"
+@page "/tokens"
+
+<PageTitle>Foundations · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="foundations-page">
+        <header class="foundations-page__hero">
+            <span class="playbook-kicker">Design-system foundations</span>
+            <h1>Tokens before decoration.</h1>
+            <p>These are the public contracts components should consume. Product themes may change the values, but shared components should keep using the same semantic roles.</p>
+        </header>
+
+        <section class="foundations-page__section" aria-labelledby="color-title">
+            <header><span>01 / Color</span><h2 id="color-title">Semantic color roles</h2><p>Never derive a component palette from one product hue. Use semantic roles so light, dark, and application themes remain independent.</p></header>
+            <div class="foundations-page__swatches">
+                @foreach (var token in ColorTokens)
+                {
+                    <article><div style="background:var(@token.Name)"></div><strong>@token.Label</strong><code>@token.Name</code></article>
+                }
+            </div>
+        </section>
+
+        <section class="foundations-page__section" aria-labelledby="type-title">
+            <header><span>02 / Typography</span><h2 id="type-title">Type roles</h2><p>Headings and body copy use distinct font contracts. Consumers can supply language-appropriate fallbacks without changing component markup.</p></header>
+            <div class="foundations-page__type-grid">
+                <article class="foundations-page__type-heading"><span>Heading</span><p>Build once. Speak every product.</p><code>--app-font-heading</code></article>
+                <article class="foundations-page__type-body"><span>Body</span><p>Readable application copy stays calm across dense forms, dashboards, reports, and long guidance content.</p><code>--app-font-body</code></article>
+                <article class="foundations-page__type-mono"><span>Monospace</span><p>AppButton Variant="Primary"</p><code>--app-font-mono</code></article>
+            </div>
+        </section>
+
+        <section class="foundations-page__section" aria-labelledby="spacing-title">
+            <header><span>03 / Geometry</span><h2 id="spacing-title">Spacing and radius</h2><p>Use the primitive scale rather than introducing local magic numbers when a shared token already expresses the intent.</p></header>
+            <div class="foundations-page__geometry">
+                <div class="foundations-page__spacing-list">
+                    @foreach (var token in SpacingTokens)
+                    {
+                        <article><code>@token.Name</code><div style="width:var(@token.Name)"></div><span>@token.Value</span></article>
+                    }
+                </div>
+                <div class="foundations-page__radius-list">
+                    @foreach (var token in RadiusTokens)
+                    {
+                        <article style="border-radius:var(@token.Name)"><code>@token.Name</code><span>@token.Value</span></article>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section class="foundations-page__section" aria-labelledby="motion-title">
+            <header><span>04 / Motion</span><h2 id="motion-title">Motion is optional context</h2><p>Transitions may clarify state changes, but meaning must survive when the operating system requests reduced motion.</p></header>
+            <div class="foundations-page__motion-grid">
+                <article><strong>Fast</strong><code>--app-duration-fast · 120ms</code><p>Micro feedback such as hover and pressed transitions.</p></article>
+                <article><strong>Normal</strong><code>--app-duration-normal · 220ms</code><p>Typical component state changes and small layout transitions.</p></article>
+                <article><strong>Slow</strong><code>--app-duration-slow · 420ms</code><p>Use sparingly for larger contextual movement.</p></article>
+                <article><strong>Reduced motion</strong><code>prefers-reduced-motion</code><p>The application baseline collapses animations and restores automatic scrolling.</p></article>
+            </div>
+        </section>
+
+        <section class="foundations-page__section" aria-labelledby="rules-title">
+            <header><span>05 / Rules</span><h2 id="rules-title">Foundation guardrails</h2></header>
+            <div class="foundations-page__rules">
+                <article><strong>Semantic first</strong><p>Choose the role that describes intent, not the literal color currently visible.</p></article>
+                <article><strong>Theme-safe</strong><p>Check every change in light, dark, and at least one alternate application theme.</p></article>
+                <article><strong>Focus is a token</strong><p>Interactive affordances must preserve a visible focus contract in forced colors and normal themes.</p></article>
+                <article><strong>Responsive by container</strong><p>Components should tolerate constrained parents rather than assuming a desktop page width.</p></article>
+            </div>
+        </section>
+    </main>
+</PlaybookShell>
+
+@code {
+    private static readonly (string Name, string Label)[] ColorTokens =
+    [
+        ("--app-brand", "Brand"), ("--app-accent", "Accent"), ("--app-background", "Background"),
+        ("--app-surface", "Surface"), ("--app-surface-muted", "Muted surface"), ("--app-foreground", "Foreground"),
+        ("--app-foreground-muted", "Muted text"), ("--app-border", "Border"), ("--app-success", "Success"),
+        ("--app-warning", "Warning"), ("--app-danger", "Danger"), ("--app-accent-soft", "Accent soft")
+    ];
+
+    private static readonly (string Name, string Value)[] SpacingTokens =
+    [
+        ("--app-space-1", ".25rem"), ("--app-space-2", ".5rem"), ("--app-space-3", ".75rem"),
+        ("--app-space-4", "1rem"), ("--app-space-6", "1.5rem"), ("--app-space-8", "2rem"),
+        ("--app-space-12", "3rem"), ("--app-space-16", "4rem"), ("--app-space-24", "6rem")
+    ];
+
+    private static readonly (string Name, string Value)[] RadiusTokens =
+    [
+        ("--app-radius-sm", ".5rem"), ("--app-radius-md", ".75rem"), ("--app-radius-lg", "1rem"),
+        ("--app-radius-xl", "1.5rem"), ("--app-radius-round", "999px")
+    ];
+}

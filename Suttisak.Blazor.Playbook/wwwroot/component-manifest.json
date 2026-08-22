@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "componentCount": 90,
+  "detailRouteTemplate": "components/{kebab-case-component-name}",
+  "statusPolicy": {
+    "stable": "normal consumption; breaking changes require deliberate migration",
+    "beta": "usable but public API or composition may still move",
+    "experimental": "exploration only; broad dependency is discouraged",
+    "deprecated": "existing use may remain temporarily; new use should move to the documented replacement"
+  },
+  "groups": [
+    {
+      "category": "Forms & inputs",
+      "status": "stable",
+      "components": ["AppTextBox", "AppTextArea", "AppNumberInput", "AppSelect", "AppSelectItem", "AppMultiSelect", "AppRadioGroup", "AppRadio", "AppCheckbox", "AppSwitch", "AppCalendarPicker", "AppTimePicker", "AppDateTimePicker", "FormSection", "FormGrid", "FormField", "FormActions", "FormValidationSummary"]
+    },
+    {
+      "category": "Actions & surfaces",
+      "status": "stable",
+      "components": ["AppButton", "AppCard", "AppDivider", "AppStack", "CardMenu", "CompanyFooter", "Hero", "Pill", "Toolbar", "PageActionToolbar", "PageHeading"]
+    },
+    {
+      "category": "Data & display",
+      "status": "stable",
+      "components": ["AppBreadcrumb", "AppDataGrid", "AppGrid", "AppGridPaginator", "AppGridPropertyColumn", "AppGridSelectColumn", "AppGridTemplateColumn", "AppPagination", "AppQuickGrid", "AppQuickPaginator", "DataGridContainer", "PageBreadcrumbs"]
+    },
+    {
+      "category": "Feedback & async",
+      "status": "stable",
+      "components": ["AppLoading", "AppProgress", "AppSkeleton", "AsyncContent", "FeedbackBanner", "StatusPanel"]
+    },
+    {
+      "category": "Overlays",
+      "status": "stable",
+      "components": ["AppDialog", "AppDrawer"]
+    },
+    {
+      "category": "Navigation",
+      "status": "stable",
+      "components": ["AppTabs", "AppTab", "Nav", "NavGroup", "NavItem", "NavSubmenu", "SectionNavigation", "MobileNavigationAccount", "ProfileMenu"]
+    },
+    {
+      "category": "Preferences & time",
+      "status": "stable",
+      "components": ["CultureSelector", "PreferencesSelector", "ThemeSwitcher", "InitializeTimeZone", "LocalTime"]
+    },
+    {
+      "category": "Experience",
+      "status": "stable",
+      "components": ["ExperienceCard", "ExperienceDisclosure", "ExperienceDisclosureGroup", "ExperienceHeading"]
+    },
+    {
+      "category": "Marketing",
+      "status": "stable",
+      "components": ["MarketingActionLink", "MarketingCallToAction", "MarketingCard", "MarketingContainer", "MarketingFeatureGrid", "MarketingHero", "MarketingPage", "MarketingProductFrame", "MarketingProofItem", "MarketingProofStrip", "MarketingSectionHeader", "MarketingStep", "MarketingStepList"]
+    },
+    {
+      "category": "Application layouts",
+      "status": "stable",
+      "components": ["AccessPageLayout", "ApplicationShell", "HeaderFooterLayout", "IdentityLayout", "LandingLayout", "MainLayout", "RootLayout"]
+    },
+    {
+      "category": "Infrastructure",
+      "status": "beta",
+      "components": ["AppInputSupport", "AppOverlayHost", "LayoutMobileMenuButtonWrapper"]
+    }
+  ]
+}
