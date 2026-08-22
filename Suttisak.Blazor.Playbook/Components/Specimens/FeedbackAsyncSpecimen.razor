@@ -1,0 +1,166 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Feedback and async controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <AsyncContent State="@_asyncState"
+                          LoadingTitle="Loading report"
+                          LoadingMessage="Refreshing the latest occupational health data."
+                          EmptyTitle="No report data"
+                          EmptyMessage="Adjust the filters or import a new result set."
+                          ErrorTitle="Report unavailable"
+                          ErrorMessage="The data source could not be reached."
+                          RetryLabel="Retry load"
+                          OnRetry="RetryAsync">
+                <section aria-label="Ready content">
+                    <strong>Report ready</strong>
+                    <p>The current result set is available for review.</p>
+                </section>
+            </AsyncContent>
+
+            <div class="component-specimen__demo-grid">
+                <section>
+                    <h3>Background activity</h3>
+                    <AppLoading Title="Synchronizing records"
+                                Message="This status is announced politely without interrupting the user."
+                                Compact="@_compact" />
+                </section>
+
+                <section>
+                    <h3>Determinate progress</h3>
+                    <p id="playbook-progress-copy">@_progress.ToString("0")% complete</p>
+                    <AppProgress Value="@_progress" AriaLabel="Import progress" />
+                </section>
+
+                <section>
+                    <h3>Skeleton placeholder</h3>
+                    <div aria-label="Skeleton visual sample">
+                        <AppSkeleton Width="@(_circleSkeleton ? "3rem" : "70%")"
+                                     Height="@(_circleSkeleton ? "3rem" : "1rem")"
+                                     Circle="@_circleSkeleton"
+                                     Shimmer="@_shimmer" />
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Status panel</h3>
+                    <StatusPanel Title="@StatusTitle"
+                                 Message="@StatusMessage"
+                                 Compact="@_compact"
+                                 Loading="@_statusLoading"
+                                 Intent="@_intent" />
+                </section>
+            </div>
+
+            @if (_showBanner)
+            {
+                <FeedbackBanner Title="@BannerTitle"
+                                Message="@BannerMessage"
+                                Intent="@_intent"
+                                Dismissible="@_dismissible"
+                                DismissLabel="Dismiss feedback"
+                                OnDismiss="DismissBanner" />
+            }
+            else
+            {
+                <p role="status">Feedback dismissed.</p>
+            }
+
+            @if (_retryCount > 0)
+            {
+                <p role="status">Retry requested @_retryCount time@(_retryCount == 1 ? string.Empty : "s").</p>
+            }
+        </div>
+    </Preview>
+    <Controls>
+        <label>Async state
+            <select @bind="_asyncState">
+                @foreach (var value in Enum.GetValues<AsyncContentState>())
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+        </label>
+        <label>Intent
+            <select @bind="_intent">
+                @foreach (var value in Enum.GetValues<FeedbackIntent>())
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+        </label>
+        <label>Progress value
+            <input type="number" min="0" max="100" step="5" value="@_progress" @oninput="ChangeProgress" />
+        </label>
+        <label><input type="checkbox" @bind="_compact" /> Compact panels</label>
+        <label><input type="checkbox" @bind="_statusLoading" /> Status loading</label>
+        <label><input type="checkbox" @bind="_circleSkeleton" /> Circle skeleton</label>
+        <label><input type="checkbox" @bind="_shimmer" /> Skeleton shimmer</label>
+        <label><input type="checkbox" @bind="_dismissible" /> Banner dismissible</label>
+        @if (!_showBanner)
+        {
+            <button type="button" @onclick="RestoreBanner">Restore feedback</button>
+        }
+    </Controls>
+    <States>
+        <article><span>Loading</span><strong>Polite status</strong><small>Background work without a disruptive announcement</small></article>
+        <article><span>Empty</span><strong>Actionable absence</strong><small>Explains why content is missing and what can happen next</small></article>
+        <article><span>Error</span><strong>Assertive alert</strong><small>Failure state with an executable retry action</small></article>
+        <article><span>Progress</span><strong>Semantic range</strong><small>Determinate progress with native ARIA values</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private AsyncContentState _asyncState = AsyncContentState.Ready;
+    private FeedbackIntent _intent = FeedbackIntent.Info;
+    private double _progress = 45;
+    private bool _compact = true;
+    private bool _statusLoading;
+    private bool _circleSkeleton;
+    private bool _shimmer = true;
+    private bool _dismissible = true;
+    private bool _showBanner = true;
+    private int _retryCount;
+
+    private string BannerTitle => _intent switch
+    {
+        FeedbackIntent.Success => "Import complete",
+        FeedbackIntent.Warning => "Review recommended",
+        FeedbackIntent.Error => "Import failed",
+        _ => "Import information"
+    };
+
+    private string BannerMessage => _intent switch
+    {
+        FeedbackIntent.Success => "All records were imported successfully.",
+        FeedbackIntent.Warning => "Two records need manual verification.",
+        FeedbackIntent.Error => "The source file could not be processed.",
+        _ => "The import queue is ready for the next file."
+    };
+
+    private string StatusTitle => _statusLoading ? "Checking status" : "System available";
+    private string StatusMessage => _statusLoading
+        ? "The current service state is being refreshed."
+        : "Shared feedback primitives are ready for use.";
+
+    private Task RetryAsync()
+    {
+        _retryCount++;
+        _asyncState = AsyncContentState.Loading;
+        return Task.CompletedTask;
+    }
+
+    private Task DismissBanner()
+    {
+        _showBanner = false;
+        return Task.CompletedTask;
+    }
+
+    private void RestoreBanner() => _showBanner = true;
+
+    private void ChangeProgress(ChangeEventArgs args)
+    {
+        if (double.TryParse(args.Value?.ToString(), out var value))
+            _progress = Math.Clamp(value, 0, 100);
+    }
+}
