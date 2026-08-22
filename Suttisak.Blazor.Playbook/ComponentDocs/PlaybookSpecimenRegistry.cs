@@ -15,7 +15,11 @@ public static class PlaybookSpecimenRegistry
             ["AppTextArea"] = new(typeof(AppTextArea), typeof(AppTextAreaSpecimen)),
             ["AppSelect"] = new(typeof(AppSelect<string>), typeof(AppSelectSpecimen)),
             ["AppCheckbox"] = new(typeof(AppCheckbox), typeof(AppCheckboxSpecimen)),
-            ["AppSwitch"] = new(typeof(AppSwitch), typeof(AppSwitchSpecimen))
+            ["AppSwitch"] = new(typeof(AppSwitch), typeof(AppSwitchSpecimen)),
+            ["AppTabs"] = new(typeof(AppTabs), typeof(AppTabsSpecimen)),
+            ["AppBreadcrumb"] = new(typeof(AppBreadcrumb), typeof(AppBreadcrumbSpecimen)),
+            ["AppDialog"] = new(typeof(AppDialog<string, string>), typeof(AppDialogSpecimen)),
+            ["AppDrawer"] = new(typeof(AppDrawer<string, string>), typeof(AppDrawerSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>
