@@ -1,0 +1,127 @@
+@using System.ComponentModel.DataAnnotations
+
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Form composition controls">
+    <Preview>
+        <div class="component-specimen__demo">
+            <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" novalidate>
+                <DataAnnotationsValidator />
+                <FormSection Title="Review profile"
+                             Description="A complete EditForm using shared layout, inputs, validation, and actions."
+                             Id="review-profile-title">
+                    <FormValidationSummary data-testid="validation-summary" />
+
+                    <FormGrid Columns="@_columns" data-testid="profile-grid">
+                        <FormField>
+                            <AppTextBox Label="Full name"
+                                        Description="Required by the model validation contract."
+                                        ShowValidationMessage="@_showInlineValidation"
+                                        Disabled="@_disabled"
+                                        @bind-Value="_model.FullName" />
+                        </FormField>
+                        <FormField>
+                            <AppTextBox Label="Email"
+                                        Type="email"
+                                        Description="Must be a valid email address."
+                                        ShowValidationMessage="@_showInlineValidation"
+                                        Disabled="@_disabled"
+                                        @bind-Value="_model.Email" />
+                        </FormField>
+                        <FormField ColumnSpan="@_notesSpan">
+                            <AppTextArea Label="Review note"
+                                         Description="Optional context, limited to 80 characters."
+                                         Rows="3"
+                                         MaxLength="80"
+                                         ShowValidationMessage="@_showInlineValidation"
+                                         Disabled="@_disabled"
+                                         @bind-Value="_model.Note" />
+                        </FormField>
+                    </FormGrid>
+
+                    <FormActions Sticky="@_stickyActions" data-testid="form-actions">
+                        <SecondaryActions>
+                            <AppButton Type="button" Variant="AppButtonVariant.Subtle" OnClick="ResetForm">Reset</AppButton>
+                        </SecondaryActions>
+                        <ChildContent>
+                            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Disabled="@_disabled">Save profile</AppButton>
+                        </ChildContent>
+                    </FormActions>
+                </FormSection>
+            </EditForm>
+
+            <p role="status" data-testid="submit-status">@_submitStatus</p>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Grid columns
+            <select @bind="_columns">
+                <option value="1">1 column</option>
+                <option value="2">2 columns</option>
+                <option value="3">3 columns</option>
+                <option value="4">4 columns</option>
+            </select>
+        </label>
+        <label>Notes span
+            <select @bind="_notesSpan">
+                <option value="1">1 column</option>
+                <option value="2">2 columns</option>
+                <option value="3">3 columns</option>
+                <option value="4">4 columns</option>
+            </select>
+        </label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_showInlineValidation" /> Inline validation</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_stickyActions" /> Sticky actions</label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled form inputs</label>
+    </Controls>
+    <States>
+        <article><span>Composition</span><strong>Section → grid → field → actions</strong><small>Layout primitives stay independent from field value and validation behavior</small></article>
+        <article><span>Invalid</span><strong>Summary + inline errors</strong><small>EditContext validation flows into aria-invalid, descriptions, and assertive summary feedback</small></article>
+        <article><span>Valid</span><strong>Submit contract</strong><small>Successful submission occurs only after DataAnnotations validation passes</small></article>
+        <article><span>Responsive</span><strong>Clamped grid spans</strong><small>Columns and field spans remain within the shared 1–4 column contract</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private ProfileFormModel _model = new();
+    private int _columns = 2;
+    private int _notesSpan = 2;
+    private bool _showInlineValidation = true;
+    private bool _stickyActions;
+    private bool _disabled;
+    private string _submitStatus = "No submission yet.";
+
+    private Task HandleValidSubmit()
+    {
+        _submitStatus = $"Saved {_model.FullName}.";
+        return Task.CompletedTask;
+    }
+
+    private Task HandleInvalidSubmit()
+    {
+        _submitStatus = "Validation blocked submission.";
+        return Task.CompletedTask;
+    }
+
+    private Task ResetForm(MouseEventArgs _)
+    {
+        _model.FullName = string.Empty;
+        _model.Email = string.Empty;
+        _model.Note = string.Empty;
+        _submitStatus = "Form reset.";
+        return Task.CompletedTask;
+    }
+
+    private sealed class ProfileFormModel
+    {
+        [Required(ErrorMessage = "Full name is required.")]
+        public string? FullName { get; set; }
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        public string? Email { get; set; }
+
+        [StringLength(80, ErrorMessage = "Review note must be 80 characters or fewer.")]
+        public string? Note { get; set; }
+    }
+}
