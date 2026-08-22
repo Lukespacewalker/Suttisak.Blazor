@@ -75,7 +75,7 @@ test('AppTabs specimen exposes roving keyboard navigation and controlled state',
   await page.goto('/components/app-tabs');
 
   await expect(page.getByRole('complementary', { name: 'AppTabs controls' })).toBeVisible();
-  await expect(page.getByRole('rowheader', { name: 'ActiveId' })).toBeVisible();
+  await expect(page.getByRole('rowheader', { name: 'ActiveId', exact: true })).toBeVisible();
 
   const overview = page.getByRole('tab', { name: 'Overview' }).first();
   const activity = page.getByRole('tab', { name: 'Activity' }).first();
