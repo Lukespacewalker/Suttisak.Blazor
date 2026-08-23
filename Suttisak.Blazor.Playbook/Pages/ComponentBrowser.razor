@@ -1,357 +1,195 @@
 @page "/component-browser"
 @page "/components"
 
-<PageTitle>Component browser · Suttisak.Blazor UI Playbook</PageTitle>
+<PageTitle>Component Browser · Suttisak.Blazor UI Playbook</PageTitle>
 
 <PlaybookShell>
     <main class="component-browser">
-        <header class="component-browser__intro">
+        <header class="component-browser__hero">
             <div>
-                <span class="playbook-kicker">Interactive component browser</span>
-                <h1>Try the contract.<br /><em>Not just the picture.</em></h1>
+                <span class="playbook-kicker">Catalog-driven component explorer</span>
+                <h1>Every component.<br /><em>Honest coverage.</em></h1>
+                <p>The browser is generated from the same 90-component catalog used by detail routes and agent tooling. Interactive specimens, production-shaped patterns, and reference-only contracts are labelled explicitly.</p>
+                <div class="component-browser__hero-actions">
+                    <a href="catalog">Open compact catalog →</a>
+                    <a href="tokens">Inspect design tokens →</a>
+                    <a href="component-manifest.json">Open component manifest ↗</a>
+                </div>
             </div>
-            <p>Each specimen is a running shared-library component. Change a value, open an overlay, dismiss feedback, or switch tabs to see its real behavior in the current application theme.</p>
+
+            <aside class="component-browser__coverage-summary" aria-label="Component coverage summary">
+                <article><strong>@Coverage.Total</strong><span>catalogued</span></article>
+                <article><strong>@Coverage.Interactive</strong><span>interactive</span></article>
+                <article><strong>@Coverage.Pattern</strong><span>patterns</span></article>
+                <article><strong>@Coverage.Reference</strong><span>references</span></article>
+                <div><span style="@InteractiveProgressStyle"></span></div>
+                <p>@Coverage.InteractivePercent% of the catalog currently has an executable workbench.</p>
+            </aside>
         </header>
 
         <div class="component-browser__workspace">
-        <aside class="component-browser__sidebar">
-            <label class="component-browser__search">
-                <span>Find a component</span>
-                <input type="search" placeholder="Button, input, grid…" @bind="_catalogSearch" @bind:event="oninput" />
-            </label>
-            <nav aria-label="Components">
-                @foreach (var group in FilteredCatalog)
+            <aside class="component-browser__sidebar" aria-label="Component Browser filters">
+                <label class="component-browser__search">
+                    <span>Find a component</span>
+                    <input type="search" placeholder="Button, grid, navigation…" @bind="_search" @bind:event="oninput" />
+                </label>
+
+                <fieldset class="component-browser__coverage-filter">
+                    <legend>Coverage</legend>
+                    <button type="button" class="@FilterClass(null)" aria-pressed="@(_coverageFilter is null)" @onclick="() => SetCoverageFilter(null)">All <small>@Coverage.Total</small></button>
+                    @foreach (var kind in CoverageKinds)
+                    {
+                        <button type="button" class="@FilterClass(kind)" aria-pressed="@(_coverageFilter == kind)" @onclick="() => SetCoverageFilter(kind)">
+                            @PlaybookComponentCoverage.LabelFor(kind) <small>@CoverageCount(kind)</small>
+                        </button>
+                    }
+                </fieldset>
+
+                <nav aria-label="Filtered component groups">
+                    @foreach (var group in FilteredGroups)
+                    {
+                        <details open="@(HasActiveFilters || group.Key == "Forms & inputs")">
+                            <summary><span>@group.Key</span><small>@group.Count()</small></summary>
+                            <div>
+                                @foreach (var component in group)
+                                {
+                                    <a href="@component.DetailHref">
+                                        <span>@component.Name</span>
+                                        <small class="component-browser__mini-coverage component-browser__mini-coverage--@PlaybookComponentCoverage.SlugFor(component)">@PlaybookComponentCoverage.LabelFor(component)</small>
+                                    </a>
+                                }
+                            </div>
+                        </details>
+                    }
+                </nav>
+            </aside>
+
+            <div class="component-browser__content">
+                <header class="component-browser__results-header">
+                    <div>
+                        <span>@FilteredComponentCount results</span>
+                        <strong>@ResultsHeading</strong>
+                    </div>
+                    @if (HasActiveFilters)
+                    {
+                        <button type="button" @onclick="ClearFilters">Clear filters</button>
+                    }
+                </header>
+
+                @if (FilteredComponentCount == 0)
                 {
-                    <details open="@(group.Name == "Forms & inputs" || !string.IsNullOrWhiteSpace(_catalogSearch))">
-                        <summary><span>@group.Name</span><small>@group.Items.Count</small></summary>
-                        <div>
-                            @foreach (var item in group.Items)
-                            {
-                                <a href="@ResolveCatalogHref(item)">@item.Name</a>
-                            }
-                        </div>
-                    </details>
-                }
-            </nav>
-            <p><strong>@CatalogComponentCount catalog entries</strong><span>Every Razor component in the library is indexed; consumer-facing controls include live specimens or a linked full-page pattern.</span></p>
-        </aside>
-
-        <div class="component-browser__content">
-
-        <section id="forms" class="component-browser__category" aria-labelledby="forms-title">
-            <header><span>01 / Category</span><h2 id="forms-title">Forms &amp; inputs</h2></header>
-            <article class="component-browser__section component-browser__section--wide" aria-labelledby="input-controls-title">
-                <header><span>11 live controls</span><h3 id="input-controls-title">Input controls</h3><code>AppInputBase&lt;TValue&gt;</code></header>
-                <div class="component-browser__stage component-browser__input-grid">
-                    <div id="app-text-box" class="component-browser__input-specimen"><h4>AppTextBox</h4><AppTextBox Label="Display name" Description="Single-line text with optional icon and validation." Placeholder="Enter a name" @bind-Value="_textValue" /><code>&lt;AppTextBox Label="Display name" @@bind-Value="model.Name" /&gt;</code></div>
-                    <div id="app-text-area" class="component-browser__input-specimen"><h4>AppTextArea</h4><AppTextArea Label="Notes" Description="Multi-line content with a character limit." Placeholder="Add context…" Rows="3" MaxLength="160" @bind-Value="_noteValue" /><code>&lt;AppTextArea Label="Notes" Rows="3" @@bind-Value="model.Note" /&gt;</code></div>
-                    <div id="app-number-input" class="component-browser__input-specimen"><h4>AppNumberInput</h4><AppNumberInput TValue="int" Label="Capacity" Description="Typed numeric value with range and step." Min="0" Max="100" Step="5" @bind-Value="_numberValue" /><code>&lt;AppNumberInput TValue="int" Min="0" Max="100" @@bind-Value="model.Capacity" /&gt;</code></div>
-                    <div id="app-select" class="component-browser__input-specimen"><h4>AppSelect + AppSelectItem</h4><AppSelect TValue="string" Label="Department" Description="Single selection from typed options." Placeholder="Choose a department" Options="@DepartmentOptions" @bind-Value="_selectedDepartment" /><code>&lt;AppSelect TValue="string" Options="DepartmentOptions" @@bind-Value="model.Department" /&gt;</code></div>
-                    <div id="app-multi-select" class="component-browser__input-specimen"><h4>AppMultiSelect</h4><AppMultiSelect TValue="string" Label="Roles" Description="Select more than one typed option." Options="@RoleOptions" @bind-SelectedItems="_selectedRoles" /><code>&lt;AppMultiSelect TValue="string" Options="RoleOptions" @@bind-SelectedItems="model.Roles" /&gt;</code></div>
-                    <div id="app-radio-group" class="component-browser__input-specimen"><h4>AppRadioGroup + AppRadio</h4><AppRadioGroup TValue="string" Label="Contact channel" Description="A related set of exclusive choices." Orientation="Horizontal" Options="@ContactOptions" @bind-Value="_selectedContact" /><code>&lt;AppRadioGroup TValue="string" Options="ContactOptions" @@bind-Value="model.Channel" /&gt;</code></div>
-                    <div id="app-checkbox" class="component-browser__input-specimen"><h4>AppCheckbox</h4><AppCheckbox Label="Information is correct" @bind-Value="_confirmed" /><p class="component-browser__input-note">Boolean or optional three-state confirmation.</p><code>&lt;AppCheckbox Label="Confirm" @@bind-Value="model.Confirmed" /&gt;</code></div>
-                    <div id="app-switch" class="component-browser__input-specimen"><h4>AppSwitch</h4><AppSwitch Label="Email notifications" Description="Immediate on/off preference." @bind-Value="_notificationsEnabled" /><code>&lt;AppSwitch Label="Notifications" @@bind-Value="model.Enabled" /&gt;</code></div>
-                    <div id="app-calendar-picker" class="component-browser__input-specimen"><h4>AppCalendarPicker</h4><AppCalendarPicker Label="Appointment date" Description="Native-first date with themed popup." @bind-Value="_dateValue" /><code>&lt;AppCalendarPicker Label="Date" @@bind-Value="model.Date" /&gt;</code></div>
-                    <div id="app-time-picker" class="component-browser__input-specimen"><h4>AppTimePicker</h4><AppTimePicker Label="Start time" Description="Minute and optional second steps." MinuteStep="15" @bind-Value="_timeValue" /><code>&lt;AppTimePicker MinuteStep="15" @@bind-Value="model.Time" /&gt;</code></div>
-                    <div id="app-date-time-picker" class="component-browser__input-specimen"><h4>AppDateTimePicker</h4><AppDateTimePicker Label="Follow-up" Description="Browser-local date and time contract." MinuteStep="15" @bind-Value="_dateTimeValue" /><code>&lt;AppDateTimePicker MinuteStep="15" @@bind-Value="model.StartsAt" /&gt;</code></div>
-                </div>
-            </article>
-            <article id="form-composition" class="component-browser__section component-browser__section--wide" aria-labelledby="form-composition-title">
-                <header><span>Composition</span><h3 id="form-composition-title">Form structure</h3><code>FormSection / Grid / Field / Actions</code></header>
-                <div class="component-browser__stage">
-                    <FormSection Title="Contact details" Description="Form primitives own layout while inputs own value and validation behavior.">
-                        <FormGrid Columns="2"><FormField><AppTextBox Label="Email" Value="person@example.com" /></FormField><FormField><AppSelect TValue="string" Label="Department" Value="@("Clinical")" Options="@DepartmentOptions" /></FormField></FormGrid>
-                        <FormActions><SecondaryActions><AppButton Variant="AppButtonVariant.Subtle">Cancel</AppButton></SecondaryActions><ChildContent><AppButton Variant="AppButtonVariant.Primary">Save changes</AppButton></ChildContent></FormActions>
-                    </FormSection>
-                    <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;FormSection Title="Contact details"&gt;
-    &lt;FormGrid Columns="2"&gt;
-        &lt;FormField&gt;...&lt;/FormField&gt;
-    &lt;/FormGrid&gt;
-    &lt;FormActions&gt;...&lt;/FormActions&gt;
-&lt;/FormSection&gt;</code></pre></div>
-                </div>
-            </article>
-        </section>
-
-        <section id="actions" class="component-browser__category" aria-labelledby="actions-title">
-            <header><span>02 / Category</span><h2 id="actions-title">Actions</h2></header>
-        <article id="app-button" class="component-browser__section" aria-labelledby="app-button-title">
-            <header><span>Component</span><h3 id="app-button-title">AppButton</h3><code>&lt;AppButton&gt;</code></header>
-            <div class="component-browser__stage">
-                <div class="component-browser__button-row">
-                    <AppButton Variant="AppButtonVariant.Primary" OnClick="Increment">Add item</AppButton>
-                    <AppButton OnClick="ResetCount">Reset</AppButton>
-                    <AppButton Variant="AppButtonVariant.Danger" OnClick="ClearCount">Clear</AppButton>
-                </div>
-                <output class="component-browser__readout" aria-live="polite"><strong>@_itemCount</strong><span>items staged</span></output>
-                <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;AppButton Variant="AppButtonVariant.Primary"
-           OnClick="SaveAsync"&gt;
-    Save changes
-&lt;/AppButton&gt;</code></pre></div>
-            </div>
-        </article>
-        </section>
-
-        <section id="overlays" class="component-browser__category" aria-labelledby="overlays-title">
-            <header><span>03 / Category</span><h2 id="overlays-title">Overlays</h2></header>
-        <article id="app-dialog" class="component-browser__section" aria-labelledby="app-dialog-title">
-            <header><span>Components</span><h3 id="app-dialog-title">Dialog &amp; Drawer</h3><code>ShowAsync(value)</code></header>
-            <div class="component-browser__stage component-browser__stage--split">
-                <div>
-                    <h3>AppDialog</h3>
-                    <p>Use for focused decisions that must retain the current page context.</p>
-                    <AppButton Variant="AppButtonVariant.Primary" OnClick="OpenDialogAsync">Open confirmation</AppButton>
-                </div>
-                <div>
-                    <h3>AppDrawer</h3>
-                    <p>Use for a task with more room while keeping the underlying page visible.</p>
-                    <AppButton OnClick="OpenDrawerAsync">Open details drawer</AppButton>
-                </div>
-                <p class="component-browser__result" aria-live="polite">@_overlayResult</p>
-                <div class="component-browser__usage"><span>Usage</span><pre><code>var result = await _dialog.ShowAsync(model);
-
-if (result.HasValue)
-{
-    await SaveAsync(result.Value);
-}</code></pre></div>
-            </div>
-        </article>
-        </section>
-
-        <section id="navigation" class="component-browser__category" aria-labelledby="navigation-title">
-            <header><span>04 / Category</span><h2 id="navigation-title">Navigation</h2></header>
-        <article id="app-tabs" class="component-browser__section" aria-labelledby="app-tabs-title">
-            <header><span>Component</span><h3 id="app-tabs-title">AppTabs</h3><code>&lt;AppTabs&gt;</code></header>
-            <div class="component-browser__stage">
-                <AppTabs AriaLabel="Component browser preview tabs" @bind-ActiveId="_activeTab">
-                    <AppTab Id="overview" Label="Overview"><p class="component-browser__tab-copy">A compact view for the most important component information.</p></AppTab>
-                    <AppTab Id="api" Label="API"><p class="component-browser__tab-copy">Parameters are explicit Razor properties, so each app keeps its own copy and behavior.</p></AppTab>
-                    <AppTab Id="accessibility" Label="Accessibility"><p class="component-browser__tab-copy">Keyboard focus and semantic controls remain part of the shared component contract.</p></AppTab>
-                </AppTabs>
-                <p class="component-browser__result" aria-live="polite">Active tab: @_activeTab</p>
-                <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;AppTabs AriaLabel="Record sections"
-         @@bind-ActiveId="activeTab"&gt;
-    &lt;AppTab Id="overview" Label="Overview"&gt;...&lt;/AppTab&gt;
-    &lt;AppTab Id="activity" Label="Activity"&gt;...&lt;/AppTab&gt;
-&lt;/AppTabs&gt;</code></pre></div>
-            </div>
-        </article>
-        </section>
-
-        <section id="feedback" class="component-browser__category" aria-labelledby="feedback-title">
-            <header><span>05 / Category</span><h2 id="feedback-title">Feedback</h2></header>
-        <article id="app-feedback" class="component-browser__section" aria-labelledby="app-feedback-title">
-            <header><span>Components</span><h3 id="app-feedback-title">Progress &amp; feedback</h3><code>Value / Intent</code></header>
-            <div class="component-browser__stage component-browser__feedback-stage">
-                <div class="component-browser__progress-control">
-                    <label for="progress-value">Import progress <strong>@_progress%</strong></label>
-                    <input id="progress-value" type="range" min="0" max="100" @bind="_progress" />
-                    <AppProgress Value="@_progress" AriaLabel="Demo import progress" />
-                </div>
-                @if (!_feedbackDismissed)
-                {
-                    <FeedbackBanner Intent="FeedbackIntent.Success" Title="Component state saved" Message="This banner can be dismissed like it would be in an application." Dismissible="true" OnDismiss="DismissFeedback" />
+                    <section class="component-browser__empty" aria-live="polite">
+                        <strong>No component matches those filters.</strong>
+                        <p>Try a broader term or clear the coverage filter.</p>
+                        <button type="button" @onclick="ClearFilters">Show the complete catalog</button>
+                    </section>
                 }
                 else
                 {
-                    <AppButton Variant="AppButtonVariant.Subtle" OnClick="RestoreFeedback">Restore feedback banner</AppButton>
+                    @foreach (var group in FilteredGroups)
+                    {
+                        <section id="@GroupId(group.Key)" class="component-browser__group" aria-labelledby="@($"{GroupId(group.Key)}-title")">
+                            <header>
+                                <h2 id="@($"{GroupId(group.Key)}-title")">@group.Key</h2>
+                                <span>@group.Count()</span>
+                            </header>
+
+                            <div class="component-browser__grid">
+                                @foreach (var component in group)
+                                {
+                                    var coverageKind = PlaybookComponentCoverage.KindFor(component);
+                                    <a class="component-browser__card" href="@component.DetailHref" data-component-name="@component.Name" data-component-coverage="@PlaybookComponentCoverage.SlugFor(coverageKind)">
+                                        <div class="component-browser__card-meta">
+                                            <span class="component-browser__status component-browser__status--@component.Status.ToString().ToLowerInvariant()">@component.Status</span>
+                                            <span class="component-browser__coverage component-browser__coverage--@PlaybookComponentCoverage.SlugFor(coverageKind)">@PlaybookComponentCoverage.LabelFor(coverageKind)</span>
+                                        </div>
+                                        <h3>@component.Name</h3>
+                                        <p>@component.Summary</p>
+                                        <small>@component.SourceArea · @string.Join(" · ", component.Tags.Take(3))</small>
+                                        <footer>
+                                            <span>@ActionLabel(coverageKind)</span>
+                                            <span aria-hidden="true">→</span>
+                                        </footer>
+                                    </a>
+                                }
+                            </div>
+                        </section>
+                    }
                 }
-                <div class="component-browser__usage"><span>Usage</span><pre><code>&lt;AppProgress Value="68" AriaLabel="Import progress" /&gt;
-
-&lt;FeedbackBanner Intent="FeedbackIntent.Success"
-                Title="Import complete"
-                Dismissible="true" /&gt;</code></pre></div>
             </div>
-        </article>
-        </section>
-
-        <section id="library-directory" class="component-browser__category component-browser__directory" aria-labelledby="library-directory-title">
-            <header><span>Complete index</span><h2 id="library-directory-title">All @CatalogComponentCount Razor components</h2></header>
-            <p class="component-browser__directory-intro">The index includes public building blocks, composition helpers, full layouts, and the infrastructure components that support them. “Live here” opens a specimen above; “Pattern page” opens the complete integration context.</p>
-            @foreach (var group in CatalogGroups)
-            {
-                <section aria-labelledby="@($"directory-{group.Name.Replace(' ', '-').Replace('&', 'a').ToLowerInvariant()}")">
-                    <h3 id="@($"directory-{group.Name.Replace(' ', '-').Replace('&', 'a').ToLowerInvariant()}")">@group.Name <span>@group.Items.Count</span></h3>
-                    <div>
-                        @foreach (var item in group.Items)
-                        {
-                            <a href="@ResolveCatalogHref(item)"><strong>@item.Name</strong><span>@CoverageLabel(item)</span></a>
-                        }
-                    </div>
-                </section>
-            }
-        </section>
-        </div>
         </div>
     </main>
-
-    <AppDialog TInput="string" TResult="bool" @ref="_dialog"
-               Title="Publish this component?" Description="This is a live confirmation Dialog specimen."
-               Mode="AppDialogMode.Information" PreventDismissOnOutsideClick="true">
-        <Body Context="dialog"><p><strong>@dialog.Value</strong> will be visible to every consuming application.</p></Body>
-        <Footer Context="dialog">
-            <AppButton OnClick="@(_ => dialog.CancelAsync())">Keep as draft</AppButton>
-            <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => dialog.CloseAsync(true))">Publish</AppButton>
-        </Footer>
-    </AppDialog>
-
-    <AppDrawer TInput="string" TResult="bool" @ref="_drawer"
-               Title="Component details" Description="A live end-position Drawer specimen.">
-        <Body Context="drawer">
-            <p>This drawer receives <strong>@drawer.Value</strong> from <code>ShowAsync</code> and returns a result when you finish.</p>
-            <AppTextArea Label="Implementation note" Rows="3" Placeholder="Try typing here…" @bind-Value="_drawerNote" />
-        </Body>
-        <Footer Context="drawer">
-            <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
-            <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => drawer.CloseAsync(true))">Done</AppButton>
-        </Footer>
-    </AppDrawer>
 </PlaybookShell>
 
 @code {
-    private const string ComponentBrowserRoute = "component-browser";
-
-    private AppDialog<string, bool>? _dialog;
-    private AppDrawer<string, bool>? _drawer;
-    private int _itemCount = 3;
-    private int _progress = 68;
-    private bool _feedbackDismissed;
-    private string? _activeTab = "overview";
-    private string? _drawerNote;
-    private string _overlayResult = "No overlay result yet.";
-    private string _catalogSearch = string.Empty;
-    private string? _textValue = "Kanda S.";
-    private string? _noteValue = "Follow up after the annual review.";
-    private int _numberValue = 40;
-    private string? _selectedDepartment = "Clinical";
-    private IEnumerable<string> _selectedRoles = ["Reviewer", "Coordinator"];
-    private string? _selectedContact = "Email";
-    private bool _confirmed = true;
-    private bool _notificationsEnabled = true;
-    private DateOnly? _dateValue = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
-    private TimeOnly? _timeValue = new(9, 30);
-    private DateTime? _dateTimeValue = DateTime.SpecifyKind(DateTime.Today.AddDays(7).AddHours(10), DateTimeKind.Unspecified);
-
-    private static readonly AppSelectOption<string>[] DepartmentOptions =
+    private static readonly PlaybookComponentCoverageKind[] CoverageKinds =
     [
-        new("Airside", "Airside operations"), new("Clinical", "Clinical services"), new("People", "People and culture")
+        PlaybookComponentCoverageKind.Interactive,
+        PlaybookComponentCoverageKind.Pattern,
+        PlaybookComponentCoverageKind.Reference
     ];
 
-    private static readonly AppSelectOption<string>[] RoleOptions =
-    [
-        new("Reviewer", "Reviewer"), new("Coordinator", "Coordinator"), new("Administrator", "Administrator")
-    ];
+    private string _search = string.Empty;
+    private PlaybookComponentCoverageKind? _coverageFilter;
 
-    private static readonly AppSelectOption<string>[] ContactOptions =
-    [
-        new("Email", "Email"), new("Phone", "Phone"), new("App", "In-app message")
-    ];
+    private static PlaybookComponentCoverageSummary Coverage => PlaybookComponentCoverage.Summary;
 
-    private static readonly CatalogGroup[] CatalogGroups =
-    [
-        new("Forms & inputs",
-        [
-            new("AppTextBox", "#app-text-box"), new("AppTextArea", "#app-text-area"), new("AppNumberInput", "#app-number-input"),
-            new("AppSelect", "#app-select"), new("AppSelectItem", "#app-select"), new("AppMultiSelect", "#app-multi-select"),
-            new("AppRadioGroup", "#app-radio-group"), new("AppRadio", "#app-radio-group"), new("AppCheckbox", "#app-checkbox"),
-            new("AppSwitch", "#app-switch"), new("AppCalendarPicker", "#app-calendar-picker"), new("AppTimePicker", "#app-time-picker"),
-            new("AppDateTimePicker", "#app-date-time-picker"), new("FormSection", "#form-composition"), new("FormGrid", "#form-composition"),
-            new("FormField", "#form-composition"), new("FormActions", "#form-composition"), new("FormValidationSummary", "form-controls#edit-form-title")
-        ]),
-        new("Actions & surfaces",
-        [
-            new("AppButton", "#app-button"), new("AppCard", "#library-directory"), new("AppDivider", "#library-directory"),
-            new("AppStack", "#library-directory"), new("CardMenu", "#library-directory"), new("CompanyFooter", "#library-directory"),
-            new("Hero", "#library-directory"), new("Pill", "#library-directory"), new("Toolbar", "#library-directory"),
-            new("PageActionToolbar", "application-shell"), new("PageHeading", "application-shell")
-        ]),
-        new("Data & display",
-        [
-            new("AppBreadcrumb", "#library-directory"), new("AppDataGrid", "grid-performance"), new("AppGrid", "grid-performance"),
-            new("AppGridPaginator", "grid-performance"), new("AppGridPropertyColumn", "grid-performance"), new("AppGridSelectColumn", "grid-performance"),
-            new("AppGridTemplateColumn", "grid-performance"), new("AppPagination", "#library-directory"), new("AppQuickGrid", "grid-performance"),
-            new("AppQuickPaginator", "grid-performance"), new("DataGridContainer", "grid-performance"), new("PageBreadcrumbs", "application-shell")
-        ]),
-        new("Feedback & async",
-        [
-            new("AppLoading", "#app-feedback"), new("AppProgress", "#app-feedback"), new("AppSkeleton", "#library-directory"),
-            new("AsyncContent", "#library-directory"), new("FeedbackBanner", "#app-feedback"), new("StatusPanel", "#library-directory")
-        ]),
-        new("Overlays",
-        [
-            new("AppDialog", "#app-dialog"), new("AppDrawer", "#app-dialog")
-        ]),
-        new("Navigation",
-        [
-            new("AppTabs", "#app-tabs"), new("AppTab", "#app-tabs"), new("Nav", "application-shell"), new("NavGroup", "application-shell"),
-            new("NavItem", "application-shell"), new("NavSubmenu", "application-shell"), new("SectionNavigation", "application-shell/person"),
-            new("MobileNavigationAccount", "application-shell"), new("ProfileMenu", "application-shell")
-        ]),
-        new("Preferences & time",
-        [
-            new("CultureSelector", "#library-directory"), new("PreferencesSelector", "#library-directory"), new("ThemeSwitcher", "/"),
-            new("InitializeTimeZone", "form-controls#timezone-title"), new("LocalTime", "#library-directory")
-        ]),
-        new("Experience",
-        [
-            new("ExperienceCard", "#library-directory"), new("ExperienceDisclosure", "#library-directory"),
-            new("ExperienceDisclosureGroup", "#library-directory"), new("ExperienceHeading", "#library-directory")
-        ]),
-        new("Marketing",
-        [
-            new("MarketingActionLink", "landing"), new("MarketingCallToAction", "landing"), new("MarketingCard", "landing"),
-            new("MarketingContainer", "landing"), new("MarketingFeatureGrid", "landing"), new("MarketingHero", "landing"),
-            new("MarketingPage", "landing"), new("MarketingProductFrame", "landing"), new("MarketingProofItem", "landing"),
-            new("MarketingProofStrip", "landing"), new("MarketingSectionHeader", "landing"), new("MarketingStep", "landing"),
-            new("MarketingStepList", "landing")
-        ]),
-        new("Application layouts",
-        [
-            new("AccessPageLayout", "access/login"), new("ApplicationShell", "application-shell"), new("HeaderFooterLayout", "#library-directory"),
-            new("IdentityLayout", "access/login"), new("LandingLayout", "landing"), new("MainLayout", "application-shell"), new("RootLayout", "#library-directory")
-        ]),
-        new("Infrastructure",
-        [
-            new("AppInputSupport", "#library-directory"), new("AppOverlayHost", "#app-dialog"), new("LayoutMobileMenuButtonWrapper", "application-shell")
-        ])
-    ];
+    private IEnumerable<PlaybookComponentDefinition> FilteredComponents =>
+        PlaybookComponentCatalog.All.Where(MatchesSearch).Where(MatchesCoverage);
 
-    private IEnumerable<CatalogGroup> FilteredCatalog => string.IsNullOrWhiteSpace(_catalogSearch)
-        ? CatalogGroups
-        : CatalogGroups.Select(group => new CatalogGroup(group.Name,
-            group.Items.Where(item => item.Name.Contains(_catalogSearch, StringComparison.OrdinalIgnoreCase)).ToArray()))
-            .Where(group => group.Items.Count > 0);
+    private IReadOnlyList<IGrouping<string, PlaybookComponentDefinition>> FilteredGroups =>
+        FilteredComponents.GroupBy(component => component.Category).ToArray();
 
-    private static int CatalogComponentCount => CatalogGroups.Sum(group => group.Items.Count);
-    private static string ResolveCatalogHref(CatalogItem item) => item.Href.StartsWith('#')
-        ? $"{ComponentBrowserRoute}{item.Href}"
-        : item.Href;
+    private int FilteredComponentCount => FilteredComponents.Count();
+    private bool HasActiveFilters => !string.IsNullOrWhiteSpace(_search) || _coverageFilter is not null;
+    private string InteractiveProgressStyle => $"width:{Coverage.InteractivePercent.ToString(System.Globalization.CultureInfo.InvariantCulture)}%";
 
-    private static string CoverageLabel(CatalogItem item) => item.Href switch
+    private string ResultsHeading => _coverageFilter is null
+        ? string.IsNullOrWhiteSpace(_search) ? "Complete component map" : $"Matching “{_search.Trim()}”"
+        : $"{PlaybookComponentCoverage.LabelFor(_coverageFilter.Value)} coverage";
+
+    private bool MatchesSearch(PlaybookComponentDefinition component)
     {
-        "#library-directory" => "Catalog entry",
-        var href when href.StartsWith('#') => "Live here",
-        _ => "Pattern page"
+        if (string.IsNullOrWhiteSpace(_search))
+        {
+            return true;
+        }
+
+        var search = _search.Trim();
+        return component.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
+            || component.Category.Contains(search, StringComparison.OrdinalIgnoreCase)
+            || component.Summary.Contains(search, StringComparison.OrdinalIgnoreCase)
+            || component.SourceArea.Contains(search, StringComparison.OrdinalIgnoreCase)
+            || component.Tags.Any(tag => tag.Contains(search, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private bool MatchesCoverage(PlaybookComponentDefinition component) =>
+        _coverageFilter is null || PlaybookComponentCoverage.KindFor(component) == _coverageFilter;
+
+    private void SetCoverageFilter(PlaybookComponentCoverageKind? kind) => _coverageFilter = kind;
+
+    private void ClearFilters()
+    {
+        _search = string.Empty;
+        _coverageFilter = null;
+    }
+
+    private string FilterClass(PlaybookComponentCoverageKind? kind) => _coverageFilter == kind ? "is-active" : string.Empty;
+
+    private static int CoverageCount(PlaybookComponentCoverageKind kind) => kind switch
+    {
+        PlaybookComponentCoverageKind.Interactive => Coverage.Interactive,
+        PlaybookComponentCoverageKind.Pattern => Coverage.Pattern,
+        _ => Coverage.Reference
     };
 
-    private void Increment() => _itemCount++;
-    private void ResetCount() => _itemCount = 3;
-    private void ClearCount() => _itemCount = 0;
-    private void DismissFeedback() => _feedbackDismissed = true;
-    private void RestoreFeedback() => _feedbackDismissed = false;
-
-    private async Task OpenDialogAsync()
+    private static string ActionLabel(PlaybookComponentCoverageKind kind) => kind switch
     {
-        var result = await _dialog!.ShowAsync("AppDialog");
-        _overlayResult = result.HasValue ? "Dialog confirmed publication." : "Dialog was cancelled.";
-    }
+        PlaybookComponentCoverageKind.Interactive => "Open executable workbench",
+        PlaybookComponentCoverageKind.Pattern => "Open integration documentation",
+        _ => "Open component reference"
+    };
 
-    private async Task OpenDrawerAsync()
-    {
-        var result = await _drawer!.ShowAsync("AppDrawer");
-        _overlayResult = result.HasValue ? "Drawer was completed." : "Drawer was cancelled.";
-    }
-
-    private sealed record CatalogItem(string Name, string Href);
-    private sealed record CatalogGroup(string Name, IReadOnlyList<CatalogItem> Items);
+    private static string GroupId(string category) =>
+        $"components-{new string(category.ToLowerInvariant().Select(character => char.IsLetterOrDigit(character) ? character : '-').ToArray()).Trim('-')}";
 }
