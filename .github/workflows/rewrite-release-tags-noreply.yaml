@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   rewrite-tags:
-    if: github.repository == 'Lukespacewalker/Suttisak.Blazor' && github.actor == github.repository_owner
+    if: github.repository == 'Lukespacewalker/Suttisak.Blazor'
     runs-on: ubuntu-latest
     steps:
       - name: Install git-filter-repo
