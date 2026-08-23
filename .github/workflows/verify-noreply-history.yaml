@@ -1,0 +1,65 @@
+name: verify-noreply-history
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-noreply-history.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-reachable-history:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout every reachable branch and tag
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify rewritten identity metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import os
+          import subprocess
+          import sys
+
+          old_email_sha256 = "87eef6cfee79ae9bddd80844806138b24c66ec5ad9d674633ccfe6e611cdbcc7"
+          noreply_email_sha256 = "e98250a2cdde57501bf918bbfe5e1da647470111b8a15a1ea0829a26daf747f7"
+
+          commit_emails = subprocess.check_output(
+              ["git", "log", "--all", "--format=%ae%n%ce"],
+              text=True,
+          ).splitlines()
+          tagger_emails = subprocess.check_output(
+              ["git", "for-each-ref", "--format=%(taggeremail)", "refs/tags"],
+              text=True,
+          ).splitlines()
+
+          def normalize(value: str) -> str:
+              return value.strip().removeprefix("<").removesuffix(">").strip().lower()
+
+          def digest(value: str) -> str:
+              return hashlib.sha256(normalize(value).encode("utf-8")).hexdigest()
+
+          emails = [value for value in commit_emails + tagger_emails if normalize(value)]
+          old_count = sum(digest(value) == old_email_sha256 for value in emails)
+          noreply_count = sum(digest(value) == noreply_email_sha256 for value in emails)
+
+          print(f"Reachable author/committer/tagger identities inspected: {len(emails)}")
+          print(f"Old identity hash matches: {old_count}")
+          print(f"Noreply identity hash matches: {noreply_count}")
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("## Noreply history verification\n\n")
+              summary.write(f"- Reachable identity records inspected: {len(emails)}\n")
+              summary.write(f"- Old identity hash matches: {old_count}\n")
+              summary.write(f"- Noreply identity hash matches: {noreply_count}\n")
+
+          if old_count:
+              sys.exit("Old email identity remains in reachable branch/tag history")
+          PY
