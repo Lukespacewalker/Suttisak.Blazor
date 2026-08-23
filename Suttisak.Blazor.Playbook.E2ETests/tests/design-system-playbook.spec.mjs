@@ -134,7 +134,7 @@ test('Foundations exposes semantic tokens instead of a parallel palette', async 
   await page.goto('/foundations');
 
   await expect(page.getByRole('heading', { level: 1, name: 'Tokens before decoration.' })).toBeVisible();
-  await expect(page.locator('.foundations-page__swatches article')).toHaveCount(12);
+  await expect(page.locator('.foundations-page__token-grid article')).toHaveCount(71);
   await expect(page.getByText('--app-brand', { exact: true })).toBeVisible();
   await expect(page.getByText('--app-space-4', { exact: true })).toBeVisible();
   await expect(page.getByText('--app-radius-lg', { exact: true })).toBeVisible();

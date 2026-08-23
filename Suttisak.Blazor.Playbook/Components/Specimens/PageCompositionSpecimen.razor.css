@@ -1,0 +1,8 @@
+.page-composition-specimen { display: grid; min-width: 0; gap: .65rem; container: page-composition-specimen / inline-size; }
+.page-composition-specimen__breadcrumbs { padding: .6rem .8rem; border: 1px solid var(--app-border); border-radius: .7rem; background: var(--app-surface); }
+.page-composition-specimen__status { margin: 0; color: var(--app-foreground-muted); font-size: .72rem; }
+.page-composition-specimen ::deep .page-composition-specimen__section-link { position: relative; display: inline-flex; min-width: max-content; min-height: 3.75rem; align-items: center; padding: .55rem .72rem; border: 0; border-radius: .55rem; background: transparent; color: var(--app-foreground-muted); font: inherit; font-size: .76rem; font-weight: 720; cursor: pointer; }
+.page-composition-specimen ::deep .page-composition-specimen__section-link:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
+.page-composition-specimen ::deep .page-composition-specimen__section-link.active { background: var(--app-accent-soft); color: var(--app-accent); }
+.page-composition-specimen ::deep .page-composition-specimen__section-link:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+@media (forced-colors: active) { .page-composition-specimen ::deep .page-composition-specimen__section-link.active { outline: 2px solid Highlight; } }

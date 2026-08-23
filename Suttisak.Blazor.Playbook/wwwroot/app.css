@@ -109,11 +109,11 @@ select { font: inherit; }
 .playbook-nav { display: inline-flex; align-items: center; gap: .25rem; }
 .playbook-nav a { padding: .48rem .7rem; border-radius: .55rem; color: var(--app-foreground-muted); font-size: .82rem; font-weight: 750; text-decoration: none; white-space: nowrap; }
 .playbook-nav a:hover { color: var(--app-accent); }
-.playbook-nav a.active { background: var(--app-accent-soft); color: var(--app-accent); }
+.playbook-nav a.active { background: var(--app-accent-soft); color: var(--app-foreground); }
 .playbook-nav-group { position: relative; }
 .playbook-nav-group > summary { display: flex; align-items: center; gap: .35rem; padding: .48rem .7rem; border-radius: .55rem; color: var(--app-foreground-muted); font-size: .82rem; font-weight: 750; list-style: none; white-space: nowrap; cursor: pointer; }
 .playbook-nav-group > summary::-webkit-details-marker { display: none; }
-.playbook-nav-group > summary:hover, .playbook-nav-group > summary.active { background: var(--app-accent-soft); color: var(--app-accent); }
+.playbook-nav-group > summary:hover, .playbook-nav-group > summary.active { background: var(--app-accent-soft); color: var(--app-foreground); }
 .playbook-nav-group > summary span { font-size: .72rem; transition: transform .15s ease; }
 .playbook-nav-group[open] > summary span { transform: rotate(180deg); }
 .playbook-nav-group__menu { position: absolute; z-index: 40; top: calc(100% + .8rem); left: 0; display: grid; min-width: 15rem; padding: .55rem; border: 1px solid var(--app-border); border-radius: .85rem; background: var(--app-surface); box-shadow: 0 1.25rem 3.5rem var(--app-shadow-color); }

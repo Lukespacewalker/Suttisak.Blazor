@@ -1,8 +1,10 @@
 using Suttisak.Blazor.Playbook.Components.Specimens;
+using Suttisak.Blazor.UserInterface.Components;
 using Suttisak.Blazor.UserInterface.Components.Common;
 using Suttisak.Blazor.UserInterface.Components.Experience;
 using Suttisak.Blazor.UserInterface.Components.Marketing;
 using Suttisak.Blazor.UserInterface.Components.Navigation;
+using Suttisak.Blazor.UserInterface.Components.Pages;
 using Suttisak.Blazor.UserInterface.Components.Timezone;
 
 namespace Suttisak.Blazor.Playbook.ComponentDocs;
@@ -19,8 +21,10 @@ public static class PlaybookSpecimenRegistry
             ["AppTextArea"] = new(typeof(AppTextArea), typeof(AppTextAreaSpecimen)),
             ["AppNumberInput"] = new(typeof(AppNumberInput<int>), typeof(AdvancedInputsSpecimen)),
             ["AppSelect"] = new(typeof(AppSelect<string>), typeof(AppSelectSpecimen)),
+            ["AppSelectItem"] = new(typeof(AppSelectItem<string>), typeof(AppSelectSpecimen)),
             ["AppMultiSelect"] = new(typeof(AppMultiSelect<string>), typeof(AdvancedInputsSpecimen)),
             ["AppRadioGroup"] = new(typeof(AppRadioGroup<string>), typeof(AdvancedInputsSpecimen)),
+            ["AppRadio"] = new(typeof(AppRadio<string>), typeof(AdvancedInputsSpecimen)),
             ["AppCheckbox"] = new(typeof(AppCheckbox), typeof(AppCheckboxSpecimen)),
             ["AppSwitch"] = new(typeof(AppSwitch), typeof(AppSwitchSpecimen)),
             ["AppCalendarPicker"] = new(typeof(AppCalendarPicker), typeof(AdvancedInputsSpecimen)),
@@ -32,6 +36,7 @@ public static class PlaybookSpecimenRegistry
             ["FormActions"] = new(typeof(FormActions), typeof(FormCompositionSpecimen)),
             ["FormValidationSummary"] = new(typeof(FormValidationSummary), typeof(FormCompositionSpecimen)),
             ["AppTabs"] = new(typeof(AppTabs), typeof(AppTabsSpecimen)),
+            ["AppTab"] = new(typeof(AppTab), typeof(AppTabsSpecimen)),
             ["AppBreadcrumb"] = new(typeof(AppBreadcrumb), typeof(AppBreadcrumbSpecimen)),
             ["AppDialog"] = new(typeof(AppDialog<string, string>), typeof(AppDialogSpecimen)),
             ["AppDrawer"] = new(typeof(AppDrawer<string, string>), typeof(AppDrawerSpecimen)),
@@ -78,7 +83,13 @@ public static class PlaybookSpecimenRegistry
             ["Nav"] = new(typeof(Nav), typeof(NavigationSpecimen)),
             ["NavGroup"] = new(typeof(NavGroup), typeof(NavigationSpecimen)),
             ["NavItem"] = new(typeof(NavItem), typeof(NavigationSpecimen)),
-            ["NavSubmenu"] = new(typeof(NavSubmenu), typeof(NavigationSpecimen))
+            ["NavSubmenu"] = new(typeof(NavSubmenu), typeof(NavigationSpecimen)),
+            ["PageHeading"] = new(typeof(PageHeading), typeof(PageCompositionSpecimen)),
+            ["PageActionToolbar"] = new(typeof(PageActionToolbar), typeof(PageCompositionSpecimen)),
+            ["PageBreadcrumbs"] = new(typeof(PageBreadcrumbs), typeof(PageCompositionSpecimen)),
+            ["SectionNavigation"] = new(typeof(SectionNavigation), typeof(PageCompositionSpecimen)),
+            ["MobileNavigationAccount"] = new(typeof(MobileNavigationAccount), typeof(AccountNavigationSpecimen)),
+            ["ProfileMenu"] = new(typeof(ProfileMenu), typeof(AccountNavigationSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>

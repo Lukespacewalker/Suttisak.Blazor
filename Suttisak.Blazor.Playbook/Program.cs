@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Suttisak.Blazor.Playbook;
@@ -9,6 +10,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSingleton<PlaybookState>();
 builder.Services.AddSingleton<DemoRecordStore>();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, PlaybookAuthenticationStateProvider>();
 builder.Services.AddBlazorUserInterface(_ => { });
 
 await builder.Build().RunAsync();

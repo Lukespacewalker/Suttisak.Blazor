@@ -20,35 +20,33 @@ test.describe('UI Playbook shared-component contracts', () => {
   });
 
   test('AppTabs supports keyboard roving focus and panels remain semantically linked', async ({ page }) => {
-    await page.goto('/component-browser');
-    const tabs = page.getByRole('tablist', { name: 'Component browser preview tabs' });
+    await page.goto('/components/app-tabs');
+    const tabs = page.getByRole('tablist', { name: 'Account workspace' }).first();
     const overview = tabs.getByRole('tab', { name: 'Overview' });
-    const api = tabs.getByRole('tab', { name: 'API' });
+    const activity = tabs.getByRole('tab', { name: 'Activity' });
 
     await overview.focus();
     await overview.press('ArrowRight');
 
-    await expect(api).toBeFocused();
-    await expect(api).toHaveAttribute('aria-selected', 'true');
-    const panels = page.locator('[role=tabpanel]');
-    await expect(panels).toHaveCount(3);
-    await expect(panels.filter({ hasText: 'Parameters are explicit Razor properties' })).toBeVisible();
+    await expect(activity).toBeFocused();
+    await expect(activity).toHaveAttribute('aria-selected', 'true');
+    const panelId = await activity.getAttribute('aria-controls');
+    await expect(page.locator(`#${panelId}`)).toContainText('Recent activity and audit events.');
   });
 
-  test('Component Browser indexes the complete Razor catalog and exposes live inputs', async ({ page }) => {
-    await page.goto('/component-browser');
+  test('Component Browser indexes the complete catalog and links to live specimens', async ({ page }) => {
+    await page.goto('/components');
 
-    await expect(page.locator('.component-browser__directory > section a')).toHaveCount(90);
-    await expect(page.locator('#app-text-box input')).toBeVisible();
-    await expect(page.locator('#app-number-input input[type="number"]')).toBeVisible();
-    await expect(page.locator('#app-multi-select select[multiple]')).toBeVisible();
-    await expect(page.locator('#app-calendar-picker input')).toBeVisible();
+    await expect(page.locator('[data-component-name]')).toHaveCount(90);
 
     const search = page.getByRole('searchbox', { name: 'Find a component' });
     await search.fill('AppTextBox');
-    const sidebar = page.locator('.component-browser__sidebar');
-    await expect(sidebar.getByRole('link', { name: 'AppTextBox' })).toBeVisible();
-    await expect(sidebar.getByRole('link', { name: 'AppButton' })).toHaveCount(0);
+    await expect(page.locator('[data-component-name="AppTextBox"]')).toBeVisible();
+    await expect(page.locator('[data-component-name="AppButton"]')).toHaveCount(0);
+
+    await page.locator('[data-component-name="AppTextBox"]').click();
+    await expect(page).toHaveURL(/\/components\/app-text-box$/);
+    await expect(page.getByRole('textbox', { name: 'Full name' }).first()).toBeVisible();
   });
 
   test('A 100k-row AppQuickGrid keeps the browser DOM bounded', async ({ page }) => {

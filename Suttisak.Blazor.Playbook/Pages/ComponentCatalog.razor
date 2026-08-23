@@ -25,10 +25,10 @@
 
             <fieldset class="component-catalog-page__filters">
                 <legend>Coverage</legend>
-                <button type="button" class="@FilterClass(null)" aria-pressed="@(_coverageFilter is null)" @onclick="() => _coverageFilter = null">All</button>
+                <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(_coverageFilter is null)" @onclick="() => _coverageFilter = null">All</button>
                 @foreach (var kind in CoverageKinds)
                 {
-                    <button type="button" class="@FilterClass(kind)" aria-pressed="@(_coverageFilter == kind)" @onclick="() => _coverageFilter = kind">@PlaybookComponentCoverage.LabelFor(kind)</button>
+                    <button type="button" class="@FilterClass(kind)" aria-pressed="@Pressed(_coverageFilter == kind)" @onclick="() => _coverageFilter = kind">@PlaybookComponentCoverage.LabelFor(kind)</button>
                 }
             </fieldset>
         </div>
@@ -108,6 +108,8 @@
     }
 
     private string FilterClass(PlaybookComponentCoverageKind? kind) => _coverageFilter == kind ? "is-active" : string.Empty;
+
+    private static string Pressed(bool value) => value ? "true" : "false";
 
     private static string GroupId(string category) =>
         $"catalog-{new string(category.ToLowerInvariant().Select(character => char.IsLetterOrDigit(character) ? character : '-').ToArray()).Trim('-')}";
