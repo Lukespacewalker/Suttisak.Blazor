@@ -2,6 +2,8 @@
 
 Reusable Blazor UI and identity libraries.
 
+> **Source availability:** This repository is publicly visible for transparency, evaluation, collaboration, and development. It is **not currently offered under an open-source license**. Copyright is retained by the repository owner; see [Copyright and use](#copyright-and-use) below.
+
 ## Identity route adapters
 
 Add the `Suttisak.Blazor.Identity.Generator` project (or package) as an analyzer to
@@ -53,7 +55,7 @@ The Playbook is both a human and machine-facing component workbench:
 - `/components/{slug}` — deep-linkable component detail pages with status, responsive preview, API metadata, states, and relationships.
 - `/foundations` — semantic color, typography, spacing, radius, and motion contracts.
 - `/guidelines` — accessibility, theming, responsive, maturity, and agent workflow rules.
-- `/component-manifest.json` — machine-readable 90-component map for agents and tooling.
+- `/component-manifest.json` — machine-readable component map for agents and tooling.
 
 ## Component verification
 
@@ -63,7 +65,7 @@ The fast component suite uses bUnit:
 dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj
 ```
 
-The Playbook browser suite exercises the compiled WebAssembly application, including axe accessibility checks, component documentation routes, manifest integrity, and the 100,000-row virtual-grid specimen:
+The Playbook browser suite exercises the compiled WebAssembly application, including axe accessibility checks, component documentation routes, manifest integrity, and the virtual-grid specimen:
 
 ```powershell
 Push-Location Suttisak.Blazor.Playbook.E2ETests
@@ -74,3 +76,15 @@ Pop-Location
 ```
 
 Pull requests that touch the UI library or Playbook run the same build, bUnit, Chromium, and accessibility verification in `.github/workflows/playbook-pr.yaml`.
+
+## Contributing and security
+
+Contribution guidance is in [`CONTRIBUTING.md`](CONTRIBUTING.md). Security-sensitive reports must follow [`SECURITY.md`](SECURITY.md) and should never be posted in a public issue or pull request.
+
+## Copyright and use
+
+Copyright © Suttisak Denduangchai. All rights reserved.
+
+No open-source license is currently granted for this repository. Public access to the source code does not grant permission to copy, modify, distribute, sublicense, sell, or otherwise reuse the software outside permissions that arise directly from GitHub's Terms of Service or separate written authorization from the copyright holder.
+
+If an open-source license is adopted in the future, it will be published explicitly in this repository and will apply according to its own terms.
