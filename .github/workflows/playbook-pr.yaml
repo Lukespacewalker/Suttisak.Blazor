@@ -2,28 +2,16 @@ name: playbook-pr
 
 on:
   pull_request:
-    paths:
-      - '.github/workflows/playbook-pr.yaml'
-      - '.github/workflows/secret-scan.yaml'
-      - 'Suttisak.Blazor.UserInterface/**'
-      - 'Suttisak.Blazor.Playbook/**'
-      - 'Suttisak.Blazor.Playbook.E2ETests/**'
-      - 'Suttisak.Blazor.UserInterface.Tests/**'
-      - '*.slnx'
-      - '**/*.props'
-      - '**/*.targets'
-      - 'global.json'
-      - 'NuGet.config'
-      - '**/NuGet.config'
+  workflow_dispatch:
 
-# Pull request code is untrusted once this repository is public. Keep this
-# workflow read-only and never expose publishing credentials here.
+# Pull-request code is untrusted. Keep this workflow read-only and never expose
+# publishing credentials here.
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: playbook-pr-${{ github.event.pull_request.number }}
+  group: playbook-pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -31,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout full history
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
