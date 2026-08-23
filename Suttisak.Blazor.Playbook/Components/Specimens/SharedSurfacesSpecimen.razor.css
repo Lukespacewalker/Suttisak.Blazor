@@ -1,0 +1,6 @@
+.shared-surfaces-specimen { display: grid; min-width: 0; overflow: hidden; border: 1px solid var(--app-border); border-radius: 1rem; background: var(--app-surface); }
+.shared-surfaces-specimen ::deep .hero { min-width: 0; }
+.shared-surfaces-specimen ::deep .hero h1,
+.shared-surfaces-specimen ::deep .hero h2,
+.shared-surfaces-specimen ::deep .hero p { margin-block: .35rem; overflow-wrap: anywhere; }
+.shared-surfaces-specimen ::deep .hero p { max-width: 42rem; color: var(--app-foreground-muted); line-height: 1.6; }

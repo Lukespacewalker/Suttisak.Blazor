@@ -1,0 +1,7 @@
+.preferences-specimen { display: grid; min-width: 0; gap: 1rem; padding: clamp(1rem, 4vw, 2rem); border: 1px solid var(--app-border); border-radius: .2rem 1.15rem; background: linear-gradient(125deg, var(--app-accent-soft), transparent 55%), var(--app-surface); }
+.preferences-specimen > header { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 1rem; }
+.preferences-specimen > header > div { display: grid; gap: .2rem; }
+.preferences-specimen > header span { color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .6rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.preferences-specimen > header strong { font-family: var(--app-font-heading); font-size: 1rem; }
+.preferences-specimen > p { max-width: 42rem; margin: 0; color: var(--app-foreground-muted); font-size: .76rem; line-height: 1.6; }
+@media (max-width: 900px) { .preferences-specimen > header { align-items: flex-start; } }

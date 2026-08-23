@@ -31,7 +31,7 @@
 | `Suttisak.Blazor.UserInterface.Tests` | Fast bUnit contract tests |
 | `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage |
 
-The Playbook maintains a metadata-driven catalog of **90 components**. Every component has a stable detail route. **74 components currently have executable workbenches**; the rest are explicitly marked as production-shaped **Pattern** documentation or honest **Reference** coverage rather than being represented by decorative fake demos.
+The Playbook maintains a metadata-driven catalog of **90 components**. Every component has a stable detail route. **79 components currently have executable workbenches**; the rest are explicitly marked as production-shaped **Pattern** documentation or honest **Reference** coverage rather than being represented by decorative fake demos.
 
 ### Design principles
 
@@ -73,7 +73,7 @@ Packages are currently distributed through GitHub Packages. Configure the GitHub
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="0.26.2" />
+  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="0.26.3" />
   <PackageReference Include="Suttisak.Blazor.Identity" Version="0.9.1" />
 </ItemGroup>
 ```

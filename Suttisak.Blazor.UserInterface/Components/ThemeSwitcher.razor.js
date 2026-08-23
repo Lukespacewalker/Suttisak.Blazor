@@ -65,7 +65,11 @@ export function subscribeTheme(subscriber) {
     const subscriptionId = ++nextSubscriptionId;
     subscribers.set(subscriptionId, subscriber);
     attachListeners();
-    return { subscriptionId, ...applyTheme() };
+    const state = applyTheme();
+    subscriber.invokeMethodAsync("UpdateTheme", state.preference, state.scheme).catch(() => {
+        subscribers.delete(subscriptionId);
+    });
+    return subscriptionId;
 }
 
 export function unsubscribeTheme(subscriptionId) {
