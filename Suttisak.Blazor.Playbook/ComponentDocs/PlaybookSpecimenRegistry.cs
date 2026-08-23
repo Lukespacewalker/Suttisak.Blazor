@@ -1,5 +1,6 @@
 using Suttisak.Blazor.Playbook.Components.Specimens;
 using Suttisak.Blazor.UserInterface.Components.Common;
+using Suttisak.Blazor.UserInterface.Components.Experience;
 using Suttisak.Blazor.UserInterface.Components.Timezone;
 
 namespace Suttisak.Blazor.Playbook.ComponentDocs;
@@ -55,7 +56,11 @@ public static class PlaybookSpecimenRegistry
             ["Toolbar"] = new(typeof(Toolbar), typeof(LayoutDisplaySpecimen)),
             ["CardMenu"] = new(typeof(CardMenu), typeof(LayoutDisplaySpecimen)),
             ["LocalTime"] = new(typeof(LocalTime), typeof(TimeLocalizationSpecimen)),
-            ["InitializeTimeZone"] = new(typeof(InitializeTimeZone), typeof(TimeLocalizationSpecimen))
+            ["InitializeTimeZone"] = new(typeof(InitializeTimeZone), typeof(TimeLocalizationSpecimen)),
+            ["ExperienceCard"] = new(typeof(ExperienceCard), typeof(ExperienceSpecimen)),
+            ["ExperienceDisclosure"] = new(typeof(ExperienceDisclosure), typeof(ExperienceSpecimen)),
+            ["ExperienceDisclosureGroup"] = new(typeof(ExperienceDisclosureGroup), typeof(ExperienceSpecimen)),
+            ["ExperienceHeading"] = new(typeof(ExperienceHeading), typeof(ExperienceSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>
