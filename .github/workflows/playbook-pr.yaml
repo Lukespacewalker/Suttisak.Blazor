@@ -2,28 +2,16 @@ name: playbook-pr
 
 on:
   pull_request:
-    paths:
-      - '.github/workflows/playbook-pr.yaml'
-      - '.github/workflows/secret-scan.yaml'
-      - 'Suttisak.Blazor.UserInterface/**'
-      - 'Suttisak.Blazor.Playbook/**'
-      - 'Suttisak.Blazor.Playbook.E2ETests/**'
-      - 'Suttisak.Blazor.UserInterface.Tests/**'
-      - '*.slnx'
-      - '**/*.props'
-      - '**/*.targets'
-      - 'global.json'
-      - 'NuGet.config'
-      - '**/NuGet.config'
+  workflow_dispatch:
 
-# Pull request code is untrusted once this repository is public. Keep this
-# workflow read-only and never expose publishing credentials here.
+# Pull-request code is untrusted. Keep this workflow read-only and never expose
+# publishing credentials here.
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: playbook-pr-${{ github.event.pull_request.number }}
+  group: playbook-pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -31,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout full history
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -47,6 +35,21 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+
+      - name: Install actionlint
+        env:
+          ACTIONLINT_VERSION: '1.7.12'
+          ACTIONLINT_SHA256: '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8'
+        run: |
+          archive="actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          curl --fail --silent --show-error --location --output "${archive}" \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/${archive}"
+          echo "${ACTIONLINT_SHA256}  ${archive}" | sha256sum --check --strict
+          tar -xzf "${archive}" actionlint
+          sudo install -m 0755 actionlint /usr/local/bin/actionlint
+
+      - name: Lint GitHub Actions workflows
+        run: actionlint -color
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v6

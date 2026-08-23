@@ -1,42 +1,36 @@
-name: ci
+name: release-packages
 
 on:
-  push:
-    branches: [master]
-    paths:
-      - '.github/workflows/ci.yaml'
-      - '.github/workflows/release-packages.yaml'
-      - 'Suttisak.Blazor.Icons/**'
-      - 'Suttisak.Blazor.Identity/**'
-      - 'Suttisak.Blazor.Identity.Core/**'
-      - 'Suttisak.Blazor.Identity.Generator/**'
-      - 'Suttisak.Blazor.UserInterface/**'
-      - 'Suttisak.Blazor.UserInterface.Generator/**'
-      - 'Suttisak.Blazor.UserInterface.Tests/**'
-      - 'Suttisak.Blazor.Playbook/**'
-      - 'Suttisak.Blazor.Playbook.E2ETests/**'
-      - '*.slnx'
-      - '**/*.props'
-      - '**/*.targets'
-      - 'global.json'
-      - 'NuGet.config'
-      - '**/NuGet.config'
+  release:
+    types: [published]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag or commit to package
+        required: true
+        type: string
 
 permissions:
-  contents: read
+  contents: write
+  packages: write
 
 concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  group: release-packages-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
 
 jobs:
-  verify:
+  publish:
     runs-on: ubuntu-latest
+    environment: release
+    env:
+      RELEASE_REF: ${{ github.event.release.tag_name || inputs.tag }}
 
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout release ref
+        uses: actions/checkout@v7
         with:
+          ref: ${{ env.RELEASE_REF }}
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup .NET
@@ -50,20 +44,6 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: Suttisak.Blazor.Playbook.E2ETests/package-lock.json
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v6
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.props', '**/*.targets', 'global.json', '**/NuGet.config') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('Suttisak.Blazor.Playbook.E2ETests/package-lock.json') }}
 
       - name: Restore solution
         run: dotnet restore Suttisak.Blazor.slnx -p:Configuration=Release
@@ -89,7 +69,7 @@ jobs:
           PLAYBOOK_NO_BUILD: 'true'
         run: npm test
 
-      - name: Validate NuGet package production
+      - name: Pack release artifacts
         run: |
           rm -rf packages
           mkdir -p packages
@@ -128,9 +108,45 @@ jobs:
             -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
             -p:ContinuousIntegrationBuild=true
 
-          package_count="$(find packages -maxdepth 1 -type f -name '*.nupkg' ! -name '*.snupkg' | wc -l)"
-          test "${package_count}" -eq 5 || {
-            echo "Expected five ordinary NuGet packages, found ${package_count}" >&2
-            find packages -maxdepth 1 -type f -print >&2
-            exit 1
+      - name: Publish new packages to GitHub Packages
+        env:
+          NUGET_TOKEN: ${{ github.token }}
+        run: |
+          push_package() {
+            local package_id="$1"
+            local package_path
+            local package_filename
+            local package_suffix
+            local matches=()
+
+            for package_path in packages/"${package_id}".*.nupkg; do
+              [[ -f "${package_path}" && "${package_path}" != *.snupkg ]] || continue
+              package_filename="$(basename -- "${package_path}")"
+              package_suffix="${package_filename#"${package_id}".}"
+              [[ "${package_suffix}" =~ ^[0-9][[:alnum:].-]*\.nupkg$ ]] || continue
+              matches+=("${package_path}")
+            done
+
+            if [[ "${#matches[@]}" -ne 1 ]]; then
+              echo "Expected exactly one ordinary NuGet package for ${package_id}, found ${#matches[@]}" >&2
+              printf '%s\n' "${matches[@]}" >&2
+              exit 1
+            fi
+
+            dotnet nuget push "${matches[0]}" \
+              --api-key "${NUGET_TOKEN}" \
+              --source https://nuget.pkg.github.com/LukeSpacewalker/index.json \
+              --skip-duplicate
           }
+
+          push_package Suttisak.Blazor.Icons
+          push_package Suttisak.Blazor.UserInterface
+          push_package Suttisak.Blazor.Identity.Core
+          push_package Suttisak.Blazor.Identity.Generator
+          push_package Suttisak.Blazor.Identity
+
+      - name: Attach packages to the GitHub Release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${RELEASE_REF}" packages/*.nupkg packages/*.snupkg --clobber

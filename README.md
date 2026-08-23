@@ -1,32 +1,126 @@
+<div align="center">
+
 # Suttisak.Blazor
 
-Reusable Blazor UI and identity libraries.
+**A source-available Blazor design system, executable component workbench, and reusable identity toolkit for .NET 10.**
 
-> **Source availability:** This repository is publicly visible for transparency, evaluation, collaboration, and development. It is **not currently offered under an open-source license**. Copyright is retained by the repository owner; see [Copyright and use](#copyright-and-use) below.
+[![CI](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/workflows/ci.yaml)
+[![Secret scan](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/workflows/secret-scan.yaml/badge.svg?branch=master)](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/workflows/secret-scan.yaml)
+[![Latest release](https://img.shields.io/github/v/release/Lukespacewalker/Suttisak.Blazor?display_name=tag&sort=semver)](https://github.com/Lukespacewalker/Suttisak.Blazor/releases)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
+[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-025E8C?logo=dependabot)](.github/dependabot.yml)
+[![Source available](https://img.shields.io/badge/license-source--available-F59E0B)](#copyright-and-use)
+
+</div>
+
+> [!IMPORTANT]
+> **Source availability:** This repository is publicly visible for transparency, evaluation, collaboration, and development. It is **not currently offered under an open-source license**. Copyright is retained by the repository owner; see [Copyright and use](#copyright-and-use).
+
+## What is in the repository
+
+| Area | Purpose |
+|---|---|
+| `Suttisak.Blazor.UserInterface` | Shared application components, form primitives, data display, overlays, navigation, layouts, marketing, and reader-facing experiences. |
+| `Suttisak.Blazor.Icons` | Dependency-free SVG icon components used by the design system. |
+| `Suttisak.Blazor.Identity.Core` | Shared identity UI primitives and navigation contracts. |
+| `Suttisak.Blazor.Identity` | Reusable ASP.NET Core Identity pages, regions, and route adapters. |
+| `*.Generator` | Roslyn source generators that remove repetitive host wiring. |
+| `Suttisak.Blazor.Playbook` | Human-readable design-system documentation and executable component specimens. |
+| `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage. |
+
+The Playbook maintains a metadata-driven catalog of **90 components**. Every component has a stable detail route, while executable specimens are being added progressively to test real browser behavior rather than static screenshots.
+
+## Quick start
+
+### Run the Playbook
+
+Prerequisites:
+
+- .NET SDK 10
+- Node.js 24 only when running the browser test suite
+
+```bash
+git clone https://github.com/Lukespacewalker/Suttisak.Blazor.git
+cd Suttisak.Blazor
+
+dotnet restore Suttisak.Blazor.slnx
+dotnet run --project Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj
+```
+
+The Playbook exposes:
+
+- `/catalog` for searchable component discovery
+- `/components` for the Component Browser
+- `/components/{slug}` for deep-linkable component documentation
+- `/foundations` for semantic design tokens
+- `/guidelines` for accessibility, theming, responsive behavior, and maturity rules
+- `/component-manifest.json` for agents and tooling
+
+### Consume a package
+
+Packages are currently distributed through GitHub Packages. Configure the GitHub NuGet feed for your account, then reference the package needed by the host application.
+
+```xml
+<ItemGroup>
+  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="0.26.2" />
+  <PackageReference Include="Suttisak.Blazor.Identity" Version="0.9.1" />
+</ItemGroup>
+```
+
+Feed:
+
+```text
+https://nuget.pkg.github.com/LukeSpacewalker/index.json
+```
+
+### Compose shared UI
+
+```razor
+@using Suttisak.Blazor.UserInterface.Components.Common
+
+<AppStack Gap="1rem">
+    <AppButton Variant="AppButtonVariant.Primary"
+               IconStartName="Add"
+               OnClick="CreateAsync">
+        Create record
+    </AppButton>
+
+    <FeedbackBanner Intent="FeedbackIntent.Success">
+        The record was created.
+    </FeedbackBanner>
+</AppStack>
+```
+
+## Architecture
+
+```mermaid
+flowchart TD
+    App[Blazor host application] --> UI[Suttisak.Blazor.UserInterface]
+    App --> Identity[Suttisak.Blazor.Identity]
+    UI --> Icons[Suttisak.Blazor.Icons]
+    UI --> UIGenerator[UserInterface Generator]
+    Identity --> IdentityCore[Suttisak.Blazor.Identity.Core]
+    Identity --> IdentityGenerator[Identity Generator]
+    IdentityCore --> UI
+    Playbook[Suttisak.Blazor.Playbook] --> UI
+    BrowserTests[Playwright + axe] --> Playbook
+```
+
+Applications retain ownership of product copy, routing decisions, branding, and domain behavior. The shared libraries own reusable presentation contracts, accessibility behavior, and integration seams.
 
 ## Identity route adapters
 
-Add the `Suttisak.Blazor.Identity.Generator` project (or package) as an analyzer to
-your Blazor host, then request the generated non-generic route components once:
+Add `Suttisak.Blazor.Identity.Generator` as an analyzer to the host and request generated non-generic route components once:
 
 ```csharp
-[assembly: GenerateIdentityRouteAdapters(typeof(ApplicationUser), Namespace = "MyApp.Identity")]
+[assembly: GenerateIdentityRouteAdapters(
+    typeof(ApplicationUser),
+    Namespace = "MyApp.Identity")]
 ```
 
-The generator supplies routes for the reusable account and manage screens. Your
-application keeps ownership of `/Account/Register`, so it can use its own input
-model and derive from `RegistrationPage<TUser, TInput>` when desired.
+The generator supplies reusable account and manage routes. The host keeps ownership of `/Account/Register`, so it can use its own input model and derive from `RegistrationPage<TUser, TInput>` when needed.
 
-`/Account/Manage` is backed by the generic `Manage<TUser>` dashboard. Hosts that
-still own a handwritten route page should inherit from the closed type:
-
-```razor
-@inherits Manage<ApplicationUser>
-```
-
-Wrap the application router with `IdentityUiProvider` to add optional
-application-owned branding without coupling the Identity package to product
-assets:
+Wrap the application router with `IdentityUiProvider` to add application-owned branding without coupling the package to product assets:
 
 ```razor
 <IdentityUiProvider>
@@ -40,46 +134,54 @@ assets:
 </IdentityUiProvider>
 ```
 
-## User interface components
+## Quality gates
 
-- Library overview: [`Suttisak.Blazor.UserInterface/README.md`](Suttisak.Blazor.UserInterface/README.md)
-- Repository guidance for agents: [`Suttisak.Blazor.UserInterface/AGENTS.md`](Suttisak.Blazor.UserInterface/AGENTS.md)
-- Marketing component reference and examples: [`Suttisak.Blazor.UserInterface/Components/Marketing/README.md`](Suttisak.Blazor.UserInterface/Components/Marketing/README.md)
-- Reader/result experience components: [`Suttisak.Blazor.UserInterface/Components/Experience/README.md`](Suttisak.Blazor.UserInterface/Components/Experience/README.md)
-- Run the design-system Playbook: `dotnet run --project Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj`
+| Gate | Scope |
+|---|---|
+| Solution build | All projects on .NET 10 |
+| bUnit | Fast shared-component behavior |
+| Playwright | Compiled WebAssembly application in Chromium |
+| axe | Serious and critical WCAG regressions |
+| Gitleaks | Full reachable Git history |
+| NuGet pack | Package production validated before release |
+| Dependabot | NuGet, npm, and GitHub Actions updates |
 
-The Playbook is both a human and machine-facing component workbench:
+Run the fast component suite:
 
-- `/catalog` — searchable metadata-driven component documentation index.
-- `/components` — live Component Browser and integration specimens.
-- `/components/{slug}` — deep-linkable component detail pages with status, responsive preview, API metadata, states, and relationships.
-- `/foundations` — semantic color, typography, spacing, radius, and motion contracts.
-- `/guidelines` — accessibility, theming, responsive, maturity, and agent workflow rules.
-- `/component-manifest.json` — machine-readable component map for agents and tooling.
-
-## Component verification
-
-The fast component suite uses bUnit:
-
-```powershell
+```bash
 dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj
 ```
 
-The Playbook browser suite exercises the compiled WebAssembly application, including axe accessibility checks, component documentation routes, manifest integrity, and the virtual-grid specimen:
+Run the browser suite:
 
-```powershell
-Push-Location Suttisak.Blazor.Playbook.E2ETests
-npm install
+```bash
+cd Suttisak.Blazor.Playbook.E2ETests
+npm ci
 npm run install:browsers
 npm test
-Pop-Location
 ```
 
-Pull requests that touch the UI library or Playbook run the same build, bUnit, Chromium, and accessibility verification in `.github/workflows/playbook-pr.yaml`.
+## Release process
+
+- Pull requests run read-only build, unit, browser, accessibility, and full-history secret checks.
+- Pushes to `master` run CI and validate that all distributable packages can be packed.
+- Release Drafter maintains the next GitHub Release notes from merged pull requests.
+- Publishing a GitHub Release triggers a fresh verification run, publishes new package versions to GitHub Packages, and attaches `.nupkg` and `.snupkg` files to the release.
+- The intended `master` protection policy is versioned in [`.github/branch-protection.json`](.github/branch-protection.json).
+
+## Documentation
+
+- [User interface overview](Suttisak.Blazor.UserInterface/README.md)
+- [Agent guidance](Suttisak.Blazor.UserInterface/AGENTS.md)
+- [Marketing components](Suttisak.Blazor.UserInterface/Components/Marketing/README.md)
+- [Reader/result experience components](Suttisak.Blazor.UserInterface/Components/Experience/README.md)
+- [Contribution guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Branch protection policy](.github/BRANCH_PROTECTION.md)
 
 ## Contributing and security
 
-Contribution guidance is in [`CONTRIBUTING.md`](CONTRIBUTING.md). Security-sensitive reports must follow [`SECURITY.md`](SECURITY.md) and should never be posted in a public issue or pull request.
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a pull request. Security-sensitive reports must follow [`SECURITY.md`](SECURITY.md) and must never be posted in a public issue or pull request.
 
 ## Copyright and use
 
