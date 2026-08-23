@@ -14,7 +14,7 @@ test('ExperienceHeading exposes reader-facing semantics and a meaningful visual'
   await expect(page.getByRole('complementary', { name: 'Experience controls' })).toBeVisible();
   const headingRegion = page.getByTestId('experience-heading');
   await expect(headingRegion).toHaveAttribute('aria-labelledby', 'experience-demo-heading');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Your annual check');
+  await expect(headingRegion.getByRole('heading', { level: 1 })).toContainText('Your annual check');
   await expect(page.getByTestId('experience-visual')).toHaveAttribute('role', 'img');
   await expect(page.getByTestId('experience-visual')).toHaveAttribute('aria-label', 'Overall result score 82 out of 100');
 });
