@@ -20,6 +20,11 @@ on:
       - 'NuGet.config'
       - '**/NuGet.config'
 
+# This workflow only runs after trusted code reaches master. The publishing
+# credential remains isolated from pull-request workflows.
+permissions:
+  contents: read
+
 concurrency:
   group: package-and-publish-${{ github.ref }}
   cancel-in-progress: true
@@ -30,6 +35,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -114,7 +121,10 @@ jobs:
           -p:ContinuousIntegrationBuild=true
 
       - name: Publish NuGet packages
+        env:
+          PUSH_NUGET: ${{ secrets.PUSH_NUGET }}
         run: |
+          test -n "${PUSH_NUGET}" || { echo "PUSH_NUGET is not configured" >&2; exit 1; }
           push_package() {
             local package_id="$1"
             local package_path
@@ -137,7 +147,7 @@ jobs:
               exit 1
             fi
             dotnet nuget push "${matches[0]}" \
-              --api-key "${{ secrets.PUSH_NUGET }}" \
+              --api-key "${PUSH_NUGET}" \
               --source https://nuget.pkg.github.com/LukeSpacewalker/index.json \
               --skip-duplicate
           }
