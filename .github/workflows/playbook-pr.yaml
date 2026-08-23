@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
 
       - name: Scan full Git history with Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
