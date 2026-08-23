@@ -15,6 +15,11 @@ on:
       - 'NuGet.config'
       - '**/NuGet.config'
 
+# Pull request code is untrusted once this repository is public. Keep this
+# workflow read-only and never expose publishing credentials here.
+permissions:
+  contents: read
+
 concurrency:
   group: playbook-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: true
@@ -24,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
