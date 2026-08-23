@@ -1,3 +1,4 @@
+# Temporary verification rerun after release-tag rewrite attempt.
 name: verify-noreply-history
 
 on:
