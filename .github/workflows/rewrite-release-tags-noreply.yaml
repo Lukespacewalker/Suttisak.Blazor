@@ -1,4 +1,4 @@
-# One-time final verification. This workflow is removed after the check passes.
+# One-time final verification execution. This workflow is removed after the check passes.
 name: final-noreply-history-verification
 
 on:
