@@ -2,29 +2,21 @@
 name: final-noreply-history-verification
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/rewrite-release-tags-noreply.yaml'
   pull_request:
     paths:
       - '.github/workflows/rewrite-release-tags-noreply.yaml'
 
 permissions:
   contents: read
-
-concurrency:
-  group: final-noreply-history-verification-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: false
+  issues: write
+  pull-requests: write
 
 jobs:
   verify-history:
-    if: github.repository == 'Lukespacewalker/Suttisak.Blazor'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout every reachable branch and tag
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -108,18 +100,44 @@ jobs:
                   tag_object_count += 1
                   object_sha = next_object
 
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env_file:
+              env_file.write(f"HISTORY_COMMIT_COUNT={commit_count}\n")
+              env_file.write(f"HISTORY_TAG_OBJECT_COUNT={tag_object_count}\n")
+              env_file.write(f"TARGET_IDENTITY_RECORDS={target_records}\n")
+              env_file.write(f"INVALID_IDENTITY_RECORDS={invalid_records}\n")
+
+          status = "PASS" if invalid_records == 0 else "FAIL"
+          with open("identity-verification.md", "w", encoding="utf-8") as report:
+              report.write("## Final Git identity history verification\n\n")
+              report.write(f"**Result: {status}**\n\n")
+              report.write(f"- Commits inspected: {commit_count}\n")
+              report.write(f"- Annotated tag objects inspected: {tag_object_count}\n")
+              report.write(f"- Owner identity records inspected: {target_records}\n")
+              report.write(f"- Owner identity records using another email: {invalid_records}\n")
+
           print(f"Commits inspected: {commit_count}")
           print(f"Annotated tag objects inspected: {tag_object_count}")
           print(f"Target identity records inspected: {target_records}")
           print(f"Target identity records not using configured noreply: {invalid_records}")
-
-          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
-              summary.write("## Final Git identity history verification\n\n")
-              summary.write(f"- Commits inspected: {commit_count}\n")
-              summary.write(f"- Annotated tag objects inspected: {tag_object_count}\n")
-              summary.write(f"- Owner identity records inspected: {target_records}\n")
-              summary.write(f"- Owner identity records using another email: {invalid_records}\n")
-
-          if invalid_records:
-              raise SystemExit("One or more owner identity records still use another email")
           PY
+
+      - name: Post the result on the verification pull request
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          if [[ -f identity-verification.md ]]; then
+            gh pr comment "${PR_NUMBER}" --repo "${GITHUB_REPOSITORY}" --body-file identity-verification.md
+          else
+            gh pr comment "${PR_NUMBER}" --repo "${GITHUB_REPOSITORY}" --body '## Final Git identity history verification\n\n**Result: SCAN ERROR**'
+          fi
+
+      - name: Enforce the configured noreply identity
+        shell: bash
+        run: |
+          if [[ "${INVALID_IDENTITY_RECORDS:-scan-error}" != "0" ]]; then
+            echo "One or more owner identity records still use another email, or the scan did not complete." >&2
+            exit 1
+          fi
