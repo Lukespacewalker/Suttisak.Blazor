@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <Authors>Suttisak Denduangchai</Authors>
+    <Copyright>Copyright © Suttisak Denduangchai. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
