@@ -1,4 +1,5 @@
-name: rewrite-release-tags-noreply
+# One-time final verification. This workflow is removed after the check passes.
+name: final-noreply-history-verification
 
 on:
   push:
@@ -6,101 +7,119 @@ on:
       - master
     paths:
       - '.github/workflows/rewrite-release-tags-noreply.yaml'
+  pull_request:
+    paths:
+      - '.github/workflows/rewrite-release-tags-noreply.yaml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: rewrite-release-tags-noreply
+  group: final-noreply-history-verification-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: false
 
 jobs:
-  rewrite-tags:
+  verify-history:
     if: github.repository == 'Lukespacewalker/Suttisak.Blazor'
     runs-on: ubuntu-latest
     steps:
-      - name: Install git-filter-repo
-        run: pipx install git-filter-repo
+      - name: Checkout every reachable branch and tag
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Rewrite and verify release tags
-        env:
-          GH_TOKEN: ${{ github.token }}
-          MARKER_BRANCH: chore/rewrite-release-tags-noreply
+      - name: Scan every reachable commit and annotated tag identity
+        shell: bash
         run: |
           set -euo pipefail
-
-          repository_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          old_email_sha256="87eef6cfee79ae9bddd80844806138b24c66ec5ad9d674633ccfe6e611cdbcc7"
-
-          count_old_identity_hashes() {
-            python - "${old_email_sha256}" <<'PY'
-          import hashlib
+          python - <<'PY'
+          import os
+          import re
           import subprocess
-          import sys
 
-          expected = sys.argv[1]
-          values = subprocess.check_output(
-              ["git", "log", "--all", "--format=%ae%n%ce"],
-              text=True,
-          ).splitlines()
-          values += subprocess.check_output(
-              ["git", "for-each-ref", "--format=%(taggeremail)", "refs/tags"],
-              text=True,
-          ).splitlines()
+          allowed_email = "17828352+Lukespacewalker@users.noreply.github.com"
+          target_names = {"suttisak denduangchai", "lukespacewalker"}
+
+          def command(*args: str) -> str:
+              return subprocess.check_output(["git", *args], text=True)
 
           def normalize(value: str) -> str:
-              return value.strip().removeprefix("<").removesuffix(">").strip().lower()
+              return value.strip().lower()
 
-          print(sum(
-              hashlib.sha256(normalize(value).encode("utf-8")).hexdigest() == expected
-              for value in values
-              if normalize(value)
-          ))
+          target_records = 0
+          invalid_records = 0
+          commit_count = 0
+          tag_object_count = 0
+
+          def inspect_identity(name: str, email: str) -> None:
+              global target_records, invalid_records
+              if normalize(name) not in target_names:
+                  return
+              target_records += 1
+              if normalize(email) != normalize(allowed_email):
+                  invalid_records += 1
+
+          commit_shas = [
+              value for value in command("rev-list", "--all").splitlines() if value
+          ]
+          for sha in commit_shas:
+              fields = command(
+                  "show",
+                  "-s",
+                  "--format=%an%x00%ae%x00%cn%x00%ce",
+                  sha,
+              ).rstrip("\n").split("\x00")
+              if len(fields) != 4:
+                  raise RuntimeError(f"Unexpected identity record for commit {sha}")
+              inspect_identity(fields[0], fields[1])
+              inspect_identity(fields[2], fields[3])
+              commit_count += 1
+
+          tag_refs = [
+              value
+              for value in command(
+                  "for-each-ref", "--format=%(refname)", "refs/tags"
+              ).splitlines()
+              if value
+          ]
+          tagger_pattern = re.compile(
+              r"^tagger (?P<name>.*) <(?P<email>[^>]*)> [0-9]+ [+-][0-9]{4}$"
+          )
+          for ref in tag_refs:
+              object_sha = command("rev-parse", ref).strip()
+              visited: set[str] = set()
+              while command("cat-file", "-t", object_sha).strip() == "tag":
+                  if object_sha in visited:
+                      raise RuntimeError(f"Tag cycle detected at {ref}")
+                  visited.add(object_sha)
+                  payload = command("cat-file", "tag", object_sha)
+                  next_object = None
+                  for line in payload.splitlines():
+                      if line.startswith("object "):
+                          next_object = line.removeprefix("object ").strip()
+                      elif line.startswith("tagger "):
+                          match = tagger_pattern.match(line)
+                          if not match:
+                              raise RuntimeError(f"Unexpected tagger record on {ref}")
+                          inspect_identity(match.group("name"), match.group("email"))
+                  if not next_object:
+                      raise RuntimeError(f"Annotated tag {ref} has no target object")
+                  tag_object_count += 1
+                  object_sha = next_object
+
+          print(f"Commits inspected: {commit_count}")
+          print(f"Annotated tag objects inspected: {tag_object_count}")
+          print(f"Target identity records inspected: {target_records}")
+          print(f"Target identity records not using configured noreply: {invalid_records}")
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("## Final Git identity history verification\n\n")
+              summary.write(f"- Commits inspected: {commit_count}\n")
+              summary.write(f"- Annotated tag objects inspected: {tag_object_count}\n")
+              summary.write(f"- Owner identity records inspected: {target_records}\n")
+              summary.write(f"- Owner identity records using another email: {invalid_records}\n")
+
+          if invalid_records:
+              raise SystemExit("One or more owner identity records still use another email")
           PY
-          }
-
-          git clone --mirror "${repository_url}" repository.git
-          cd repository.git
-
-          before_count="$(count_old_identity_hashes)"
-          echo "Old identity hash matches before tag rewrite: ${before_count}"
-
-          git filter-repo --force --email-callback '
-          return b"17828352+Lukespacewalker@users.noreply.github.com" if __import__("hashlib").sha256(email.lower()).hexdigest() == "87eef6cfee79ae9bddd80844806138b24c66ec5ad9d674633ccfe6e611cdbcc7" else email
-          '
-
-          local_remaining="$(count_old_identity_hashes)"
-          if [[ "${local_remaining}" != "0" ]]; then
-            echo "Local rewrite verification failed: ${local_remaining} old identity hash match(es) remain." >&2
-            exit 1
-          fi
-
-          mapfile -t tag_refs < <(git for-each-ref --format='%(refname)' refs/tags)
-          echo "Force-updating ${#tag_refs[@]} tag ref(s)."
-          for tag_ref in "${tag_refs[@]}"; do
-            git push --force "${repository_url}" "+${tag_ref}:${tag_ref}"
-          done
-
-          cd ..
-          git clone --mirror "${repository_url}" verification.git
-          cd verification.git
-          remote_remaining="$(count_old_identity_hashes)"
-          if [[ "${remote_remaining}" != "0" ]]; then
-            echo "Remote verification failed: ${remote_remaining} old identity hash match(es) remain." >&2
-            exit 1
-          fi
-          cd ..
-
-          git clone --branch "${MARKER_BRANCH}" --single-branch "${repository_url}" marker
-          cd marker
-          cat > rewrite-tags-result.txt <<EOF
-          Release tag identity rewrite completed.
-          Old identity hash matches before rewrite: ${before_count}
-          Old identity hash matches after fresh remote clone: ${remote_remaining}
-          Tags force-updated: ${#tag_refs[@]}
-          EOF
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add rewrite-tags-result.txt
-          git commit -m 'Record successful release tag history rewrite'
-          git push "${repository_url}" "HEAD:${MARKER_BRANCH}"
