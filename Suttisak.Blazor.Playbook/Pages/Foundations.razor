@@ -1,94 +1,143 @@
 @page "/foundations"
 @page "/tokens"
+@inject HttpClient Http
 
-<PageTitle>Foundations · Suttisak.Blazor UI Playbook</PageTitle>
+<PageTitle>Design tokens · Suttisak.Blazor UI Playbook</PageTitle>
 
 <PlaybookShell>
     <main class="foundations-page">
         <header class="foundations-page__hero">
-            <span class="playbook-kicker">Design-system foundations</span>
-            <h1>Tokens before decoration.</h1>
-            <p>These are the public contracts components should consume. Product themes may change the values, but shared components should keep using the same semantic roles.</p>
+            <div>
+                <span class="playbook-kicker">Machine-readable foundations</span>
+                <h1>Tokens before decoration.</h1>
+                <p>The packaged manifest and the public CSS contract describe the same semantic roles. Product themes may replace values, but shared components keep consuming stable names.</p>
+                <div class="foundations-page__hero-actions">
+                    <a href="_content/Suttisak.Blazor.UserInterface/design-tokens.json">Open JSON manifest ↗</a>
+                    <a href="components">See components consume the contract →</a>
+                </div>
+            </div>
+
+            @if (_manifest is not null)
+            {
+                <aside class="foundations-page__summary" aria-label="Design token summary">
+                    <article><strong>@_manifest.TokenCount</strong><span>public tokens</span></article>
+                    <article><strong>@_manifest.Categories.Count</strong><span>semantic groups</span></article>
+                    <article><strong>1</strong><span>packaged contract</span></article>
+                </aside>
+            }
         </header>
 
-        <section class="foundations-page__section" aria-labelledby="color-title">
-            <header><span>01 / Color</span><h2 id="color-title">Semantic color roles</h2><p>Never derive a component palette from one product hue. Use semantic roles so light, dark, and application themes remain independent.</p></header>
-            <div class="foundations-page__swatches">
-                @foreach (var token in ColorTokens)
+        @if (_loadError is not null)
+        {
+            <section class="foundations-page__state" role="alert">
+                <strong>The design-token manifest could not be loaded.</strong>
+                <p>@_loadError</p>
+                <button type="button" @onclick="LoadManifestAsync">Retry</button>
+            </section>
+        }
+        else if (_manifest is null)
+        {
+            <section class="foundations-page__state" aria-live="polite">
+                <strong>Loading the packaged token contract…</strong>
+            </section>
+        }
+        else
+        {
+            <nav class="foundations-page__category-nav" aria-label="Design token categories">
+                @foreach (var category in _manifest.Categories)
                 {
-                    <article><div style="background:var(@token.Name)"></div><strong>@token.Label</strong><code>@token.Name</code></article>
+                    <a href="@($"tokens#{CategoryId(category)}")"><span>@category.Label</span><small>@category.Tokens.Count</small></a>
                 }
-            </div>
-        </section>
+            </nav>
 
-        <section class="foundations-page__section" aria-labelledby="type-title">
-            <header><span>02 / Typography</span><h2 id="type-title">Type roles</h2><p>Headings and body copy use distinct font contracts. Consumers can supply language-appropriate fallbacks without changing component markup.</p></header>
-            <div class="foundations-page__type-grid">
-                <article class="foundations-page__type-heading"><span>Heading</span><p>Build once. Speak every product.</p><code>--app-font-heading</code></article>
-                <article class="foundations-page__type-body"><span>Body</span><p>Readable application copy stays calm across dense forms, dashboards, reports, and long guidance content.</p><code>--app-font-body</code></article>
-                <article class="foundations-page__type-mono"><span>Monospace</span><p>AppButton Variant="Primary"</p><code>--app-font-mono</code></article>
-            </div>
-        </section>
+            @foreach (var category in _manifest.Categories)
+            {
+                <section id="@CategoryId(category)" class="foundations-page__section" aria-labelledby="@($"{CategoryId(category)}-title")">
+                    <header>
+                        <span>@category.Id</span>
+                        <div>
+                            <h2 id="@($"{CategoryId(category)}-title")">@category.Label</h2>
+                            <p>@category.Description</p>
+                        </div>
+                        <strong>@category.Tokens.Count</strong>
+                    </header>
 
-        <section class="foundations-page__section" aria-labelledby="spacing-title">
-            <header><span>03 / Geometry</span><h2 id="spacing-title">Spacing and radius</h2><p>Use the primitive scale rather than introducing local magic numbers when a shared token already expresses the intent.</p></header>
-            <div class="foundations-page__geometry">
-                <div class="foundations-page__spacing-list">
-                    @foreach (var token in SpacingTokens)
-                    {
-                        <article><code>@token.Name</code><div style="width:var(@token.Name)"></div><span>@token.Value</span></article>
-                    }
+                    <div class="foundations-page__token-grid">
+                        @foreach (var token in category.Tokens)
+                        {
+                            <article class="foundations-page__token" data-design-token="@token.Name" data-token-kind="@token.Kind">
+                                <div class="foundations-page__preview foundations-page__preview--@token.Kind" style="@PreviewStyle(token)" aria-hidden="true">
+                                    <span>@PreviewText(token.Kind)</span>
+                                </div>
+                                <div class="foundations-page__token-copy">
+                                    <strong>@token.Label</strong>
+                                    <code>@token.Name</code>
+                                    <small>@token.DefaultValue</small>
+                                    <p>@token.Description</p>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                </section>
+            }
+
+            <section class="foundations-page__section foundations-page__guardrails" aria-labelledby="guardrails-title">
+                <header>
+                    <span>rules</span>
+                    <div>
+                        <h2 id="guardrails-title">Foundation guardrails</h2>
+                        <p>The manifest is a public contract, not a palette generator. Applications own branded values; components own semantic consumption.</p>
+                    </div>
+                    <strong>4</strong>
+                </header>
+                <div>
+                    <article><strong>Semantic first</strong><p>Choose the role that describes intent, not the literal color currently visible.</p></article>
+                    <article><strong>Theme-safe</strong><p>Override semantic roles with explicit light and dark values and verify readable contrast.</p></article>
+                    <article><strong>Focus survives</strong><p>Keyboard focus remains visible in product themes, forced colors, and reduced-motion contexts.</p></article>
+                    <article><strong>No private aliases</strong><p>A shared component must not introduce a product-specific color or a local magic-number token.</p></article>
                 </div>
-                <div class="foundations-page__radius-list">
-                    @foreach (var token in RadiusTokens)
-                    {
-                        <article style="border-radius:var(@token.Name)"><code>@token.Name</code><span>@token.Value</span></article>
-                    }
-                </div>
-            </div>
-        </section>
-
-        <section class="foundations-page__section" aria-labelledby="motion-title">
-            <header><span>04 / Motion</span><h2 id="motion-title">Motion is optional context</h2><p>Transitions may clarify state changes, but meaning must survive when the operating system requests reduced motion.</p></header>
-            <div class="foundations-page__motion-grid">
-                <article><strong>Fast</strong><code>--app-duration-fast · 120ms</code><p>Micro feedback such as hover and pressed transitions.</p></article>
-                <article><strong>Normal</strong><code>--app-duration-normal · 220ms</code><p>Typical component state changes and small layout transitions.</p></article>
-                <article><strong>Slow</strong><code>--app-duration-slow · 420ms</code><p>Use sparingly for larger contextual movement.</p></article>
-                <article><strong>Reduced motion</strong><code>prefers-reduced-motion</code><p>The application baseline collapses animations and restores automatic scrolling.</p></article>
-            </div>
-        </section>
-
-        <section class="foundations-page__section" aria-labelledby="rules-title">
-            <header><span>05 / Rules</span><h2 id="rules-title">Foundation guardrails</h2></header>
-            <div class="foundations-page__rules">
-                <article><strong>Semantic first</strong><p>Choose the role that describes intent, not the literal color currently visible.</p></article>
-                <article><strong>Theme-safe</strong><p>Check every change in light, dark, and at least one alternate application theme.</p></article>
-                <article><strong>Focus is a token</strong><p>Interactive affordances must preserve a visible focus contract in forced colors and normal themes.</p></article>
-                <article><strong>Responsive by container</strong><p>Components should tolerate constrained parents rather than assuming a desktop page width.</p></article>
-            </div>
-        </section>
+            </section>
+        }
     </main>
 </PlaybookShell>
 
 @code {
-    private static readonly (string Name, string Label)[] ColorTokens =
-    [
-        ("--app-brand", "Brand"), ("--app-accent", "Accent"), ("--app-background", "Background"),
-        ("--app-surface", "Surface"), ("--app-surface-muted", "Muted surface"), ("--app-foreground", "Foreground"),
-        ("--app-foreground-muted", "Muted text"), ("--app-border", "Border"), ("--app-success", "Success"),
-        ("--app-warning", "Warning"), ("--app-danger", "Danger"), ("--app-accent-soft", "Accent soft")
-    ];
+    private const string ManifestPath = "_content/Suttisak.Blazor.UserInterface/design-tokens.json";
 
-    private static readonly (string Name, string Value)[] SpacingTokens =
-    [
-        ("--app-space-1", ".25rem"), ("--app-space-2", ".5rem"), ("--app-space-3", ".75rem"),
-        ("--app-space-4", "1rem"), ("--app-space-6", "1.5rem"), ("--app-space-8", "2rem"),
-        ("--app-space-12", "3rem"), ("--app-space-16", "4rem"), ("--app-space-24", "6rem")
-    ];
+    private PlaybookDesignTokenManifest? _manifest;
+    private string? _loadError;
 
-    private static readonly (string Name, string Value)[] RadiusTokens =
-    [
-        ("--app-radius-sm", ".5rem"), ("--app-radius-md", ".75rem"), ("--app-radius-lg", "1rem"),
-        ("--app-radius-xl", "1.5rem"), ("--app-radius-round", "999px")
-    ];
+    protected override Task OnInitializedAsync() => LoadManifestAsync();
+
+    private async Task LoadManifestAsync()
+    {
+        _manifest = null;
+        _loadError = null;
+
+        try
+        {
+            _manifest = await Http.GetFromJsonAsync<PlaybookDesignTokenManifest>(ManifestPath);
+            if (_manifest is null)
+            {
+                _loadError = "The manifest response was empty.";
+            }
+        }
+        catch (Exception exception)
+        {
+            _loadError = exception.Message;
+        }
+    }
+
+    private static string CategoryId(PlaybookDesignTokenCategory category) => $"tokens-{category.Id}";
+
+    private static string PreviewStyle(PlaybookDesignToken token) => $"--token-value:var({token.Name});";
+
+    private static string PreviewText(string kind) => kind switch
+    {
+        "font" => "Aa กข",
+        "type" => "Aa",
+        "duration" => "→",
+        "layout" => "↔",
+        _ => string.Empty
+    };
 }
