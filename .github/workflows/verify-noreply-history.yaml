@@ -1,4 +1,4 @@
-# Temporary verification rerun after release-tag rewrite attempt.
+# Final fresh verification after rewritten release-tag refs settled.
 name: verify-noreply-history
 
 on:
