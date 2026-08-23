@@ -1,0 +1,23 @@
+name: release-drafter
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: release-drafter
+  cancel-in-progress: true
+
+jobs:
+  update-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update draft release notes
+        uses: release-drafter/release-drafter@v7
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
