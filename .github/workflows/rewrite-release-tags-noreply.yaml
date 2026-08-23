@@ -1,4 +1,4 @@
-# One-time final verification. Removed after a successful status is recorded.
+# One-time final verification. This workflow is removed after the check passes.
 name: final-noreply-history-verification
 
 on:
@@ -7,13 +7,15 @@ on:
       - master
     paths:
       - '.github/workflows/rewrite-release-tags-noreply.yaml'
+  pull_request:
+    paths:
+      - '.github/workflows/rewrite-release-tags-noreply.yaml'
 
 permissions:
   contents: read
-  statuses: write
 
 concurrency:
-  group: final-noreply-history-verification
+  group: final-noreply-history-verification-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -21,26 +23,16 @@ jobs:
     if: github.repository == 'Lukespacewalker/Suttisak.Blazor'
     runs-on: ubuntu-latest
     steps:
-      - name: Mark verification as running
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api --method POST \
-            "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-            -f state='pending' \
-            -f context='history/noreply-identity' \
-            -f description='Fresh mirror identity scan started'
+      - name: Checkout every reachable branch and tag
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Scan every reachable branch and tag
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Scan every reachable commit and annotated tag identity
         shell: bash
         run: |
           set -euo pipefail
-          repository_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git clone --mirror "${repository_url}" repository.git
-          cd repository.git
-
           python - <<'PY'
           import os
           import re
@@ -116,45 +108,18 @@ jobs:
                   tag_object_count += 1
                   object_sha = next_object
 
-          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env_file:
-              env_file.write(f"HISTORY_COMMIT_COUNT={commit_count}\n")
-              env_file.write(f"HISTORY_TAG_OBJECT_COUNT={tag_object_count}\n")
-              env_file.write(f"TARGET_IDENTITY_RECORDS={target_records}\n")
-              env_file.write(f"INVALID_IDENTITY_RECORDS={invalid_records}\n")
-
           print(f"Commits inspected: {commit_count}")
           print(f"Annotated tag objects inspected: {tag_object_count}")
           print(f"Target identity records inspected: {target_records}")
           print(f"Target identity records not using configured noreply: {invalid_records}")
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("## Final Git identity history verification\n\n")
+              summary.write(f"- Commits inspected: {commit_count}\n")
+              summary.write(f"- Annotated tag objects inspected: {tag_object_count}\n")
+              summary.write(f"- Owner identity records inspected: {target_records}\n")
+              summary.write(f"- Owner identity records using another email: {invalid_records}\n")
+
+          if invalid_records:
+              raise SystemExit("One or more owner identity records still use another email")
           PY
-
-      - name: Publish verification status
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          invalid="${INVALID_IDENTITY_RECORDS:-scan-error}"
-          if [[ "${invalid}" == "0" ]]; then
-            state='success'
-            description="0 invalid records across ${HISTORY_COMMIT_COUNT} commits and ${HISTORY_TAG_OBJECT_COUNT} tag objects"
-          elif [[ "${invalid}" == "scan-error" ]]; then
-            state='error'
-            description='Fresh mirror identity scan did not complete'
-          else
-            state='failure'
-            description="${invalid} identity record(s) still use another email"
-          fi
-          gh api --method POST \
-            "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-            -f state="${state}" \
-            -f context='history/noreply-identity' \
-            -f description="${description}"
-
-      - name: Enforce the configured noreply identity
-        shell: bash
-        run: |
-          if [[ "${INVALID_IDENTITY_RECORDS}" != "0" ]]; then
-            echo "One or more owner identity records still use another email." >&2
-            exit 1
-          fi
