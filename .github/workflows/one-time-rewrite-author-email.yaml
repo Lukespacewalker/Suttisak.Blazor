@@ -1,0 +1,75 @@
+name: one-time-rewrite-author-email
+
+on:
+  push:
+    branches:
+      - chore/rewrite-author-email-noreply
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: one-time-rewrite-author-email
+  cancel-in-progress: false
+
+jobs:
+  rewrite-history:
+    if: github.repository == 'Lukespacewalker/Suttisak.Blazor' && github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install git-filter-repo
+        run: pipx install git-filter-repo
+
+      - name: Rewrite author, committer, and tagger email across all refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OLD_EMAIL: suttisak.lukesp@outlook.com
+          NEW_EMAIL: 17828352+Lukespacewalker@users.noreply.github.com
+        run: |
+          set -euo pipefail
+
+          repository_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --mirror "${repository_url}" repository.git
+          cd repository.git
+
+          count_email() {
+            local email="$1"
+            {
+              git log --all --format='%ae%n%ce'
+              git for-each-ref --format='%(taggeremail)' refs/tags
+            } | grep -iF "${email}" | wc -l | tr -d ' ' || true
+          }
+
+          old_count="$(count_email "${OLD_EMAIL}")"
+          echo "Matching author/committer/tagger email occurrences before rewrite: ${old_count}"
+
+          if [[ "${old_count}" == "0" ]]; then
+            echo "No matching email occurrences were found; no history rewrite was required." >> "${GITHUB_STEP_SUMMARY}"
+            exit 0
+          fi
+
+          git filter-repo --force --email-callback '
+          return b"17828352+Lukespacewalker@users.noreply.github.com" if email.lower() == b"suttisak.lukesp@outlook.com" else email
+          '
+
+          remaining_count="$(count_email "${OLD_EMAIL}")"
+          new_count="$(count_email "${NEW_EMAIL}")"
+
+          if [[ "${remaining_count}" != "0" ]]; then
+            echo "History verification failed: ${remaining_count} old email occurrence(s) remain." >&2
+            exit 1
+          fi
+
+          echo "History verification passed locally. Force-pushing rewritten branches and tags."
+          git push --force --prune "${repository_url}" 'refs/heads/*:refs/heads/*'
+          git push --force "${repository_url}" 'refs/tags/*:refs/tags/*'
+
+          {
+            echo "## Author email history rewrite"
+            echo
+            echo "- Old email occurrences rewritten: ${old_count}"
+            echo "- Old email occurrences remaining locally: ${remaining_count}"
+            echo "- New noreply email occurrences after rewrite: ${new_count}"
+            echo "- Refs updated: all repository branches and tags"
+          } >> "${GITHUB_STEP_SUMMARY}"
