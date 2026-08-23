@@ -1,0 +1,143 @@
+# One-time final verification execution. This workflow is removed after the check passes.
+name: final-noreply-history-verification
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/rewrite-release-tags-noreply.yaml'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  verify-history:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout every reachable branch and tag
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Scan every reachable commit and annotated tag identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          import re
+          import subprocess
+
+          allowed_email = "17828352+Lukespacewalker@users.noreply.github.com"
+          target_names = {"suttisak denduangchai", "lukespacewalker"}
+
+          def command(*args: str) -> str:
+              return subprocess.check_output(["git", *args], text=True)
+
+          def normalize(value: str) -> str:
+              return value.strip().lower()
+
+          target_records = 0
+          invalid_records = 0
+          commit_count = 0
+          tag_object_count = 0
+
+          def inspect_identity(name: str, email: str) -> None:
+              global target_records, invalid_records
+              if normalize(name) not in target_names:
+                  return
+              target_records += 1
+              if normalize(email) != normalize(allowed_email):
+                  invalid_records += 1
+
+          commit_shas = [
+              value for value in command("rev-list", "--all").splitlines() if value
+          ]
+          for sha in commit_shas:
+              fields = command(
+                  "show",
+                  "-s",
+                  "--format=%an%x00%ae%x00%cn%x00%ce",
+                  sha,
+              ).rstrip("\n").split("\x00")
+              if len(fields) != 4:
+                  raise RuntimeError(f"Unexpected identity record for commit {sha}")
+              inspect_identity(fields[0], fields[1])
+              inspect_identity(fields[2], fields[3])
+              commit_count += 1
+
+          tag_refs = [
+              value
+              for value in command(
+                  "for-each-ref", "--format=%(refname)", "refs/tags"
+              ).splitlines()
+              if value
+          ]
+          tagger_pattern = re.compile(
+              r"^tagger (?P<name>.*) <(?P<email>[^>]*)> [0-9]+ [+-][0-9]{4}$"
+          )
+          for ref in tag_refs:
+              object_sha = command("rev-parse", ref).strip()
+              visited: set[str] = set()
+              while command("cat-file", "-t", object_sha).strip() == "tag":
+                  if object_sha in visited:
+                      raise RuntimeError(f"Tag cycle detected at {ref}")
+                  visited.add(object_sha)
+                  payload = command("cat-file", "tag", object_sha)
+                  next_object = None
+                  for line in payload.splitlines():
+                      if line.startswith("object "):
+                          next_object = line.removeprefix("object ").strip()
+                      elif line.startswith("tagger "):
+                          match = tagger_pattern.match(line)
+                          if not match:
+                              raise RuntimeError(f"Unexpected tagger record on {ref}")
+                          inspect_identity(match.group("name"), match.group("email"))
+                  if not next_object:
+                      raise RuntimeError(f"Annotated tag {ref} has no target object")
+                  tag_object_count += 1
+                  object_sha = next_object
+
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env_file:
+              env_file.write(f"HISTORY_COMMIT_COUNT={commit_count}\n")
+              env_file.write(f"HISTORY_TAG_OBJECT_COUNT={tag_object_count}\n")
+              env_file.write(f"TARGET_IDENTITY_RECORDS={target_records}\n")
+              env_file.write(f"INVALID_IDENTITY_RECORDS={invalid_records}\n")
+
+          status = "PASS" if invalid_records == 0 else "FAIL"
+          with open("identity-verification.md", "w", encoding="utf-8") as report:
+              report.write("## Final Git identity history verification\n\n")
+              report.write(f"**Result: {status}**\n\n")
+              report.write(f"- Commits inspected: {commit_count}\n")
+              report.write(f"- Annotated tag objects inspected: {tag_object_count}\n")
+              report.write(f"- Owner identity records inspected: {target_records}\n")
+              report.write(f"- Owner identity records using another email: {invalid_records}\n")
+
+          print(f"Commits inspected: {commit_count}")
+          print(f"Annotated tag objects inspected: {tag_object_count}")
+          print(f"Target identity records inspected: {target_records}")
+          print(f"Target identity records not using configured noreply: {invalid_records}")
+          PY
+
+      - name: Post the result on the verification pull request
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          if [[ -f identity-verification.md ]]; then
+            gh pr comment "${PR_NUMBER}" --repo "${GITHUB_REPOSITORY}" --body-file identity-verification.md
+          else
+            gh pr comment "${PR_NUMBER}" --repo "${GITHUB_REPOSITORY}" --body '## Final Git identity history verification\n\n**Result: SCAN ERROR**'
+          fi
+
+      - name: Enforce the configured noreply identity
+        shell: bash
+        run: |
+          if [[ "${INVALID_IDENTITY_RECORDS:-scan-error}" != "0" ]]; then
+            echo "One or more owner identity records still use another email, or the scan did not complete." >&2
+            exit 1
+          fi
