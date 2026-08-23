@@ -1,0 +1,72 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Experience controls">
+    <Preview>
+        <div class="component-specimen__demo" data-testid="experience-workbench">
+            <ExperienceHeading Eyebrow="Assessment result"
+                               Title="Your annual check"
+                               Emphasis="is ready"
+                               Description="A reader-facing summary that keeps product wording in the consuming application."
+                               Watermark="RESULT"
+                               VisualIsDecorative="@_visualIsDecorative"
+                               HeadingId="experience-demo-heading"
+                               data-testid="experience-heading">
+                <Details>
+                    <span>23 August 2026</span>
+                    <span aria-hidden="true"> · </span>
+                    <span>Annual review</span>
+                </Details>
+                <Visual>
+                    <div role="@(_visualIsDecorative ? null : "img")"
+                         aria-label="@(_visualIsDecorative ? null : "Overall result score 82 out of 100")"
+                         data-testid="experience-visual">
+                        <strong>82</strong><span aria-hidden="true">/100</span>
+                    </div>
+                </Visual>
+            </ExperienceHeading>
+
+            <ExperienceCard Elevated="@_elevated"
+                            Interactive="@_interactive"
+                            Accent="@_accent"
+                            data-testid="experience-card">
+                <h2>Result summary</h2>
+                <p>The shared component owns the surface treatment while the application owns this explanation.</p>
+            </ExperienceCard>
+
+            <ExperienceDisclosureGroup data-testid="experience-disclosure-group">
+                <ExperienceDisclosure Heading="What this result means"
+                                      Expanded="true"
+                                      Recommended="@_recommended"
+                                      BadgeText="Recommended"
+                                      data-testid="experience-disclosure-primary">
+                    <p>Use progressive disclosure for guidance that readers may want after understanding the headline result.</p>
+                </ExperienceDisclosure>
+                <ExperienceDisclosure Heading="What to do next"
+                                      data-testid="experience-disclosure-secondary">
+                    <p>Native details and summary preserve keyboard interaction without adding JavaScript behavior.</p>
+                </ExperienceDisclosure>
+            </ExperienceDisclosureGroup>
+        </div>
+    </Preview>
+    <Controls>
+        <label><input type="checkbox" @bind="_visualIsDecorative" /> Decorative visual</label>
+        <label><input type="checkbox" @bind="_accent" /> Card accent</label>
+        <label><input type="checkbox" @bind="_elevated" /> Elevated card</label>
+        <label><input type="checkbox" @bind="_interactive" /> Interactive treatment</label>
+        <label><input type="checkbox" @bind="_recommended" /> Recommended disclosure</label>
+    </Controls>
+    <States>
+        <article><span>Heading</span><strong>Reader-facing hero</strong><small>Use for results, reports, education, and guidance rather than CRUD task headings.</small></article>
+        <article><span>Visual</span><strong>Decorative or meaningful</strong><small>Meaningful visuals reserve content space and stay exposed to assistive technology.</small></article>
+        <article><span>Card</span><strong>Composable surface</strong><small>Accent, elevation, and interactive treatments change presentation without owning copy.</small></article>
+        <article><span>Disclosure</span><strong>Native details/summary</strong><small>Progressive guidance works with keyboard and browser semantics without JavaScript.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private bool _visualIsDecorative;
+    private bool _accent = true;
+    private bool _elevated = true;
+    private bool _interactive;
+    private bool _recommended = true;
+}
