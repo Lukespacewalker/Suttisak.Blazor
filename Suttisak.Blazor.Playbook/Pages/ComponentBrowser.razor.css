@@ -407,7 +407,7 @@
 .component-browser__status--deprecated { border-color: var(--app-danger-border); background: var(--app-danger-soft); color: var(--app-danger); }
 
 .component-browser__coverage--interactive { border-color: var(--app-success-border); background: var(--app-success-soft); color: var(--app-success); }
-.component-browser__coverage--pattern { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); }
+.component-browser__coverage--pattern { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); }
 .component-browser__coverage--reference { color: var(--app-foreground-muted); }
 
 .component-browser__card h3 {

@@ -36,10 +36,10 @@
 
                 <fieldset class="component-browser__coverage-filter">
                     <legend>Coverage</legend>
-                    <button type="button" class="@FilterClass(null)" aria-pressed="@(_coverageFilter is null)" @onclick="() => SetCoverageFilter(null)">All <small>@Coverage.Total</small></button>
+                    <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(_coverageFilter is null)" @onclick="() => SetCoverageFilter(null)">All <small>@Coverage.Total</small></button>
                     @foreach (var kind in CoverageKinds)
                     {
-                        <button type="button" class="@FilterClass(kind)" aria-pressed="@(_coverageFilter == kind)" @onclick="() => SetCoverageFilter(kind)">
+                        <button type="button" class="@FilterClass(kind)" aria-pressed="@Pressed(_coverageFilter == kind)" @onclick="() => SetCoverageFilter(kind)">
                             @PlaybookComponentCoverage.LabelFor(kind) <small>@CoverageCount(kind)</small>
                         </button>
                     }
@@ -175,6 +175,8 @@
     }
 
     private string FilterClass(PlaybookComponentCoverageKind? kind) => _coverageFilter == kind ? "is-active" : string.Empty;
+
+    private static string Pressed(bool value) => value ? "true" : "false";
 
     private static int CoverageCount(PlaybookComponentCoverageKind kind) => kind switch
     {

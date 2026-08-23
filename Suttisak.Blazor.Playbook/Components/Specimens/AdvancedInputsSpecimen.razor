@@ -30,15 +30,21 @@
 
                 <section>
                     <h3>Exclusive choice</h3>
-                    <AppRadioGroup TValue="string"
-                                   Label="Contact channel"
-                                   Description="Only one channel can be selected."
-                                   Orientation="@(_horizontalRadios ? "Horizontal" : "Vertical")"
-                                   Options="@ContactOptions"
-                                   Required="@_required"
-                                   Disabled="@_disabled"
-                                   @bind-Value="_contactChannel" />
-                    <p role="status">Channel: @_contactChannel</p>
+                    <EditForm Model="@_radioModel">
+                        <AppRadioGroup TValue="string"
+                                       Label="Contact channel"
+                                       Description="Only one channel can be selected."
+                                       Orientation="@(_horizontalRadios ? "Horizontal" : "Vertical")"
+                                       Required="@_required"
+                                       Disabled="@_disabled"
+                                       @bind-Value="_radioModel.ContactChannel">
+                            @foreach (var option in ContactOptions)
+                            {
+                                <AppRadio TValue="string" Value="@option.Value" Label="@option.Label" Disabled="@option.Disabled" name="contact-channel" />
+                            }
+                        </AppRadioGroup>
+                    </EditForm>
+                    <p role="status">Channel: @_radioModel.ContactChannel</p>
                 </section>
 
                 <section>
@@ -127,7 +133,7 @@
 
     private int _capacity = 45;
     private IEnumerable<string> _selectedRoles = new[] { "Reviewer", "Approver" };
-    private string _contactChannel = "Email";
+    private readonly RadioSpecimenModel _radioModel = new();
     private DateOnly? _appointmentDate = new(2026, 9, 15);
     private TimeOnly? _startTime = new(9, 30);
     private DateTime? _followUp = new(2026, 9, 15, 9, 30, 0, DateTimeKind.Unspecified);
@@ -182,4 +188,9 @@
     private string SelectedRolesText => string.Join(", ", _selectedRoles.OrderBy(value => value));
     private string FormatTime(TimeOnly? value) => value?.ToString(_includeSeconds ? "HH:mm:ss" : "HH:mm") ?? "none";
     private string FormatDateTime(DateTime? value) => value?.ToString(_includeSeconds ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-ddTHH:mm") ?? "none";
+
+    private sealed class RadioSpecimenModel
+    {
+        public string ContactChannel { get; set; } = "Email";
+    }
 }

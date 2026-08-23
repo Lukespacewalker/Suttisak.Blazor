@@ -265,7 +265,7 @@
 .component-catalog-page__coverage--pattern {
     border-color: var(--app-accent-border);
     background: var(--app-accent-soft);
-    color: var(--app-accent);
+    color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground));
 }
 
 .component-catalog-page__empty {

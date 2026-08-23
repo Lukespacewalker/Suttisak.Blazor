@@ -93,7 +93,7 @@
     place-items: center;
     border-radius: var(--app-radius-round);
     background: var(--app-accent-soft);
-    color: var(--app-accent);
+    color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground));
     font: 800 .72rem var(--app-font-mono);
 }
 

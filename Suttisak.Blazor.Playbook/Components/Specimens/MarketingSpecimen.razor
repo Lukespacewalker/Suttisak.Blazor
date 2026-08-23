@@ -128,7 +128,7 @@
     <Controls>
         <label>
             <span>Hero title</span>
-            <input type="text" @bind="_heroTitle" />
+            <input type="text" @bind="_heroTitle" @bind:event="oninput" />
         </label>
         <label>
             <span>Primary action style</span>

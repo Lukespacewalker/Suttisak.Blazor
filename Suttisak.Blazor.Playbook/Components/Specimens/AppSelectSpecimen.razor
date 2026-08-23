@@ -1,7 +1,12 @@
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppSelect controls">
     <Preview>
         <div class="component-specimen__demo">
-            <AppSelect TValue="string" @bind-Value="_value" Label="@_label" Placeholder="@_placeholder" Description="@_description" Options="@Options" Required="@_required" Disabled="@_disabled" />
+            <AppSelect TValue="string" @bind-Value="_value" Label="@_label" Placeholder="@_placeholder" Description="@_description" Required="@_required" Disabled="@_disabled">
+                @foreach (var option in Options)
+                {
+                    <AppSelectItem TValue="string" Value="@option.Value" Label="@option.Label" Disabled="@option.Disabled" />
+                }
+            </AppSelect>
         </div>
     </Preview>
     <Controls>

@@ -1,0 +1,48 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Account navigation controls">
+    <Preview>
+        <div class="account-navigation-specimen" data-testid="account-navigation-workbench">
+            <section aria-labelledby="profile-menu-specimen-title">
+                <div>
+                    <span>Desktop account control</span>
+                    <h2 id="profile-menu-specimen-title">Profile menu</h2>
+                </div>
+                <ProfileMenu LoginText="Sign in" LogoutText="Sign out" />
+            </section>
+
+            <section aria-labelledby="mobile-account-specimen-title">
+                <div>
+                    <span>Navigation footer</span>
+                    <h2 id="mobile-account-specimen-title">Mobile account</h2>
+                </div>
+                <MobileNavigationAccount />
+            </section>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Preview note
+            <select @bind="_note">
+                <option value="authenticated">Authenticated state</option>
+                <option value="keyboard">Keyboard contract</option>
+                <option value="contained">Constrained container</option>
+            </select>
+        </label>
+        <p role="status">@NoteText</p>
+    </Controls>
+    <States>
+        <article><span>Authenticated</span><strong>Kanda Srisuk</strong><small>The Playbook supplies an explicit authenticated principal so both real components execute their signed-in paths.</small></article>
+        <article><span>Native disclosure</span><strong>Details and summary</strong><small>The profile menu retains browser keyboard activation and focus behavior.</small></article>
+        <article><span>Mobile containment</span><strong>Preferences stay inside the account surface</strong><small>Theme, language, identity, and sign-out controls wrap without horizontal escape.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _note = "authenticated";
+    private string NoteText => _note switch
+    {
+        "keyboard" => "Use Enter or Space on the profile summary, then tab through the menu actions.",
+        "contained" => "Select the 375 preview to verify the complete mobile account remains contained.",
+        _ => "The reusable controls are rendering against the Playbook authenticated principal."
+    };
+}

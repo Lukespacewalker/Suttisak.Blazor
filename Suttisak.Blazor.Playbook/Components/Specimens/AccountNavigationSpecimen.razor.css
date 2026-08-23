@@ -1,0 +1,7 @@
+.account-navigation-specimen { display: grid; gap: 1rem; container-type: inline-size; }
+.account-navigation-specimen > section { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .2rem 1rem; background: var(--app-surface); }
+.account-navigation-specimen > section > div { display: grid; gap: .2rem; min-width: 0; }
+.account-navigation-specimen h2 { margin: 0; font-family: var(--app-font-heading); font-size: 1rem; }
+.account-navigation-specimen section > div > span { color: var(--app-accent); font-size: .58rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.account-navigation-specimen ::deep .mobile-nav-account { min-width: 0; }
+@container (max-width: 28rem) { .account-navigation-specimen > section { align-items: stretch; flex-direction: column; } }

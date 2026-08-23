@@ -7,11 +7,11 @@
 .component-detail__meta { display: grid; justify-items: start; gap: .6rem; min-width: 12rem; color: var(--app-foreground-muted); font-size: .72rem; }
 .component-detail__meta a { color: var(--app-accent); font-weight: 750; text-decoration: none; }
 .component-detail__status, .component-detail__coverage { display: inline-flex; padding: .35rem .6rem; border: 1px solid var(--app-border); border-radius: 99rem; background: var(--app-surface); color: var(--app-foreground); font-size: .62rem; font-weight: 850; letter-spacing: .035em; text-transform: uppercase; }
-.component-detail__status--stable { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); }
+.component-detail__status--stable { border-color: var(--app-success-border); background: var(--app-success-soft); color: var(--app-success); }
 .component-detail__status--beta, .component-detail__status--experimental { border-color: var(--app-warning-border); background: var(--app-warning-soft); color: var(--app-warning); }
 .component-detail__status--deprecated { border-color: var(--app-danger-border); background: var(--app-danger-soft); color: var(--app-danger); }
 .component-detail__coverage--interactive { border-color: var(--app-success-border); background: var(--app-success-soft); color: var(--app-success); }
-.component-detail__coverage--pattern { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); }
+.component-detail__coverage--pattern { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); }
 .component-detail__coverage--reference { color: var(--app-foreground-muted); }
 .component-detail__section { padding: 3rem 0; border-bottom: 1px solid var(--app-border); }
 .component-detail__section > header { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 1.25rem; }

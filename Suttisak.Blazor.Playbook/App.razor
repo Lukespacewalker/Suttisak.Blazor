@@ -1,14 +1,16 @@
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found · UI Playbook</PageTitle>
-        <PlaybookShell>
-            <AccessPageFrame Title="404 not found state">
-                <NotFoundPattern />
-            </AccessPageFrame>
-        </PlaybookShell>
-    </NotFound>
-</Router>
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found · UI Playbook</PageTitle>
+            <PlaybookShell>
+                <AccessPageFrame Title="404 not found state">
+                    <NotFoundPattern />
+                </AccessPageFrame>
+            </PlaybookShell>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

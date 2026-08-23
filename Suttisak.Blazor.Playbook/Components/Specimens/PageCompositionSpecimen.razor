@@ -1,0 +1,122 @@
+@implements IBreadcrumbLayout
+
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Page composition controls">
+    <Preview>
+        <div class="page-composition-specimen" data-testid="page-composition-workbench">
+            <CascadingValue Value="@((IBreadcrumbLayout)this)" IsFixed="true">
+                <PageBreadcrumbs Items="@BreadcrumbItems" />
+            </CascadingValue>
+
+            <nav class="page-composition-specimen__breadcrumbs" aria-label="Specimen breadcrumb">
+                <AppBreadcrumb Items="@_populatedBreadcrumbs" />
+            </nav>
+
+            <PageHeading HeadingId="specimen-page-title"
+                         SectionTitle="North terminal program"
+                         SectionDescription="Assessment 1248 · review workspace"
+                         SectionIconName="BoardHeart"
+                         Title="@CurrentTitle"
+                         Description="Review the current assessment, move between sibling views, and keep the most important action available.">
+                <SectionActions>
+                    <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetStatus("Participant change requested."))">Change participant</AppButton>
+                </SectionActions>
+                <PageActions>
+                    <PageActionToolbar AriaLabel="Assessment actions">
+                        <PrimaryAction>
+                            <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => SetStatus("Assessment saved."))">Save assessment</AppButton>
+                        </PrimaryAction>
+                        <SupportingActions>
+                            <AppButton OnClick="@(_ => SetStatus("Preview opened."))">Preview</AppButton>
+                            <AppButton OnClick="@(_ => SetStatus("Assessment printed."))">Print</AppButton>
+                        </SupportingActions>
+                        <OverflowActions>
+                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetStatus("Assessment archived."))">Archive</AppButton>
+                            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => SetStatus("Delete requested."))">Delete</AppButton>
+                        </OverflowActions>
+                    </PageActionToolbar>
+                </PageActions>
+                <Navigation>
+                    <SectionNavigation AriaLabel="Assessment sections"
+                                       CurrentSectionLabel="@CurrentTitle"
+                                       OverflowLabel="More sections"
+                                       OverflowActive="@(_activeSection == "history")"
+                                       Embedded="true">
+                        <ChildContent>
+                            @SectionLink("overview", "Overview")
+                            @SectionLink("measurements", "Measurements")
+                            @SectionLink("recommendations", "Recommendations")
+                        </ChildContent>
+                        <Overflow>
+                            @SectionLink("documents", "Documents")
+                            @SectionLink("history", "Audit history")
+                        </Overflow>
+                    </SectionNavigation>
+                </Navigation>
+            </PageHeading>
+
+            <p class="page-composition-specimen__status" role="status">@_status</p>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Active section
+            <select @bind="_activeSection">
+                <option value="overview">Overview</option>
+                <option value="measurements">Measurements</option>
+                <option value="recommendations">Recommendations</option>
+                <option value="documents">Documents</option>
+                <option value="history">Audit history</option>
+            </select>
+        </label>
+    </Controls>
+    <States>
+        <article><span>Landmark-safe</span><strong>Page composition, not a nested page</strong><small>The specimen renders heading, navigation, toolbar, and breadcrumb children without introducing another main landmark.</small></article>
+        <article><span>Adaptive actions</span><strong>Primary action remains available</strong><small>Supporting actions move into the native disclosure when the heading container is constrained.</small></article>
+        <article><span>Layout communication</span><strong>Breadcrumbs populate through the real cascade</strong><small>PageBreadcrumbs supplies application-owned items to an IBreadcrumbLayout host.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private Breadcrumb[] _populatedBreadcrumbs = [];
+    private string _activeSection = "overview";
+    private string _status = "Ready for review.";
+
+    private string CurrentTitle => _activeSection switch
+    {
+        "measurements" => "Measurements",
+        "recommendations" => "Recommendations",
+        "documents" => "Documents",
+        "history" => "Audit history",
+        _ => "Overview"
+    };
+
+    private Breadcrumb[] BreadcrumbItems =>
+    [
+        new("Home", "/components", "Components"),
+        new(null, "/components/page-heading", "Page composition"),
+        new(null, null, CurrentTitle)
+    ];
+
+    public void PopulateBreadcrumbs(params IEnumerable<Breadcrumb> breadcrumbs)
+    {
+        var next = breadcrumbs.ToArray();
+        if (_populatedBreadcrumbs.Select(item => item.Title).SequenceEqual(next.Select(item => item.Title))) return;
+        _populatedBreadcrumbs = next;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private RenderFragment SectionLink(string id, string label) => builder =>
+    {
+        var active = _activeSection == id;
+        builder.OpenElement(0, "a");
+        builder.AddAttribute(1, "href", $"#page-composition-{id}");
+        builder.AddAttribute(2, "class", active ? "page-composition-specimen__section-link active" : "page-composition-specimen__section-link");
+        builder.AddAttribute(3, "aria-current", active ? "page" : null);
+        builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => _activeSection = id));
+        builder.AddContent(5, label);
+        builder.CloseElement();
+    };
+
+    private void SetStatus(string status) => _status = status;
+}
