@@ -1,6 +1,7 @@
 using Suttisak.Blazor.Playbook.Components.Specimens;
 using Suttisak.Blazor.UserInterface.Components.Common;
 using Suttisak.Blazor.UserInterface.Components.Experience;
+using Suttisak.Blazor.UserInterface.Components.Marketing;
 using Suttisak.Blazor.UserInterface.Components.Navigation;
 using Suttisak.Blazor.UserInterface.Components.Timezone;
 
@@ -62,6 +63,18 @@ public static class PlaybookSpecimenRegistry
             ["ExperienceDisclosure"] = new(typeof(ExperienceDisclosure), typeof(ExperienceSpecimen)),
             ["ExperienceDisclosureGroup"] = new(typeof(ExperienceDisclosureGroup), typeof(ExperienceSpecimen)),
             ["ExperienceHeading"] = new(typeof(ExperienceHeading), typeof(ExperienceSpecimen)),
+            ["MarketingActionLink"] = new(typeof(MarketingActionLink), typeof(MarketingSpecimen)),
+            ["MarketingCallToAction"] = new(typeof(MarketingCallToAction), typeof(MarketingSpecimen)),
+            ["MarketingCard"] = new(typeof(MarketingCard), typeof(MarketingSpecimen)),
+            ["MarketingContainer"] = new(typeof(MarketingContainer), typeof(MarketingSpecimen)),
+            ["MarketingFeatureGrid"] = new(typeof(MarketingFeatureGrid), typeof(MarketingSpecimen)),
+            ["MarketingHero"] = new(typeof(MarketingHero), typeof(MarketingSpecimen)),
+            ["MarketingProductFrame"] = new(typeof(MarketingProductFrame), typeof(MarketingSpecimen)),
+            ["MarketingProofItem"] = new(typeof(MarketingProofItem), typeof(MarketingSpecimen)),
+            ["MarketingProofStrip"] = new(typeof(MarketingProofStrip), typeof(MarketingSpecimen)),
+            ["MarketingSectionHeader"] = new(typeof(MarketingSectionHeader), typeof(MarketingSpecimen)),
+            ["MarketingStep"] = new(typeof(MarketingStep), typeof(MarketingSpecimen)),
+            ["MarketingStepList"] = new(typeof(MarketingStepList), typeof(MarketingSpecimen)),
             ["Nav"] = new(typeof(Nav), typeof(NavigationSpecimen)),
             ["NavGroup"] = new(typeof(NavGroup), typeof(NavigationSpecimen)),
             ["NavItem"] = new(typeof(NavItem), typeof(NavigationSpecimen)),

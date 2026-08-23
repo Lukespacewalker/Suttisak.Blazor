@@ -1,0 +1,115 @@
+.marketing-specimen {
+    display: grid;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    background: var(--app-background);
+}
+
+.marketing-specimen ::deep .marketing-hero {
+    min-height: auto;
+}
+
+.marketing-specimen ::deep .marketing-hero__container {
+    padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.marketing-specimen__product {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    color: var(--app-foreground);
+}
+
+.marketing-specimen__product > header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--app-border);
+    color: var(--app-foreground-muted);
+    font-size: .75rem;
+}
+
+.marketing-specimen__product > header strong {
+    color: var(--app-accent);
+}
+
+.marketing-specimen__product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .65rem;
+}
+
+.marketing-specimen__product-grid article {
+    display: grid;
+    gap: .35rem;
+    min-width: 0;
+    padding: .9rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface-muted);
+}
+
+.marketing-specimen__product-grid small,
+.marketing-specimen__product-grid span {
+    color: var(--app-foreground-muted);
+    font-size: .68rem;
+}
+
+.marketing-specimen__product-grid strong {
+    color: var(--app-accent);
+    font-family: var(--app-font-heading);
+    font-size: clamp(1.1rem, 3vw, 1.7rem);
+}
+
+.marketing-specimen__section {
+    padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.marketing-specimen__section--steps {
+    border-block: 1px solid var(--app-border);
+    background: var(--app-surface-muted);
+}
+
+.marketing-specimen__section--cta {
+    padding-top: 0;
+}
+
+.marketing-specimen__eyebrow {
+    color: var(--app-accent);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.marketing-specimen__card-number {
+    display: grid;
+    width: 2.3rem;
+    height: 2.3rem;
+    place-items: center;
+    border-radius: var(--app-radius-round);
+    background: var(--app-accent-soft);
+    color: var(--app-accent);
+    font: 800 .72rem var(--app-font-mono);
+}
+
+.marketing-specimen ::deep .marketing-card__body p,
+.marketing-specimen ::deep .marketing-call-to-action p {
+    margin: 0;
+    color: var(--app-foreground-muted);
+    line-height: 1.6;
+}
+
+.marketing-specimen ::deep .marketing-call-to-action h2 {
+    margin-block: .35rem .65rem;
+}
+
+@media (max-width: 44rem) {
+    .marketing-specimen__product-grid {
+        grid-template-columns: 1fr;
+    }
+}

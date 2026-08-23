@@ -1,0 +1,170 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Marketing controls">
+    <Preview>
+        <div class="marketing-specimen" data-testid="marketing-workbench">
+            <MarketingHero Title="@_heroTitle"
+                           TitleId="marketing-specimen-hero-title"
+                           Description="A composed product story that keeps routes, copy, and assets in the consuming application."
+                           data-testid="marketing-hero">
+                <Eyebrow>
+                    <Pill>Shared marketing system</Pill>
+                </Eyebrow>
+                <Actions>
+                    <MarketingActionLink Href="#marketing-specimen-features"
+                                         Variant="@_primaryActionVariant"
+                                         data-testid="marketing-primary-action">
+                        Explore the workflow
+                    </MarketingActionLink>
+                    @if (_showSecondaryAction)
+                    {
+                        <MarketingActionLink Href="#marketing-specimen-proof"
+                                             Variant="MarketingActionVariant.Secondary"
+                                             data-testid="marketing-secondary-action">
+                            Review assurances
+                        </MarketingActionLink>
+                    }
+                </Actions>
+                <Media>
+                    @if (_showProductFrame)
+                    {
+                        <MarketingProductFrame Label="LIVE PRODUCT PREVIEW"
+                                               data-testid="marketing-product-frame">
+                            <section class="marketing-specimen__product" aria-label="Product workspace preview">
+                                <header><span>Assessment workspace</span><strong>Today</strong></header>
+                                <div class="marketing-specimen__product-grid">
+                                    <article><small>Open work</small><strong>18</strong><span>4 need review</span></article>
+                                    <article><small>Completion</small><strong>82%</strong><span>On track</span></article>
+                                    <article><small>Next action</small><strong>Review</strong><span>Airside team</span></article>
+                                </div>
+                            </section>
+                        </MarketingProductFrame>
+                    }
+                </Media>
+            </MarketingHero>
+
+            @if (_showProofStrip)
+            {
+                <MarketingProofStrip AriaLabel="Product assurances"
+                                     Class="marketing-specimen__proof"
+                                     data-testid="marketing-proof-strip"
+                                     id="marketing-specimen-proof">
+                    <MarketingProofItem Value="AA"
+                                        Title="Accessible foundation"
+                                        Description="Focus, contrast, and responsive behavior remain part of the shared contract."
+                                        data-testid="marketing-proof-item" />
+                    <MarketingProofItem Value="01"
+                                        Title="One component language"
+                                        Description="Every product composes the same primitives without inheriting another product's copy." />
+                    <MarketingProofItem Value="24/7"
+                                        Title="Theme-ready"
+                                        Description="Semantic tokens carry the experience across light, dark, and product themes." />
+                </MarketingProofStrip>
+            }
+
+            <section id="marketing-specimen-features" class="marketing-specimen__section" aria-labelledby="marketing-specimen-features-title">
+                <MarketingContainer data-testid="marketing-container">
+                    <MarketingSectionHeader HeadingId="marketing-specimen-features-title"
+                                            Title="A product story built from real components"
+                                            Description="Change the controls to exercise the public presentation contract rather than a static screenshot."
+                                            Compact="@_compactHeader"
+                                            data-testid="marketing-section-header">
+                        <Eyebrow><span class="marketing-specimen__eyebrow">Core capabilities</span></Eyebrow>
+                    </MarketingSectionHeader>
+
+                    <MarketingFeatureGrid data-testid="marketing-feature-grid">
+                        <MarketingCard Title="Lead with the outcome"
+                                       Featured="@_featuredCard"
+                                       Compact="@_compactCards"
+                                       data-testid="marketing-featured-card">
+                            <Visual><span class="marketing-specimen__card-number">01</span></Visual>
+                            <ChildContent><p>Use the hero and primary action to make the next useful step obvious.</p></ChildContent>
+                        </MarketingCard>
+                        <MarketingCard Title="Prove the workflow"
+                                       Compact="@_compactCards"
+                                       data-testid="marketing-standard-card">
+                            <Visual><span class="marketing-specimen__card-number">02</span></Visual>
+                            <ChildContent><p>Product frames, proof items, and cards explain value without inventing business metrics.</p></ChildContent>
+                        </MarketingCard>
+                        <MarketingCard Title="Close with intent" Compact="@_compactCards">
+                            <Visual><span class="marketing-specimen__card-number">03</span></Visual>
+                            <ChildContent><p>Steps and a final call to action keep the page moving toward one coherent decision.</p></ChildContent>
+                        </MarketingCard>
+                    </MarketingFeatureGrid>
+                </MarketingContainer>
+            </section>
+
+            <section class="marketing-specimen__section marketing-specimen__section--steps" aria-labelledby="marketing-specimen-steps-title">
+                <MarketingContainer>
+                    <MarketingSectionHeader HeadingId="marketing-specimen-steps-title"
+                                            Title="From signal to next step"
+                                            Description="The ordered list preserves the sequence in both visual and assistive-technology reading modes."
+                                            Compact="true" />
+                    <MarketingStepList data-testid="marketing-step-list">
+                        <MarketingStep Number="01" Title="Frame the outcome" Description="Name the audience and the decision the page supports." data-testid="marketing-step" />
+                        <MarketingStep Number="02" Title="Show credible proof" Description="Use real product states and verified assurances." />
+                        <MarketingStep Number="03" Title="Offer one next action" Description="Make the final path explicit and easy to complete." />
+                    </MarketingStepList>
+                </MarketingContainer>
+            </section>
+
+            @if (_showCallToAction)
+            {
+                <section class="marketing-specimen__section marketing-specimen__section--cta" aria-label="Closing action">
+                    <MarketingContainer>
+                        <MarketingCallToAction data-testid="marketing-call-to-action">
+                            <Content>
+                                <span class="marketing-specimen__eyebrow">Ready to continue?</span>
+                                <h2>Turn the product promise into one clear action.</h2>
+                                <p>The application still owns this wording, destination, authorization, and analytics.</p>
+                            </Content>
+                            <Actions>
+                                <MarketingActionLink Href="#marketing-specimen-hero-title">Return to the product story</MarketingActionLink>
+                            </Actions>
+                        </MarketingCallToAction>
+                    </MarketingContainer>
+                </section>
+            }
+        </div>
+    </Preview>
+    <Controls>
+        <label>
+            <span>Hero title</span>
+            <input type="text" @bind="_heroTitle" />
+        </label>
+        <label>
+            <span>Primary action style</span>
+            <select @bind="_primaryActionVariant">
+                <option value="@MarketingActionVariant.Primary">Primary</option>
+                <option value="@MarketingActionVariant.Secondary">Secondary</option>
+            </select>
+        </label>
+        <label><input type="checkbox" @bind="_showSecondaryAction" /> Secondary action</label>
+        <label><input type="checkbox" @bind="_showProductFrame" /> Product frame</label>
+        <label><input type="checkbox" @bind="_showProofStrip" /> Proof strip</label>
+        <label><input type="checkbox" @bind="_featuredCard" /> Featured card</label>
+        <label><input type="checkbox" @bind="_compactCards" /> Compact cards</label>
+        <label><input type="checkbox" @bind="_compactHeader" /> Compact section header</label>
+        <label><input type="checkbox" @bind="_showCallToAction" /> Closing call to action</label>
+    </Controls>
+    <States>
+        <article><span>Hero</span><strong>Outcome-first composition</strong><small>Copy, media, and actions remain explicit application-owned slots.</small></article>
+        <article><span>Proof</span><strong>Verified claims only</strong><small>Proof items describe real assurances or outcomes rather than decorative statistics.</small></article>
+        <article><span>Feature grid</span><strong>Featured and compact states</strong><small>Cards vary emphasis without changing their semantic article contract.</small></article>
+        <article><span>Workflow</span><strong>Ordered steps</strong><small>StepList and Step preserve sequence through native list semantics.</small></article>
+        <article><span>Action</span><strong>Anchor behavior</strong><small>MarketingActionLink keeps navigation semantics while sharing primary and secondary treatments.</small></article>
+        <article><span>Page wrapper</span><strong>Pattern-level coverage</strong><small>MarketingPage remains documented by the full landing route because nesting a second main landmark would be invalid.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _heroTitle = "Make the next decision feel simple.";
+    private MarketingActionVariant _primaryActionVariant = MarketingActionVariant.Primary;
+    private bool _showSecondaryAction = true;
+    private bool _showProductFrame = true;
+    private bool _showProofStrip = true;
+    private bool _featuredCard = true;
+    private bool _compactCards;
+    private bool _compactHeader;
+    private bool _showCallToAction = true;
+}
