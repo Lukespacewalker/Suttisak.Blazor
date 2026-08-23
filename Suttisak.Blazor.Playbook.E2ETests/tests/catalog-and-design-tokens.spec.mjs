@@ -21,7 +21,8 @@ test('Component Browser reports and filters the complete catalog from one source
   await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('53');
   await expect(page.locator('[data-component-name]')).toHaveCount(90, { timeout: wasmTimeout });
 
-  const interactiveFilter = page.getByRole('button', { name: 'Interactive 53', exact: true });
+  const interactiveFilter = page.locator('.component-browser__coverage-filter button').filter({ hasText: 'Interactive' });
+  await expect(interactiveFilter).toHaveCount(1);
   await interactiveFilter.click();
   await expect(interactiveFilter).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(53, { timeout: wasmTimeout });
