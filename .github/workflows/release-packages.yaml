@@ -115,12 +115,14 @@ jobs:
           push_package() {
             local package_id="$1"
             local package_path
+            local package_filename
             local package_suffix
             local matches=()
 
             for package_path in packages/"${package_id}".*.nupkg; do
               [[ -f "${package_path}" && "${package_path}" != *.snupkg ]] || continue
-              package_suffix="${package_path#packages/${package_id}.}"
+              package_filename="$(basename -- "${package_path}")"
+              package_suffix="${package_filename#"${package_id}".}"
               [[ "${package_suffix}" =~ ^[0-9][[:alnum:].-]*\.nupkg$ ]] || continue
               matches+=("${package_path}")
             done
