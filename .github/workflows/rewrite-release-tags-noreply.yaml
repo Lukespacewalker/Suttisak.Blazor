@@ -3,7 +3,7 @@ name: rewrite-release-tags-noreply
 on:
   push:
     branches:
-      - chore/rewrite-release-tags-noreply
+      - master
     paths:
       - '.github/workflows/rewrite-release-tags-noreply.yaml'
 
@@ -25,7 +25,7 @@ jobs:
       - name: Rewrite and verify release tags
         env:
           GH_TOKEN: ${{ github.token }}
-          NEW_EMAIL: 17828352+Lukespacewalker@users.noreply.github.com
+          MARKER_BRANCH: chore/rewrite-release-tags-noreply
         run: |
           set -euo pipefail
 
@@ -51,12 +51,11 @@ jobs:
           def normalize(value: str) -> str:
               return value.strip().removeprefix("<").removesuffix(">").strip().lower()
 
-          count = 0
-          for value in values:
-              normalized = normalize(value)
-              if normalized and hashlib.sha256(normalized.encode("utf-8")).hexdigest() == expected:
-                  count += 1
-          print(count)
+          print(sum(
+              hashlib.sha256(normalize(value).encode("utf-8")).hexdigest() == expected
+              for value in values
+              if normalize(value)
+          ))
           PY
           }
 
@@ -67,10 +66,7 @@ jobs:
           echo "Old identity hash matches before tag rewrite: ${before_count}"
 
           git filter-repo --force --email-callback '
-          import hashlib
-          if hashlib.sha256(email.lower()).hexdigest() == "87eef6cfee79ae9bddd80844806138b24c66ec5ad9d674633ccfe6e611cdbcc7":
-              return b"17828352+Lukespacewalker@users.noreply.github.com"
-          return email
+          return b"17828352+Lukespacewalker@users.noreply.github.com" if __import__("hashlib").sha256(email.lower()).hexdigest() == "87eef6cfee79ae9bddd80844806138b24c66ec5ad9d674633ccfe6e611cdbcc7" else email
           '
 
           local_remaining="$(count_old_identity_hashes)"
@@ -95,7 +91,7 @@ jobs:
           fi
           cd ..
 
-          git clone --branch "${GITHUB_REF_NAME}" --single-branch "${repository_url}" marker
+          git clone --branch "${MARKER_BRANCH}" --single-branch "${repository_url}" marker
           cd marker
           cat > rewrite-tags-result.txt <<EOF
           Release tag identity rewrite completed.
@@ -107,4 +103,4 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add rewrite-tags-result.txt
           git commit -m 'Record successful release tag history rewrite'
-          git push "${repository_url}" "HEAD:${GITHUB_REF_NAME}"
+          git push "${repository_url}" "HEAD:${MARKER_BRANCH}"
