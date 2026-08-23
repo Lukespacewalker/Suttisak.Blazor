@@ -1,70 +1,491 @@
-.component-browser { width: min(100% - 2rem, 92rem); margin: 0 auto; padding: clamp(2rem, 5vw, 5.5rem) 0 6rem; }
-.component-browser__intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(16rem, .65fr); align-items: end; gap: 3rem; padding: 0 clamp(.5rem, 2vw, 1.5rem) 2.5rem; border-bottom: 1px solid var(--app-border); }
-.component-browser__intro h1 { margin: .45rem 0 0; font-family: var(--app-font-heading); font-size: clamp(3rem, 6vw, 5.6rem); line-height: .88; letter-spacing: -.065em; }
-.component-browser__intro h1 em { color: var(--app-accent); font-style: normal; }
-.component-browser__intro p { max-width: 38rem; margin: 0 0 .35rem; color: var(--app-foreground-muted); font-size: 1rem; line-height: 1.7; }
-.component-browser__workspace { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-.component-browser__sidebar { position: sticky; top: 5.8rem; max-height: calc(100dvh - 7rem); padding: 1.5rem .5rem 1rem; overflow-y: auto; }
-.component-browser__search { display: grid; gap: .4rem; margin-bottom: 1.25rem; }
-.component-browser__search > span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
-.component-browser__search input { width: 100%; box-sizing: border-box; padding: .58rem .65rem; border: 1px solid var(--app-border); border-radius: .55rem; background: var(--app-surface); color: var(--app-foreground); font: inherit; font-size: .75rem; }
-.component-browser__search input:focus-visible { border-color: var(--app-accent); outline: 2px solid var(--app-accent-soft); outline-offset: 2px; }
-.component-browser__sidebar nav { display: grid; gap: .35rem; }
-.component-browser__sidebar details > summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .5rem; padding: .48rem .55rem; border-radius: .45rem; color: var(--app-foreground); list-style: none; cursor: pointer; }
-.component-browser__sidebar details > summary::-webkit-details-marker { display: none; }
-.component-browser__sidebar details > summary:hover { background: var(--app-surface-muted); }
-.component-browser__sidebar details > summary span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
-.component-browser__sidebar details > summary small { display: grid; min-width: 1.4rem; height: 1.4rem; place-items: center; border-radius: 99rem; background: var(--app-surface-muted); color: var(--app-foreground-muted); font-size: .58rem; }
-.component-browser__sidebar details > div { display: grid; gap: .12rem; padding: .15rem 0 .45rem .35rem; }
-.component-browser__sidebar a { padding: .42rem .55rem; border-left: 2px solid transparent; border-radius: 0 .45rem .45rem 0; color: var(--app-foreground-muted); font-size: .78rem; font-weight: 680; text-decoration: none; }
-.component-browser__sidebar a:hover, .component-browser__sidebar a:focus-visible { border-left-color: var(--app-accent); background: var(--app-accent-soft); color: var(--app-foreground); outline: none; }
-.component-browser__sidebar > p { display: grid; gap: .25rem; margin: 2rem 0 0; padding: 1rem .55rem 0; border-top: 1px solid var(--app-border); }
-.component-browser__sidebar > p strong { font-size: .7rem; }
-.component-browser__sidebar > p span { color: var(--app-foreground-muted); font-size: .65rem; line-height: 1.5; }
-.component-browser__content { min-width: 0; }
-.component-browser__category { scroll-margin-top: 5.5rem; padding: 3.5rem 0 1rem; border-bottom: 1px solid var(--app-border); }
-.component-browser__category > header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.35rem; }
-.component-browser__category > header span { color: var(--app-accent); font-size: .65rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.component-browser__category > header h2 { margin: 0; font-family: var(--app-font-heading); font-size: clamp(2rem, 4vw, 3.4rem); letter-spacing: -.045em; }
-.component-browser__section { scroll-margin-top: 5.5rem; display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 3rem); padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid var(--app-border); border-radius: 1.15rem; background: var(--app-surface-muted); }
-.component-browser__section + .component-browser__section { margin-top: 1rem; }
-.component-browser__section > header span { display: block; color: var(--app-accent); font-size: .6rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.component-browser__section h3 { margin: .35rem 0 .65rem; font-family: var(--app-font-heading); font-size: 1.45rem; letter-spacing: -.035em; }
-.component-browser__section > header code { color: var(--app-foreground-muted); font-size: .72rem; }
-.component-browser__stage { min-width: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--app-border); border-radius: .85rem; background: linear-gradient(135deg, var(--app-brand-soft), transparent 45%), var(--app-surface); box-shadow: 0 1rem 2.5rem var(--app-shadow-color); }
-.component-browser__stage--split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
-.component-browser__stage--split > div { display: grid; align-content: start; gap: .8rem; }
-.component-browser__stage h3 { margin: 0; font-size: 1rem; }
-.component-browser__stage p { margin: 0; color: var(--app-foreground-muted); font-size: .9rem; line-height: 1.6; }
-.component-browser__button-row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
-.component-browser__readout { display: inline-grid; margin-top: 2rem; padding: .75rem 1rem; border-left: 3px solid var(--app-accent); background: var(--app-surface-muted); }
-.component-browser__readout strong { font-family: var(--app-font-heading); font-size: 1.8rem; line-height: 1; }
-.component-browser__readout span { margin-top: .25rem; color: var(--app-foreground-muted); font-size: .75rem; }
-.component-browser__result { grid-column: 1 / -1; padding-top: 1rem; border-top: 1px solid var(--app-border); }
-.component-browser__tab-copy { padding: 1rem 0 .25rem; }
-.component-browser__feedback-stage { display: grid; gap: 1.5rem; }
-.component-browser__progress-control { display: grid; gap: .7rem; }
-.component-browser__progress-control label { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; }
-.component-browser__progress-control label strong { color: var(--app-accent); }
-.component-browser__progress-control input { width: 100%; accent-color: var(--app-accent); }
-.component-browser__usage { grid-column: 1 / -1; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--app-border); }
-.component-browser__usage > span { display: block; margin-bottom: .6rem; color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.component-browser__usage pre { margin: 0; padding: 1rem; border-radius: .6rem; overflow-x: auto; background: var(--app-background); color: var(--app-foreground); font-size: .73rem; line-height: 1.65; }
-.component-browser__input-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-.component-browser__input-specimen { scroll-margin-top: 6rem; display: grid; align-content: start; gap: .75rem; min-width: 0; padding: 1rem; border: 1px solid var(--app-border); border-radius: .75rem; background: var(--app-background); }
-.component-browser__input-specimen h4 { margin: 0; color: var(--app-accent); font-family: var(--app-font-heading); font-size: .95rem; }
-.component-browser__input-specimen .component-browser__input-note { color: var(--app-foreground); font-size: .7rem; }
-.component-browser__input-specimen > code { display: block; padding-top: .75rem; border-top: 1px solid var(--app-border); color: var(--app-foreground-muted); font-size: .65rem; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
-.component-browser__directory-intro { max-width: 54rem; margin: -1rem 0 2rem; color: var(--app-foreground-muted); font-size: .85rem; line-height: 1.65; }
-.component-browser__directory > section { padding: 1.4rem 0; border-top: 1px solid var(--app-border); }
-.component-browser__directory > section > h3 { display: flex; align-items: center; gap: .6rem; margin: 0 0 .8rem; font-family: var(--app-font-heading); font-size: 1rem; }
-.component-browser__directory > section > h3 span { display: grid; min-width: 1.35rem; height: 1.35rem; place-items: center; border-radius: 50%; background: var(--app-surface-muted); color: var(--app-foreground); font: 800 .58rem var(--app-font-mono); }
-.component-browser__directory > section > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
-.component-browser__directory > section a { display: grid; gap: .2rem; padding: .65rem .75rem; border: 1px solid var(--app-border); border-radius: .6rem; background: var(--app-surface); color: var(--app-foreground); text-decoration: none; }
-.component-browser__directory > section a:hover, .component-browser__directory > section a:focus-visible { border-color: var(--app-accent-border); background: var(--app-accent-soft); outline: none; }
-.component-browser__directory > section a strong { font-size: .7rem; overflow-wrap: anywhere; }
-.component-browser__directory > section a span { color: var(--app-foreground-muted); font-size: .58rem; }
-@media (max-width: 64rem) { .component-browser__workspace { grid-template-columns: 1fr; gap: 0; } .component-browser__sidebar { position: static; max-height: none; margin-inline: -.25rem; padding: 1rem .25rem; border-bottom: 1px solid var(--app-border); background: var(--app-background); overflow: visible; } .component-browser__search { max-width: 24rem; } .component-browser__sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } .component-browser__sidebar > p { display: none; } .component-browser__directory > section > div { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 50rem) { .component-browser__intro, .component-browser__section { grid-template-columns: 1fr; gap: 1.25rem; } .component-browser__intro { align-items: start; } }
-@media (max-width: 40rem) { .component-browser__input-grid, .component-browser__sidebar nav, .component-browser__directory > section > div { grid-template-columns: 1fr; } }
-@media (max-width: 34rem) { .component-browser { width: min(100% - 1rem, 92rem); padding-top: 2rem; } .component-browser__stage--split { grid-template-columns: 1fr; } .component-browser__category { padding-top: 2.5rem; } .component-browser__section { padding: 1rem; } }
+.component-browser {
+    width: min(100% - 2rem, 94rem);
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 5rem) 0 6rem;
+}
+
+.component-browser__hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, .55fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: end;
+    padding: 0 clamp(.25rem, 2vw, 1rem) 3rem;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.component-browser__hero h1 {
+    margin: .45rem 0 1rem;
+    font-family: var(--app-font-heading);
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    line-height: .88;
+    letter-spacing: -.065em;
+}
+
+.component-browser__hero h1 em {
+    color: var(--app-accent);
+    font-style: normal;
+}
+
+.component-browser__hero p {
+    max-width: 54rem;
+    margin: 0;
+    color: var(--app-foreground-muted);
+    line-height: 1.75;
+}
+
+.component-browser__hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .7rem 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.component-browser__hero-actions a {
+    color: var(--app-accent);
+    font-size: .74rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.component-browser__hero-actions a:hover,
+.component-browser__hero-actions a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: .25rem;
+}
+
+.component-browser__coverage-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-lg);
+    overflow: hidden;
+    background: var(--app-surface);
+}
+
+.component-browser__coverage-summary article {
+    display: grid;
+    align-content: end;
+    min-height: 6.5rem;
+    padding: .85rem;
+}
+
+.component-browser__coverage-summary article + article {
+    border-left: 1px solid var(--app-border);
+}
+
+.component-browser__coverage-summary strong {
+    color: var(--app-accent);
+    font: 800 clamp(1.45rem, 3vw, 2.35rem)/1 var(--app-font-heading);
+}
+
+.component-browser__coverage-summary article span {
+    margin-top: .35rem;
+    color: var(--app-foreground-muted);
+    font-size: .58rem;
+}
+
+.component-browser__coverage-summary > div {
+    grid-column: 1 / -1;
+    height: .35rem;
+    background: var(--app-surface-muted);
+}
+
+.component-browser__coverage-summary > div span {
+    display: block;
+    height: 100%;
+    background: var(--app-accent);
+}
+
+.component-browser__coverage-summary > p {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: .7rem .85rem;
+    border-top: 1px solid var(--app-border);
+    color: var(--app-foreground-muted);
+    font-size: .64rem;
+    line-height: 1.45;
+}
+
+.component-browser__workspace {
+    display: grid;
+    grid-template-columns: 17rem minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+}
+
+.component-browser__sidebar {
+    position: sticky;
+    top: 5.25rem;
+    display: grid;
+    max-height: calc(100dvh - 6.25rem);
+    gap: 1.35rem;
+    padding: 1.5rem .25rem 1rem;
+    overflow-y: auto;
+}
+
+.component-browser__search {
+    display: grid;
+    gap: .4rem;
+}
+
+.component-browser__search span,
+.component-browser__coverage-filter legend {
+    color: var(--app-accent);
+    font-size: .6rem;
+    font-weight: 850;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.component-browser__search input {
+    width: 100%;
+    padding: .62rem .7rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-sm);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    font: inherit;
+    font-size: .76rem;
+}
+
+.component-browser__coverage-filter {
+    display: grid;
+    gap: .3rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.component-browser__coverage-filter legend {
+    margin-bottom: .4rem;
+    padding: 0;
+}
+
+.component-browser__coverage-filter button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    padding: .5rem .6rem;
+    border: 1px solid transparent;
+    border-radius: var(--app-radius-sm);
+    background: transparent;
+    color: var(--app-foreground-muted);
+    font: 700 .72rem var(--app-font-body);
+    text-align: left;
+    cursor: pointer;
+}
+
+.component-browser__coverage-filter button:hover,
+.component-browser__coverage-filter button:focus-visible,
+.component-browser__coverage-filter button.is-active {
+    border-color: var(--app-accent-border);
+    background: var(--app-accent-soft);
+    color: var(--app-foreground);
+    outline: none;
+}
+
+.component-browser__coverage-filter small {
+    font: 700 .58rem var(--app-font-mono);
+}
+
+.component-browser__sidebar nav {
+    display: grid;
+    gap: .35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--app-border);
+}
+
+.component-browser__sidebar summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .5rem;
+    padding: .48rem .55rem;
+    border-radius: var(--app-radius-sm);
+    list-style: none;
+    cursor: pointer;
+}
+
+.component-browser__sidebar summary::-webkit-details-marker {
+    display: none;
+}
+
+.component-browser__sidebar summary:hover {
+    background: var(--app-surface-muted);
+}
+
+.component-browser__sidebar summary span {
+    color: var(--app-accent);
+    font-size: .6rem;
+    font-weight: 850;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.component-browser__sidebar summary > small {
+    display: grid;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--app-surface-muted);
+    color: var(--app-foreground-muted);
+    font: 700 .56rem var(--app-font-mono);
+}
+
+.component-browser__sidebar details > div {
+    display: grid;
+    gap: .15rem;
+    padding: .15rem 0 .55rem .35rem;
+}
+
+.component-browser__sidebar details a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .5rem;
+    align-items: center;
+    padding: .42rem .55rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--app-radius-sm) var(--app-radius-sm) 0;
+    color: var(--app-foreground-muted);
+    font-size: .74rem;
+    font-weight: 680;
+    text-decoration: none;
+}
+
+.component-browser__sidebar details a:hover,
+.component-browser__sidebar details a:focus-visible {
+    border-left-color: var(--app-accent);
+    background: var(--app-accent-soft);
+    color: var(--app-foreground);
+    outline: none;
+}
+
+.component-browser__mini-coverage {
+    font-size: .48rem;
+    font-weight: 850;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.component-browser__mini-coverage--interactive { color: var(--app-success); }
+.component-browser__mini-coverage--pattern { color: var(--app-accent); }
+.component-browser__mini-coverage--reference { color: var(--app-foreground-muted); }
+
+.component-browser__content {
+    min-width: 0;
+    padding-top: 1.5rem;
+}
+
+.component-browser__results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    padding: 0 0 1.25rem;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.component-browser__results-header div {
+    display: grid;
+    gap: .25rem;
+}
+
+.component-browser__results-header span {
+    color: var(--app-accent);
+    font-size: .6rem;
+    font-weight: 850;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.component-browser__results-header strong {
+    font: 750 clamp(1.35rem, 3vw, 2rem) var(--app-font-heading);
+}
+
+.component-browser__results-header button,
+.component-browser__empty button {
+    padding: .52rem .7rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-sm);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    font: 750 .68rem var(--app-font-body);
+    cursor: pointer;
+}
+
+.component-browser__results-header button:hover,
+.component-browser__results-header button:focus-visible,
+.component-browser__empty button:hover,
+.component-browser__empty button:focus-visible {
+    border-color: var(--app-accent-border);
+    background: var(--app-accent-soft);
+    outline: none;
+}
+
+.component-browser__group {
+    scroll-margin-top: 6rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.component-browser__group > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.component-browser__group h2 {
+    margin: 0;
+    font-family: var(--app-font-heading);
+    font-size: clamp(1.55rem, 3vw, 2.35rem);
+    letter-spacing: -.035em;
+}
+
+.component-browser__group > header span {
+    display: grid;
+    min-width: 1.7rem;
+    height: 1.7rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--app-surface-muted);
+    color: var(--app-foreground-muted);
+    font: 800 .62rem var(--app-font-mono);
+}
+
+.component-browser__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+}
+
+.component-browser__card {
+    display: grid;
+    min-height: 13rem;
+    padding: 1rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-lg);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    text-decoration: none;
+    transition: border-color var(--app-duration-fast), transform var(--app-duration-fast), box-shadow var(--app-duration-fast);
+}
+
+.component-browser__card:hover,
+.component-browser__card:focus-visible {
+    border-color: var(--app-accent-border);
+    outline: none;
+    box-shadow: var(--app-shadow-md);
+    transform: translateY(-2px);
+}
+
+.component-browser__card-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+    align-items: center;
+}
+
+.component-browser__status,
+.component-browser__coverage {
+    padding: .2rem .42rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-round);
+    font-size: .5rem;
+    font-weight: 850;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.component-browser__status { color: var(--app-foreground-muted); }
+.component-browser__status--stable { border-color: var(--app-accent-border); color: var(--app-accent); }
+.component-browser__status--beta { border-color: var(--app-warning-border); color: var(--app-warning); }
+.component-browser__status--experimental { border-color: var(--app-warning-border); background: var(--app-warning-soft); color: var(--app-warning); }
+.component-browser__status--deprecated { border-color: var(--app-danger-border); background: var(--app-danger-soft); color: var(--app-danger); }
+
+.component-browser__coverage--interactive { border-color: var(--app-success-border); background: var(--app-success-soft); color: var(--app-success); }
+.component-browser__coverage--pattern { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); }
+.component-browser__coverage--reference { color: var(--app-foreground-muted); }
+
+.component-browser__card h3 {
+    margin: 1rem 0 .45rem;
+    font-family: var(--app-font-heading);
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.component-browser__card p {
+    margin: 0;
+    color: var(--app-foreground-muted);
+    font-size: .7rem;
+    line-height: 1.55;
+}
+
+.component-browser__card > small {
+    margin-top: .85rem;
+    color: var(--app-foreground-muted);
+    font-size: .57rem;
+    line-height: 1.45;
+}
+
+.component-browser__card footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    color: var(--app-accent);
+    font-size: .62rem;
+    font-weight: 800;
+}
+
+.component-browser__empty {
+    display: grid;
+    justify-items: center;
+    gap: .55rem;
+    margin: 3rem 0;
+    padding: 2rem;
+    border: 1px dashed var(--app-border);
+    border-radius: var(--app-radius-lg);
+    text-align: center;
+}
+
+.component-browser__empty p {
+    margin: 0;
+    color: var(--app-foreground-muted);
+}
+
+@media (max-width: 76rem) {
+    .component-browser__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 64rem) {
+    .component-browser__hero { grid-template-columns: 1fr; }
+    .component-browser__coverage-summary { max-width: 42rem; }
+    .component-browser__workspace { grid-template-columns: 1fr; gap: 0; }
+    .component-browser__sidebar { position: static; max-height: none; padding: 1.25rem 0; overflow: visible; border-bottom: 1px solid var(--app-border); }
+    .component-browser__sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 44rem) {
+    .component-browser__coverage-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .component-browser__coverage-summary article:nth-child(3) { border-top: 1px solid var(--app-border); border-left: 0; }
+    .component-browser__coverage-summary article:nth-child(4) { border-top: 1px solid var(--app-border); }
+    .component-browser__grid,
+    .component-browser__sidebar nav { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 34rem) {
+    .component-browser { width: min(100% - 1rem, 94rem); }
+    .component-browser__results-header { align-items: start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .component-browser__card { transition: none; }
+    .component-browser__card:hover,
+    .component-browser__card:focus-visible { transform: none; }
+}
