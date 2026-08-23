@@ -14,4 +14,19 @@
     <PackageReference Include="xunit.v3" Version="4.0.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Suttisak.Blazor.UserInterface\wwwroot\design-tokens.json"
+          Link="DesignTokenFixtures\design-tokens.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Suttisak.Blazor.UserInterface\wwwroot\css\color.css"
+          Link="DesignTokenFixtures\color.css"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Suttisak.Blazor.UserInterface\wwwroot\css\application.css"
+          Link="DesignTokenFixtures\application.css"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Suttisak.Blazor.UserInterface\wwwroot\css\main.css"
+          Link="DesignTokenFixtures\main.css"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

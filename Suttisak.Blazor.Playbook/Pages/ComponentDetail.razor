@@ -27,31 +27,36 @@
                 </div>
                 <div class="component-detail__meta">
                     <span class="component-detail__status component-detail__status--@Component.Status.ToString().ToLowerInvariant()">@Component.Status</span>
+                    <span class="component-detail__coverage component-detail__coverage--@PlaybookComponentCoverage.SlugFor(Component)">@PlaybookComponentCoverage.LabelFor(Component)</span>
                     <span>@Component.SourceArea</span>
-                    @if (HasInteractiveSpecimen)
+                    @if (CoverageKind == PlaybookComponentCoverageKind.Interactive)
                     {
-                        <span>Interactive specimen</span>
+                        <span>Executable workbench</span>
                     }
-                    @if (Component.HasLiveSpecimen)
+                    else if (CoverageKind == PlaybookComponentCoverageKind.Pattern)
                     {
-                        <a href="@PlaybookComponentCatalog.ResolveExistingHref(Component)">Open current specimen ↗</a>
+                        <a href="@Component.ExistingHref">Open integration pattern ↗</a>
                     }
                     else
                     {
-                        <a href="@Component.ExistingHref">Open integration pattern ↗</a>
+                        <a href="catalog">Return to compact catalog →</a>
                     }
                 </div>
             </header>
 
             <section class="component-detail__section" aria-labelledby="preview-title">
                 <header>
-                    <div><span>01 / Preview</span><h2 id="preview-title">Interactive contract</h2></div>
-                    <div class="component-detail__viewport" aria-label="Preview width">
-                        <button class="@ViewportClass("mobile")" @onclick='() => _viewport = "mobile"'>375</button>
-                        <button class="@ViewportClass("tablet")" @onclick='() => _viewport = "tablet"'>768</button>
-                        <button class="@ViewportClass("desktop")" @onclick='() => _viewport = "desktop"'>1280</button>
-                        <button class="@ViewportClass("full")" @onclick='() => _viewport = "full"'>Full</button>
-                    </div>
+                    <div><span>01 / Coverage</span><h2 id="preview-title">@PreviewTitle</h2></div>
+                    <p>@PlaybookComponentCoverage.DescriptionFor(Component)</p>
+                    @if (HasInteractiveSpecimen)
+                    {
+                        <div class="component-detail__viewport" aria-label="Preview width">
+                            <button class="@ViewportClass("mobile")" @onclick='() => _viewport = "mobile"'>375</button>
+                            <button class="@ViewportClass("tablet")" @onclick='() => _viewport = "tablet"'>768</button>
+                            <button class="@ViewportClass("desktop")" @onclick='() => _viewport = "desktop"'>1280</button>
+                            <button class="@ViewportClass("full")" @onclick='() => _viewport = "full"'>Full</button>
+                        </div>
+                    }
                 </header>
 
                 @if (SpecimenType is not null)
@@ -61,10 +66,19 @@
                 else
                 {
                     <div class="component-detail__lab">
-                        <div class="component-detail__preview-frame component-detail__preview-frame--@_viewport">
-                            <div class="component-detail__generic-preview">
-                                <strong>@Component.Name</strong>
-                                <p>The canonical live or pattern example remains linked above. This detail route owns documentation, status, API metadata, relationships, and design-system guidance while richer executable specimens are added vertically.</p>
+                        <div class="component-detail__preview-frame component-detail__preview-frame--reference">
+                            <div class="component-detail__generic-preview component-detail__generic-preview--@PlaybookComponentCoverage.SlugFor(Component)">
+                                <span>@PlaybookComponentCoverage.LabelFor(Component) coverage</span>
+                                <strong>@GenericPreviewTitle</strong>
+                                <p>@GenericPreviewText</p>
+                                @if (CoverageKind == PlaybookComponentCoverageKind.Pattern)
+                                {
+                                    <a href="@Component.ExistingHref">Open the production-shaped pattern →</a>
+                                }
+                                else
+                                {
+                                    <small>Runtime metadata and related components remain available below while an executable specimen is evaluated.</small>
+                                }
                             </div>
                         </div>
                     </div>
@@ -72,26 +86,30 @@
             </section>
 
             <section class="component-detail__section" aria-labelledby="api-title">
-                <header><div><span>@ApiSectionNumber / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where the executable registry supplies one, so public API changes are visible without duplicating a handwritten table.</p></header>
+                <header><div><span>02 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where one is registered, so public API changes remain visible without maintaining a second handwritten table.</p></header>
                 <ComponentParameterTable ComponentType="@ResolvedRuntimeType" />
             </section>
 
             <section class="component-detail__section" aria-labelledby="accessibility-title">
-                <header><div><span>@QualitySectionNumber / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div></header>
+                <header><div><span>03 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div><p>Coverage is not complete merely because a component renders. Semantics, focus, keyboard behavior, responsive containment, and reduced motion remain part of the public contract.</p></header>
                 <div class="component-detail__quality-grid">
                     <article><strong>Keyboard</strong><p>Interactive controls must remain reachable and usable without a pointing device.</p></article>
-                    <article><strong>Focus</strong><p>Focus visibility is part of the shared component contract and must survive every product theme.</p></article>
+                    <article><strong>Focus</strong><p>Focus visibility is tokenized and must survive every product theme.</p></article>
                     <article><strong>Semantics</strong><p>Prefer native elements and preserve labels, roles, state, and relationships exposed to assistive technology.</p></article>
-                    <article><strong>Responsive</strong><p>Verify narrow containers, long content, reduced motion, light mode, and dark mode before treating a change as complete.</p></article>
+                    <article><strong>Responsive</strong><p>Verify constrained containers, long content, reduced motion, light mode, and dark mode.</p></article>
                 </div>
             </section>
 
             <section class="component-detail__section" aria-labelledby="related-title">
-                <header><div><span>@ComposeSectionNumber / Compose</span><h2 id="related-title">Related components</h2></div></header>
+                <header><div><span>04 / Compose</span><h2 id="related-title">Related components</h2></div><p>Nearby contracts from the same category help agents and developers reuse the system instead of inventing parallel UI.</p></header>
                 <div class="component-detail__related">
                     @foreach (var related in RelatedComponents)
                     {
-                        <a href="@related.DetailHref"><strong>@related.Name</strong><span>@related.Summary</span></a>
+                        <a href="@related.DetailHref">
+                            <strong>@related.Name</strong>
+                            <span>@related.Summary</span>
+                            <small>@PlaybookComponentCoverage.LabelFor(related)</small>
+                        </a>
                     }
                 </div>
             </section>
@@ -112,10 +130,27 @@
     private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
     private Type? ResolvedRuntimeType => Component is null ? null : PlaybookSpecimenRegistry.RuntimeTypeFor(Component);
     private bool HasInteractiveSpecimen => SpecimenType is not null;
+    private PlaybookComponentCoverageKind CoverageKind => Component is null ? PlaybookComponentCoverageKind.Reference : PlaybookComponentCoverage.KindFor(Component);
     private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = _viewport };
-    private string ApiSectionNumber => HasInteractiveSpecimen ? "03" : "02";
-    private string QualitySectionNumber => HasInteractiveSpecimen ? "04" : "03";
-    private string ComposeSectionNumber => HasInteractiveSpecimen ? "05" : "04";
+
+    private string PreviewTitle => CoverageKind switch
+    {
+        PlaybookComponentCoverageKind.Interactive => "Interactive contract",
+        PlaybookComponentCoverageKind.Pattern => "Integration pattern",
+        _ => "Reference contract"
+    };
+
+    private string GenericPreviewTitle => CoverageKind switch
+    {
+        PlaybookComponentCoverageKind.Pattern => "This contract is best understood in context.",
+        _ => "A standalone executable specimen is not registered yet."
+    };
+
+    private string GenericPreviewText => CoverageKind switch
+    {
+        PlaybookComponentCoverageKind.Pattern => "The linked page exercises this component with the surrounding layout, routing, authentication, or content composition it depends on.",
+        _ => "The component is still indexed, searchable, deep-linkable, maturity-labelled, and related to the rest of the design system without pretending a generic placeholder is a real demo."
+    };
 
     private IEnumerable<PlaybookComponentDefinition> RelatedComponents => Component is null
         ? []

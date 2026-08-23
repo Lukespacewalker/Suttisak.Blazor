@@ -11,6 +11,8 @@
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-025E8C?logo=dependabot)](.github/dependabot.yml)
 [![Source available](https://img.shields.io/badge/license-source--available-F59E0B)](#copyright-and-use)
 
+[Run the Playbook](#quick-start) · [Explore components](#component-playbook) · [Inspect tokens](#design-token-contract) · [Contribute](CONTRIBUTING.md) · [Security](SECURITY.md)
+
 </div>
 
 > [!IMPORTANT]
@@ -20,15 +22,24 @@
 
 | Area | Purpose |
 |---|---|
-| `Suttisak.Blazor.UserInterface` | Shared application components, form primitives, data display, overlays, navigation, layouts, marketing, and reader-facing experiences. |
-| `Suttisak.Blazor.Icons` | Dependency-free SVG icon components used by the design system. |
-| `Suttisak.Blazor.Identity.Core` | Shared identity UI primitives and navigation contracts. |
-| `Suttisak.Blazor.Identity` | Reusable ASP.NET Core Identity pages, regions, and route adapters. |
-| `*.Generator` | Roslyn source generators that remove repetitive host wiring. |
-| `Suttisak.Blazor.Playbook` | Human-readable design-system documentation and executable component specimens. |
-| `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage. |
+| `Suttisak.Blazor.UserInterface` | Shared application components, form primitives, data display, overlays, navigation, layouts, marketing, and reader-facing experiences |
+| `Suttisak.Blazor.Icons` | Dependency-free SVG icon components used by the design system |
+| `Suttisak.Blazor.Identity.Core` | Shared identity UI primitives and navigation contracts |
+| `Suttisak.Blazor.Identity` | Reusable ASP.NET Core Identity pages, regions, and route adapters |
+| `*.Generator` | Roslyn source generators that remove repetitive host wiring |
+| `Suttisak.Blazor.Playbook` | Human-readable design-system documentation and executable component specimens |
+| `Suttisak.Blazor.UserInterface.Tests` | Fast bUnit contract tests |
+| `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage |
 
-The Playbook maintains a metadata-driven catalog of **90 components**. Every component has a stable detail route, while executable specimens are being added progressively to test real browser behavior rather than static screenshots.
+The Playbook maintains a metadata-driven catalog of **90 components**. Every component has a stable detail route. **53 components currently have executable workbenches**; the rest are explicitly marked as production-shaped **Pattern** documentation or honest **Reference** coverage rather than being represented by decorative fake demos.
+
+### Design principles
+
+- **Semantic tokens, not product colors.** Shared CSS consumes roles such as `--app-surface`, `--app-foreground`, and `--app-danger`.
+- **Composition over product ownership.** Applications retain copy, localization, routes, authorization rules, domain behavior, and assets.
+- **Executable documentation.** Interactive components are exercised through real Razor specimens, responsive frames, and browser tests.
+- **Accessibility is part of the API.** Keyboard behavior, focus, semantics, reduced motion, containment, and axe checks are treated as public contracts.
+- **AI-readable by design.** Component and token manifests give agents a deterministic map before they generate new UI.
 
 ## Quick start
 
@@ -49,10 +60,10 @@ dotnet run --project Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj
 
 The Playbook exposes:
 
-- `/catalog` for searchable component discovery
-- `/components` for the Component Browser
-- `/components/{slug}` for deep-linkable component documentation
-- `/foundations` for semantic design tokens
+- `/components` for the complete coverage-aware Component Browser
+- `/components/{slug}` for deep-linkable component documentation and executable workbenches
+- `/catalog` for compact searchable discovery
+- `/tokens` and `/foundations` for the manifest-driven design-token explorer
 - `/guidelines` for accessibility, theming, responsive behavior, and maturity rules
 - `/component-manifest.json` for agents and tooling
 
@@ -73,22 +84,37 @@ Feed:
 https://nuget.pkg.github.com/LukeSpacewalker/index.json
 ```
 
+Load the packaged CSS contract once in the host:
+
+```html
+<link href="_content/Suttisak.Blazor.UserInterface/css/main.css" rel="stylesheet" />
+```
+
 ### Compose shared UI
 
 ```razor
 @using Suttisak.Blazor.UserInterface.Components.Common
 
-<AppStack Gap="1rem">
-    <AppButton Variant="AppButtonVariant.Primary"
-               IconStartName="Add"
-               OnClick="CreateAsync">
-        Create record
-    </AppButton>
+<FormSection Title="Contact details"
+             Description="Update how the team can reach this person.">
+    <FormGrid Columns="2">
+        <FormField>
+            <AppTextBox Label="Display name" @bind-Value="model.Name" />
+        </FormField>
+        <FormField>
+            <AppSelect TValue="string"
+                       Label="Department"
+                       Options="DepartmentOptions"
+                       @bind-Value="model.Department" />
+        </FormField>
+    </FormGrid>
 
-    <FeedbackBanner Intent="FeedbackIntent.Success">
-        The record was created.
-    </FeedbackBanner>
-</AppStack>
+    <FormActions>
+        <AppButton Variant="AppButtonVariant.Primary" OnClick="SaveAsync">
+            Save changes
+        </AppButton>
+    </FormActions>
+</FormSection>
 ```
 
 ## Architecture
@@ -107,6 +133,49 @@ flowchart TD
 ```
 
 Applications retain ownership of product copy, routing decisions, branding, and domain behavior. The shared libraries own reusable presentation contracts, accessibility behavior, and integration seams.
+
+## Component Playbook
+
+The Component Browser and detail pages are driven by one catalog instead of maintaining a second hand-written navigation list.
+
+| Coverage | Meaning |
+|---|---|
+| **Interactive** | Executable specimen, responsive widths, runtime API metadata, state controls, and browser accessibility checks |
+| **Pattern** | A full application-shaped example because the component depends on surrounding routing, authentication, layout, or content composition |
+| **Reference** | Searchable and deep-linkable metadata, maturity, API information when available, and related contracts without pretending a placeholder is a real demo |
+
+The browser reports the current coverage counts at runtime. Registering a new component begins in `PlaybookComponentCatalog`; adding a live workbench is a separate, deliberate registration in `PlaybookSpecimenRegistry`.
+
+Machine-readable catalog:
+
+```text
+/component-manifest.json
+```
+
+## Design token contract
+
+The public CSS contract and the packaged JSON manifest describe the same token names and default values:
+
+```text
+_content/Suttisak.Blazor.UserInterface/css/main.css
+_content/Suttisak.Blazor.UserInterface/design-tokens.json
+```
+
+The manifest currently contains **71 public tokens across 10 semantic groups**: identity, surfaces, content, feedback, font families, type scale, spacing, shape and elevation, motion, and layout. The `/tokens` page is generated from that manifest, and unit tests verify that it stays synchronized with the first public CSS declarations.
+
+Applications override semantic roles, preferably with explicit light and dark values:
+
+```css
+:root {
+  --app-brand: light-dark(#475569, #cbd5e1);
+  --app-accent: light-dark(#c2410c, #fb923c);
+  --app-background: light-dark(#f8f8f5, #151719);
+  --app-surface: light-dark(#ffffff, #1d2023);
+  --app-foreground: light-dark(#20252b, #f3f4f6);
+}
+```
+
+Shared component CSS must consume semantic roles. It must not introduce product-specific colors, private aliases, or local magic-number tokens.
 
 ## Identity route adapters
 
@@ -139,7 +208,7 @@ Wrap the application router with `IdentityUiProvider` to add application-owned b
 | Gate | Scope |
 |---|---|
 | Solution build | All projects on .NET 10 |
-| bUnit | Fast shared-component behavior |
+| bUnit | Fast shared-component and token-contract behavior |
 | Playwright | Compiled WebAssembly application in Chromium |
 | axe | Serious and critical WCAG regressions |
 | Gitleaks | Full reachable Git history |
@@ -173,6 +242,7 @@ npm test
 
 - [User interface overview](Suttisak.Blazor.UserInterface/README.md)
 - [Agent guidance](Suttisak.Blazor.UserInterface/AGENTS.md)
+- [Common components](Suttisak.Blazor.UserInterface/Components/Common/README.md)
 - [Marketing components](Suttisak.Blazor.UserInterface/Components/Marketing/README.md)
 - [Reader/result experience components](Suttisak.Blazor.UserInterface/Components/Experience/README.md)
 - [Contribution guide](CONTRIBUTING.md)
