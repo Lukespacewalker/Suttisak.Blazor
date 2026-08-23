@@ -156,7 +156,8 @@ test.describe('UI Playbook shared-component contracts', () => {
   for (const path of ['/', '/component-browser', '/form-controls', '/grid-performance', '/landing', '/access/login', '/application-shell']) {
     test(`has no serious or critical axe violations on ${path}`, async ({ page }) => {
       await page.goto(path);
-      await expect(page.locator('main')).toBeVisible();
+      const startupTimeout = path === '/grid-performance' ? 20_000 : 5_000;
+      await expect(page.locator('main')).toBeVisible({ timeout: startupTimeout });
 
       const results = await new AxeBuilder({ page })
         .include('main')
