@@ -36,6 +36,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Lint GitHub Actions workflows
+        uses: nicholas-fedor/actionlint-action@78fd91fa48051abcbeac14c695a0921b0a71e9a1
+        with:
+          version: '1.7.12'
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
