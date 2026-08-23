@@ -5,11 +5,13 @@ on:
     branches: [master]
     paths:
       - '.github/workflows/ci.yaml'
+      - '.github/workflows/release-packages.yaml'
       - 'Suttisak.Blazor.Icons/**'
       - 'Suttisak.Blazor.Identity/**'
       - 'Suttisak.Blazor.Identity.Core/**'
       - 'Suttisak.Blazor.Identity.Generator/**'
       - 'Suttisak.Blazor.UserInterface/**'
+      - 'Suttisak.Blazor.UserInterface.Generator/**'
       - 'Suttisak.Blazor.UserInterface.Tests/**'
       - 'Suttisak.Blazor.Playbook/**'
       - 'Suttisak.Blazor.Playbook.E2ETests/**'
@@ -19,18 +21,17 @@ on:
       - 'global.json'
       - 'NuGet.config'
       - '**/NuGet.config'
+  workflow_dispatch:
 
-# This workflow only runs after trusted code reaches master. The publishing
-# credential remains isolated from pull-request workflows.
 permissions:
   contents: read
 
 concurrency:
-  group: package-and-publish-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  package-and-publish-lib:
+  verify:
     runs-on: ubuntu-latest
 
     steps:
@@ -64,96 +65,72 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('Suttisak.Blazor.Playbook.E2ETests/package-lock.json') }}
 
-      - name: Restore solution graph once
+      - name: Restore solution
         run: dotnet restore Suttisak.Blazor.slnx -p:Configuration=Release
 
-      - name: Build solution graph once
+      - name: Build solution
         run: dotnet build Suttisak.Blazor.slnx --configuration Release --no-restore -p:ContinuousIntegrationBuild=true
 
       - name: Test shared components
         run: dotnet test Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj --configuration Release --no-build --no-restore
 
-      - name: Install Playwright test dependencies
+      - name: Install Playbook test dependencies
         working-directory: Suttisak.Blazor.Playbook.E2ETests
         run: npm ci
 
-      - name: Install Playwright browser
+      - name: Install Chromium
         working-directory: Suttisak.Blazor.Playbook.E2ETests
         run: npx playwright install --with-deps chromium
 
-      - name: Test the real Playbook in Chromium
+      - name: Test Playbook in Chromium
         working-directory: Suttisak.Blazor.Playbook.E2ETests
         env:
           PLAYBOOK_CONFIGURATION: Release
-          PLAYBOOK_NO_BUILD: true
+          PLAYBOOK_NO_BUILD: 'true'
         run: npm test
 
-      - name: Generate NuGet package
+      - name: Validate NuGet package production
         run: |
+          rm -rf packages
+          mkdir -p packages
+
           dotnet pack Suttisak.Blazor.Icons/Suttisak.Blazor.Icons.csproj \
-          --configuration Release \
-          --no-build --no-restore \
-          -o packages \
-          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
-          -p:ContinuousIntegrationBuild=true
+            --configuration Release \
+            --no-build --no-restore \
+            -o packages \
+            -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
+            -p:ContinuousIntegrationBuild=true
+
           dotnet pack Suttisak.Blazor.Identity.Generator/Suttisak.Blazor.Identity.Generator.csproj \
-          --configuration Release \
-          --no-build --no-restore \
-          -o packages \
-          -p:ContinuousIntegrationBuild=true
+            --configuration Release \
+            --no-build --no-restore \
+            -o packages \
+            -p:ContinuousIntegrationBuild=true
+
           dotnet pack Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.csproj \
-          --configuration Release \
-          --no-build --no-restore \
-          -o packages \
-          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
-          -p:ContinuousIntegrationBuild=true
+            --configuration Release \
+            --no-build --no-restore \
+            -o packages \
+            -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
+            -p:ContinuousIntegrationBuild=true
+
           dotnet pack Suttisak.Blazor.Identity.Core/Suttisak.Blazor.Identity.Core.csproj \
-          --configuration Release \
-          --no-build --no-restore \
-          -o packages \
-          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
-          -p:ContinuousIntegrationBuild=true
+            --configuration Release \
+            --no-build --no-restore \
+            -o packages \
+            -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
+            -p:ContinuousIntegrationBuild=true
+
           dotnet pack Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj \
-          --configuration Release \
-          --no-build --no-restore \
-          -o packages \
-          -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
-          -p:ContinuousIntegrationBuild=true
+            --configuration Release \
+            --no-build --no-restore \
+            -o packages \
+            -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg \
+            -p:ContinuousIntegrationBuild=true
 
-      - name: Publish NuGet packages
-        env:
-          PUSH_NUGET: ${{ secrets.PUSH_NUGET }}
-        run: |
-          test -n "${PUSH_NUGET}" || { echo "PUSH_NUGET is not configured" >&2; exit 1; }
-          push_package() {
-            local package_id="$1"
-            local package_path
-            local package_suffix
-            local matches=()
-
-            # A package ID can be a prefix of another ID (for example,
-            # Suttisak.Blazor.Identity and Suttisak.Blazor.Identity.Core).
-            # Only accept an ordinary .nupkg whose version immediately follows
-            # this exact ID. NuGet package versions always start with a digit.
-            for package_path in packages/"${package_id}".*.nupkg; do
-              [[ -f "${package_path}" && "${package_path}" != *.snupkg ]] || continue
-              package_suffix="${package_path#packages/${package_id}.}"
-              [[ "${package_suffix}" =~ ^[0-9][[:alnum:].-]*\.nupkg$ ]] || continue
-              matches+=("${package_path}")
-            done
-            if [[ "${#matches[@]}" -ne 1 ]]; then
-              echo "Expected exactly one ordinary NuGet package for ${package_id}, found ${#matches[@]}" >&2
-              printf '%s\n' "${matches[@]}" >&2
-              exit 1
-            fi
-            dotnet nuget push "${matches[0]}" \
-              --api-key "${PUSH_NUGET}" \
-              --source https://nuget.pkg.github.com/LukeSpacewalker/index.json \
-              --skip-duplicate
+          package_count="$(find packages -maxdepth 1 -type f -name '*.nupkg' ! -name '*.snupkg' | wc -l)"
+          test "${package_count}" -eq 5 || {
+            echo "Expected five ordinary NuGet packages, found ${package_count}" >&2
+            find packages -maxdepth 1 -type f -print >&2
+            exit 1
           }
-
-          push_package Suttisak.Blazor.Icons
-          push_package Suttisak.Blazor.UserInterface
-          push_package Suttisak.Blazor.Identity.Core
-          push_package Suttisak.Blazor.Identity.Generator
-          push_package Suttisak.Blazor.Identity
