@@ -3,7 +3,7 @@ name: one-time-rewrite-author-email
 on:
   push:
     branches:
-      - chore/rewrite-author-email-noreply
+      - master
 
 permissions:
   contents: write
