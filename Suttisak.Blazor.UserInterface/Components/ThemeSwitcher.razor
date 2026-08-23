@@ -40,9 +40,7 @@
         _module = await JsRuntime.InvokeAsync<IJSObjectReference>(
             "import",
             "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSwitcher.razor.js");
-        var state = await _module.InvokeAsync<ThemeState>("subscribeTheme", _reference);
-        _subscriptionId = state.SubscriptionId;
-        ApplyThemeState(state.Preference, state.Scheme);
+        _subscriptionId = await _module.InvokeAsync<long>("subscribeTheme", _reference);
     }
 
     protected override void OnInitialized()
@@ -67,8 +65,7 @@
     private async Task SetThemeAsync(DesignThemeMode mode)
     {
         if (_module is null) return;
-        var state = await _module.InvokeAsync<ThemeState>("setTheme", mode.ToString());
-        ApplyThemeState(state.Preference, state.Scheme);
+        await _module.InvokeVoidAsync("setTheme", mode.ToString());
     }
 
     private void ApplyThemeState(string preference, string scheme)
@@ -102,12 +99,5 @@
         }
 
         _reference.Dispose();
-    }
-
-    private sealed class ThemeState
-    {
-        public long SubscriptionId { get; set; }
-        public string Preference { get; set; } = "system";
-        public string Scheme { get; set; } = "light";
     }
 }

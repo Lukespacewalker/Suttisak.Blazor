@@ -1,0 +1,41 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Preference controls">
+    <Preview>
+        <div class="preferences-specimen" data-testid="preferences-workbench">
+            <header>
+                <div>
+                    <span>Application preferences</span>
+                    <strong>Language and color scheme</strong>
+                </div>
+                <PreferencesSelector />
+            </header>
+            <p>These are the real shared controls. Culture belongs to the host application; theme preference is synchronized through the reusable browser module.</p>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Contract note
+            <select @bind="_note">
+                <option value="persistence">Browser persistence</option>
+                <option value="system">System color scheme</option>
+                <option value="responsive">Responsive disclosure</option>
+            </select>
+        </label>
+        <p role="status">@NoteText</p>
+    </Controls>
+    <States>
+        <article><span>Culture</span><strong>Host-owned redirect and persistence</strong><small>CultureSelector stores the requested culture, then lets the application apply it and return to the current route.</small></article>
+        <article><span>Theme</span><strong>Light, dark, and system</strong><small>ThemeSwitcher synchronizes every mounted selector and reacts to system-scheme changes.</small></article>
+        <article><span>Responsive</span><strong>One native disclosure on mobile</strong><small>PreferencesSelector keeps the two controls together without duplicating a parallel interaction contract.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _note = "persistence";
+    private string NoteText => _note switch
+    {
+        "system" => "System mode follows prefers-color-scheme and updates while the page remains open.",
+        "responsive" => "Below 900 pixels, the desktop controls become one keyboard-operable details disclosure.",
+        _ => "Theme and culture choices survive a direct route reload in the Playbook host."
+    };
+}

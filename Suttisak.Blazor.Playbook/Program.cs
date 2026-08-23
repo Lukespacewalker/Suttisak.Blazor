@@ -1,6 +1,8 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using Suttisak.Blazor.Playbook;
 using Suttisak.Blazor.UserInterface.Services;
 
@@ -14,4 +16,21 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, PlaybookAuthenticationStateProvider>();
 builder.Services.AddBlazorUserInterface(_ => { });
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();
+var storedCultureName = await jsRuntime.InvokeAsync<string?>("blazorCulture.get");
+if (!string.IsNullOrWhiteSpace(storedCultureName))
+{
+    try
+    {
+        var storedCulture = CultureInfo.GetCultureInfo(storedCultureName);
+        CultureInfo.DefaultThreadCurrentCulture = storedCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = storedCulture;
+    }
+    catch (CultureNotFoundException)
+    {
+        await jsRuntime.InvokeVoidAsync("blazorCulture.clear");
+    }
+}
+
+await host.RunAsync();

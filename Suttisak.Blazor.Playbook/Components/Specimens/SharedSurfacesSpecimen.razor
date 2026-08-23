@@ -1,0 +1,32 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Shared surface controls">
+    <Preview>
+        <div class="shared-surfaces-specimen" data-testid="shared-surfaces-workbench">
+            <Hero Title="@_title" Subtitle="@_subtitle" NoBackground="@(!_showBackground)">
+                <p>Application-owned copy can extend the reusable heading surface without changing its layout contract.</p>
+            </Hero>
+
+            <CompanyFooter Prefix="Created by"
+                           CompanyName="Northstar Studio"
+                           CompanyUrl="https://example.com"
+                           CreatorName="Suttisak S." />
+        </div>
+    </Preview>
+    <Controls>
+        <label>Hero title<input @bind="_title" @bind:event="oninput" /></label>
+        <label>Hero subtitle<input @bind="_subtitle" @bind:event="oninput" /></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_showBackground" /> Background treatment</label>
+    </Controls>
+    <States>
+        <article><span>Heading hierarchy</span><strong>Title then subtitle</strong><small>Hero emits its application-owned title as h1 and supporting subtitle as h2.</small></article>
+        <article><span>Contextual footer</span><strong>Native footer element</strong><small>CompanyFooter remains a contextual footer inside this detail route and becomes contentinfo when placed at the application root.</small></article>
+        <article><span>Narrow screens</span><strong>Wrap instead of overflow</strong><small>Hero stacks vertically and footer attribution wraps without escaping the viewport.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _title = "Make the next decision clear.";
+    private string _subtitle = "A shared surface for application-owned stories.";
+    private bool _showBackground = true;
+}

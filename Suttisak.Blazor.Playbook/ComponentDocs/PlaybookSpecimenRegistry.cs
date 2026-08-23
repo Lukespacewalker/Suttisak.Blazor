@@ -89,7 +89,12 @@ public static class PlaybookSpecimenRegistry
             ["PageBreadcrumbs"] = new(typeof(PageBreadcrumbs), typeof(PageCompositionSpecimen)),
             ["SectionNavigation"] = new(typeof(SectionNavigation), typeof(PageCompositionSpecimen)),
             ["MobileNavigationAccount"] = new(typeof(MobileNavigationAccount), typeof(AccountNavigationSpecimen)),
-            ["ProfileMenu"] = new(typeof(ProfileMenu), typeof(AccountNavigationSpecimen))
+            ["ProfileMenu"] = new(typeof(ProfileMenu), typeof(AccountNavigationSpecimen)),
+            ["CultureSelector"] = new(typeof(CultureSelector), typeof(PreferencesSpecimen)),
+            ["PreferencesSelector"] = new(typeof(PreferencesSelector), typeof(PreferencesSpecimen)),
+            ["ThemeSwitcher"] = new(typeof(ThemeSwitcher), typeof(PreferencesSpecimen)),
+            ["CompanyFooter"] = new(typeof(CompanyFooter), typeof(SharedSurfacesSpecimen)),
+            ["Hero"] = new(typeof(Hero), typeof(SharedSurfacesSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>

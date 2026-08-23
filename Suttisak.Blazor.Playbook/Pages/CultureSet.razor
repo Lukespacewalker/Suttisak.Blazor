@@ -1,0 +1,31 @@
+@page "/Culture/Set"
+@using System.Globalization
+@inject NavigationManager Navigation
+
+@code {
+    [SupplyParameterFromQuery(Name = "culture")]
+    public string? CultureName { get; set; }
+
+    [SupplyParameterFromQuery(Name = "redirectUri")]
+    public string? RedirectUri { get; set; }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            var culture = CultureInfo.GetCultureInfo(CultureName ?? string.Empty);
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        }
+        catch (CultureNotFoundException)
+        {
+        }
+
+        var destination = !string.IsNullOrWhiteSpace(RedirectUri)
+            && RedirectUri.StartsWith("/", StringComparison.Ordinal)
+            && !RedirectUri.StartsWith("//", StringComparison.Ordinal)
+                ? RedirectUri
+                : "/";
+        Navigation.NavigateTo(destination);
+    }
+}
