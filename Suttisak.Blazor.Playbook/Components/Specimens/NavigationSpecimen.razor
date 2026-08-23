@@ -1,0 +1,53 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Navigation controls">
+    <Preview>
+        <div class="component-specimen__demo" data-testid="navigation-workbench">
+            <Nav Embedded="true">
+                <NavGroup Label="Workspace">
+                    <NavItem Href="/components/nav"
+                             Match="NavLinkMatch.All"
+                             IconRestName="Home"
+                             IconActiveName="Home">
+                        Navigation overview
+                    </NavItem>
+                    <NavItem Href="/catalog"
+                             IconRestName="AppsList">
+                        <ChildContent>Component catalog</ChildContent>
+                        <TrailingContent><span aria-label="53 executable components">53</span></TrailingContent>
+                    </NavItem>
+                    <NavSubmenu Label="Reports"
+                                IconName="Document"
+                                Badge="3"
+                                Expanded="@_submenuExpanded"
+                                Active="@_submenuActive"
+                                data-testid="reports-submenu">
+                        <NavItem Href="/components/experience-heading" IconRestName="DocumentText">Experience report</NavItem>
+                        <NavItem Href="/components/app-grid" IconRestName="Table">Data report</NavItem>
+                    </NavSubmenu>
+                </NavGroup>
+            </Nav>
+        </div>
+    </Preview>
+    <Controls>
+        <label>
+            <input type="checkbox" @bind="_submenuExpanded" />
+            Reports expanded
+        </label>
+        <label>
+            <input type="checkbox" @bind="_submenuActive" />
+            Reports active
+        </label>
+    </Controls>
+    <States>
+        <article><span>Embedded</span><strong>Composable nav panel</strong><small>Use inside shells or documentation frames without rendering the full mobile chrome.</small></article>
+        <article><span>Route aware</span><strong>aria-current="page"</strong><small>NavItem derives active state from NavigationManager and its match mode.</small></article>
+        <article><span>Progressive</span><strong>Native details / summary</strong><small>NavSubmenu retains browser keyboard behavior without a custom disclosure script.</small></article>
+        <article><span>Grouped</span><strong>Application-owned labels</strong><small>NavGroup provides structure while the consuming app owns information architecture and copy.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private bool _submenuExpanded = true;
+    private bool _submenuActive;
+}
