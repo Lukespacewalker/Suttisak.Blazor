@@ -1,0 +1,109 @@
+# Temporary read-only verification. This file is never merged.
+name: verify-noreply-history
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-noreply-history.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-reachable-history:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout every reachable branch and tag
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Inspect rewritten identity metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+
+          old_email_sha256 = "87eef6cfee79ae9bddd80844806138b24c66ec5ad9d674633ccfe6e611cdbcc7"
+          noreply_email_sha256 = "e98250a2cdde57501bf918bbfe5e1da647470111b8a15a1ea0829a26daf747f7"
+
+          def run(*args: str) -> list[str]:
+              return subprocess.check_output(["git", *args], text=True).splitlines()
+
+          def normalize(value: str) -> str:
+              return value.strip().removeprefix("<").removesuffix(">").strip().lower()
+
+          def digest(value: str) -> str:
+              return hashlib.sha256(normalize(value).encode("utf-8")).hexdigest()
+
+          def old_matches(values: list[str]) -> int:
+              return sum(digest(value) == old_email_sha256 for value in values if normalize(value))
+
+          commit_emails = run("log", "--all", "--format=%ae%n%ce")
+          tagger_emails = run("for-each-ref", "--format=%(taggeremail)", "refs/tags")
+          emails = [value for value in commit_emails + tagger_emails if normalize(value)]
+          old_count = old_matches(emails)
+          noreply_count = sum(digest(value) == noreply_email_sha256 for value in emails)
+
+          refs = run(
+              "for-each-ref",
+              "--format=%(refname)",
+              "refs/remotes/origin",
+              "refs/tags",
+          )
+          offenders: list[dict[str, object]] = []
+          for ref in refs:
+              if ref == "refs/remotes/origin/HEAD":
+                  continue
+              values = run("log", ref, "--format=%ae%n%ce")
+              if ref.startswith("refs/tags/"):
+                  values += run("for-each-ref", "--format=%(taggeremail)", ref)
+              count = old_matches(values)
+              if count:
+                  offenders.append({"ref": ref, "matches": count})
+
+          result = {
+              "identity_records_inspected": len(emails),
+              "old_identity_hash_matches": old_count,
+              "noreply_identity_hash_matches": noreply_count,
+              "offending_refs": offenders,
+          }
+          with open("noreply-history-verification.json", "w", encoding="utf-8") as handle:
+              json.dump(result, handle, indent=2, sort_keys=True)
+
+          print(json.dumps(result, indent=2, sort_keys=True))
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("## Noreply history verification\n\n")
+              summary.write(f"- Reachable identity records inspected: {len(emails)}\n")
+              summary.write(f"- Old identity hash matches: {old_count}\n")
+              summary.write(f"- Noreply identity hash matches: {noreply_count}\n")
+              if offenders:
+                  summary.write("\n### Refs retaining the old identity hash\n\n")
+                  for item in offenders:
+                      summary.write(f"- `{item['ref']}`: {item['matches']}\n")
+          PY
+
+      - name: Upload verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: noreply-history-verification
+          path: noreply-history-verification.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Enforce zero old identity matches
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          with open("noreply-history-verification.json", encoding="utf-8") as handle:
+              result = json.load(handle)
+          if result["old_identity_hash_matches"] != 0:
+              sys.exit("Old email identity remains in reachable branch/tag history")
+          PY

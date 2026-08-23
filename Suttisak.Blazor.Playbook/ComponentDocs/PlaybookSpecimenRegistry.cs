@@ -1,5 +1,8 @@
 using Suttisak.Blazor.Playbook.Components.Specimens;
 using Suttisak.Blazor.UserInterface.Components.Common;
+using Suttisak.Blazor.UserInterface.Components.Experience;
+using Suttisak.Blazor.UserInterface.Components.Navigation;
+using Suttisak.Blazor.UserInterface.Components.Timezone;
 
 namespace Suttisak.Blazor.Playbook.ComponentDocs;
 
@@ -37,12 +40,32 @@ public static class PlaybookSpecimenRegistry
             ["AppGridPropertyColumn"] = new(typeof(AppGridPropertyColumn<DemoRecord, string>), typeof(AppDataGridSpecimen)),
             ["AppGridSelectColumn"] = new(typeof(AppGridSelectColumn<DemoRecord>), typeof(AppDataGridSpecimen)),
             ["AppGridTemplateColumn"] = new(typeof(AppGridTemplateColumn<DemoRecord>), typeof(AppDataGridSpecimen)),
+            ["AppPagination"] = new(typeof(AppPagination), typeof(PaginationDataSpecimen)),
+            ["AppQuickGrid"] = new(typeof(AppQuickGrid<DemoRecord>), typeof(PaginationDataSpecimen)),
+            ["AppQuickPaginator"] = new(typeof(AppQuickPaginator), typeof(PaginationDataSpecimen)),
+            ["DataGridContainer"] = new(typeof(DataGridContainer), typeof(PaginationDataSpecimen)),
             ["AsyncContent"] = new(typeof(AsyncContent), typeof(FeedbackAsyncSpecimen)),
             ["AppLoading"] = new(typeof(AppLoading), typeof(FeedbackAsyncSpecimen)),
             ["AppProgress"] = new(typeof(AppProgress), typeof(FeedbackAsyncSpecimen)),
             ["AppSkeleton"] = new(typeof(AppSkeleton), typeof(FeedbackAsyncSpecimen)),
             ["FeedbackBanner"] = new(typeof(FeedbackBanner), typeof(FeedbackAsyncSpecimen)),
-            ["StatusPanel"] = new(typeof(StatusPanel), typeof(FeedbackAsyncSpecimen))
+            ["StatusPanel"] = new(typeof(StatusPanel), typeof(FeedbackAsyncSpecimen)),
+            ["AppCard"] = new(typeof(AppCard), typeof(LayoutDisplaySpecimen)),
+            ["AppStack"] = new(typeof(AppStack), typeof(LayoutDisplaySpecimen)),
+            ["AppDivider"] = new(typeof(AppDivider), typeof(LayoutDisplaySpecimen)),
+            ["Pill"] = new(typeof(Pill), typeof(LayoutDisplaySpecimen)),
+            ["Toolbar"] = new(typeof(Toolbar), typeof(LayoutDisplaySpecimen)),
+            ["CardMenu"] = new(typeof(CardMenu), typeof(LayoutDisplaySpecimen)),
+            ["LocalTime"] = new(typeof(LocalTime), typeof(TimeLocalizationSpecimen)),
+            ["InitializeTimeZone"] = new(typeof(InitializeTimeZone), typeof(TimeLocalizationSpecimen)),
+            ["ExperienceCard"] = new(typeof(ExperienceCard), typeof(ExperienceSpecimen)),
+            ["ExperienceDisclosure"] = new(typeof(ExperienceDisclosure), typeof(ExperienceSpecimen)),
+            ["ExperienceDisclosureGroup"] = new(typeof(ExperienceDisclosureGroup), typeof(ExperienceSpecimen)),
+            ["ExperienceHeading"] = new(typeof(ExperienceHeading), typeof(ExperienceSpecimen)),
+            ["Nav"] = new(typeof(Nav), typeof(NavigationSpecimen)),
+            ["NavGroup"] = new(typeof(NavGroup), typeof(NavigationSpecimen)),
+            ["NavItem"] = new(typeof(NavItem), typeof(NavigationSpecimen)),
+            ["NavSubmenu"] = new(typeof(NavSubmenu), typeof(NavigationSpecimen))
         };
 
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>

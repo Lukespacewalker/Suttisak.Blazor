@@ -8,10 +8,7 @@
                       data-testid="layout-stack">
                 <AppCard Title="Assessment overview"
                          Description="Composable application surface with header, body, actions, and footer."
-                         IsActive="@_cardActive"
-                         OnClick="@(_cardInteractive ? HandleCardClick : null)"
-                         aria-label="Assessment overview card"
-                         data-testid="layout-card">
+                         data-testid="surface-card">
                     <Actions>
                         <Pill>Ready</Pill>
                     </Actions>
@@ -26,6 +23,18 @@
                         <small>Updated a few moments ago</small>
                     </Footer>
                 </AppCard>
+
+                @if (_showInteractiveCard)
+                {
+                    <AppCard Title="Review queue"
+                             Description="A dedicated selectable surface without nested interactive controls."
+                             IsActive="@_cardActive"
+                             OnClick="HandleCardClick"
+                             aria-label="Review queue card"
+                             data-testid="interactive-card">
+                        <p>Activate this card with click, Enter, or Space.</p>
+                    </AppCard>
+                }
 
                 <AppDivider Vertical="@_verticalDivider" data-testid="layout-divider" />
 
@@ -56,13 +65,13 @@
         </label>
         <label><input type="checkbox" @bind="_wrap" /> Wrap horizontal content</label>
         <label><input type="checkbox" @bind="_verticalDivider" /> Vertical divider</label>
-        <label><input type="checkbox" @bind="_cardInteractive" /> Interactive card</label>
+        <label><input type="checkbox" @bind="_showInteractiveCard" /> Interactive card</label>
         <label><input type="checkbox" @bind="_cardActive" /> Active card</label>
         <label><input type="checkbox" @bind="_menuDisabled" /> Disabled card menu</label>
     </Controls>
     <States>
         <article><span>Composition</span><strong>Stack → card → toolbar</strong><small>Layout primitives compose without owning application-specific behavior</small></article>
-        <article><span>Interactive</span><strong>Keyboard-operable surface</strong><small>Cards with click behavior expose button semantics and Enter/Space activation</small></article>
+        <article><span>Interactive</span><strong>Keyboard-operable surface</strong><small>Selectable cards avoid nested controls and support Enter/Space activation</small></article>
         <article><span>Separation</span><strong>Semantic divider</strong><small>Horizontal and vertical separators preserve orientation semantics</small></article>
         <article><span>Menu</span><strong>Native button contract</strong><small>CardMenu keeps disabled behavior and keyboard activation native</small></article>
     </States>
@@ -75,7 +84,7 @@
     private string _gap = "1rem";
     private bool _wrap = true;
     private bool _verticalDivider;
-    private bool _cardInteractive = true;
+    private bool _showInteractiveCard = true;
     private bool _cardActive;
     private bool _menuDisabled;
     private string _status = "No action yet.";
