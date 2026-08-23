@@ -1,0 +1,86 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+categories:
+  - type: pre-exclude
+    when:
+      label: skip-changelog
+
+  - type: version-resolver
+    semver-increment: major
+    when:
+      labels:
+        - breaking
+        - major
+
+  - title: '🚨 Breaking changes'
+    semver-increment: major
+    exclusive: true
+    when:
+      labels:
+        - breaking
+        - major
+
+  - title: '✨ Features'
+    semver-increment: minor
+    exclusive: true
+    when:
+      labels:
+        - feature
+        - enhancement
+        - minor
+
+  - title: '🐛 Fixes'
+    semver-increment: patch
+    exclusive: true
+    when:
+      labels:
+        - bug
+        - bugfix
+        - fix
+        - patch
+
+  - title: '📚 Documentation'
+    semver-increment: patch
+    exclusive: true
+    when:
+      labels:
+        - documentation
+        - docs
+
+  - title: '📦 Dependencies'
+    semver-increment: patch
+    exclusive: true
+    when:
+      label: dependencies
+
+  - title: '🧰 Maintenance'
+    semver-increment: patch
+    exclusive: true
+    when:
+      labels:
+        - maintenance
+        - chore
+        - refactor
+        - test
+        - ci
+
+  - title: '🔧 Other changes'
+    semver-increment: patch
+
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+change-title-escapes: '\<*_&'
+no-changes-template: '- No user-facing changes.'
+
+template: |
+  ## What changed
+
+  $CHANGES
+
+  ## Verification
+
+  Releases are rebuilt and verified from the published tag before packages are
+  pushed to GitHub Packages and attached to this release.
+
+footer: |
+  **Full changelog:** https://github.com/Lukespacewalker/Suttisak.Blazor/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
