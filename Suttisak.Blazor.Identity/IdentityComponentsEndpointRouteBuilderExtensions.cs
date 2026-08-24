@@ -47,22 +47,22 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
             HttpContext context,
             ClaimsPrincipal user,
             SignInManager<TUser> signInManager,
-            [FromQuery] string returnUrl) =>
+            [FromQuery] string? returnUrl) =>
         {
             await context.SignOutAsync(IdentityConstants.ExternalScheme);
             await signInManager.SignOutAsync();
-            return TypedResults.LocalRedirect($"~/{returnUrl}");
+            return TypedResults.LocalRedirect(NormalizeLocalReturnUrl(returnUrl));
         });
 
         accountGroup.MapPost("/Logout", async (
             HttpContext context,
             ClaimsPrincipal user,
             SignInManager<TUser> signInManager,
-            [FromForm] string returnUrl) =>
+            [FromForm] string? returnUrl) =>
         {
             await context.SignOutAsync(IdentityConstants.ExternalScheme);
             await signInManager.SignOutAsync();
-            return TypedResults.LocalRedirect($"~/{returnUrl}");
+            return TypedResults.LocalRedirect(NormalizeLocalReturnUrl(returnUrl));
         });
 
         accountGroup.MapPost("/PasskeyCreationOptions", async (
@@ -163,5 +163,19 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         });
 
         return accountGroup;
+    }
+
+    private static string NormalizeLocalReturnUrl(string? returnUrl)
+    {
+        if (string.IsNullOrWhiteSpace(returnUrl)) return "/";
+
+        var value = returnUrl.Trim();
+        if (value.StartsWith("~/", StringComparison.Ordinal)) return value;
+        if (value.StartsWith("//", StringComparison.Ordinal)
+            || value.StartsWith("/\\", StringComparison.Ordinal)
+            || value.StartsWith('\\')
+            || Uri.TryCreate(value, UriKind.Absolute, out _)) return "/";
+
+        return value.StartsWith('/') ? value : $"/{value}";
     }
 }

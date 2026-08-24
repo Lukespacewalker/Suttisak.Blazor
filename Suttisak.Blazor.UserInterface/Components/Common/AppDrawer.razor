@@ -42,6 +42,7 @@
     private TInput _value = default!;
     private bool _hasValue;
     private bool _showAfterRender;
+    private AppOverlayResult<TResult>? _pendingCloseResult;
 
     [Parameter, EditorRequired] public string Title { get; set; } = default!;
     [Parameter] public string? Description { get; set; }
@@ -82,17 +83,11 @@
         return _completion.Task;
     }
 
-    public async Task CloseAsync(TResult result)
-    {
-        _completion?.TrySetResult(AppOverlayResult<TResult>.FromValue(result));
-        await CloseElementAsync();
-    }
+    public Task CloseAsync(TResult result) =>
+        CompleteAfterCloseAsync(AppOverlayResult<TResult>.FromValue(result));
 
-    public async Task CancelAsync()
-    {
-        _completion?.TrySetResult(AppOverlayResult<TResult>.Cancelled());
-        await CloseElementAsync();
-    }
+    public Task CancelAsync() =>
+        CompleteAfterCloseAsync(AppOverlayResult<TResult>.Cancelled());
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -113,9 +108,30 @@
 
     private void HandleNativeClose()
     {
-        _completion?.TrySetResult(AppOverlayResult<TResult>.Cancelled());
+        _completion?.TrySetResult(_pendingCloseResult ?? AppOverlayResult<TResult>.Cancelled());
+        _pendingCloseResult = null;
         _hasValue = false;
         _ = InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CompleteAfterCloseAsync(AppOverlayResult<TResult> result)
+    {
+        var completion = _completion;
+        if (completion is null || completion.Task.IsCompleted) return;
+
+        _pendingCloseResult = result;
+        try
+        {
+            await CloseElementAsync();
+            completion.TrySetResult(result);
+            _pendingCloseResult = null;
+        }
+        catch (Exception exception)
+        {
+            _pendingCloseResult = null;
+            completion.TrySetException(exception);
+            throw;
+        }
     }
 
     private async Task CloseElementAsync()

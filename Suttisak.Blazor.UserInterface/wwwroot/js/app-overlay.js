@@ -21,5 +21,5 @@ export function showModal(element) {
 }
 
 export function close(element) {
-    if (element.open) element.close();
+    if (element?.open) element.close();
 }

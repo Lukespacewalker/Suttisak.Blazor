@@ -46,6 +46,79 @@ public class AppOverlayHostTests
         Assert.Single(host.FindAll(".app-drawer__close"));
     }
 
+    [Fact]
+    public async Task Drawer_cancel_completes_only_after_javascript_closes_the_element()
+    {
+        using var context = new BunitContext();
+        var overlayModule = context.JSInterop.SetupModule(
+            "./_content/Suttisak.Blazor.UserInterface/js/app-overlay.js");
+        overlayModule.SetupVoid("showModal", _ => true).SetVoidResult();
+        var closeInvocation = overlayModule.SetupVoid("close", _ => true);
+
+        var drawer = context.Render<AppDrawer<string, string>>(parameters => parameters
+            .Add(component => component.Title, "Test drawer")
+            .Add(component => component.Body, _ => builder => builder.AddContent(0, "Drawer body")));
+        Task<AppOverlayResult<string>>? resultTask = null;
+        await drawer.InvokeAsync(() =>
+        {
+            resultTask = drawer.Instance.ShowAsync("input");
+        });
+        drawer.WaitForElement(".app-drawer__surface");
+
+        Task? cancelTask = null;
+        await drawer.InvokeAsync(() =>
+        {
+            cancelTask = drawer.Instance.CancelAsync();
+        });
+
+        Assert.NotNull(resultTask);
+        Assert.False(resultTask.IsCompleted);
+        Assert.NotEmpty(drawer.FindAll("dialog.app-drawer"));
+
+        closeInvocation.SetVoidResult();
+        await cancelTask!.WaitAsync(TimeSpan.FromSeconds(1), Xunit.TestContext.Current.CancellationToken);
+        var result = await resultTask.WaitAsync(TimeSpan.FromSeconds(1), Xunit.TestContext.Current.CancellationToken);
+
+        Assert.True(result.IsCancelled);
+    }
+
+    [Fact]
+    public async Task Dialog_close_completes_only_after_javascript_closes_the_element()
+    {
+        using var context = new BunitContext();
+        var overlayModule = context.JSInterop.SetupModule(
+            "./_content/Suttisak.Blazor.UserInterface/js/app-overlay.js");
+        overlayModule.SetupVoid("showModal", _ => true).SetVoidResult();
+        var closeInvocation = overlayModule.SetupVoid("close", _ => true);
+
+        var dialog = context.Render<AppDialog<string, string>>(parameters => parameters
+            .Add(component => component.Title, "Test dialog")
+            .Add(component => component.Body, _ => builder => builder.AddContent(0, "Dialog body")));
+        Task<AppOverlayResult<string>>? resultTask = null;
+        await dialog.InvokeAsync(() =>
+        {
+            resultTask = dialog.Instance.ShowAsync("input");
+        });
+        dialog.WaitForElement(".app-dialog__surface");
+
+        Task? closeTask = null;
+        await dialog.InvokeAsync(() =>
+        {
+            closeTask = dialog.Instance.CloseAsync("saved");
+        });
+
+        Assert.NotNull(resultTask);
+        Assert.False(resultTask.IsCompleted);
+        Assert.NotEmpty(dialog.FindAll("dialog.app-dialog"));
+
+        closeInvocation.SetVoidResult();
+        await closeTask!.WaitAsync(TimeSpan.FromSeconds(1), Xunit.TestContext.Current.CancellationToken);
+        var result = await resultTask.WaitAsync(TimeSpan.FromSeconds(1), Xunit.TestContext.Current.CancellationToken);
+
+        Assert.False(result.IsCancelled);
+        Assert.Equal("saved", result.Value);
+    }
+
     public sealed class TestOverlayBody : ComponentBase
     {
         [Parameter] public string Text { get; set; } = string.Empty;
