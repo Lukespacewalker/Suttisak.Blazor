@@ -8,34 +8,6 @@ window.playbookTheme = {
     }
 };
 
-window.blazorCulture = {
-    storageKey: "BlazorCulture",
-
-    get() {
-        try {
-            return localStorage.getItem(this.storageKey);
-        } catch {
-            return null;
-        }
-    },
-
-    set(cultureName) {
-        try {
-            localStorage.setItem(this.storageKey, cultureName);
-        } catch {
-            // The current page can still apply the culture when storage is unavailable.
-        }
-    },
-
-    clear() {
-        try {
-            localStorage.removeItem(this.storageKey);
-        } catch {
-            // There is no stored value to recover when storage is unavailable.
-        }
-    }
-};
-
 window.playbookMotion = {
     observer: null,
 
