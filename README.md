@@ -73,7 +73,7 @@ Packages are currently distributed through GitHub Packages. Configure the GitHub
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="0.26.3" />
+  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="0.26.4" />
   <PackageReference Include="Suttisak.Blazor.Identity" Version="0.9.1" />
 </ItemGroup>
 ```

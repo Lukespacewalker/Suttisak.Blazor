@@ -1,0 +1,46 @@
+@page "/layout-patterns/application"
+@layout MainLayout
+
+<PageTitle>MainLayout pattern · UI Playbook</PageTitle>
+
+<SectionContent SectionId="@MainLayout.HeaderSection">Application layout pattern</SectionContent>
+<SectionContent SectionId="@MainLayout.NavigationSection">
+    <Nav Embedded="true">
+        <NavGroup Label="Layout contracts">
+            <NavItem Href="layout-patterns/application" Match="NavLinkMatch.All" IconRestName="Home">Application</NavItem>
+            <NavItem Href="layout-patterns/landing" IconRestName="AppsList">Landing</NavItem>
+            <NavItem Href="layout-patterns/identity" IconRestName="Key">Identity</NavItem>
+        </NavGroup>
+    </Nav>
+</SectionContent>
+<SectionContent SectionId="@MainLayout.NavigationFooterSection">
+    <small>Real MainLayout section outlet</small>
+</SectionContent>
+<SectionContent SectionName="@CommonSections.PageHeading">
+    <PageHeading Title="Application layout contract"
+                 Description="Breadcrumb state, named sections, responsive shell, and routed body execute together." />
+</SectionContent>
+
+<PageBreadcrumbs Items="@Breadcrumbs" />
+
+<section class="layout-contract-page" aria-labelledby="main-layout-pattern-title" data-testid="main-layout-pattern">
+    <div class="layout-contract-page__intro">
+        <span>Router-level application layout</span>
+        <h1 id="main-layout-pattern-title">The complete shell, without a nested workbench.</h1>
+        <p>This route executes MainLayout as a real Blazor layout. Its ApplicationShell owns the single main landmark while the page supplies sections, breadcrumbs, heading content, and routed body.</p>
+    </div>
+    <div class="layout-contract-page__grid">
+        <article><strong>Named sections</strong><p>Header, navigation, navigation footer, messages, and page heading remain explicit.</p></article>
+        <article><strong>Breadcrumb cascade</strong><p>PageBreadcrumbs populates MainLayout and clears when navigation changes.</p></article>
+        <article><strong>Responsive shell</strong><p>Desktop collapse and mobile overlay behavior come from the real ApplicationShell.</p></article>
+    </div>
+    <a class="layout-contract-page__back" href="components/main-layout">Return to MainLayout documentation</a>
+</section>
+
+@code {
+    private static readonly Breadcrumb[] Breadcrumbs =
+    [
+        new("Home", "/layout-patterns/application", "Layouts"),
+        new(null, null, "Application")
+    ];
+}

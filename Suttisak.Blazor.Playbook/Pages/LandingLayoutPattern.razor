@@ -1,0 +1,32 @@
+@page "/layout-patterns/landing"
+@layout LandingLayout
+
+<PageTitle>LandingLayout pattern · UI Playbook</PageTitle>
+
+<SectionContent SectionId="@LandingLayout.HeaderSection">Layout pattern</SectionContent>
+<SectionContent SectionId="@LandingLayout.NavigationSection">
+    <a href="#layout-pattern-promise">Promise</a>
+    <a href="#layout-pattern-responsibilities">Responsibilities</a>
+</SectionContent>
+
+<MarketingPage Id="landing-layout-pattern-main" SkipTarget="layout-pattern-responsibilities" SkipText="Skip to responsibilities" data-testid="landing-layout-pattern">
+    <MarketingHero Title="Landing chrome around an application-owned main."
+                   Description="The real LandingLayout supplies the sticky brand, section navigation, and user controls. MarketingPage remains responsible for the main landmark inside the routed body."
+                   TitleId="layout-pattern-promise">
+        <Eyebrow><Pill>Router-level pattern</Pill></Eyebrow>
+        <Actions><MarketingActionLink Href="#layout-pattern-responsibilities">Inspect responsibilities</MarketingActionLink></Actions>
+    </MarketingHero>
+    <section class="layout-contract-page" id="layout-pattern-responsibilities" aria-labelledby="landing-responsibilities-title">
+        <div class="layout-contract-page__intro">
+            <span>Composition boundary</span>
+            <h2 id="landing-responsibilities-title">The layout frames. The application tells the story.</h2>
+        </div>
+        <div class="layout-contract-page__grid">
+            <article><strong>Layout owns</strong><p>Header position, brand slot, navigation slot, and body flow.</p></article>
+            <article><strong>Page owns</strong><p>Main landmark, section IDs, copy, media, routes, and analytics.</p></article>
+            <article><strong>Root owns</strong><p>Time-zone initialization and the recoverable Blazor error surface.</p></article>
+        </div>
+        <a class="layout-contract-page__back" href="components/landing-layout">Return to LandingLayout documentation</a>
+    </section>
+    <footer class="layout-pattern-landing-footer">Rendered through LandingLayout → MarketingPage → application sections</footer>
+</MarketingPage>

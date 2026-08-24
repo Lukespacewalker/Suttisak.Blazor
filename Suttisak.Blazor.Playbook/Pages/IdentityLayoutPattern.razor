@@ -1,0 +1,37 @@
+@page "/layout-patterns/identity"
+@layout IdentityLayout
+
+<PageTitle>IdentityLayout pattern · UI Playbook</PageTitle>
+
+<SectionContent SectionId="@IdentityLayout.CardEyebrowSection">
+    <a class="layout-pattern-brand" href="components/identity-layout">UI Playbook</a>
+</SectionContent>
+<SectionContent SectionId="@IdentityLayout.CardKickerSection">ROUTER-LEVEL IDENTITY</SectionContent>
+<SectionContent SectionId="@IdentityLayout.CardTitleSection">Access your layout workspace</SectionContent>
+<SectionContent SectionId="@IdentityLayout.CardIntroSection">
+    <p>The consuming application supplies identity copy and form behavior through named sections and the routed body.</p>
+</SectionContent>
+<SectionContent SectionId="@IdentityLayout.ShowcaseSection">
+    <div class="layout-pattern-showcase" data-testid="identity-layout-showcase">
+        <span>Identity composition</span>
+        <blockquote>One access structure, application-owned authentication.</blockquote>
+        <p>IdentityLayout maps section outlets into the real AccessPageLayout without moving routes, resources, or sign-in policy into the library.</p>
+    </div>
+</SectionContent>
+
+<form class="layout-contract-form" data-testid="identity-layout-pattern" @onsubmit="PreventSubmit" @onsubmit:preventDefault>
+    <div class="layout-contract-form__row">
+        <AppTextBox Label="Work email" Type="email" Autocomplete="email" @bind-Value="_email" />
+        <AppTextBox Label="Password" Type="password" Autocomplete="current-password" @bind-Value="_password" />
+    </div>
+    <AppCheckbox Label="Keep this demonstration signed in" @bind-Value="_remember" />
+    <AppButton Type="submit" Variant="AppButtonVariant.Primary">Continue</AppButton>
+    <a class="layout-contract-page__back" href="components/identity-layout">Return to IdentityLayout documentation</a>
+</form>
+
+@code {
+    private string? _email;
+    private string? _password;
+    private bool _remember;
+    private static void PreventSubmit() { }
+}

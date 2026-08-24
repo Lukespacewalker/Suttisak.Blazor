@@ -38,6 +38,20 @@
 .component-detail__generic-preview--interactive { border-left: 3px solid var(--app-success); padding-left: 1rem; }
 .component-detail__generic-preview--pattern { border-left: 3px solid var(--app-accent); padding-left: 1rem; }
 .component-detail__generic-preview--reference { border-left: 3px solid var(--app-border); padding-left: 1rem; }
+.component-detail__documentation { display: grid; gap: 1rem; padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--app-border); border-radius: 1rem; background: linear-gradient(135deg, var(--app-accent-soft), transparent 52%), var(--app-surface-muted); }
+.component-detail__documentation--reference { background: var(--app-surface-muted); }
+.component-detail__documentation-intro { display: grid; max-width: 58rem; gap: .6rem; padding-inline-start: 1rem; border-inline-start: 3px solid var(--app-accent); }
+.component-detail__documentation--reference .component-detail__documentation-intro { border-inline-start-color: var(--app-border); }
+.component-detail__documentation-intro > span { color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .62rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.component-detail__documentation-intro h3 { margin: 0; font-family: var(--app-font-heading); font-size: clamp(1.35rem, 3vw, 2rem); letter-spacing: -.025em; }
+.component-detail__documentation-intro p { margin: 0; color: var(--app-foreground-muted); line-height: 1.65; }
+.component-detail__documentation-intro > a { justify-self: start; margin-top: .25rem; color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .76rem; font-weight: 800; text-decoration: none; }
+.component-detail__documentation-intro > a:hover, .component-detail__documentation-intro > a:focus-visible { text-decoration: underline; text-underline-offset: .2rem; }
+.component-detail__documentation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.component-detail__documentation-grid article { padding: 1rem; border: 1px solid var(--app-border); border-radius: .75rem; background: var(--app-surface); }
+.component-detail__documentation-grid strong { color: var(--app-foreground); font-size: .76rem; }
+.component-detail__documentation-grid ul { display: grid; gap: .45rem; margin: .7rem 0 0; padding-inline-start: 1.1rem; color: var(--app-foreground-muted); font-size: .7rem; line-height: 1.5; }
+.component-detail__documentation-grid a { color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-weight: 760; text-underline-offset: .15rem; }
 .component-detail__controls { display: grid; gap: .8rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .component-detail__controls > span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .component-detail__controls label { display: grid; gap: .35rem; color: var(--app-foreground-muted); font-size: .7rem; font-weight: 700; }
@@ -62,6 +76,6 @@
 .component-detail__not-found p { color: var(--app-foreground-muted); line-height: 1.7; }
 .component-detail__not-found a { color: var(--app-accent); font-weight: 800; }
 @media (max-width: 64rem) { .component-detail__lab { grid-template-columns: 1fr; } .component-detail__controls { grid-template-columns: repeat(3, minmax(0, 1fr)); } .component-detail__controls > span { grid-column: 1 / -1; } .component-detail__quality-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 48rem) { .component-detail__hero, .component-detail__section > header { grid-template-columns: 1fr; display: grid; align-items: start; gap: 1rem; } .component-detail__states, .component-detail__related { grid-template-columns: repeat(2, minmax(0, 1fr)); } .component-detail__controls { grid-template-columns: 1fr; } }
-@media (max-width: 34rem) { .component-detail { width: min(100% - 1rem, 88rem); } .component-detail__states, .component-detail__quality-grid, .component-detail__related { grid-template-columns: 1fr; } }
+@media (max-width: 48rem) { .component-detail__hero, .component-detail__section > header { grid-template-columns: 1fr; display: grid; align-items: start; gap: 1rem; } .component-detail__states, .component-detail__related, .component-detail__documentation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .component-detail__controls { grid-template-columns: 1fr; } }
+@media (max-width: 34rem) { .component-detail { width: min(100% - 1rem, 88rem); } .component-detail__states, .component-detail__quality-grid, .component-detail__related, .component-detail__documentation-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .component-detail__preview-frame { transition: none; } }

@@ -5,7 +5,7 @@
             class="mobile-menu-button @(IsMobileOpen ? "mobile-menu-button--open" : null)"
             @onclick="ToggleMobileMenu"
             aria-label="@(IsMobileOpen ? "Close navigation menu" : "Open navigation menu")"
-            aria-expanded="@IsMobileOpen">
+            aria-expanded="@(IsMobileOpen ? "true" : "false")">
         <span class="mobile-menu-button__line"></span>
         <span class="mobile-menu-button__line"></span>
         <span class="mobile-menu-button__line"></span>
