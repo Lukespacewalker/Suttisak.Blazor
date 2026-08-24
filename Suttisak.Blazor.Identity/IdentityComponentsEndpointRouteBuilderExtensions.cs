@@ -173,9 +173,10 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         if (value.StartsWith("~/", StringComparison.Ordinal)) return value;
         if (value.StartsWith("//", StringComparison.Ordinal)
             || value.StartsWith("/\\", StringComparison.Ordinal)
-            || value.StartsWith('\\')
-            || Uri.TryCreate(value, UriKind.Absolute, out _)) return "/";
+            || value.StartsWith('\\')) return "/";
+        if (value.StartsWith('/')) return value;
+        if (Uri.TryCreate(value, UriKind.Absolute, out _)) return "/";
 
-        return value.StartsWith('/') ? value : $"/{value}";
+        return $"/{value}";
     }
 }
