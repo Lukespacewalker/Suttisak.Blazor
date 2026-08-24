@@ -41,6 +41,13 @@ test('Component Browser has no serious or critical accessibility violations', as
   await expectNoSeriousOrCriticalViolations(page);
 });
 
+test('Playbook home reports Interactive coverage from the shared coverage source', async ({ page }) => {
+  await page.goto('/');
+
+  const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Linked live specimens' });
+  await expect(metric.locator('strong')).toHaveText('79');
+});
+
 test('packaged design-token manifest is complete and unique', async ({ request }) => {
   const response = await request.get('/_content/Suttisak.Blazor.UserInterface/design-tokens.json');
   expect(response.ok()).toBeTruthy();

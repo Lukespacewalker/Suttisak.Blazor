@@ -75,7 +75,7 @@
 @code {
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
     private static int ComponentCount => PlaybookComponentCatalog.All.Count;
-    private static int InteractiveCount => PlaybookComponentCatalog.All.Count(component => component.HasLiveSpecimen);
+    private static int InteractiveCount => PlaybookComponentCoverage.Summary.Interactive;
     private static int StableCount => PlaybookComponentCatalog.All.Count(component => component.Status == PlaybookComponentStatus.Stable);
     private static int ThemeCount => PlaybookCatalog.Themes.Count();
 }
