@@ -91,7 +91,7 @@ public static class PlaybookComponentCatalog
 
         // Overlays
         D("AppDialog", "Overlays", "#app-dialog", "Common", ["dialog", "modal", "overlay"]),
-        D("AppDrawer", "Overlays", "#app-dialog", "Common", ["drawer", "panel", "overlay", "action-only"]),
+        D("AppDrawer", "Overlays", "#app-dialog", "Common", ["drawer", "panel", "overlay"]),
 
         // Navigation
         D("AppTabs", "Navigation", "#app-tabs", "Navigation", ["tabs", "navigation", "keyboard"]),

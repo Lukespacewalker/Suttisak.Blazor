@@ -101,7 +101,7 @@ public static class PlaybookComponentCoverage
                 "Open an overlay workbench",
                 ["Attach to the overlay queue, render one active request, and complete or fault queued tasks.", "Cascade controllers into dynamic overlay bodies."],
                 ["When to request an overlay, its content, result handling, and application workflow."],
-                ["AppOverlayHostTests verifies queued dynamic drawer rendering.", "AppDrawer browser tests verify action-only dismissal, including Escape and backdrop protection."],
+                ["AppOverlayHostTests verifies queued dynamic drawer rendering.", "AppDrawer browser tests cover X, Escape, and protected-backdrop dismissal behavior."],
                 ["AppDialog", "AppDrawer", "AppButton"]),
             ["LayoutMobileMenuButtonWrapper"] = Reference(
                 "LayoutMobileMenuButtonWrapper is a legacy cascading-state adapter. Without NavComponentState it has no honest standalone behavior or production route.",

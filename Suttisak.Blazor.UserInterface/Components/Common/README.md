@@ -108,11 +108,13 @@ and the close button available but stop dialog backdrop clicks, set
 `Warning`, and `Error` visual treatments. Set `Dangerous="true"` for destructive
 confirmation and pair it with the filled `AppButtonVariant.DangerPrimary` action.
 
-`AppDrawer` is deliberately action-only so an in-progress form cannot disappear:
-Escape and backdrop clicks are blocked, and the component has no built-in close
-button. Provide explicit `AppButton` actions in its footer that call
-`drawer.CancelAsync()` or `drawer.CloseAsync(result)`. Drawers can open from
-either side and have narrow, standard, and wide sizes and also support `Mode`.
+`AppDrawer` uses the same dismissal controls as `AppDialog`: it is dismissible
+by default, showing a close button and allowing Escape and backdrop cancellation.
+Set `PreventDismissOnOutsideClick="true"` to protect an in-progress form from
+backdrop clicks while retaining the explicit close button and Escape. Set
+`Dismissible="false"` when the drawer must require a footer action. Drawers can
+open from either side and have narrow, standard, and wide sizes and also support
+`Mode`.
 
 ```razor
 <AppDialog TInput="Person" TResult="Person" @ref="deleteDialog"

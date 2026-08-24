@@ -42,8 +42,7 @@ Both have an overload accepting body/footer `RenderFragment<AppOverlayController
 when an application does not need a separate body component. `ShowConfirmationAsync`,
 `ShowErrorAsync`, and `ShowInformationAsync` supply common vendor-free feedback.
 Requests are serialized by the host, so overlapping calls cannot stack native
-dialogs or lose their result. Service-hosted drawers are action-only regardless
-of `AppOverlayOptions.Dismissible` or `PreventDismissOnOutsideClick`: Escape,
-the dimmed backdrop, and a header close button cannot cancel a drawer. The body
-or footer must expose an explicit action that calls its cascaded
-`AppOverlayController.CancelAsync()` or `CloseAsync(result)`.
+dialogs or lose their result. `AppOverlayOptions.Dismissible` and
+`PreventDismissOnOutsideClick` apply equally to service-hosted dialogs and
+drawers. Set `PreventDismissOnOutsideClick` when a drawer should retain the
+close button and Escape but protect an in-progress form from backdrop clicks.

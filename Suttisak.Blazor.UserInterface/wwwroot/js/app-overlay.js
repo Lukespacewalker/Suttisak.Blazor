@@ -5,15 +5,13 @@ function initialize(element) {
     initialized.add(element);
 
     element.addEventListener("cancel", event => {
-        if (element.dataset.preventNativeDismiss === "true"
-            || element.dataset.dismissible !== "true") event.preventDefault();
+        if (element.dataset.dismissible !== "true") event.preventDefault();
     });
 
     element.addEventListener("click", event => {
         if (event.target === element
             && element.dataset.dismissible === "true"
-            && element.dataset.preventOutsideDismiss !== "true"
-            && element.dataset.preventNativeDismiss !== "true") element.close();
+            && element.dataset.preventOutsideDismiss !== "true") element.close();
     });
 }
 

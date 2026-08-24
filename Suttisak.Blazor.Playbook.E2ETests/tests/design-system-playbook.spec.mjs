@@ -114,32 +114,34 @@ test('AppDialog specimen opens a native modal with runtime API metadata and clos
   await expect(page.getByText('Result: Confirmed')).toBeVisible();
 });
 
-test('AppDrawer specimen is action-only and opens from the configured edge', async ({ page }) => {
+test('AppDrawer supports X and Escape while protecting against backdrop dismissal', async ({ page }) => {
   await page.goto('/components/app-drawer');
 
   await expect(page.getByRole('complementary', { name: 'AppDrawer controls' })).toBeVisible();
   await expect(page.getByRole('rowheader', { name: 'Position' })).toBeVisible();
   await page.getByLabel('Position').selectOption('Start');
+  await page.getByLabel('Prevent outside dismiss').check();
   await page.getByRole('button', { name: 'Open drawer' }).click();
 
   const drawer = page.getByRole('dialog', { name: 'Workspace settings' });
   await expect(drawer).toBeVisible();
   await expect(drawer).toHaveClass(/app-drawer--start/);
-  await expect(drawer).toHaveAttribute('data-dismissible', 'false');
+  await expect(drawer).toHaveAttribute('data-dismissible', 'true');
   await expect(drawer).toHaveAttribute('data-prevent-outside-dismiss', 'true');
-  await expect(drawer).toHaveAttribute('data-prevent-native-dismiss', 'true');
-  await expect(drawer.getByRole('button', { name: 'Close drawer' })).toHaveCount(0);
-
-  await drawer.press('Escape');
-  await expect(drawer).toBeVisible();
+  await expect(drawer.getByRole('button', { name: 'Close drawer' })).toBeVisible();
 
   const viewport = page.viewportSize();
   await page.mouse.click((viewport?.width ?? 1280) - 5, 5);
   await expect(drawer).toBeVisible();
 
-  await drawer.getByRole('button', { name: 'Cancel' }).click();
+  await drawer.getByRole('button', { name: 'Close drawer' }).click();
   await expect(drawer).not.toBeVisible();
   await expect(page.getByText('Result: cancelled')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Open drawer' }).click();
+  await expect(drawer).toBeVisible();
+  await drawer.press('Escape');
+  await expect(drawer).not.toBeVisible();
 });
 
 test('Foundations exposes semantic tokens instead of a parallel palette', async ({ page }) => {
