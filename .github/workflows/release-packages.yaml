@@ -110,6 +110,7 @@ jobs:
 
       - name: Publish new packages to GitHub Packages
         env:
+          GH_TOKEN: ${{ github.token }}
           NUGET_TOKEN: ${{ github.token }}
         run: |
           push_package() {
@@ -117,6 +118,7 @@ jobs:
             local package_path
             local package_filename
             local package_suffix
+            local package_version
             local matches=()
 
             for package_path in packages/"${package_id}".*.nupkg; do
@@ -131,6 +133,17 @@ jobs:
               echo "Expected exactly one ordinary NuGet package for ${package_id}, found ${#matches[@]}" >&2
               printf '%s\n' "${matches[@]}" >&2
               exit 1
+            fi
+
+            package_filename="$(basename -- "${matches[0]}")"
+            package_suffix="${package_filename#"${package_id}".}"
+            package_version="${package_suffix%.nupkg}"
+
+            if gh api --paginate \
+              "/users/LukeSpacewalker/packages/nuget/${package_id}/versions" \
+              --jq '.[].name' 2>/dev/null | grep -Fxq "${package_version}"; then
+              echo "${package_id} ${package_version} is already published; skipping."
+              return
             fi
 
             dotnet nuget push "${matches[0]}" \

@@ -18,6 +18,15 @@ When changing the reusable UI library, follow this sequence:
 
 Do not change their Debug `ProjectReference` entries; they intentionally use the sibling source project during local development. Before committing an app, search the repository for `Suttisak.Blazor.UserInterface` so every Release package reference in that app receives the same version.
 
+After pushing the library release commit, wait for the `ci` workflow to pass, including the shared tests, Playbook browser tests, and NuGet package validation. Publishing is an explicit workflow dispatch; a push to `master` does not publish packages by itself:
+
+```powershell
+gh workflow run release-packages.yaml -f tag=<full-release-commit-sha>
+gh run watch <release-workflow-run-id> --exit-status
+```
+
+Do not update or push consuming repositories until the release workflow has successfully published the new package versions to GitHub Packages. Validate the package-reference path by restoring and building each consumer in Release configuration before committing it.
+
 ## Building consuming applications across configurations
 
 The consuming applications select sibling `ProjectReference` entries in Debug and NuGet `PackageReference` entries in Release. NuGet restore output is configuration-specific. After switching between Debug and Release, do not immediately build with `--no-restore`; a stale `project.assets.json` can make both the package DLL and sibling project DLL appear in the same build and can also produce duplicate static-web-assets errors.
