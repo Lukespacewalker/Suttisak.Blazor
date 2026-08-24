@@ -286,6 +286,7 @@ FakesAssemblies/
 node_modules/
 playwright-report/
 test-results/
+.wrangler/
 
 # Visual Studio 6 build log
 *.plg
