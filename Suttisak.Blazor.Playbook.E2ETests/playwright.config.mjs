@@ -2,6 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 const configuration = process.env.PLAYBOOK_CONFIGURATION ?? 'Debug';
 const noBuild = process.env.PLAYBOOK_NO_BUILD === 'true' ? ' --no-build' : '';
+const port = process.env.PLAYBOOK_PORT ?? '5174';
+const serverUrl = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: './tests',
@@ -10,7 +12,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:5174',
+    baseURL: serverUrl,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure'
   },
@@ -18,8 +20,8 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } }
   ],
   webServer: {
-    command: `dotnet run --project ../Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj --configuration ${configuration}${noBuild} -- --urls http://127.0.0.1:5174`,
-    url: 'http://127.0.0.1:5174',
+    command: `dotnet run --project ../Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj --configuration ${configuration}${noBuild} -- --urls ${serverUrl}`,
+    url: serverUrl,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000
   }

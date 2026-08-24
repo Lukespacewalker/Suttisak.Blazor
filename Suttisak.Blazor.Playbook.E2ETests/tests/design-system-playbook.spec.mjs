@@ -50,6 +50,29 @@ test('AppTextBox detail route exposes inherited input API and live controls', as
   await expect(page.getByRole('textbox', { name: 'Full name' }).first()).toHaveValue('Grace Hopper');
 });
 
+test('AppTextBox uses an outline-free filled surface with a visible soft focus state', async ({ page }) => {
+  await page.goto('/components/app-text-box');
+
+  const preview = page.locator('.component-detail__preview-frame').first();
+  const input = preview.getByRole('textbox', { name: 'Full name' });
+  const surface = preview.locator('.app-form-control__input-wrap').first();
+
+  await expect(surface).toHaveCSS('border-top-color', 'rgba(0, 0, 0, 0)');
+  await expect(surface).toHaveCSS('box-shadow', 'none');
+
+  await input.focus();
+  await expect(input).toBeFocused();
+  await expect(input).toHaveCSS('outline-style', 'none');
+  await expect(surface).not.toHaveCSS('box-shadow', 'none');
+  await expect(surface).toHaveCSS('border-top-color', 'rgba(0, 0, 0, 0)');
+
+  await page.getByRole('button', { name: 'Use dark theme' }).first().click();
+  await input.focus();
+  await expect(input).toHaveCSS('outline-style', 'none');
+  await expect(surface).not.toHaveCSS('box-shadow', 'none');
+  await expect(surface).toHaveCSS('border-top-color', 'rgba(0, 0, 0, 0)');
+});
+
 test('AppCheckbox detail route keeps control state wired to the live specimen', async ({ page }) => {
   await page.goto('/components/app-checkbox');
 
