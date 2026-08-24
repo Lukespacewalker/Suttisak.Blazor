@@ -1,4 +1,6 @@
-<a class="app-shell__skip-link" href="#@MainContentId">@SkipLinkText</a>
+@inject NavigationManager NavigationManager
+
+<a class="app-shell__skip-link" href="@SkipLinkHref" @onclick="FocusMainAsync">@SkipLinkText</a>
 
 <div class="@CssClassValue" data-app-shell @attributes="AdditionalAttributes">
     <header class="app-shell__header">
@@ -74,7 +76,7 @@
                 data-shell-action="close"
                 aria-label="@CloseMenuLabel"></button>
 
-        <main id="@MainContentId" class="app-shell__main" tabindex="-1">
+        <main id="@MainContentId" class="app-shell__main" tabindex="-1" @ref="_mainElement">
             @if (Heading is not null)
             {
                 <div class="app-shell__page-heading">@Heading</div>
@@ -86,6 +88,7 @@
 
 @code {
     private readonly string _generatedNavigationId = $"app-shell-navigation-{Guid.NewGuid():N}";
+    private ElementReference _mainElement;
     [Parameter, EditorRequired] public RenderFragment Brand { get; set; } = default!;
     [Parameter, EditorRequired] public RenderFragment Navigation { get; set; } = default!;
     [Parameter] public RenderFragment? HeaderActions { get; set; }
@@ -111,6 +114,8 @@
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private string NavigationIdValue => NavigationId ?? _generatedNavigationId;
+    private string SkipLinkHref => $"{NavigationManager.ToAbsoluteUri(NavigationManager.Uri).PathAndQuery}#{Uri.EscapeDataString(MainContentId)}";
+    private Task FocusMainAsync() => _mainElement.FocusAsync().AsTask();
     private string CssClassValue => string.IsNullOrWhiteSpace(Class)
         ? "app-shell"
         : $"app-shell {Class}";

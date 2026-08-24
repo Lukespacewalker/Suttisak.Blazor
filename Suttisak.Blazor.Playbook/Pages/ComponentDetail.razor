@@ -33,9 +33,9 @@
                     {
                         <span>Executable workbench</span>
                     }
-                    else if (CoverageKind == PlaybookComponentCoverageKind.Pattern)
+                    else if (CoverageDocumentation?.IntegrationRoute is not null)
                     {
-                        <a href="@Component.ExistingHref">Open integration pattern ↗</a>
+                        <a href="@CoverageDocumentation.IntegrationRoute">@CoverageDocumentation.IntegrationRouteLabel ↗</a>
                     }
                     else
                     {
@@ -65,23 +65,44 @@
                 }
                 else
                 {
-                    <div class="component-detail__lab">
-                        <div class="component-detail__preview-frame component-detail__preview-frame--reference">
-                            <div class="component-detail__generic-preview component-detail__generic-preview--@PlaybookComponentCoverage.SlugFor(Component)">
-                                <span>@PlaybookComponentCoverage.LabelFor(Component) coverage</span>
-                                <strong>@GenericPreviewTitle</strong>
-                                <p>@GenericPreviewText</p>
-                                @if (CoverageKind == PlaybookComponentCoverageKind.Pattern)
+                    @if (CoverageDocumentation is not null)
+                    {
+                        <div class="component-detail__documentation component-detail__documentation--@PlaybookComponentCoverage.SlugFor(Component)" data-testid="coverage-documentation">
+                            <div class="component-detail__documentation-intro">
+                                <span>Documentation only · not executed here</span>
+                                <h3>@(CoverageKind == PlaybookComponentCoverageKind.Pattern ? "Why this is a Pattern" : "Why this is a Reference")</h3>
+                                <p>@CoverageDocumentation.Rationale</p>
+                                @if (CoverageDocumentation.IntegrationRoute is not null)
                                 {
-                                    <a href="@Component.ExistingHref">Open the production-shaped pattern →</a>
-                                }
-                                else
-                                {
-                                    <small>Runtime metadata and related components remain available below while an executable specimen is evaluated.</small>
+                                    <a href="@CoverageDocumentation.IntegrationRoute">@CoverageDocumentation.IntegrationRouteLabel →</a>
                                 }
                             </div>
+
+                            <div class="component-detail__documentation-grid">
+                                <article>
+                                    <strong>Composition responsibilities</strong>
+                                    <ul>@foreach (var item in CoverageDocumentation.CompositionResponsibilities) { <li>@item</li> }</ul>
+                                </article>
+                                <article>
+                                    <strong>Application-owned responsibilities</strong>
+                                    <ul>@foreach (var item in CoverageDocumentation.ApplicationResponsibilities) { <li>@item</li> }</ul>
+                                </article>
+                                <article>
+                                    <strong>Regression evidence</strong>
+                                    <ul>@foreach (var item in CoverageDocumentation.RegressionEvidence) { <li>@item</li> }</ul>
+                                </article>
+                                <article>
+                                    <strong>Related components</strong>
+                                    <ul>
+                                        @foreach (var related in DocumentationRelatedComponents)
+                                        {
+                                            <li><a href="@related.DetailHref">@related.Name</a></li>
+                                        }
+                                    </ul>
+                                </article>
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
             </section>
 
@@ -131,6 +152,7 @@
     private Type? ResolvedRuntimeType => Component is null ? null : PlaybookSpecimenRegistry.RuntimeTypeFor(Component);
     private bool HasInteractiveSpecimen => SpecimenType is not null;
     private PlaybookComponentCoverageKind CoverageKind => Component is null ? PlaybookComponentCoverageKind.Reference : PlaybookComponentCoverage.KindFor(Component);
+    private PlaybookCoverageDocumentation? CoverageDocumentation => Component is null ? null : PlaybookComponentCoverage.DocumentationFor(Component);
     private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = _viewport };
 
     private string PreviewTitle => CoverageKind switch
@@ -140,21 +162,16 @@
         _ => "Reference contract"
     };
 
-    private string GenericPreviewTitle => CoverageKind switch
-    {
-        PlaybookComponentCoverageKind.Pattern => "This contract is best understood in context.",
-        _ => "A standalone executable specimen is not registered yet."
-    };
-
-    private string GenericPreviewText => CoverageKind switch
-    {
-        PlaybookComponentCoverageKind.Pattern => "The linked page exercises this component with the surrounding layout, routing, authentication, or content composition it depends on.",
-        _ => "The component is still indexed, searchable, deep-linkable, maturity-labelled, and related to the rest of the design system without pretending a generic placeholder is a real demo."
-    };
-
     private IEnumerable<PlaybookComponentDefinition> RelatedComponents => Component is null
         ? []
         : PlaybookComponentCatalog.All.Where(candidate => candidate.Category == Component.Category && candidate.Slug != Component.Slug).Take(6);
+
+    private IEnumerable<PlaybookComponentDefinition> DocumentationRelatedComponents => CoverageDocumentation is null
+        ? []
+        : CoverageDocumentation.RelatedComponents
+            .Select(name => PlaybookComponentCatalog.All.FirstOrDefault(component => component.Name == name))
+            .Where(component => component is not null)
+            .Cast<PlaybookComponentDefinition>();
 
     private string ViewportClass(string candidate) => candidate == _viewport ? "is-active" : string.Empty;
 }

@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using Suttisak.Blazor.UserInterface.Components.Marketing;
+using Suttisak.Blazor.UserInterface.Components.Navigation;
 using Suttisak.Blazor.UserInterface.Components.Common;
+using Suttisak.Blazor.UserInterface.Layouts.Shared;
 
 namespace Suttisak.Blazor.Playbook.ComponentDocs;
 
@@ -121,7 +124,7 @@ public static class PlaybookComponentCatalog
         D("MarketingContainer", "Marketing", "landing", "Marketing", ["marketing", "container", "layout"]),
         D("MarketingFeatureGrid", "Marketing", "landing", "Marketing", ["marketing", "feature", "grid"]),
         D("MarketingHero", "Marketing", "landing", "Marketing", ["marketing", "hero", "heading"]),
-        D("MarketingPage", "Marketing", "landing", "Marketing", ["marketing", "page", "layout"]),
+        D("MarketingPage", "Marketing", "landing", "Marketing", ["marketing", "page", "layout"], typeof(MarketingPage)),
         D("MarketingProductFrame", "Marketing", "landing", "Marketing", ["marketing", "product", "frame"]),
         D("MarketingProofItem", "Marketing", "landing", "Marketing", ["marketing", "proof", "content"]),
         D("MarketingProofStrip", "Marketing", "landing", "Marketing", ["marketing", "proof", "strip"]),
@@ -130,18 +133,18 @@ public static class PlaybookComponentCatalog
         D("MarketingStepList", "Marketing", "landing", "Marketing", ["marketing", "steps", "content"]),
 
         // Application layouts
-        D("AccessPageLayout", "Application layouts", "access/login", "Layouts", ["layout", "access", "identity"]),
-        D("ApplicationShell", "Application layouts", "application-shell", "Layouts", ["layout", "application", "shell"]),
-        D("HeaderFooterLayout", "Application layouts", "#library-directory", "Layouts", ["layout", "header", "footer"]),
-        D("IdentityLayout", "Application layouts", "access/login", "Layouts", ["layout", "identity", "access"]),
-        D("LandingLayout", "Application layouts", "landing", "Layouts", ["layout", "landing", "marketing"]),
-        D("MainLayout", "Application layouts", "application-shell", "Layouts", ["layout", "application", "main"]),
-        D("RootLayout", "Application layouts", "#library-directory", "Layouts", ["layout", "root", "application"]),
+        D("AccessPageLayout", "Application layouts", "access/login", "Layouts", ["layout", "access", "identity"], typeof(AccessPageLayout)),
+        D("ApplicationShell", "Application layouts", "application-shell", "Layouts", ["layout", "application", "shell"], typeof(ApplicationShell)),
+        D("HeaderFooterLayout", "Application layouts", "layout-patterns/header-footer", "Layouts", ["layout", "header", "footer"], typeof(HeaderFooterLayout)),
+        D("IdentityLayout", "Application layouts", "layout-patterns/identity", "Layouts", ["layout", "identity", "access"], typeof(IdentityLayout)),
+        D("LandingLayout", "Application layouts", "layout-patterns/landing", "Layouts", ["layout", "landing", "marketing"], typeof(LandingLayout)),
+        D("MainLayout", "Application layouts", "layout-patterns/application", "Layouts", ["layout", "application", "main"], typeof(MainLayout)),
+        D("RootLayout", "Application layouts", "layout-patterns/application", "Layouts", ["layout", "root", "application"], typeof(RootLayout)),
 
         // Infrastructure
-        D("AppInputSupport", "Infrastructure", "#library-directory", "Common", ["infrastructure", "input", "form"], status: PlaybookComponentStatus.Beta),
-        D("AppOverlayHost", "Infrastructure", "#app-dialog", "Common", ["infrastructure", "overlay", "host"], status: PlaybookComponentStatus.Beta),
-        D("LayoutMobileMenuButtonWrapper", "Infrastructure", "application-shell", "Layouts", ["infrastructure", "mobile", "layout"], status: PlaybookComponentStatus.Beta)
+        D("AppInputSupport", "Infrastructure", "#library-directory", "Common", ["infrastructure", "input", "form"], runtimeType: typeof(AppInputSupport), status: PlaybookComponentStatus.Beta),
+        D("AppOverlayHost", "Infrastructure", "#app-dialog", "Common", ["infrastructure", "overlay", "host"], runtimeType: typeof(AppOverlayHost), status: PlaybookComponentStatus.Beta),
+        D("LayoutMobileMenuButtonWrapper", "Infrastructure", "#library-directory", "Layouts", ["infrastructure", "mobile", "layout"], runtimeType: typeof(LayoutMobileMenuButtonWrapper), status: PlaybookComponentStatus.Beta)
     ];
 
     public static IEnumerable<IGrouping<string, PlaybookComponentDefinition>> Groups =>

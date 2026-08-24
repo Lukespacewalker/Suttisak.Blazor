@@ -14,6 +14,27 @@ body {
 button,
 select { font: inherit; }
 
+.layout-contract-page { display: grid; width: min(100% - 2rem, 72rem); min-width: 0; box-sizing: border-box; margin-inline: auto; padding: clamp(3rem, 8vw, 7rem) 0; gap: 2rem; }
+.layout-contract-page__intro { display: grid; max-width: 58rem; gap: .75rem; }
+.layout-contract-page__intro > span { color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .66rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+.layout-contract-page__intro h1, .layout-contract-page__intro h2 { margin: 0; font-family: var(--app-font-heading); font-size: clamp(2.2rem, 6vw, 5rem); line-height: .95; letter-spacing: -.05em; }
+.layout-contract-page__intro p { max-width: 48rem; margin: 0; color: var(--app-foreground-muted); line-height: 1.7; }
+.layout-contract-page__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.layout-contract-page__grid article { padding: 1.1rem; border: 1px solid var(--app-border); border-radius: .25rem 1rem; background: var(--app-surface); }
+.layout-contract-page__grid strong { color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .78rem; }
+.layout-contract-page__grid p { margin: .55rem 0 0; color: var(--app-foreground-muted); font-size: .74rem; line-height: 1.55; }
+.layout-contract-page__back { justify-self: start; color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .76rem; font-weight: 800; text-underline-offset: .2rem; }
+.layout-contract-form { display: grid; gap: 1rem; }
+.layout-contract-form__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.layout-contract-form > .app-button { justify-self: stretch; }
+.layout-pattern-brand { color: var(--app-foreground); font-family: var(--app-font-heading); font-weight: 800; text-decoration: none; }
+.layout-pattern-showcase { display: grid; align-content: center; min-height: 18rem; gap: 1rem; }
+.layout-pattern-showcase > span { color: var(--app-on-brand); font-size: .66rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+.layout-pattern-showcase blockquote { max-width: 18ch; margin: 0; color: var(--app-on-brand); font-family: var(--app-font-heading); font-size: clamp(1.7rem, 4vw, 3.3rem); line-height: 1.05; }
+.layout-pattern-showcase p { max-width: 34rem; margin: 0; color: var(--app-on-brand); opacity: .82; line-height: 1.65; }
+.layout-pattern-landing-footer { padding: 2rem; border-top: 1px solid var(--app-border); color: var(--app-foreground-muted); text-align: center; }
+@media (max-width: 48rem) { .layout-contract-page__grid { grid-template-columns: 1fr; } .layout-contract-form__row { grid-template-columns: 1fr; } }
+
 .playbook {
     width: 100%;
     min-height: 100dvh;
@@ -194,7 +215,7 @@ select { font: inherit; }
 .landing-workbench__note { display: grid; grid-template-columns: auto minmax(16rem, 1fr) auto; align-items: center; gap: 1.5rem; max-width: 96rem; margin: 0 auto 1rem; padding: .85rem 1rem; border: 1px solid var(--app-border); border-radius: .9rem; background: var(--app-surface); box-shadow: 0 .75rem 2rem var(--app-shadow-color); }
 .landing-workbench__note > div { display: grid; gap: .15rem; }
 .landing-workbench__note p { max-width: 48rem; margin: 0 auto; color: var(--app-foreground-muted); font-size: .85rem; line-height: 1.5; }
-.landing-workbench__badge { padding: .4rem .65rem; border: 1px solid var(--app-accent-border); border-radius: 99rem; background: var(--app-accent-soft); color: var(--app-accent); font-size: .7rem; font-weight: 800; text-transform: uppercase; }
+.landing-workbench__badge { padding: .4rem .65rem; border: 1px solid var(--app-accent-border); border-radius: 99rem; background: var(--app-accent-soft); color: color-mix(in srgb, var(--app-accent) 65%, var(--app-foreground)); font-size: .7rem; font-weight: 800; text-transform: uppercase; }
 .landing-preview { container: landing-preview / inline-size; max-width: 96rem; min-width: 0; margin: 0 auto; overflow: hidden; border: 1px solid var(--app-border); border-radius: 1rem; background: var(--app-background); box-shadow: 0 2rem 5rem var(--app-shadow-color); transition: max-width .3s ease; }
 .playbook[data-viewport="narrow"] .landing-preview { max-width: 30rem; }
 .landing-site-header { position: relative; z-index: 5; border-bottom: 1px solid var(--app-border); background: var(--app-glass-surface-strong); backdrop-filter: blur(18px) saturate(140%); }
