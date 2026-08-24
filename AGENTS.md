@@ -21,11 +21,11 @@ Do not change their Debug `ProjectReference` entries; they intentionally use the
 After pushing the library release commit, wait for the `ci` workflow to pass, including the shared tests, Playbook browser tests, and NuGet package validation. Publishing is an explicit workflow dispatch; a push to `master` does not publish packages by itself:
 
 ```powershell
-gh workflow run release-packages.yaml -f tag=<full-release-commit-sha>
+gh workflow run release-packages.yaml -f tag=<full-release-commit-sha> -f package_ids="<space-separated-bumped-package-ids>"
 gh run watch <release-workflow-run-id> --exit-status
 ```
 
-Do not update or push consuming repositories until the release workflow has successfully published the new package versions to GitHub Packages. Validate the package-reference path by restoring and building each consumer in Release configuration before committing it.
+Pass only packages whose versions were bumped; do not republish unchanged package versions. Do not update or push consuming repositories until the release workflow has successfully published the new package versions to GitHub Packages. Validate the package-reference path by restoring and building each consumer in Release configuration before committing it.
 
 ## Building consuming applications across configurations
 

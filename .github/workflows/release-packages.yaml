@@ -9,6 +9,11 @@ on:
         description: Existing tag or commit to package
         required: true
         type: string
+      package_ids:
+        description: Space-separated package IDs to publish; use only packages whose versions were bumped
+        required: false
+        default: Suttisak.Blazor.Icons Suttisak.Blazor.UserInterface Suttisak.Blazor.Identity.Core Suttisak.Blazor.Identity.Generator Suttisak.Blazor.Identity
+        type: string
 
 permissions:
   contents: write
@@ -24,6 +29,7 @@ jobs:
     environment: release
     env:
       RELEASE_REF: ${{ github.event.release.tag_name || inputs.tag }}
+      RELEASE_PACKAGE_IDS: ${{ inputs.package_ids || 'Suttisak.Blazor.Icons Suttisak.Blazor.UserInterface Suttisak.Blazor.Identity.Core Suttisak.Blazor.Identity.Generator Suttisak.Blazor.Identity' }}
 
     steps:
       - name: Checkout release ref
@@ -152,11 +158,17 @@ jobs:
               --skip-duplicate
           }
 
-          push_package Suttisak.Blazor.Icons
-          push_package Suttisak.Blazor.UserInterface
-          push_package Suttisak.Blazor.Identity.Core
-          push_package Suttisak.Blazor.Identity.Generator
-          push_package Suttisak.Blazor.Identity
+          for package_id in ${RELEASE_PACKAGE_IDS}; do
+            case "${package_id}" in
+              Suttisak.Blazor.Icons|Suttisak.Blazor.UserInterface|Suttisak.Blazor.Identity.Core|Suttisak.Blazor.Identity.Generator|Suttisak.Blazor.Identity)
+                push_package "${package_id}"
+                ;;
+              *)
+                echo "Unsupported package ID: ${package_id}" >&2
+                exit 1
+                ;;
+            esac
+          done
 
       - name: Attach packages to the GitHub Release
         if: github.event_name == 'release'
