@@ -17,25 +17,27 @@
     display: flex;
     height: 2.8rem;
     align-items: center;
-    border: 1px solid var(--app-border);
+    border: 1px solid transparent;
     border-radius: .7rem;
-    background: var(--app-surface);
-    box-shadow: 0 1px 0 rgb(255 255 255 / .08) inset;
+    background: color-mix(in srgb, var(--app-surface-muted) 88%, var(--app-surface));
+    box-shadow: none;
     transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
 }
 
 .app-form-control__input-wrap:hover {
-    border-color: var(--app-accent-border);
+    border-color: transparent;
     background: var(--app-surface-hover);
+    box-shadow: 0 .3rem .9rem var(--app-shadow-color);
 }
 
 .app-form-control__input-wrap:focus-within {
-    border-color: var(--app-brand);
+    border-color: transparent;
     background: var(--app-surface);
-    box-shadow: 0 0 0 3px var(--app-brand-soft);
+    box-shadow: 0 0 0 .22rem var(--app-brand-soft), 0 .55rem 1.25rem var(--app-shadow-color);
 }
-.app-form-control.has-error .app-form-control__input-wrap { border-color: var(--app-danger-border); box-shadow: 0 0 0 3px var(--app-danger-soft); }
-.app-form-control:has(.modified.valid) .app-form-control__input-wrap { border-color: var(--app-success-border); }
+.app-form-control.has-error .app-form-control__input-wrap { border-color: transparent; background: color-mix(in srgb, var(--app-danger-soft) 58%, var(--app-surface-muted)); box-shadow: inset .2rem 0 0 var(--app-danger); }
+.app-form-control.has-error .app-form-control__input-wrap:focus-within { box-shadow: inset .2rem 0 0 var(--app-danger), 0 0 0 .22rem var(--app-danger-soft), 0 .55rem 1.25rem var(--app-shadow-color); }
+.app-form-control:has(.modified.valid) .app-form-control__input-wrap { border-color: transparent; background: color-mix(in srgb, var(--app-success-soft) 46%, var(--app-surface-muted)); }
 
 .app-form-control__icon {
     position: absolute;
@@ -87,6 +89,7 @@
     font-size: .9rem;
     font-weight: 580;
 }
+.app-form-control__input:focus-visible { outline: 0; }
 .app-form-control__input-wrap--has-icon .app-form-control__input { padding-inline-start: 2.9rem; }
 .app-form-control textarea.app-form-control__input { height: auto; min-height: 7rem; padding: .75rem .8rem; resize: vertical; line-height: 1.55; }
 .app-form-control__input-wrap--textarea { height: auto; min-height: 7rem; align-items: stretch; }
@@ -242,9 +245,10 @@
 
 .app-form-control__error:empty { display: none; }
 .app-form-control__error { color: var(--app-danger); }
-.app-form-control:has(.app-form-control__input:invalid) .app-form-control__input-wrap { border-color: var(--app-danger-border); }
+.app-form-control:has(.app-form-control__input:invalid) .app-form-control__input-wrap { border-color: transparent; background: color-mix(in srgb, var(--app-danger-soft) 58%, var(--app-surface-muted)); box-shadow: inset .2rem 0 0 var(--app-danger); }
+.app-form-control:has(.app-form-control__input:invalid) .app-form-control__input-wrap:focus-within { box-shadow: inset .2rem 0 0 var(--app-danger), 0 0 0 .22rem var(--app-danger-soft), 0 .55rem 1.25rem var(--app-shadow-color); }
 .app-form-control__input:disabled { cursor: not-allowed; opacity: .58; }
-.app-form-control:has(.app-form-control__input:disabled) .app-form-control__input-wrap { background: var(--app-surface-muted); }
+.app-form-control:has(.app-form-control__input:disabled) .app-form-control__input-wrap { background: var(--app-surface-muted); box-shadow: none; }
 
 fieldset.app-form-control { margin: 0; padding: 0; border: 0; }
 .app-radio-group { display: grid; gap: .55rem; }
