@@ -77,6 +77,7 @@ public sealed class AppGridSelectionTests
     public void Single_selection_is_reported_and_survives_a_new_item_instance_with_the_same_key()
     {
         using var context = new BunitContext();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
         GridRow? selected = null;
         var firstRows = new[] { new GridRow(1, "Alpha"), new GridRow(2, "Beta") };
         var cut = context.Render<AppGrid<GridRow>>(parameters => parameters
@@ -87,7 +88,9 @@ public sealed class AppGridSelectionTests
             .Add(component => component.ChildContent, GridColumns()));
 
         cut.WaitForAssertion(() => Assert.Equal(2, cut.FindAll("tbody tr").Count));
-        cut.FindAll("tbody tr")[0].Click();
+        var selectionInputs = cut.FindAll("tbody input[type=checkbox]");
+        Assert.True(selectionInputs.Count > 0, cut.Markup);
+        selectionInputs[0].Change(true);
         cut.WaitForAssertion(() => Assert.Equal(1, selected?.Id));
 
         var refreshedRows = new[] { new GridRow(1, "Alpha updated"), new GridRow(2, "Beta") };

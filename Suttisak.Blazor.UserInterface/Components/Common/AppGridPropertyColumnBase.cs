@@ -1,36 +1,51 @@
 using System.Globalization;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Suttisak.Blazor.UserInterface.Components.Common;
 
-/// <summary>A column that displays a property and can sort by that property's value.</summary>
+/// <summary>A QuickGrid column that displays and sorts a property value.</summary>
 public abstract class AppGridPropertyColumnBase<TGridItem, TProperty> : AppGridColumn<TGridItem>
 {
+    private Expression<Func<TGridItem, TProperty>>? _lastProperty;
     private Func<TGridItem, TProperty>? _compiledProperty;
+    private GridSort<TGridItem>? _sort;
 
     [Parameter, EditorRequired] public Expression<Func<TGridItem, TProperty>> Property { get; set; } = default!;
     [Parameter] public string? Format { get; set; }
     [Parameter] public IFormatProvider? FormatProvider { get; set; }
     [Parameter] public RenderFragment<TGridItem>? CellTemplateOverride { get; set; }
 
-    internal override string ColumnId => GetMemberName(Property) ?? base.ColumnId;
-    internal override string HeaderText => Title ?? GetMemberName(Property) ?? string.Empty;
-    internal override RenderFragment<TGridItem> CellTemplate => CellTemplateOverride ?? (item => builder =>
+    public override GridSort<TGridItem>? SortBy
     {
-        builder.AddContent(0, FormatValue(Value(item)));
-    });
+        get => _sort;
+        set => _sort = value;
+    }
 
-    internal override object? GetSortValue(TGridItem item) => Value(item);
-    internal override bool SupportsQuerySort => true;
-
-    internal override IQueryable<TGridItem> ApplyQuerySort(IQueryable<TGridItem> source, bool descending)
-        => descending ? source.OrderByDescending(Property) : source.OrderBy(Property);
-
-    private TProperty Value(TGridItem item)
+    protected override void OnParametersSet()
     {
-        _compiledProperty ??= Property.Compile();
-        return _compiledProperty(item);
+        base.OnParametersSet();
+
+        if (!ReferenceEquals(_lastProperty, Property))
+        {
+            _lastProperty = Property;
+            _compiledProperty = Property.Compile();
+            _sort = GridSort<TGridItem>.ByAscending(Property);
+        }
+
+        Title ??= GetMemberName(Property);
+    }
+
+    protected override void CellContent(RenderTreeBuilder builder, TGridItem item)
+    {
+        OpenCellContent(builder);
+        if (CellTemplateOverride is not null)
+            builder.AddContent(2, CellTemplateOverride(item));
+        else
+            builder.AddContent(2, FormatValue(_compiledProperty!(item)));
+        CloseCellContent(builder);
     }
 
     private string? FormatValue(TProperty value)
@@ -43,9 +58,9 @@ public abstract class AppGridPropertyColumnBase<TGridItem, TProperty> : AppGridC
             : value.ToString();
     }
 
-    private static string? GetMemberName(Expression<Func<TGridItem, TProperty>>? expression)
+    private static string? GetMemberName(Expression<Func<TGridItem, TProperty>> expression)
     {
-        Expression? body = expression?.Body;
+        Expression body = expression.Body;
         while (body is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } unary)
             body = unary.Operand;
         return body is MemberExpression member ? member.Member.Name : null;

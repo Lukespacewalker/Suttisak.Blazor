@@ -1,41 +1,61 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Suttisak.Blazor.UserInterface.Components.Common;
 
-/// <summary>Base class for columns declared inside <see cref="AppGrid{TGridItem}"/>.</summary>
-public abstract class AppGridColumn<TGridItem> : ComponentBase, IDisposable
+/// <summary>Base class for application columns rendered by QuickGrid.</summary>
+public abstract class AppGridColumn<TGridItem> : ColumnBase<TGridItem>
 {
-    [CascadingParameter] private AppGrid<TGridItem>? Grid { get; set; }
-
-    [Parameter] public string? Title { get; set; }
+    /// <summary>
+    /// Optional preferred column width. Fixed CSS lengths are applied to cell
+    /// content; legacy <c>fr</c> values remain accepted but defer to the table.
+    /// </summary>
     [Parameter] public string? Width { get; set; }
-    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional class applied to both header and body cells.</summary>
     [Parameter] public string? HeaderClass { get; set; }
-    [Parameter] public bool Sortable { get; set; }
-    [Parameter] public bool IsDefaultSortColumn { get; set; }
-    [Parameter] public bool InitialSortDescending { get; set; }
+
+    /// <summary>Compatibility shorthand for QuickGrid's initial sort direction.</summary>
+    [Parameter] public bool? InitialSortDescending { get; set; }
+
     [Parameter] public string? AriaLabel { get; set; }
 
-    internal virtual bool IsSelectionColumn => false;
-    internal virtual string ColumnId => Title ?? GetType().Name;
-    internal abstract RenderFragment<TGridItem> CellTemplate { get; }
-    internal virtual object? GetSortValue(TGridItem item) => null;
-    internal virtual bool SupportsQuerySort => false;
-    /// <summary>
-    /// Applies this column's sort to an <see cref="IQueryable{T}"/> when the
-    /// column has a provider-translatable expression. Columns backed by a
-    /// delegate keep the client-side fallback in <see cref="AppGrid{TGridItem}"/>.
-    /// </summary>
-    internal virtual IQueryable<TGridItem> ApplyQuerySort(IQueryable<TGridItem> source, bool descending) => source;
-    internal virtual string HeaderText => Title ?? string.Empty;
+    protected string? CellStyle => string.IsNullOrWhiteSpace(Width) || Width.EndsWith("fr", StringComparison.OrdinalIgnoreCase)
+        ? null
+        : $"min-width: {Width}; width: {Width};";
 
     protected override void OnParametersSet()
     {
-        if (Grid is null)
-            throw new InvalidOperationException($"{GetType().Name} must be declared directly inside {nameof(AppGrid<TGridItem>)}.");
+        if (InitialSortDescending is not null)
+        {
+            InitialSortDirection = InitialSortDescending.Value
+                ? SortDirection.Descending
+                : SortDirection.Ascending;
+        }
 
-        Grid.RegisterColumn(this);
+        if (!string.IsNullOrWhiteSpace(HeaderClass))
+        {
+            Class = string.Join(' ', $"{Class} {HeaderClass}"
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Distinct(StringComparer.Ordinal));
+        }
+
+        base.OnParametersSet();
     }
 
-    public void Dispose() => Grid?.UnregisterColumn(this);
+    protected void OpenCellContent(RenderTreeBuilder builder)
+    {
+        if (CellStyle is null)
+            return;
+
+        builder.OpenElement(0, "div");
+        builder.AddAttribute(1, "style", CellStyle);
+    }
+
+    protected void CloseCellContent(RenderTreeBuilder builder)
+    {
+        if (CellStyle is not null)
+            builder.CloseElement();
+    }
 }

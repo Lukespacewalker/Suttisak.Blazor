@@ -17,16 +17,16 @@ test('Component Browser reports and filters the complete catalog from one source
 
   const summary = page.getByRole('complementary', { name: 'Component coverage summary' });
   await expect(summary).toBeVisible();
-  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('90');
-  await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('79');
-  await expect(page.locator('[data-component-name]')).toHaveCount(90, { timeout: wasmTimeout });
+  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('85');
+  await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('74');
+  await expect(page.locator('[data-component-name]')).toHaveCount(85, { timeout: wasmTimeout });
 
   const interactiveFilter = page.locator('.component-browser__coverage-filter button').filter({ hasText: 'Interactive' });
   await expect(interactiveFilter).toHaveCount(1);
   await interactiveFilter.click();
   await expect(interactiveFilter).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(79, { timeout: wasmTimeout });
-  await expect(page.locator('[data-component-name]')).toHaveCount(79, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(74, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(74, { timeout: wasmTimeout });
 
   await page.getByRole('searchbox', { name: 'Find a component' }).fill('AppButton');
   await expect(page.locator('[data-component-name="AppButton"]')).toHaveCount(1);
@@ -37,7 +37,7 @@ test('Component Browser reports and filters the complete catalog from one source
 
 test('Component Browser has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/components');
-  await expect(page.locator('[data-component-name]')).toHaveCount(90, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(85, { timeout: wasmTimeout });
   await expectNoSeriousOrCriticalViolations(page);
 });
 
@@ -45,7 +45,7 @@ test('Playbook home reports Interactive coverage from the shared coverage source
   await page.goto('/');
 
   const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Linked live specimens' });
-  await expect(metric.locator('strong')).toHaveText('79');
+  await expect(metric.locator('strong')).toHaveText('74');
 });
 
 test('packaged design-token manifest is complete and unique', async ({ request }) => {

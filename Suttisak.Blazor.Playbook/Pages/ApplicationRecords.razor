@@ -25,7 +25,7 @@
             <ChildContent>
             <section class="demo-data-panel" aria-labelledby="record-table-title">
                 <div class="demo-data-panel__heading"><div><span>LIVE DATA</span><h2 id="record-table-title">All records</h2></div></div>
-                <AppDataGrid AriaLabel="Program records">
+                <AppGridShell AriaLabel="Program records">
                     <Search>
                         <div class="demo-data-search" role="search">
                             <Suttisak.Blazor.Icons.Icon Name="Search" Size="20" aria-hidden="true"  />
@@ -49,15 +49,15 @@
                     </Filters>
                     <ChildContent>
                     <AppGrid TGridItem="DemoRecord" Items="@FilteredRecords" Pagination="_pagination" AriaLabel="Program records" ItemKey="@(record => record.Id)">
-                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Record" Sortable="true" SortBy="@(record => record.Name)">
+                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Record" Sortable="true" SortByExpression="@(record => record.Name)">
                             <a class="demo-record-link" href="@($"application-shell/records/{context.Id}")"><strong>@context.Name</strong><small>#@context.Id</small></a>
                         </AppGridTemplateColumn>
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string" Property="@(record => record.Program)" Title="Program" Sortable="true" />
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string" Property="@(record => record.Owner)" Title="Owner" Sortable="true" />
-                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortBy="@(record => record.Status)"><span class="demo-status demo-status--@Slug(context.Status)">@context.Status</span></AppGridTemplateColumn>
+                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortByExpression="@(record => record.Status)"><span class="demo-status demo-status--@Slug(context.Status)">@context.Status</span></AppGridTemplateColumn>
                         <AppGridTemplateColumn TGridItem="DemoRecord" Title="Updated"
                                         Sortable="true"
-                                        SortBy="@(record => record.UpdatedOn)"
+                                        SortByExpression="@(record => record.UpdatedOn)"
                                         IsDefaultSortColumn="true"
                                         InitialSortDescending="true">@context.UpdatedOn.ToString("dd MMM")</AppGridTemplateColumn>
                         <AppGridTemplateColumn TGridItem="DemoRecord" Title="Actions">
@@ -73,7 +73,7 @@
                     </AppGrid>
                     </ChildContent>
                     <Pagination><AppGridPaginator State="_pagination" /></Pagination>
-                </AppDataGrid>
+                </AppGridShell>
             </section>
             </ChildContent>
         </DemoApplicationShell>
@@ -111,7 +111,7 @@
     private AppDrawer<DemoRecordDraft, DemoRecordDraft>? _recordDrawer;
     private AppDialog<DemoRecord, DemoRecord>? _deleteDialog;
     private string _searchText = string.Empty;
-    private readonly AppGridPaginationState _pagination = new(4);
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 4 };
     private static readonly AppSelectOption<string>[] StatusOptions =
     [
         new("Draft", "Draft"),

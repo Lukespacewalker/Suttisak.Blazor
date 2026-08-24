@@ -4,19 +4,21 @@
 
 Use `AppCard` for standard application surfaces. It provides optional header,
 description, actions, body, and footer regions. `AppGrid<TGridItem>` is the
-library-native grid for application pages. `AppQuickGrid<TGridItem>`
-remains available when its QuickGrid virtualization model is needed. `AppDataGrid`
-is the responsive command-bar and state container, so existing grids can be
-migrated one screen at a time.
+single grid component for application pages and uses Microsoft QuickGrid as its
+rendering, sorting, paging, and virtualization engine. `AppGridShell` composes
+search, filters, actions, async states, a scrollable viewport, and a footer
+around the grid without implementing another table.
 
 ```razor
-<AppDataGrid AriaLabel="People">
-    <AppQuickGrid TGridItem="Person" Items="@People.AsQueryable()" Pagination="@pagination">
-        <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn TGridItem="Person" TProp="string"
-            Property="@(person => person.Name)" Sortable="true" />
-    </AppQuickGrid>
-    <Pagination><AppQuickPaginator State="@pagination" /></Pagination>
-</AppDataGrid>
+<AppGridShell AriaLabel="People">
+    <ChildContent>
+        <AppGrid TGridItem="Person" Items="@People.AsQueryable()" Pagination="@pagination">
+            <PropertyColumn TGridItem="Person" TProp="string"
+                Property="@(person => person.Name)" Sortable="true" />
+        </AppGrid>
+    </ChildContent>
+    <Pagination><AppGridPaginator State="@pagination" /></Pagination>
+</AppGridShell>
 ```
 
 Supply exactly one of `Items` or `ItemsProvider`. When `Virtualize` is enabled,
@@ -24,30 +26,23 @@ all rows must have the fixed height supplied by `ItemSize`. Use `ItemKey` for a
 stable primary key so Blazor retains row identity across sorting and refreshes.
 For sources with tens of thousands of rows, prefer `Virtualize="true"` with an
 `ItemsProvider` (or a provider-backed `IQueryable`) and keep `OverscanCount`
-small, usually between 2 and 8. The provider receives only the visible range,
-so it should apply `StartIndex`/`Count` at the data source rather than loading
-the complete result set. `AppGrid<TGridItem>` applies the same query-side
-`Count`/`Skip`/`Take` optimization for paginated property columns; template
-column sorting remains a client-side fallback because its `SortBy` is a
-delegate.
+small, usually between 2 and 8. A `GridItemsProvider<TGridItem>` receives only
+the requested window, so apply `StartIndex`/`Count` and sorting at the data
+source instead of loading the complete result set. Use
+`request.ApplySorting(query)` for queryable sources or
+`request.GetSortByProperties()` when translating the request into an
+application query. Call `RefreshDataAsync()` (or `RefreshAsync()`) after
+changing external filters.
 
-## Dependency-free data grid
-
-`AppGrid<TGridItem>` is the library-native option for dependency-free grids.
-It has no third-party grid or QuickGrid runtime dependency: use
-`AppGridPropertyColumn` for a property and `AppGridTemplateColumn` for cell
-markup. It accepts an `IQueryable<TGridItem>` through `Items`, or an
-`AppGridItemsProvider<TGridItem>` for server-side paging. Provider requests
-include zero-based `StartIndex`, requested `Count`, the selected column and
-direction in `Sort`, and a cancellation token. Call `RefreshDataAsync()` (or
-`RefreshAsync()`) after changing external filters.
+`AppGrid` accepts QuickGrid's native `PropertyColumn` and `TemplateColumn`.
+`AppGridPropertyColumn` and `AppGridTemplateColumn` remain available for shared
+formatting, fixed-width hints, and the convenient `SortByExpression` parameter.
 
 ```razor
 <AppGrid TGridItem="Person" Items="@people.AsQueryable()"
          Pagination="@pagination" ItemKey="@(person => person.Id)"
          SelectionMode="AppGridSelectionMode.Single"
          @bind-SelectedItem="selectedPerson" AriaLabel="People">
-    <AppGridSelectColumn TGridItem="Person" />
     <AppGridPropertyColumn TGridItem="Person" TProperty="string"
                            Property="@(person => person.Name)" Title="Name"
                            Sortable="true" IsDefaultSortColumn="true" />
@@ -58,17 +53,16 @@ direction in `Sort`, and a cancellation token. Call `RefreshDataAsync()` (or
 <AppGridPaginator State="@pagination" />
 
 @code {
-    private readonly AppGridPaginationState pagination = new(itemsPerPage: 25);
+    private readonly PaginationState pagination = new() { ItemsPerPage = 25 };
     private Person? selectedPerson;
 }
 ```
 
-Use `AppGridSelectColumn` with `Single` or `Multiple` selection and optionally
-set `SelectOnRowClick="false"` when only the checkbox should select rows. Rows
-remain keyboard-selectable with Enter or Space. Template columns are sortable
-only when `SortBy` (for local items) and normally `SortKey` (for a provider) are
-supplied. Virtualized rows, column resizing, filtering UI, and vendor-specific
-column option menus are intentionally outside this compact replacement.
+Set `SelectionMode` to `Single` or `Multiple` to render accessible checkbox
+selection. Selection is owned by `AppGrid`; rows can also be selected with a
+pointer, Enter, or Space when the shared `blazor-utilities.js` asset is loaded.
+Template columns are sortable when `SortByExpression` or QuickGrid's `SortBy`
+is supplied.
 
 For controlled selection, bind `SelectedItem` only with
 `SelectionMode="AppGridSelectionMode.Single"`, or `SelectedItems` only with
@@ -223,13 +217,15 @@ actions last.
               ErrorTitle="Participants could not be loaded"
               ErrorMessage="@errorMessage"
               OnRetry="LoadAsync">
-    <AppDataGrid>
-        <AppQuickGrid TGridItem="Participant" Items="@participants.AsQueryable()" Pagination="pagination">
-            <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn TGridItem="Participant" TProp="string"
-                Property="@(participant => participant.Name)" />
-        </AppQuickGrid>
-        <Pagination><AppQuickPaginator State="pagination" /></Pagination>
-    </AppDataGrid>
+    <AppGridShell>
+        <ChildContent>
+            <AppGrid TGridItem="Participant" Items="@participants.AsQueryable()" Pagination="pagination">
+                <PropertyColumn TGridItem="Participant" TProp="string"
+                    Property="@(participant => participant.Name)" />
+            </AppGrid>
+        </ChildContent>
+        <Pagination><AppGridPaginator State="pagination" /></Pagination>
+    </AppGridShell>
 </AsyncContent>
 ```
 

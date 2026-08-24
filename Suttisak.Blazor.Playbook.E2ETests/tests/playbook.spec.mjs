@@ -37,7 +37,7 @@ test.describe('UI Playbook shared-component contracts', () => {
   test('Component Browser indexes the complete catalog and links to live specimens', async ({ page }) => {
     await page.goto('/components');
 
-    await expect(page.locator('[data-component-name]')).toHaveCount(90);
+    await expect(page.locator('[data-component-name]')).toHaveCount(85);
 
     const search = page.getByRole('searchbox', { name: 'Find a component' });
     await search.fill('AppTextBox');
@@ -49,7 +49,7 @@ test.describe('UI Playbook shared-component contracts', () => {
     await expect(page.getByRole('textbox', { name: 'Full name' }).first()).toBeVisible();
   });
 
-  test('A 100k-row AppQuickGrid keeps the browser DOM bounded', async ({ page }) => {
+  test('A 100k-row AppGrid keeps the browser DOM bounded', async ({ page }) => {
     await page.goto('/grid-performance');
     const grid = page.locator('table[aria-label="100000 virtual records"]');
     // WebAssembly startup on the smallest hosted Linux runner can exceed the

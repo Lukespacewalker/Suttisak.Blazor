@@ -1,7 +1,7 @@
-<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppDataGrid controls">
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppGridShell controls">
     <Preview>
         <div class="component-specimen__demo">
-            <AppDataGrid AriaLabel="Playbook records"
+            <AppGridShell AriaLabel="Playbook records"
                          State="@_state"
                          LoadingTitle="Loading playbook records"
                          EmptyTitle="No matching records"
@@ -23,17 +23,13 @@
                              SelectionMode="@_selectionMode"
                              AriaLabel="Playbook records table"
                              ItemKey="@(record => record.Id)">
-                        @if (_selectionMode != AppGridSelectionMode.None)
-                        {
-                            <AppGridSelectColumn TGridItem="DemoRecord" />
-                        }
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="int"
                                                Property="@(record => record.Id)" Title="ID" Sortable="true" />
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string"
                                                Property="@(record => record.Name)" Title="Record" Sortable="true" />
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string"
                                                Property="@(record => record.Program)" Title="Program" Sortable="true" />
-                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortBy="@(record => record.Status)">
+                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortByExpression="@(record => record.Status)">
                             <span>@context.Status</span>
                         </AppGridTemplateColumn>
                     </AppGrid>
@@ -41,7 +37,7 @@
                 <Pagination>
                     <AppGridPaginator State="@_pagination" AriaLabel="Playbook grid pagination" />
                 </Pagination>
-            </AppDataGrid>
+            </AppGridShell>
         </div>
     </Preview>
     <Controls>
@@ -80,7 +76,7 @@
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
-    private readonly AppGridPaginationState _pagination = new(3);
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 3 };
     private AsyncContentState _state = AsyncContentState.Ready;
     private AppGridSelectionMode _selectionMode = AppGridSelectionMode.Multiple;
     private string _search = string.Empty;
@@ -115,6 +111,9 @@
     private async Task ChangePageSizeAsync(ChangeEventArgs args)
     {
         if (int.TryParse(args.Value?.ToString(), out var pageSize))
-            await _pagination.SetItemsPerPageAsync(pageSize);
+        {
+            _pagination.ItemsPerPage = pageSize;
+            await _pagination.SetCurrentPageIndexAsync(0);
+        }
     }
 }

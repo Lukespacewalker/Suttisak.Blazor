@@ -1,116 +1,83 @@
 @typeparam TGridItem
 @attribute [CascadingTypeParameter(nameof(TGridItem))]
-@implements IDisposable
+@using Microsoft.AspNetCore.Components.QuickGrid
 
-<div class="@GridClassValue" style="@Style" @attributes="AdditionalAttributes">
+<div class="app-grid" style="@Style" tabindex="0">
     <CascadingValue Value="this" IsFixed="true">
-        @ChildContent
+        <QuickGrid @ref="_grid"
+                   TGridItem="TGridItem"
+                   Items="@Items"
+                   ItemsProvider="@EffectiveItemsProvider"
+                   Pagination="@Pagination"
+                   Virtualize="@Virtualize"
+                   ItemSize="@ItemSize"
+                   OverscanCount="@OverscanCount"
+                   ItemKey="@ItemKey"
+                   RowClass="@RowClassValue"
+                   Theme="suttisak"
+                   Class="@GridClassValue"
+                   aria-label="@AriaLabel"
+                   @attributes="AdditionalAttributes">
+            @if (SelectionMode != AppGridSelectionMode.None)
+            {
+                <TemplateColumn TGridItem="TGridItem" Context="item" Class="app-grid__selection-column">
+                    <HeaderTemplate>
+                        <input class="app-grid__checkbox" type="checkbox"
+                               aria-label="@SelectAllLabel"
+                               checked="@AreVisibleRowsSelected"
+                               disabled="@(!CanSelectMultiple || !HasSelectableRows)"
+                               @onchange="SetVisibleRowsSelectedAsync" />
+                    </HeaderTemplate>
+                    <ChildContent>
+                        <input class="app-grid__checkbox" type="checkbox"
+                               aria-label="@SelectRowLabel(item)"
+                               checked="@IsItemSelected(item)"
+                               @onclick:stopPropagation="true"
+                               @onchange="() => ToggleSelectionAsync(item)" />
+                    </ChildContent>
+                </TemplateColumn>
+            }
+            @ChildContent
+        </QuickGrid>
     </CascadingValue>
-
-    <table class="app-grid__table" aria-label="@AriaLabel" aria-busy="@(_loading ? "true" : "false")">
-        <thead>
-            <tr>
-                @foreach (var column in _columns)
-                {
-                    <th scope="col" class="@column.HeaderClass" style="@ColumnStyle(column)">
-                        @if (column.IsSelectionColumn)
-                        {
-                            <input class="app-grid__checkbox" type="checkbox"
-                                   aria-label="@SelectAllLabel"
-                                   checked="@AreVisibleRowsSelected"
-                                   disabled="@(SelectionMode != AppGridSelectionMode.Multiple || _rows.Count == 0)"
-                                   @onchange="SetVisibleRowsSelectedAsync" />
-                        }
-                        else if (column.Sortable)
-                        {
-                            <button type="button" class="app-grid__sort-button"
-                                    aria-label="@SortLabel(column)"
-                                    aria-pressed="@IsSorted(column)"
-                                    @onclick="() => SetSortAsync(column)">
-                                <span>@column.HeaderText</span><span class="app-grid__sort-indicator" aria-hidden="true">@SortIndicator(column)</span>
-                            </button>
-                        }
-                        else
-                        {
-                            @column.HeaderText
-                        }
-                    </th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @if (_rows.Count == 0 && !_loading)
-            {
-                <tr class="app-grid__empty-row"><td colspan="@Math.Max(1, _columns.Count)">@EmptyContent</td></tr>
-            }
-            @foreach (var item in _rows)
-            {
-                var selected = IsItemSelected(item);
-                <tr @key="GetItemKey(item)"
-                    class="@RowClassValue(item, selected)"
-                    tabindex="@(CanSelectRows ? "0" : null)"
-                    aria-selected="@(CanSelectRows ? (selected ? "true" : "false") : null)"
-                    @onclick="() => SelectRowAsync(item)"
-                    @onkeydown="(args) => HandleRowKeyDownAsync(args, item)">
-                    @foreach (var column in _columns)
-                    {
-                        <td class="@column.Class" style="@ColumnStyle(column)">
-                            @if (column.IsSelectionColumn)
-                            {
-                                <input class="app-grid__checkbox" type="checkbox"
-                                       aria-label="@SelectRowLabel(item)"
-                                       checked="@selected"
-                                       disabled="@(SelectionMode == AppGridSelectionMode.None)"
-                                       @onclick:stopPropagation="true"
-                                       @onchange="() => ToggleSelectionAsync(item)" />
-                            }
-                            else
-                            {
-                                @column.CellTemplate(item)
-                            }
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
 
     @if (_loading)
     {
         <div class="app-grid__loading" role="status"><span>@LoadingText</span></div>
     }
+    else if (IsKnownEmpty)
+    {
+        <div class="app-grid__empty">@EmptyContent</div>
+    }
 </div>
 
 @code {
-    private readonly List<AppGridColumn<TGridItem>> _columns = [];
     private readonly HashSet<object> _selectedKeys = [];
     private readonly Dictionary<object, TGridItem> _selectedItemsByKey = [];
-    private IReadOnlyList<TGridItem> _rows = [];
-    private IQueryable<TGridItem>? _lastItems;
-    private AppGridItemsProvider<TGridItem>? _lastItemsProvider;
-    private AppGridPaginationState? _subscribedPagination;
-    private AppGridSort? _sort;
-    private CancellationTokenSource? _loadCancellation;
-    private int _loadVersion;
+    private QuickGrid<TGridItem>? _grid;
+    private GridItemsProvider<TGridItem>? _trackingItemsProvider;
+    private IReadOnlyList<TGridItem> _lastProviderRows = [];
+    private int? _lastProviderTotalItemCount;
+    private int _activeLoads;
     private bool _loading;
-    private bool _sourceWasSet;
-    private bool _disposed;
+    private bool _hasProviderResult;
     private bool _hasSelectedItemParameter;
     private bool _hasSelectedItemsParameter;
 
     [Parameter] public IQueryable<TGridItem>? Items { get; set; }
-    [Parameter] public AppGridItemsProvider<TGridItem>? ItemsProvider { get; set; }
-    [Parameter] public AppGridPaginationState? Pagination { get; set; }
+    [Parameter] public GridItemsProvider<TGridItem>? ItemsProvider { get; set; }
+    [Parameter] public PaginationState? Pagination { get; set; }
+    [Parameter] public bool Virtualize { get; set; }
+    [Parameter] public float ItemSize { get; set; } = 44;
+    [Parameter] public int OverscanCount { get; set; } = 3;
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
     [Parameter] public Func<TGridItem, object> ItemKey { get; set; } = item => item!;
     [Parameter] public Func<TGridItem, string?>? RowClass { get; set; }
     [Parameter] public AppGridSelectionMode SelectionMode { get; set; }
-    [Parameter] public bool SelectOnRowClick { get; set; } = true;
     [Parameter] public TGridItem? SelectedItem { get; set; }
     [Parameter] public EventCallback<TGridItem?> SelectedItemChanged { get; set; }
     [Parameter] public IReadOnlySet<TGridItem>? SelectedItems { get; set; }
     [Parameter] public EventCallback<IReadOnlySet<TGridItem>> SelectedItemsChanged { get; set; }
-    [Parameter] public EventCallback<TGridItem> RowClicked { get; set; }
     [Parameter] public string AriaLabel { get; set; } = "Data grid";
     [Parameter] public string LoadingText { get; set; } = "Loading rows";
     [Parameter] public string SelectAllLabel { get; set; } = "Select all visible rows";
@@ -118,12 +85,29 @@
     [Parameter] public RenderFragment? EmptyTemplate { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Style { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private GridItemsProvider<TGridItem>? EffectiveItemsProvider
+        => ItemsProvider is null ? null : _trackingItemsProvider ??= TrackItemsAsync;
 
     private RenderFragment EmptyContent => EmptyTemplate ?? (builder => builder.AddContent(0, EmptyText));
-    private bool CanSelectRows => SelectionMode != AppGridSelectionMode.None && SelectOnRowClick;
-    private bool AreVisibleRowsSelected => _rows.Count > 0 && _rows.All(IsItemSelected);
-    private string GridClassValue => string.Join(' ', new[] { "app-grid", Class }.Where(value => !string.IsNullOrWhiteSpace(value)));
+    private string GridClassValue => string.Join(' ', new[] { "app-grid__table", Class }
+        .Where(value => !string.IsNullOrWhiteSpace(value)));
+    private bool IsKnownEmpty => ItemsProvider is not null
+        ? _hasProviderResult && _lastProviderTotalItemCount == 0
+        : Items is EnumerableQuery<TGridItem> && !Items.Any();
+
+    internal bool CanSelectMultiple => SelectionMode == AppGridSelectionMode.Multiple;
+    internal bool HasSelectableRows => SelectionMode != AppGridSelectionMode.None && VisibleRows().Any();
+    internal bool AreVisibleRowsSelected
+    {
+        get
+        {
+            var rows = VisibleRows().ToArray();
+            return rows.Length > 0 && rows.All(IsItemSelected);
+        }
+    }
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
@@ -132,207 +116,67 @@
         return base.SetParametersAsync(parameters);
     }
 
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
         if ((Items is null) == (ItemsProvider is null))
-            throw new InvalidOperationException($"{nameof(AppGrid<TGridItem>)} requires exactly one of {nameof(Items)} or {nameof(ItemsProvider)}.");
-
-        if (!ReferenceEquals(_subscribedPagination, Pagination))
         {
-            if (_subscribedPagination is not null)
-                _subscribedPagination.PageChanged -= HandlePageChanged;
-            _subscribedPagination = Pagination;
-            if (_subscribedPagination is not null)
-                _subscribedPagination.PageChanged += HandlePageChanged;
+            throw new InvalidOperationException(
+                $"{nameof(AppGrid<TGridItem>)} requires either {nameof(Items)} or {nameof(ItemsProvider)}, but not both.");
         }
+
+        if (Virtualize && (!float.IsFinite(ItemSize) || ItemSize <= 0))
+        {
+            throw new InvalidOperationException(
+                $"{nameof(ItemSize)} must be a finite value greater than zero when virtualization is enabled.");
+        }
+
+        if (OverscanCount < 0)
+            throw new InvalidOperationException($"{nameof(OverscanCount)} must not be negative.");
 
         SyncExternalSelection();
-
-        if (!_sourceWasSet || !ReferenceEquals(_lastItems, Items) || !Equals(_lastItemsProvider, ItemsProvider))
-        {
-            _sourceWasSet = true;
-            _lastItems = Items;
-            _lastItemsProvider = ItemsProvider;
-            await RefreshDataAsync();
-        }
     }
 
-    internal void RegisterColumn(AppGridColumn<TGridItem> column)
-    {
-        if (!_columns.Contains(column))
-        {
-            _columns.Add(column);
-            if (_sort is null && column.IsDefaultSortColumn && column.Sortable)
-                _sort = new AppGridSort(column.ColumnId, column.InitialSortDescending);
-
-            _ = InvokeAsync(async () =>
-            {
-                await RefreshDataAsync();
-                StateHasChanged();
-            });
-        }
-    }
-
-    internal void UnregisterColumn(AppGridColumn<TGridItem> column)
-    {
-        if (_columns.Remove(column))
-            _ = InvokeAsync(StateHasChanged);
-    }
-
-    /// <summary>Reloads the current page from its source.</summary>
-    public Task RefreshDataAsync() => LoadDataAsync();
+    /// <summary>Re-fetches the current QuickGrid window or page.</summary>
+    public Task RefreshDataAsync() => _grid?.RefreshDataAsync() ?? Task.CompletedTask;
 
     /// <summary>Alias for <see cref="RefreshDataAsync"/>.</summary>
     public Task RefreshAsync() => RefreshDataAsync();
 
-    private async Task LoadDataAsync()
+    private async ValueTask<GridItemsProviderResult<TGridItem>> TrackItemsAsync(
+        GridItemsProviderRequest<TGridItem> request)
     {
-        var loadVersion = ++_loadVersion;
-        _loadCancellation?.Cancel();
-        _loadCancellation?.Dispose();
-        _loadCancellation = new CancellationTokenSource();
-        var cancellationToken = _loadCancellation.Token;
+        var provider = ItemsProvider
+            ?? throw new InvalidOperationException($"{nameof(ItemsProvider)} is no longer available.");
+
+        _activeLoads++;
         _loading = true;
         await InvokeAsync(StateHasChanged);
 
         try
         {
-            var pageSize = Pagination?.ItemsPerPage;
-            var startIndex = Pagination is null ? 0 : Pagination.CurrentPageIndex * Pagination.ItemsPerPage;
-            if (ItemsProvider is not null)
-            {
-                var result = await ItemsProvider(new AppGridItemsProviderRequest<TGridItem>(startIndex, pageSize, _sort, cancellationToken));
-                if (loadVersion != _loadVersion || cancellationToken.IsCancellationRequested)
-                    return;
-
-                _rows = result.Items.ToArray();
-                if (Pagination?.SetTotalItemCount(result.TotalItemCount) == true)
-                {
-                    await LoadDataAsync();
-                    return;
-                }
-            }
-            else if (Items is not null)
-            {
-                var column = _sort is null ? null : _columns.FirstOrDefault(candidate => candidate.ColumnId == _sort.ColumnId);
-                var query = Items;
-                var canSortInQuery = column is null || !column.Sortable || column.SupportsQuerySort;
-
-                // Property columns retain their typed expression, so providers
-                // such as EF can translate sorting, Count, Skip, and Take
-                // without materializing a potentially enormous source. Template
-                // columns expose only a Func and continue through the safe
-                // client-side fallback below.
-                if (column is not null && column.Sortable && column.SupportsQuerySort)
-                {
-                    var sortedQuery = column.ApplyQuerySort(query, _sort!.Descending);
-                    canSortInQuery = !ReferenceEquals(sortedQuery, query);
-                    if (canSortInQuery)
-                        query = sortedQuery;
-                }
-
-                var loadedFromQuery = false;
-                if (canSortInQuery)
-                {
-                    try
-                    {
-                        // Count the filtered source before applying ordering;
-                        // this is simpler for remote providers to translate.
-                        if (Pagination is not null && Pagination.SetTotalItemCount(Items.Count()))
-                        {
-                            await LoadDataAsync();
-                            return;
-                        }
-
-                        _rows = Pagination is null
-                            ? query.ToArray()
-                            : query.Skip(startIndex).Take(Pagination.ItemsPerPage).ToArray();
-                        loadedFromQuery = true;
-                    }
-                    catch (NotSupportedException)
-                    {
-                        // Some custom IQueryable providers cannot translate
-                        // Count/Skip/Take. Preserve the historical client-side
-                        // behavior for those providers.
-                    }
-                }
-
-                if (!loadedFromQuery)
-                {
-                    // Fall back from the original source so a provider that
-                    // rejected query-side ordering is not asked to execute it
-                    // again during enumeration.
-                    var rows = Items.AsEnumerable();
-                    if (_sort is not null && column is not null && column.Sortable)
-                    {
-                        rows = _sort.Descending
-                            ? rows.OrderByDescending(column.GetSortValue, Comparer<object?>.Default)
-                            : rows.OrderBy(column.GetSortValue, Comparer<object?>.Default);
-                    }
-
-                    var materialized = rows.ToArray();
-                    Pagination?.SetTotalItemCount(materialized.Length);
-                    _rows = Pagination is null
-                        ? materialized
-                        : materialized.Skip(startIndex).Take(Pagination.ItemsPerPage).ToArray();
-                }
-            }
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            return;
+            var result = await provider(request);
+            request.CancellationToken.ThrowIfCancellationRequested();
+            _lastProviderRows = result.Items.ToArray();
+            _lastProviderTotalItemCount = result.TotalItemCount;
+            _hasProviderResult = true;
+            return result;
         }
         finally
         {
-            if (!_disposed && loadVersion == _loadVersion)
-            {
-                _loading = false;
-                await InvokeAsync(StateHasChanged);
-            }
+            _activeLoads = Math.Max(0, _activeLoads - 1);
+            _loading = _activeLoads > 0;
+            await InvokeAsync(StateHasChanged);
         }
     }
 
-    private async Task SetSortAsync(AppGridColumn<TGridItem> column)
-    {
-        _sort = _sort?.ColumnId == column.ColumnId
-            ? new AppGridSort(column.ColumnId, !_sort.Descending)
-            : new AppGridSort(column.ColumnId, false);
-        if (Pagination is not null && Pagination.CurrentPageIndex != 0)
-        {
-            await Pagination.SetCurrentPageIndexAsync(0);
-            return;
-        }
-        await RefreshDataAsync();
-    }
+    internal object GetItemKey(TGridItem item)
+        => ItemKey(item) ?? throw new InvalidOperationException($"{nameof(ItemKey)} must not return null.");
 
-    private bool IsSorted(AppGridColumn<TGridItem> column) => _sort?.ColumnId == column.ColumnId;
-    private string SortIndicator(AppGridColumn<TGridItem> column) => !IsSorted(column) ? "↕" : _sort!.Descending ? "↓" : "↑";
-    private string SortLabel(AppGridColumn<TGridItem> column) => IsSorted(column)
-        ? $"Sort {column.HeaderText} {NextSortDirection}"
-        : $"Sort {column.HeaderText} ascending";
-    private string NextSortDirection => _sort!.Descending ? "ascending" : "descending";
-    private string? ColumnStyle(AppGridColumn<TGridItem> column) => string.IsNullOrWhiteSpace(column.Width) ? null : $"width: {column.Width}";
-    private string? RowClassValue(TGridItem item, bool selected) => string.Join(' ', new[] { RowClass?.Invoke(item), selected ? "is-selected" : null }.Where(value => !string.IsNullOrWhiteSpace(value)));
-    private string SelectRowLabel(TGridItem item) => $"Select row {GetItemKey(item)}";
+    internal bool IsItemSelected(TGridItem item) => _selectedKeys.Contains(GetItemKey(item));
 
-    private object GetItemKey(TGridItem item) => ItemKey(item) ?? throw new InvalidOperationException($"{nameof(ItemKey)} must not return null.");
-    private bool IsItemSelected(TGridItem item) => _selectedKeys.Contains(GetItemKey(item));
+    internal string SelectRowLabel(TGridItem item) => $"Select row {GetItemKey(item)}";
 
-    private async Task HandleRowKeyDownAsync(KeyboardEventArgs args, TGridItem item)
-    {
-        if (!CanSelectRows || (args.Key is not "Enter" and not " "))
-            return;
-        await ToggleSelectionAsync(item);
-    }
-
-    private async Task SelectRowAsync(TGridItem item)
-    {
-        if (CanSelectRows)
-            await ToggleSelectionAsync(item);
-        await RowClicked.InvokeAsync(item);
-    }
-
-    private async Task ToggleSelectionAsync(TGridItem item)
+    internal async Task ToggleSelectionAsync(TGridItem item)
     {
         if (SelectionMode == AppGridSelectionMode.None)
             return;
@@ -362,35 +206,64 @@
         await NotifySelectionChangedAsync();
     }
 
-    private async Task SetVisibleRowsSelectedAsync()
+    internal async Task SetVisibleRowsSelectedAsync()
     {
         if (SelectionMode != AppGridSelectionMode.Multiple)
             return;
 
-        if (AreVisibleRowsSelected)
-            foreach (var item in _rows)
+        var rows = VisibleRows().ToArray();
+        if (rows.Length > 0 && rows.All(IsItemSelected))
+        {
+            foreach (var item in rows)
             {
                 var key = GetItemKey(item);
                 _selectedKeys.Remove(key);
                 _selectedItemsByKey.Remove(key);
             }
+        }
         else
-            foreach (var item in _rows)
+        {
+            foreach (var item in rows)
             {
                 var key = GetItemKey(item);
                 _selectedKeys.Add(key);
                 _selectedItemsByKey[key] = item;
             }
+        }
+
         await NotifySelectionChangedAsync();
+    }
+
+    private IEnumerable<TGridItem> VisibleRows()
+    {
+        if (ItemsProvider is not null)
+            return _lastProviderRows;
+
+        if (Items is null)
+            return [];
+
+        return Pagination is null
+            ? Items.AsEnumerable()
+            : Items.Skip(Pagination.CurrentPageIndex * Pagination.ItemsPerPage)
+                .Take(Pagination.ItemsPerPage)
+                .AsEnumerable();
     }
 
     private async Task NotifySelectionChangedAsync()
     {
         var selected = _selectedItemsByKey.Values.ToHashSet();
         if (SelectionMode == AppGridSelectionMode.Single)
-            await SelectedItemChanged.InvokeAsync(selected.FirstOrDefault());
-        else if (SelectionMode == AppGridSelectionMode.Multiple)
+        {
+            if (SelectedItemChanged.HasDelegate)
+                await SelectedItemChanged.InvokeAsync(selected.FirstOrDefault());
+            if (SelectedItemsChanged.HasDelegate)
+                await SelectedItemsChanged.InvokeAsync(selected);
+        }
+        else if (SelectedItemsChanged.HasDelegate)
+        {
             await SelectedItemsChanged.InvokeAsync(selected);
+        }
+
         await InvokeAsync(StateHasChanged);
     }
 
@@ -403,15 +276,28 @@
             return;
         }
 
-        if (SelectionMode == AppGridSelectionMode.Single && _hasSelectedItemParameter)
+        if (SelectionMode == AppGridSelectionMode.Single && (_hasSelectedItemParameter || _hasSelectedItemsParameter))
         {
             _selectedKeys.Clear();
             _selectedItemsByKey.Clear();
-            if (SelectedItem is not null)
+            var hasItem = false;
+            var item = default(TGridItem)!;
+            if (_hasSelectedItemParameter && SelectedItem is not null)
             {
-                var key = GetItemKey(SelectedItem);
+                item = SelectedItem;
+                hasItem = true;
+            }
+            else if (!_hasSelectedItemParameter && SelectedItems is { Count: > 0 })
+            {
+                item = SelectedItems.First();
+                hasItem = true;
+            }
+
+            if (hasItem)
+            {
+                var key = GetItemKey(item);
                 _selectedKeys.Add(key);
-                _selectedItemsByKey[key] = SelectedItem;
+                _selectedItemsByKey[key] = item;
             }
         }
         else if (SelectionMode == AppGridSelectionMode.Multiple && _hasSelectedItemsParameter)
@@ -419,23 +305,18 @@
             _selectedKeys.Clear();
             _selectedItemsByKey.Clear();
             if (SelectedItems is not null)
+            {
                 foreach (var item in SelectedItems)
                 {
                     var key = GetItemKey(item);
                     _selectedKeys.Add(key);
                     _selectedItemsByKey[key] = item;
                 }
+            }
         }
     }
 
-    private void HandlePageChanged() => _ = InvokeAsync(RefreshDataAsync);
-
-    public void Dispose()
-    {
-        _disposed = true;
-        if (_subscribedPagination is not null)
-            _subscribedPagination.PageChanged -= HandlePageChanged;
-        _loadCancellation?.Cancel();
-        _loadCancellation?.Dispose();
-    }
+    private string? RowClassValue(TGridItem item)
+        => string.Join(' ', new[] { RowClass?.Invoke(item), IsItemSelected(item) ? "is-selected" : null }
+            .Where(value => !string.IsNullOrWhiteSpace(value)));
 }

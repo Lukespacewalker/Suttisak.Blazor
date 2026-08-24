@@ -1,37 +1,84 @@
+@using Microsoft.AspNetCore.Components.QuickGrid
 @implements IDisposable
 
-<nav class="app-grid-paginator" aria-label="@AriaLabel">
-    <span class="app-grid-paginator__summary">@Summary</span>
-    <div class="app-grid-paginator__controls">
-        <button type="button" disabled="@(State.CurrentPageIndex == 0)" @onclick="PreviousAsync">Previous</button>
-        <span aria-live="polite">Page @(State.CurrentPageIndex + 1) of @PageCount</span>
-        <button type="button" disabled="@(State.LastPageIndex is null || State.CurrentPageIndex >= State.LastPageIndex)" @onclick="NextAsync">Next</button>
-    </div>
+<nav class="app-grid-paginator" style="@Style" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    <span class="app-grid-paginator__summary">
+        @if (SummaryTemplate is not null)
+        {
+            @SummaryTemplate
+        }
+        else
+        {
+            @Summary
+        }
+    </span>
+    <button type="button" disabled="@(State.CurrentPageIndex == 0)" @onclick="PreviousAsync">@PreviousLabel</button>
+    <label class="app-grid-paginator__page-label">
+        <span>@PageLabel</span>
+        <input type="number" min="1" max="@MaximumPage" style="@NumberFieldStyle"
+               value="@(State.CurrentPageIndex + 1)" @onchange="SetPageAsync" />
+        <span>@OfLabel <strong>@MaximumPage</strong></span>
+    </label>
+    <button type="button" disabled="@(State.LastPageIndex is null || State.CurrentPageIndex >= State.LastPageIndex)" @onclick="NextAsync">@NextLabel</button>
 </nav>
 
 @code {
-    [Parameter, EditorRequired] public AppGridPaginationState State { get; set; } = default!;
+    [Parameter, EditorRequired] public PaginationState State { get; set; } = default!;
+    [Parameter] public RenderFragment? SummaryTemplate { get; set; }
+    [Parameter] public EventCallback<int> CurrentPageIndexChanged { get; set; }
+    [Parameter] public string NumberFieldStyle { get; set; } = "width: 4.5rem";
     [Parameter] public string AriaLabel { get; set; } = "Grid pagination";
-    private AppGridPaginationState? _subscribedState;
+    [Parameter] public string PreviousLabel { get; set; } = "Previous";
+    [Parameter] public string NextLabel { get; set; } = "Next";
+    [Parameter] public string PageLabel { get; set; } = "Page";
+    [Parameter] public string OfLabel { get; set; } = "of";
+    [Parameter] public string RowsLabel { get; set; } = "rows";
+    [Parameter] public string RowLabel { get; set; } = "row";
+    [Parameter] public string LoadingLabel { get; set; } = "Rows are loading";
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private int PageCount => Math.Max(1, (State.LastPageIndex ?? 0) + 1);
+    private PaginationState? _subscribedState;
+    private int MaximumPage => Math.Max(1, (State.LastPageIndex ?? 0) + 1);
     private string Summary => State.TotalItemCount is null
-        ? "Rows are loading"
-        : $"{State.TotalItemCount} {(State.TotalItemCount == 1 ? "row" : "rows")}";
+        ? LoadingLabel
+        : $"{State.TotalItemCount} {(State.TotalItemCount == 1 ? RowLabel : RowsLabel)}";
 
     protected override void OnParametersSet()
     {
-        if (ReferenceEquals(_subscribedState, State)) return;
-        if (_subscribedState is not null) _subscribedState.StateChanged -= HandleStateChanged;
+        if (ReferenceEquals(_subscribedState, State))
+            return;
+
+        if (_subscribedState is not null)
+            _subscribedState.TotalItemCountChanged -= HandleTotalItemCountChanged;
         _subscribedState = State;
-        _subscribedState.StateChanged += HandleStateChanged;
+        _subscribedState.TotalItemCountChanged += HandleTotalItemCountChanged;
     }
 
-    private Task PreviousAsync() => State.SetCurrentPageIndexAsync(State.CurrentPageIndex - 1);
-    private Task NextAsync() => State.SetCurrentPageIndexAsync(State.CurrentPageIndex + 1);
-    private void HandleStateChanged() => _ = InvokeAsync(StateHasChanged);
+    private Task PreviousAsync() => SetCurrentPageIndexAsync(State.CurrentPageIndex - 1);
+    private Task NextAsync() => SetCurrentPageIndexAsync(State.CurrentPageIndex + 1);
+
+    private async Task SetPageAsync(ChangeEventArgs args)
+    {
+        if (int.TryParse(args.Value?.ToString(), out var page))
+            await SetCurrentPageIndexAsync(page - 1);
+    }
+
+    private async Task SetCurrentPageIndexAsync(int index)
+    {
+        var normalized = Math.Clamp(index, 0, Math.Max(0, MaximumPage - 1));
+        await State.SetCurrentPageIndexAsync(normalized);
+        await CurrentPageIndexChanged.InvokeAsync(State.CurrentPageIndex);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleTotalItemCountChanged(object? sender, int? totalItemCount)
+        => _ = InvokeAsync(StateHasChanged);
+
     public void Dispose()
     {
-        if (_subscribedState is not null) _subscribedState.StateChanged -= HandleStateChanged;
+        if (_subscribedState is not null)
+            _subscribedState.TotalItemCountChanged -= HandleTotalItemCountChanged;
     }
 }

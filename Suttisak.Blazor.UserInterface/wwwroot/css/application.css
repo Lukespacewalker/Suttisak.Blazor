@@ -184,22 +184,17 @@ samp {
     font-family: var(--app-font-mono);
 }
 
-/* The shared visual baseline also covers grids rendered inside reusable app
-   components that have not yet been wrapped in DataGridContainer. The
-   container adds the surface and scrolling behaviour; these rules keep the
-   table treatment consistent everywhere. */
-.app-grid,
-.app-quick-grid {
+/* Shared visual baseline for the QuickGrid-backed AppGrid. AppGridShell adds
+   command-bar, surface, state, scrolling, and pagination composition. */
+.app-grid {
     color: var(--app-foreground);
 }
 
-.app-grid thead,
-.app-quick-grid thead {
+.app-grid thead {
     background: var(--app-glass-surface);
 }
 
-.app-grid th,
-.app-quick-grid th {
+.app-grid th {
     color: var(--app-foreground-muted);
     font-size: .75rem;
     font-weight: 700;
@@ -207,8 +202,7 @@ samp {
     text-transform: uppercase;
 }
 
-.app-grid td,
-.app-quick-grid td {
+.app-grid td {
     vertical-align: middle;
 }
 
@@ -278,7 +272,7 @@ samp {
 
 /* Compatibility contracts for pages that have not yet moved to the Razor
    primitives. New pages should prefer PageHeading, Toolbar, StatusPanel, and
-   DataGridContainer. */
+   AppGridShell. */
 .app-page-heading {
     display: flex;
     min-width: 0;
@@ -290,7 +284,7 @@ samp {
     margin: 0;
 }
 
-.data-grid-container {
+.app-grid-shell {
     flex: 1 1 0;
     min-width: 0;
     min-height: 0;
@@ -306,14 +300,12 @@ samp {
     scrollbar-gutter: stable;
 }
 
-.data-grid-container > .app-grid,
-.data-grid-container > .app-quick-grid {
+.app-grid-shell .app-grid {
     width: 100%;
     min-width: max-content;
 }
 
-.data-grid-container > .app-grid thead,
-.data-grid-container > .app-quick-grid thead {
+.app-grid-shell .app-grid thead {
     background: var(--app-glass-surface);
 }
 
@@ -367,7 +359,7 @@ samp {
         --app-page-gap: .75rem;
     }
 
-    .data-grid-container {
+    .app-grid-shell {
         border-radius: .75rem;
     }
 }

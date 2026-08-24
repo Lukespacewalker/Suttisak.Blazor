@@ -9,7 +9,7 @@
             <div class="grid-lab__hero-copy">
                 <span class="playbook-kicker">Data operations / performance lab</span>
                 <h1>Large data.<br /><em>Calm interface.</em></h1>
-                <p>A production-shaped AppDataGrid around a virtualized AppQuickGrid. Search, filter, sort, and scan a 100,000-record source while the browser keeps only a small row window in the DOM.</p>
+                <p>A production-shaped AppGridShell around a virtualized AppGrid. Search, filter, sort, and scan a 100,000-record source while the browser keeps only a small row window in the DOM.</p>
             </div>
             <dl class="grid-lab__metrics" aria-label="Virtual grid performance contract">
                 <div><dt>Source</dt><dd>100,000</dd><dd class="grid-lab__metric-note">typed records</dd></div>
@@ -25,7 +25,7 @@
                 <div class="grid-lab__health"><i aria-hidden="true"></i><span>Virtualization active</span></div>
             </header>
 
-            <AppDataGrid AriaLabel="Assessment register">
+            <AppGridShell AriaLabel="Assessment register">
                 <Search>
                     <AppTextBox Label="Search records" Placeholder="Name, program, or owner" @bind-Value="_search" />
                 </Search>
@@ -47,7 +47,7 @@
                     <div class="grid-lab__legend" aria-label="Status legend"><span><i class="is-active"></i>Active</span><span><i class="is-review"></i>Needs review</span><span><i class="is-complete"></i>Complete</span></div>
                 </Toolbar>
                 <ChildContent>
-                    <AppQuickGrid TGridItem="GridRecord"
+                    <AppGrid TGridItem="GridRecord"
                                   Items="VisibleRecords"
                                   Virtualize="true"
                                   ItemSize="40"
@@ -68,27 +68,27 @@
                         <TemplateColumn TGridItem="GridRecord" Title="" Context="record">
                             <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" AriaLabel="@($"Open {record.Name}")">Open</AppButton>
                         </TemplateColumn>
-                    </AppQuickGrid>
+                    </AppGrid>
                 </ChildContent>
                 <Footer><span class="grid-lab__footnote"><i aria-hidden="true"></i>Only the viewport and overscan buffer are rendered</span></Footer>
                 <Pagination><code>Virtualize="true" · ItemSize="40" · OverscanCount="3"</code></Pagination>
-            </AppDataGrid>
+            </AppGridShell>
         </section>
 
         <section class="grid-lab__implementation" aria-labelledby="implementation-title">
             <div class="grid-lab__recipe">
                 <span>02 / Implementation</span>
                 <h2 id="implementation-title">The performance contract is explicit.</h2>
-                <pre><code>&lt;AppDataGrid AriaLabel="Assessment register"&gt;
-    &lt;AppQuickGrid TGridItem="Assessment"
+                <pre><code>&lt;AppGridShell AriaLabel="Assessment register"&gt;
+    &lt;AppGrid TGridItem="Assessment"
                   Items="Records"
                   Virtualize="true"
                   ItemSize="40"
                   OverscanCount="3"
                   ItemKey="record =&gt; record.Id"&gt;
         ...
-    &lt;/AppQuickGrid&gt;
-&lt;/AppDataGrid&gt;</code></pre>
+    &lt;/AppGrid&gt;
+&lt;/AppGridShell&gt;</code></pre>
             </div>
             <ol class="grid-lab__rules">
                 <li><span>01</span><div><strong>Keep row geometry fixed</strong><p>Virtualization needs a stable ItemSize so the scroll range remains accurate.</p></div></li>

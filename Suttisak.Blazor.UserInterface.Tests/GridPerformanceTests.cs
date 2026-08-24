@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq.Expressions;
 using Bunit;
+using Microsoft.AspNetCore.Components.QuickGrid;
 using Suttisak.Blazor.UserInterface.Components.Common;
 using Xunit;
 
@@ -12,9 +13,10 @@ public sealed class GridPerformanceTests
     public void AppGrid_SortsAndPaginatesLargeQueryableWithoutEnumeratingEveryRow()
     {
         using var context = new BunitContext();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
         var source = new TrackingQueryable<GridPerformanceHarness.GridRow>(
             Enumerable.Range(1, 100_000).Select(id => new GridPerformanceHarness.GridRow(id)));
-        var pagination = new AppGridPaginationState(itemsPerPage: 25);
+        var pagination = new PaginationState { ItemsPerPage = 25 };
 
         var cut = context.Render<GridPerformanceHarness>(parameters => parameters
             .Add(parameter => parameter.Items, source)
@@ -29,14 +31,15 @@ public sealed class GridPerformanceTests
     }
 
     [Fact]
-    public void AppQuickGrid_RejectsInvalidVirtualizationSettings()
+    public void AppGrid_RejectsInvalidVirtualizationSettings()
     {
         using var context = new BunitContext();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
         var rows = Enumerable.Range(1, 100_000)
             .Select(id => new GridPerformanceHarness.GridRow(id))
             .AsQueryable();
 
-        var exception = Assert.Throws<InvalidOperationException>(() => context.Render<AppQuickGrid<GridPerformanceHarness.GridRow>>(
+        var exception = Assert.Throws<InvalidOperationException>(() => context.Render<AppGrid<GridPerformanceHarness.GridRow>>(
             parameters => parameters
                 .Add(parameter => parameter.Items, rows)
                 .Add(parameter => parameter.Virtualize, true)
@@ -50,7 +53,7 @@ public sealed class GridPerformanceTests
         public int RowsYielded { get; set; }
     }
 
-    private sealed class TrackingQueryable<T> : IQueryable<T>
+    private sealed class TrackingQueryable<T> : IOrderedQueryable<T>
     {
         private readonly IQueryable<T> _inner;
         private readonly TrackingQueryProvider _provider;

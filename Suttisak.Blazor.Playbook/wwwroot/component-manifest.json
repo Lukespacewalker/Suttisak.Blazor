@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentCount": 90,
+  "componentCount": 85,
   "detailRouteTemplate": "components/{kebab-case-component-name}",
   "statusPolicy": {
     "stable": "normal consumption; breaking changes require deliberate migration",
@@ -22,7 +22,7 @@
     {
       "category": "Data & display",
       "status": "stable",
-      "components": ["AppBreadcrumb", "AppDataGrid", "AppGrid", "AppGridPaginator", "AppGridPropertyColumn", "AppGridSelectColumn", "AppGridTemplateColumn", "AppPagination", "AppQuickGrid", "AppQuickPaginator", "DataGridContainer", "PageBreadcrumbs"]
+      "components": ["AppBreadcrumb", "AppGrid", "AppGridPaginator", "AppGridPropertyColumn", "AppGridShell", "AppGridTemplateColumn", "PageBreadcrumbs"]
     },
     {
       "category": "Feedback & async",

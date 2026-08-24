@@ -122,5 +122,5 @@ Both pages use a project reference and share controls for AudiogramIQ, BafsWorko
 
 Use `Components/Experience/ExperienceHeading` for result, report, education, and guidance pages. It accepts application-owned details, visual content, and watermark text. Continue to use `PageHeading` for compact CRUD and administration workflows.
 
-For application pages, compose `PageHeading`, `PageActionToolbar`, `AppButton`, `AppCard`, `AppDataGrid`, `AppPagination`, `FormSection`, `FormGrid`, `FormField`, `FormActions`, `FeedbackBanner`, `AppLoading`, and `StatusPanel`. Landing pages use the Marketing components below; account flows use `IdentityLayout`.
+For application pages, compose `PageHeading`, `PageActionToolbar`, `AppButton`, `AppCard`, `AppGridShell`, `AppGrid`, `AppGridPaginator`, `FormSection`, `FormGrid`, `FormField`, `FormActions`, `FeedbackBanner`, `AppLoading`, and `StatusPanel`. Landing pages use the Marketing components below; account flows use `IdentityLayout`.
 

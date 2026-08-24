@@ -1,27 +1,31 @@
-<DataGridContainer CssClass="@CssClass" Style="@Style" AriaLabel="@AriaLabel">
+<section @attributes="AdditionalAttributes"
+         class="@CssClassValue"
+         style="@Style"
+         tabindex="@TabIndex"
+         aria-label="@AriaLabel">
     @if (Search is not null || Filters is not null || Actions is not null)
     {
-        <div class="app-data-grid__commandbar">
-            @if (Search is not null) { <div class="app-data-grid__search">@Search</div> }
-            @if (Filters is not null) { <div class="app-data-grid__filters">@Filters</div> }
-            @if (Actions is not null) { <div class="app-data-grid__actions">@Actions</div> }
+        <div class="app-grid-shell__commandbar">
+            @if (Search is not null) { <div class="app-grid-shell__search">@Search</div> }
+            @if (Filters is not null) { <div class="app-grid-shell__filters">@Filters</div> }
+            @if (Actions is not null) { <div class="app-grid-shell__actions">@Actions</div> }
         </div>
     }
     @if (Toolbar is not null)
     {
-        <div class="app-data-grid__toolbar">@Toolbar</div>
+        <div class="app-grid-shell__toolbar">@Toolbar</div>
     }
     <AsyncContent State="@State"
                   LoadingTitle="@LoadingTitle"
                   EmptyTitle="@EmptyTitle"
                   EmptyMessage="@EmptyMessage">
-        <div class="app-data-grid__viewport">@ChildContent</div>
+        <div class="app-grid-shell__viewport">@ChildContent</div>
     </AsyncContent>
     @if (Footer is not null || Pagination is not null)
     {
-        <div class="app-data-grid__footer">@Footer @Pagination</div>
+        <div class="app-grid-shell__footer">@Footer @Pagination</div>
     }
-</DataGridContainer>
+</section>
 
 @code {
     [Parameter] public RenderFragment? Toolbar { get; set; }
@@ -38,4 +42,10 @@
     [Parameter] public string? CssClass { get; set; }
     [Parameter] public string? Style { get; set; }
     [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public int TabIndex { get; set; } = -1;
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClassValue => string.Join(' ', new[] { "app-grid-shell", CssClass }
+        .Where(value => !string.IsNullOrWhiteSpace(value)));
 }

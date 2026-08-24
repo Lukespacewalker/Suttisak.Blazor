@@ -69,16 +69,11 @@ public static class PlaybookComponentCatalog
 
         // Data & display
         D("AppBreadcrumb", "Data & display", "#library-directory", "Common", ["breadcrumb", "navigation"]),
-        D("AppDataGrid", "Data & display", "grid-performance", "Common", ["data", "grid", "table"]),
+        D("AppGridShell", "Data & display", "grid-performance", "Common", ["grid", "shell", "toolbar"]),
         D("AppGrid", "Data & display", "grid-performance", "Common", ["data", "grid", "table"]),
         D("AppGridPaginator", "Data & display", "grid-performance", "Common", ["grid", "pagination"]),
         D("AppGridPropertyColumn", "Data & display", "grid-performance", "Common", ["grid", "column", "property"]),
-        D("AppGridSelectColumn", "Data & display", "grid-performance", "Common", ["grid", "column", "selection"]),
         D("AppGridTemplateColumn", "Data & display", "grid-performance", "Common", ["grid", "column", "template"]),
-        D("AppPagination", "Data & display", "#library-directory", "Common", ["pagination", "navigation", "data"]),
-        D("AppQuickGrid", "Data & display", "grid-performance", "Common", ["grid", "virtualization", "data"]),
-        D("AppQuickPaginator", "Data & display", "grid-performance", "Common", ["grid", "pagination", "data"]),
-        D("DataGridContainer", "Data & display", "grid-performance", "Common", ["grid", "container", "data"]),
         D("PageBreadcrumbs", "Data & display", "application-shell", "Common", ["breadcrumb", "page", "navigation"]),
 
         // Feedback & async
