@@ -8,8 +8,9 @@
         class="@CssClassValue"
         aria-labelledby="@_titleId"
         aria-describedby="@DescriptionId"
-        data-dismissible="@Dismissible.ToString().ToLowerInvariant()"
-        data-prevent-outside-dismiss="@PreventDismissOnOutsideClick.ToString().ToLowerInvariant()"
+        data-dismissible="false"
+        data-prevent-outside-dismiss="true"
+        data-prevent-native-dismiss="true"
         @onclose="HandleNativeClose">
     @if (_hasValue)
     {
@@ -22,10 +23,6 @@
                     @if (!string.IsNullOrWhiteSpace(Description)) { <p id="@_descriptionId">@Description</p> }
                 </div>
             </div>
-            @if (Dismissible)
-            {
-                <button class="app-drawer__close" type="button" aria-label="@CloseLabel" @onclick="CancelAsync"><span aria-hidden="true">×</span></button>
-            }
         </header>
         <div class="app-drawer__body">@Body(Context)</div>
         @if (Footer is not null) { <footer class="app-drawer__footer">@Footer(Context)</footer> }
@@ -51,9 +48,6 @@
     [Parameter] public AppDrawerSize Size { get; set; } = AppDrawerSize.Standard;
     [Parameter] public bool Dangerous { get; set; }
     [Parameter] public AppDialogMode Mode { get; set; }
-    [Parameter] public bool Dismissible { get; set; } = true;
-    [Parameter] public bool PreventDismissOnOutsideClick { get; set; }
-    [Parameter] public string CloseLabel { get; set; } = "Close drawer";
     [Parameter] public string? Class { get; set; }
 
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : _descriptionId;

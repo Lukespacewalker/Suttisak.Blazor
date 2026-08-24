@@ -7,7 +7,7 @@
 .app-drawer[open].app-drawer--end { animation: app-drawer-in-end 220ms cubic-bezier(.2, .8, .2, 1); }
 .app-drawer[open].app-drawer--start { animation: app-drawer-in-start 220ms cubic-bezier(.2, .8, .2, 1); }
 .app-drawer__surface { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%; background: var(--app-surface); }
-.app-drawer__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem; border-block-end: 1px solid var(--app-border); }
+.app-drawer__header { display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border-block-end: 1px solid var(--app-border); }
 .app-drawer__heading { display: flex; min-width: 0; align-items: flex-start; gap: .75rem; }
 .app-drawer__heading h2 { margin: 0; color: var(--app-foreground); font-size: 1.15rem; line-height: 1.35; }
 .app-drawer__heading p { margin: .3rem 0 0; color: var(--app-foreground-muted); font-size: .9rem; line-height: 1.5; }
@@ -15,9 +15,6 @@
 .app-drawer__mode-mark--information { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); font-family: Georgia, serif; font-size: 1.1rem; }
 .app-drawer__mode-mark--warning { border-color: var(--app-warning-border); background: var(--app-warning-soft); color: var(--app-warning); }
 .app-drawer__mode-mark--error { border-color: var(--app-danger-border); background: var(--app-danger-soft); color: var(--app-danger); }
-.app-drawer__close { display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border: 0; border-radius: .45rem; background: transparent; color: var(--app-foreground-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; }
-.app-drawer__close:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
-.app-drawer__close:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .app-drawer__body { min-height: 0; padding: 1.25rem; overflow: auto; }
 .app-drawer__footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem; padding: 1rem 1.25rem; border-block-start: 1px solid var(--app-border); background: var(--app-surface-muted); }
 .app-drawer--danger .app-drawer__header { box-shadow: inset 3px 0 0 var(--app-danger); }

@@ -25,7 +25,7 @@ public class AppOverlayHostTests
         host.InvokeAsync(() =>
         {
             _ = service.ShowDrawerAsync<TestOverlayBody, string>(
-                new AppOverlayOptions { Title = "Test drawer" },
+                new AppOverlayOptions { Title = "Test drawer", Dismissible = true },
                 AppOverlayParameters.Create((nameof(TestOverlayBody.Text), "Drawer content")));
         });
 
@@ -35,6 +35,11 @@ public class AppOverlayHostTests
                 TimeSpan.FromSeconds(1)),
             host.Markup);
         Assert.Equal("Drawer content", host.Find("[data-testid='drawer-body']").TextContent);
+        var drawer = host.Find("dialog.app-drawer");
+        Assert.Equal("false", drawer.GetAttribute("data-dismissible"));
+        Assert.Equal("true", drawer.GetAttribute("data-prevent-outside-dismiss"));
+        Assert.Equal("true", drawer.GetAttribute("data-prevent-native-dismiss"));
+        Assert.Empty(host.FindAll(".app-drawer__close"));
     }
 
     public sealed class TestOverlayBody : ComponentBase

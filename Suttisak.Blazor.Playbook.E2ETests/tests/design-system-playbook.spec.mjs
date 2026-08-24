@@ -114,7 +114,7 @@ test('AppDialog specimen opens a native modal with runtime API metadata and clos
   await expect(page.getByText('Result: Confirmed')).toBeVisible();
 });
 
-test('AppDrawer specimen opens from the configured edge and can be cancelled', async ({ page }) => {
+test('AppDrawer specimen is action-only and opens from the configured edge', async ({ page }) => {
   await page.goto('/components/app-drawer');
 
   await expect(page.getByRole('complementary', { name: 'AppDrawer controls' })).toBeVisible();
@@ -125,6 +125,18 @@ test('AppDrawer specimen opens from the configured edge and can be cancelled', a
   const drawer = page.getByRole('dialog', { name: 'Workspace settings' });
   await expect(drawer).toBeVisible();
   await expect(drawer).toHaveClass(/app-drawer--start/);
+  await expect(drawer).toHaveAttribute('data-dismissible', 'false');
+  await expect(drawer).toHaveAttribute('data-prevent-outside-dismiss', 'true');
+  await expect(drawer).toHaveAttribute('data-prevent-native-dismiss', 'true');
+  await expect(drawer.getByRole('button', { name: 'Close drawer' })).toHaveCount(0);
+
+  await drawer.press('Escape');
+  await expect(drawer).toBeVisible();
+
+  const viewport = page.viewportSize();
+  await page.mouse.click((viewport?.width ?? 1280) - 5, 5);
+  await expect(drawer).toBeVisible();
+
   await drawer.getByRole('button', { name: 'Cancel' }).click();
   await expect(drawer).not.toBeVisible();
   await expect(page.getByText('Result: cancelled')).toBeVisible();

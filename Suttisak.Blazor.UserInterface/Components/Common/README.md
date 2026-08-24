@@ -100,15 +100,19 @@ tab; without that binding, the first tab is selected by default.
 ## Dialogs and drawers
 
 `AppDialog<TInput, TResult>` and `AppDrawer<TInput, TResult>` accept a value in
-`ShowAsync` and return `AppOverlayResult<TResult>`. Cancelling with Escape, the
-backdrop, the close button, or `CancelAsync` returns `IsCancelled = true`.
-Set `Dismissible="false"` when the user must explicitly choose a footer action.
-To keep Escape and the close button available but stop backdrop clicks, set
+`ShowAsync` and return `AppOverlayResult<TResult>`. Dialogs can cancel with
+Escape, the backdrop, the close button, or `CancelAsync`. Set
+`Dismissible="false"` when a dialog must require a footer action. To keep Escape
+and the close button available but stop dialog backdrop clicks, set
 `PreventDismissOnOutsideClick="true"`. `Mode` provides the `Information`,
 `Warning`, and `Error` visual treatments. Set `Dangerous="true"` for destructive
 confirmation and pair it with the filled `AppButtonVariant.DangerPrimary` action.
-Drawers can open from either side and have narrow, standard, and wide sizes and
-also support `Mode` and `PreventDismissOnOutsideClick`.
+
+`AppDrawer` is deliberately action-only so an in-progress form cannot disappear:
+Escape and backdrop clicks are blocked, and the component has no built-in close
+button. Provide explicit `AppButton` actions in its footer that call
+`drawer.CancelAsync()` or `drawer.CloseAsync(result)`. Drawers can open from
+either side and have narrow, standard, and wide sizes and also support `Mode`.
 
 ```razor
 <AppDialog TInput="Person" TResult="Person" @ref="deleteDialog"
