@@ -11,9 +11,13 @@ public abstract class IdentityRouteAdapter<TUser> : ComponentBase where TUser : 
 {
     protected abstract Type ScreenType { get; }
 
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? RouteParameters { get; set; }
+
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenComponent(0, ScreenType);
+        builder.AddMultipleAttributes(1, RouteParameters);
         builder.CloseComponent();
     }
 }

@@ -33,7 +33,9 @@
             <IdentitySettingCard Title="@(passkey.Name ?? Passkeys_razor.UnnamedPasskey)" IconName="PersonPasskey">
                 <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
                 <Actions>
-                    <RenamePasskeyWrapper TUser="TUser" Passkey="passkey" @rendermode="@(new InteractiveServerRenderMode())" />
+                    <AppButton Href="@IdentityRoutes.Account.Manage.RenamePasskeyById(credentialId)"
+                               Title="@Passkeys_razor.RenameTitle"
+                               IconStartName="Edit" IconStartSize="20">@Passkeys_razor.RenameButton</AppButton>
                     <form @formname="@($"update-passkey-{credentialId}-2")" @onsubmit="UpdatePasskey" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="CredentialId" value="@credentialId" />
