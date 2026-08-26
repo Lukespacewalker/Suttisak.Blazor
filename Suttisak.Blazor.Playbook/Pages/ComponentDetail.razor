@@ -15,36 +15,56 @@
         }
         else
         {
-            <nav class="component-detail__breadcrumbs" aria-label="Breadcrumb">
-                <a href="components">Components</a><span aria-hidden="true">/</span><span>@Component.Category</span><span aria-hidden="true">/</span><strong>@Component.Name</strong>
-            </nav>
+            <div class="component-detail__workspace">
+                <aside class="component-detail__sidebar" aria-label="Component Browser">
+                    <a class="component-detail__all-components" href="components">← All components</a>
+                    <nav aria-label="Component groups">
+                        @foreach (var group in ComponentGroups)
+                        {
+                            <details open="@(group.Key == Component.Category)">
+                                <summary><span>@group.Key</span><small>@group.Count()</small></summary>
+                                <div>
+                                    @foreach (var candidate in group)
+                                    {
+                                        <a class="@ComponentLinkClass(candidate)" href="@candidate.DetailHref" aria-current="@(candidate.Slug == Component.Slug ? "page" : null)">@candidate.Name</a>
+                                    }
+                                </div>
+                            </details>
+                        }
+                    </nav>
+                </aside>
 
-            <header class="component-detail__hero">
-                <div>
-                    <span class="playbook-kicker">@Component.Category</span>
-                    <h1>@Component.Name</h1>
-                    <p>@Component.Summary</p>
-                </div>
-                <div class="component-detail__meta">
-                    <span class="component-detail__status component-detail__status--@Component.Status.ToString().ToLowerInvariant()">@Component.Status</span>
-                    <span class="component-detail__coverage component-detail__coverage--@PlaybookComponentCoverage.SlugFor(Component)">@PlaybookComponentCoverage.LabelFor(Component)</span>
-                    <span>@Component.SourceArea</span>
-                    @if (CoverageKind == PlaybookComponentCoverageKind.Interactive)
-                    {
-                        <span>Executable workbench</span>
-                    }
-                    else if (CoverageDocumentation?.IntegrationRoute is not null)
-                    {
-                        <a href="@CoverageDocumentation.IntegrationRoute">@CoverageDocumentation.IntegrationRouteLabel ↗</a>
-                    }
-                    else
-                    {
-                        <a href="catalog">Return to compact catalog →</a>
-                    }
-                </div>
-            </header>
+                <div class="component-detail__content">
+                    <nav class="component-detail__breadcrumbs" aria-label="Breadcrumb">
+                        <a href="components">Components</a><span aria-hidden="true">/</span><span>@Component.Category</span><span aria-hidden="true">/</span><strong>@Component.Name</strong>
+                    </nav>
 
-            <section class="component-detail__section" aria-labelledby="preview-title">
+                    <header class="component-detail__hero">
+                        <div>
+                            <span class="playbook-kicker">@Component.Category</span>
+                            <h1>@Component.Name</h1>
+                            <p>@Component.Summary</p>
+                        </div>
+                        <div class="component-detail__meta">
+                            <span class="component-detail__status component-detail__status--@Component.Status.ToString().ToLowerInvariant()">@Component.Status</span>
+                            <span class="component-detail__coverage component-detail__coverage--@PlaybookComponentCoverage.SlugFor(Component)">@PlaybookComponentCoverage.LabelFor(Component)</span>
+                            <span>@Component.SourceArea</span>
+                            @if (CoverageKind == PlaybookComponentCoverageKind.Interactive)
+                            {
+                                <span>Executable workbench</span>
+                            }
+                            else if (CoverageDocumentation?.IntegrationRoute is not null)
+                            {
+                                <a href="@CoverageDocumentation.IntegrationRoute">@CoverageDocumentation.IntegrationRouteLabel ↗</a>
+                            }
+                            else
+                            {
+                                <a href="catalog">Return to compact catalog →</a>
+                            }
+                        </div>
+                    </header>
+
+                    <section class="component-detail__section" aria-labelledby="preview-title">
                 <header>
                     <div><span>01 / Coverage</span><h2 id="preview-title">@PreviewTitle</h2></div>
                     <p>@PlaybookComponentCoverage.DescriptionFor(Component)</p>
@@ -104,14 +124,14 @@
                         </div>
                     }
                 }
-            </section>
+                    </section>
 
-            <section class="component-detail__section" aria-labelledby="api-title">
+                    <section class="component-detail__section" aria-labelledby="api-title">
                 <header><div><span>02 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where one is registered, so public API changes remain visible without maintaining a second handwritten table.</p></header>
                 <ComponentParameterTable ComponentType="@ResolvedRuntimeType" />
-            </section>
+                    </section>
 
-            <section class="component-detail__section" aria-labelledby="accessibility-title">
+                    <section class="component-detail__section" aria-labelledby="accessibility-title">
                 <header><div><span>03 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div><p>Coverage is not complete merely because a component renders. Semantics, focus, keyboard behavior, responsive containment, and reduced motion remain part of the public contract.</p></header>
                 <div class="component-detail__quality-grid">
                     <article><strong>Keyboard</strong><p>Interactive controls must remain reachable and usable without a pointing device.</p></article>
@@ -119,9 +139,9 @@
                     <article><strong>Semantics</strong><p>Prefer native elements and preserve labels, roles, state, and relationships exposed to assistive technology.</p></article>
                     <article><strong>Responsive</strong><p>Verify constrained containers, long content, reduced motion, light mode, and dark mode.</p></article>
                 </div>
-            </section>
+                    </section>
 
-            <section class="component-detail__section" aria-labelledby="related-title">
+                    <section class="component-detail__section" aria-labelledby="related-title">
                 <header><div><span>04 / Compose</span><h2 id="related-title">Related components</h2></div><p>Nearby contracts from the same category help agents and developers reuse the system instead of inventing parallel UI.</p></header>
                 <div class="component-detail__related">
                     @foreach (var related in RelatedComponents)
@@ -133,11 +153,13 @@
                         </a>
                     }
                 </div>
-            </section>
+                    </section>
 
-            <footer class="component-detail__footer">
+                    <footer class="component-detail__footer">
                 <span>Machine-readable ID</span><code>@Component.Slug</code><span>Tags</span><p>@string.Join(" · ", Component.Tags)</p>
-            </footer>
+                    </footer>
+                </div>
+            </div>
         }
     </main>
 </PlaybookShell>
@@ -172,6 +194,12 @@
             .Select(name => PlaybookComponentCatalog.All.FirstOrDefault(component => component.Name == name))
             .Where(component => component is not null)
             .Cast<PlaybookComponentDefinition>();
+
+    private IReadOnlyList<IGrouping<string, PlaybookComponentDefinition>> ComponentGroups =>
+        PlaybookComponentCatalog.All.GroupBy(component => component.Category).ToArray();
+
+    private string ComponentLinkClass(PlaybookComponentDefinition candidate) =>
+        candidate.Slug == Component?.Slug ? "is-current" : string.Empty;
 
     private string ViewportClass(string candidate) => candidate == _viewport ? "is-active" : string.Empty;
 }

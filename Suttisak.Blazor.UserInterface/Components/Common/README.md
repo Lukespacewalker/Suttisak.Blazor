@@ -261,6 +261,25 @@ validation framework: `DataAnnotationsValidator`, FluentValidation adapters,
 or validation messages added directly to an `EditContext` can all drive the
 same visual states.
 
+`AppCheckbox` uses `@bind-Value` with a `bool` for the standard two-state
+contract. For a three-state checkbox, use `ThreeState="true"` and bind the
+nullable `CheckState` value instead. The cycle is checked → indeterminate →
+unchecked by default; set `ThreeStateOrderUncheckToIntermediate="true"` to
+cycle checked → unchecked → indeterminate.
+
+```razor
+<AppCheckbox ThreeState="true"
+             @bind-CheckState="model.SelectionState"
+             Label="Select all results" />
+
+@code {
+    private sealed class Model
+    {
+        public bool? SelectionState { get; set; }
+    }
+}
+```
+
 `AppTextBox` and `AppSelect` also accept an optional leading `IconContent` slot.
 When omitted, the control keeps its standard text padding and does not reserve
 empty icon space.

@@ -1,13 +1,22 @@
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppCheckbox controls">
     <Preview>
         <div class="component-specimen__demo">
-            <AppCheckbox @bind-Value="_value" Label="@_label" Description="@_description" Required="@_required" Disabled="@_disabled" />
+            @if (_threeState)
+            {
+                <AppCheckbox ThreeState="true" @bind-CheckState="_checkState" Label="@_label" Description="@_description" Required="@_required" Disabled="@_disabled" />
+            }
+            else
+            {
+                <AppCheckbox @bind-Value="_value" Label="@_label" Description="@_description" Required="@_required" Disabled="@_disabled" />
+            }
+            <small>Current state: @CurrentStateLabel</small>
         </div>
     </Preview>
     <Controls>
         <label>Label<input @bind="_label" @bind:event="oninput" /></label>
         <label>Description<input @bind="_description" @bind:event="oninput" /></label>
         <label class="component-detail__check"><input type="checkbox" @bind="_value" /> Checked</label>
+        <label class="component-detail__check"><input type="checkbox" checked="@_threeState" @onchange="ToggleThreeState" /> Three-state mode</label>
         <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
         <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
     </Controls>
@@ -23,8 +32,23 @@
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
     private bool _value = true;
+    private bool _threeState;
+    private bool? _checkState = true;
     private string? _label = "Email me updates";
     private string? _description = "Receive a concise notification when this record changes.";
     private bool _required;
     private bool _disabled;
+
+    private string CurrentStateLabel => _threeState
+        ? _checkState switch { true => "Checked", false => "Unchecked", null => "Indeterminate" }
+        : _value ? "Checked" : "Unchecked";
+
+    private void ToggleThreeState(ChangeEventArgs args)
+    {
+        _threeState = args.Value is bool value && value;
+        if (_threeState)
+        {
+            _checkState = _value;
+        }
+    }
 }

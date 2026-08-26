@@ -3,7 +3,24 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suttisak.Blazor UI Playbook</title>
+    <meta name="description" content="Explore live Razor components, their contracts, and complete integration patterns across application themes." />
+    <meta name="application-name" content="Suttisak.Blazor UI Playbook" />
     <meta name="theme-color" content="#08777d" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Suttisak.Blazor" />
+    <meta property="og:title" content="Suttisak.Blazor UI Playbook" />
+    <meta property="og:description" content="Explore live Razor components, their contracts, and complete integration patterns across application themes." />
+    <meta property="og:image" content="https://raw.githubusercontent.com/Lukespacewalker/Suttisak.Blazor/master/Suttisak.Blazor.Playbook/wwwroot/social-preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Suttisak.Blazor UI Playbook with an abstract component system" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Suttisak.Blazor UI Playbook" />
+    <meta name="twitter:description" content="Live Razor components, contracts, and integration patterns." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Lukespacewalker/Suttisak.Blazor/master/Suttisak.Blazor.Playbook/wwwroot/social-preview.png" />
+    <meta name="twitter:image:alt" content="Suttisak.Blazor UI Playbook with an abstract component system" />
     <base href="/" />
     <script src="_content/Suttisak.Blazor.UserInterface/js/theme-bootstrap.js"></script>
     <link rel="stylesheet" href="_content/Suttisak.Blazor.UserInterface/css/main.css?v=1.0.10" />
@@ -12,9 +29,23 @@
     <link rel="icon" href="data:," />
 </head>
 <body>
-    <div id="app"><div class="playbook-loading">Loading component specimens…</div></div>
+    <div id="app">
+        <div class="playbook-loading" role="status" aria-live="polite" aria-labelledby="playbook-loading-title">
+            <div class="playbook-loading__mark" aria-hidden="true"><span>SB</span></div>
+            <div class="playbook-loading__copy">
+                <p class="playbook-loading__eyebrow">Suttisak.Blazor</p>
+                <h1 id="playbook-loading-title">Preparing the playbook</h1>
+                <p id="playbook-loading-status">Starting the component workspace…</p>
+            </div>
+            <div class="playbook-loading__progress" aria-hidden="true"><span id="playbook-loading-progress"></span></div>
+            <p id="playbook-loading-detail" class="playbook-loading__detail">Loading application resources</p>
+        </div>
+    </div>
     <script src="_content/Suttisak.Blazor.UserInterface/js/blazor-utilities.js"></script>
     <script src="playbook.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script>
+        window.playbookLoader.start();
+    </script>
 </body>
 </html>
