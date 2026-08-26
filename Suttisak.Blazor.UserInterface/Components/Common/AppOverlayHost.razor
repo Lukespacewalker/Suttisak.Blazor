@@ -154,13 +154,13 @@ else
                 {
                     builder.OpenComponent<AppButton>(sequence++);
                     builder.AddAttribute(sequence++, nameof(AppButton.OnClick), EventCallback.Factory.Create<MouseEventArgs>(this, _ => request.Controller!.CancelAsync()));
-                    builder.AddContent(sequence++, preset.CancelText);
+                    builder.AddAttribute(sequence++, nameof(AppButton.ChildContent), (RenderFragment)(content => content.AddContent(0, preset.CancelText)));
                     builder.CloseComponent();
                 }
                 builder.OpenComponent<AppButton>(sequence++);
                 builder.AddAttribute(sequence++, nameof(AppButton.Variant), request.Preset.IsConfirmation && request.Options.Dangerous ? AppButtonVariant.DangerPrimary : AppButtonVariant.Primary);
                 builder.AddAttribute(sequence++, nameof(AppButton.OnClick), EventCallback.Factory.Create<MouseEventArgs>(this, _ => request.Controller!.CloseAsync(true)));
-                builder.AddContent(sequence++, preset.ConfirmText);
+                builder.AddAttribute(sequence++, nameof(AppButton.ChildContent), (RenderFragment)(content => content.AddContent(0, preset.ConfirmText)));
                 builder.CloseComponent();
             };
         }

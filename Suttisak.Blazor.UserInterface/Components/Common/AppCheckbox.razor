@@ -68,15 +68,17 @@
             return;
         }
 
-        var next = CheckState switch
-        {
-            true when ThreeStateOrderUncheckToIntermediate => false,
-            false when ThreeStateOrderUncheckToIntermediate => (bool?)null,
-            null when ThreeStateOrderUncheckToIntermediate => true,
-            true => (bool?)null,
-            null => false,
-            _ => true
-        };
+        var next = !ThreeState || !ShowIndeterminate
+            ? EffectiveCheckState is not true
+            : CheckState switch
+            {
+                true when ThreeStateOrderUncheckToIntermediate => false,
+                false when ThreeStateOrderUncheckToIntermediate => (bool?)null,
+                null when ThreeStateOrderUncheckToIntermediate => true,
+                true => (bool?)null,
+                null => false,
+                _ => true
+            };
         await CheckStateChanged.InvokeAsync(next);
     }
 

@@ -10,6 +10,39 @@ namespace Suttisak.Blazor.UserInterface.Tests;
 public class AppOverlayHostTests
 {
     [Fact]
+    public void Built_in_confirmation_renders_both_action_labels()
+    {
+        using var context = new BunitContext();
+        context.Services.AddAppOverlays();
+
+        var overlayModule = context.JSInterop.SetupModule(
+            "./_content/Suttisak.Blazor.UserInterface/js/app-overlay.js");
+        overlayModule.SetupVoid("showModal", _ => true).SetVoidResult();
+
+        var host = context.Render<AppOverlayHost>();
+        var service = context.Services.GetRequiredService<AppOverlayService>();
+
+        host.InvokeAsync(() =>
+        {
+            _ = service.ShowConfirmationAsync(new AppConfirmationOptions
+            {
+                Title = "Discard changes?",
+                Message = "The current edits will be lost.",
+                ConfirmText = "Discard",
+                CancelText = "Keep editing"
+            });
+        });
+
+        host.WaitForAssertion(() =>
+        {
+            var buttons = host.FindAll(".app-dialog__footer .app-button");
+            Assert.Equal(2, buttons.Count);
+            Assert.Equal("Keep editing", buttons[0].TextContent.Trim());
+            Assert.Equal("Discard", buttons[1].TextContent.Trim());
+        });
+    }
+
+    [Fact]
     public void RendersDynamicDrawerBodyWithoutBlockingTheRenderCycle()
     {
         using var context = new BunitContext();
