@@ -21,7 +21,7 @@ public sealed class AppCheckboxTests
             .Add(component => component.CheckState, checkState)
             .Add(component => component.CheckStateChanged, changed));
 
-        checkbox.Find("input[type=checkbox]").Click();
+        checkbox.Find("input[type=checkbox]").Change(true);
         Assert.True(checkState);
 
         checkbox.Render(parameters => parameters
@@ -30,7 +30,7 @@ public sealed class AppCheckboxTests
             .Add(component => component.ThreeStateOrderUncheckToIntermediate, true)
             .Add(component => component.CheckState, checkState)
             .Add(component => component.CheckStateChanged, changed));
-        checkbox.Find("input[type=checkbox]").Click();
+        checkbox.Find("input[type=checkbox]").Change(false);
 
         Assert.False(checkState);
     }

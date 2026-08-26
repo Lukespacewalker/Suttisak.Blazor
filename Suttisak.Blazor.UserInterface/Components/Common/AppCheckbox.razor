@@ -8,7 +8,7 @@
         <input @ref="_inputElement" id="@InputId" class="app-choice__native @CssClass" type="checkbox" name="@NameAttributeValue"
                value="true" checked="@EffectiveCheckState.GetValueOrDefault()" required="@Required" disabled="@Disabled"
                aria-invalid="@HasValidationError" aria-describedby="@DescribedBy"
-               @onclick="HandleClick" @onclick:preventDefault="UseCheckState"
+               @onclick="HandleClick" @onclick:preventDefault="UseCustomCheckCycle"
                @onchange="HandleChange" @attributes="AdditionalAttributes" />
         <span class="app-choice__control" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="m4 9 3 3 7-7" /></svg><i class="app-choice__mixed"></i></span>
         <span class="app-choice__content">
@@ -41,9 +41,11 @@
 
     private ElementReference _inputElement;
     private IJSObjectReference? _module;
-    private bool? _lastRenderedIndeterminate;
+    private bool? _lastRenderedCheckState;
+    private bool _hasRenderedCheckState;
 
     private bool UseCheckState => ThreeState || CheckStateChanged.HasDelegate;
+    private bool UseCustomCheckCycle => UseCheckState && ThreeState && ShowIndeterminate;
     private bool? EffectiveCheckState => UseCheckState ? (ShowIndeterminate ? CheckState : CheckState.GetValueOrDefault()) : CurrentValue;
     private bool IsIndeterminate => EffectiveCheckState is null;
 
@@ -51,42 +53,46 @@
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (_lastRenderedIndeterminate == IsIndeterminate)
+        if (_hasRenderedCheckState && _lastRenderedCheckState == EffectiveCheckState)
         {
             return;
         }
 
-        _lastRenderedIndeterminate = IsIndeterminate;
+        _hasRenderedCheckState = true;
+        _lastRenderedCheckState = EffectiveCheckState;
         _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Suttisak.Blazor.UserInterface/js/app-checkbox.js");
-        await _module.InvokeVoidAsync("setIndeterminate", _inputElement, IsIndeterminate);
+        await _module.InvokeVoidAsync("setState", _inputElement, EffectiveCheckState is true, IsIndeterminate);
     }
 
     private async Task HandleClick(MouseEventArgs _)
     {
-        if (!UseCheckState || Disabled)
+        if (!UseCustomCheckCycle || Disabled)
         {
             return;
         }
 
-        var next = !ThreeState || !ShowIndeterminate
-            ? EffectiveCheckState is not true
-            : CheckState switch
-            {
-                true when ThreeStateOrderUncheckToIntermediate => false,
-                false when ThreeStateOrderUncheckToIntermediate => (bool?)null,
-                null when ThreeStateOrderUncheckToIntermediate => true,
-                true => (bool?)null,
-                null => false,
-                _ => true
-            };
+        var next = CheckState switch
+        {
+            true when ThreeStateOrderUncheckToIntermediate => false,
+            false when ThreeStateOrderUncheckToIntermediate => (bool?)null,
+            null when ThreeStateOrderUncheckToIntermediate => true,
+            true => (bool?)null,
+            null => false,
+            _ => true
+        };
         await CheckStateChanged.InvokeAsync(next);
     }
 
-    private void HandleChange(ChangeEventArgs args)
+    private async Task HandleChange(ChangeEventArgs args)
     {
-        if (!UseCheckState)
+        var value = args.Value is bool parsed && parsed;
+        if (UseCheckState)
         {
-            CurrentValue = args.Value is bool value && value;
+            await CheckStateChanged.InvokeAsync(value);
+        }
+        else
+        {
+            CurrentValue = value;
         }
     }
 
