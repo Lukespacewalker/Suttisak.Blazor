@@ -17,16 +17,16 @@ test('Component Browser reports and filters the complete catalog from one source
 
   const summary = page.getByRole('complementary', { name: 'Component coverage summary' });
   await expect(summary).toBeVisible();
-  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('86');
-  await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('74');
-  await expect(page.locator('[data-component-name]')).toHaveCount(86, { timeout: wasmTimeout });
+  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('87');
+  await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('75');
+  await expect(page.locator('[data-component-name]')).toHaveCount(87, { timeout: wasmTimeout });
 
   const interactiveFilter = page.locator('.component-browser__coverage-filter button').filter({ hasText: 'Interactive' });
   await expect(interactiveFilter).toHaveCount(1);
   await interactiveFilter.click();
   await expect(interactiveFilter).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(74, { timeout: wasmTimeout });
-  await expect(page.locator('[data-component-name]')).toHaveCount(74, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(75, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(75, { timeout: wasmTimeout });
 
   await page.getByRole('searchbox', { name: 'Find a component' }).fill('AppButton');
   await expect(page.locator('[data-component-name="AppButton"]')).toHaveCount(1);
@@ -37,7 +37,7 @@ test('Component Browser reports and filters the complete catalog from one source
 
 test('Component Browser has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/components');
-  await expect(page.locator('[data-component-name]')).toHaveCount(86, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(87, { timeout: wasmTimeout });
   await expectNoSeriousOrCriticalViolations(page);
 });
 
@@ -45,7 +45,44 @@ test('Playbook home reports Interactive coverage from the shared coverage source
   await page.goto('/');
 
   const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Linked live specimens' });
-  await expect(metric.locator('strong')).toHaveText('74');
+  await expect(metric.locator('strong')).toHaveText('75');
+});
+
+test('StatusPage detail executes the shared visual contract and error semantics', async ({ page }) => {
+  await page.goto('/components/status-page');
+
+  const specimen = page.getByTestId('status-page-specimen');
+  await expect(specimen).toBeVisible({ timeout: wasmTimeout });
+
+  const statusPage = specimen.locator('.status-page');
+  await expect(statusPage).toHaveClass(/status-page--forbidden/);
+  await expect(statusPage).toHaveAttribute('role', 'region');
+  await expect(statusPage).toHaveAttribute('aria-live', 'polite');
+
+  await page.getByLabel('Variant').selectOption('Error');
+  await expect(statusPage).toHaveClass(/status-page--error/);
+  await expect(statusPage).toHaveAttribute('role', 'alert');
+  await expect(statusPage).toHaveAttribute('aria-live', 'assertive');
+
+  await page.getByLabel('Custom visual slot').check();
+  await expect(specimen.locator('.status-page-demo-visual')).toHaveText('◎');
+  await page.waitForTimeout(800);
+  await expectNoSeriousOrCriticalViolations(page);
+});
+
+test('StatusRouteContent composes the shared page with route actions and request reference', async ({ page }) => {
+  await page.goto('/access/custom-error');
+
+  const preview = page.getByRole('region', { name: 'Custom status page preview' });
+  await expect(preview).toBeVisible({ timeout: wasmTimeout });
+
+  const statusPage = preview.locator('.status-page');
+  await expect(statusPage).toHaveClass(/status-page--error/);
+  await expect(statusPage.getByRole('heading', { level: 1 })).toHaveText('Something stopped unexpectedly.');
+  await expect(statusPage.locator('.status-page__route-brand')).toContainText('Service status / 500');
+  await expect(statusPage.locator('.status-page__reference code')).toHaveText('ERR-DEMO-9F2A');
+  await expect(statusPage.getByRole('button', { name: 'Try again' })).toBeVisible();
+  await expect(statusPage.getByRole('link', { name: 'Return to home' })).toBeVisible();
 });
 
 test('packaged design-token manifest is complete and unique', async ({ request }) => {

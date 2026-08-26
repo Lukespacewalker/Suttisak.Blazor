@@ -1,0 +1,66 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Status page controls">
+    <Preview>
+        <div class="component-specimen__demo" data-testid="status-page-specimen">
+            <StatusPage Code="@_code"
+                        Variant="@_variant"
+                        Eyebrow="@_eyebrow"
+                        Title="@_title"
+                        Description="@_description"
+                        VisualContent="@CustomVisual"
+                        HeadingId="status-page-demo-heading"
+                        Role="@(_variant == StatusPageVariant.Error ? null : "region")">
+                <BrandContent>
+                    <span class="status-page-demo-brand"><strong>Product brand</strong><small>Application-owned slot</small></span>
+                </BrandContent>
+                <Actions>
+                    <AppButton Href="/" Variant="AppButtonVariant.Primary">Return home</AppButton>
+                    <AppButton Variant="AppButtonVariant.Subtle">Contact support</AppButton>
+                </Actions>
+                <SupplementaryContent>
+                    <span>Reference: STATUS-DEMO-42</span>
+                </SupplementaryContent>
+                <FooterContent>
+                    <span>@_code / Product brand</span>
+                    <span>Application-owned footer</span>
+                </FooterContent>
+            </StatusPage>
+        </div>
+    </Preview>
+    <Controls>
+        <label>Variant
+            <select @bind="_variant">
+                @foreach (var value in Enum.GetValues<StatusPageVariant>())
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+        </label>
+        <label>Code
+            <input @bind="_code" />
+        </label>
+        <label>Eyebrow
+            <input @bind="_eyebrow" />
+        </label>
+        <label><input type="checkbox" @bind="_customVisual" /> Custom visual slot</label>
+    </Controls>
+    <States>
+        <article><span>Structure</span><strong>Shared status composition</strong><small>Branding, copy, actions, references, and footer remain application-owned slots.</small></article>
+        <article><span>Variants</span><strong>Semantic visual language</strong><small>Forbidden, missing, error, and neutral status treatments share one responsive contract.</small></article>
+        <article><span>Accessibility</span><strong>Heading association</strong><small>The landmark references its heading and infers live-region urgency from the variant.</small></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private StatusPageVariant _variant = StatusPageVariant.Forbidden;
+    private string _code = "403";
+    private string _eyebrow = "ACCESS DENIED";
+    private string _title = "You’ve reached a protected space.";
+    private string _description = "A custom page can keep the shared visual contract while supplying its own content and actions.";
+    private bool _customVisual;
+
+    private RenderFragment? CustomVisual => _customVisual
+        ? @<span class="status-page-demo-visual">◎</span>
+        : null;
+}

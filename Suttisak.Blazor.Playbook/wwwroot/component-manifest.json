@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentCount": 86,
+  "componentCount": 87,
   "detailRouteTemplate": "components/{kebab-case-component-name}",
   "statusPolicy": {
     "stable": "normal consumption; breaking changes require deliberate migration",
@@ -27,7 +27,7 @@
     {
       "category": "Feedback & async",
       "status": "stable",
-      "components": ["AppLoading", "AppProgress", "AppSkeleton", "AsyncContent", "FeedbackBanner", "StatusPanel"]
+      "components": ["AppLoading", "AppProgress", "AppSkeleton", "AsyncContent", "FeedbackBanner", "StatusPanel", "StatusPage"]
     },
     {
       "category": "Overlays",

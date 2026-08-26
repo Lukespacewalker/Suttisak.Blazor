@@ -1,0 +1,136 @@
+<section @attributes="AdditionalAttributes"
+         class="@CssClass"
+         role="@ResolvedRole"
+         aria-live="@ResolvedAriaLive"
+         aria-labelledby="@ResolvedHeadingId"
+         aria-describedby="@(HasDescription ? ResolvedDescriptionId : null)">
+    @if (BrandContent is not null)
+    {
+        <header class="status-page__brand">@BrandContent</header>
+    }
+
+    <div class="status-page__code" aria-hidden="true">@DisplayCode</div>
+    <div class="status-page__visual" aria-hidden="true">
+        @if (VisualContent is not null)
+        {
+            @VisualContent
+        }
+        else
+        {
+            <div class="status-page__ornament">
+                @if (Variant == StatusPageVariant.Forbidden)
+                {
+                    <span class="status-page__lock"><i></i><b></b></span>
+                }
+                else if (Variant == StatusPageVariant.Error)
+                {
+                    <span class="status-page__pulse"><i></i><i></i><i></i><i></i><i></i></span>
+                }
+                else
+                {
+                    <span class="status-page__locator"><i></i></span>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="status-page__copy">
+        @if (!string.IsNullOrWhiteSpace(Eyebrow))
+        {
+            <span class="status-page__eyebrow">@Eyebrow</span>
+        }
+        <h1 id="@ResolvedHeadingId">@Title</h1>
+        @if (HasDescription)
+        {
+            <p id="@ResolvedDescriptionId">@Description</p>
+        }
+        @if (SupplementaryContent is not null)
+        {
+            <div class="status-page__supplementary">
+                @SupplementaryContent
+            </div>
+        }
+        @if (Actions is not null)
+        {
+            <div class="status-page__actions">@Actions</div>
+        }
+    </div>
+
+    @if (FooterContent is not null || !string.IsNullOrWhiteSpace(FooterText))
+    {
+        <footer class="status-page__footer">
+            @if (FooterContent is not null)
+            {
+                @FooterContent
+            }
+            else
+            {
+                <span>@FooterText</span>
+            }
+        </footer>
+    }
+</section>
+
+@code {
+    private static int _nextInstanceId;
+    private readonly string _instanceId = Interlocked.Increment(ref _nextInstanceId).ToString();
+
+    /// <summary>The status label shown as a quiet visual watermark.</summary>
+    [Parameter] public string Code { get; set; } = "—";
+
+    /// <summary>The visual and semantic variant. Defaults to a neutral status.</summary>
+    [Parameter] public StatusPageVariant Variant { get; set; } = StatusPageVariant.Status;
+
+    /// <summary>A short context label above the page heading.</summary>
+    [Parameter] public string? Eyebrow { get; set; } = "Status update";
+
+    /// <summary>The accessible page heading.</summary>
+    [Parameter] public string Title { get; set; } = "Something needs your attention.";
+
+    /// <summary>Supporting copy shown below the heading.</summary>
+    [Parameter] public string? Description { get; set; }
+
+    /// <summary>Optional application-owned branding markup.</summary>
+    [Parameter] public RenderFragment? BrandContent { get; set; }
+
+    /// <summary>Optional replacement for the default variant ornament.</summary>
+    [Parameter] public RenderFragment? VisualContent { get; set; }
+
+    /// <summary>Application-owned primary and secondary actions.</summary>
+    [Parameter] public RenderFragment? Actions { get; set; }
+
+    /// <summary>Additional content such as support guidance or an incident reference.</summary>
+    [Parameter] public RenderFragment? SupplementaryContent { get; set; }
+
+    /// <summary>Application-owned footer markup.</summary>
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+
+    /// <summary>Simple text footer when <see cref="FooterContent"/> is not needed.</summary>
+    [Parameter] public string? FooterText { get; set; }
+
+    /// <summary>Optional explicit heading id. A unique id is generated when omitted.</summary>
+    [Parameter] public string? HeadingId { get; set; }
+
+    /// <summary>Optional explicit description id.</summary>
+    [Parameter] public string? DescriptionId { get; set; }
+
+    /// <summary>Overrides the inferred landmark role.</summary>
+    [Parameter] public string? Role { get; set; }
+
+    /// <summary>Overrides the inferred live-region politeness.</summary>
+    [Parameter] public string? AriaLive { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string DisplayCode => string.IsNullOrWhiteSpace(Code) ? "—" : Code;
+    private bool HasDescription => !string.IsNullOrWhiteSpace(Description);
+    private string ResolvedHeadingId => string.IsNullOrWhiteSpace(HeadingId) ? $"status-page-{_instanceId}-title" : HeadingId;
+    private string ResolvedDescriptionId => string.IsNullOrWhiteSpace(DescriptionId) ? $"status-page-{_instanceId}-description" : DescriptionId;
+    private string ResolvedRole => string.IsNullOrWhiteSpace(Role) ? Variant == StatusPageVariant.Error ? "alert" : "region" : Role;
+    private string ResolvedAriaLive => string.IsNullOrWhiteSpace(AriaLive) ? Variant == StatusPageVariant.Error ? "assertive" : "polite" : AriaLive;
+    private string VariantClass => Variant.ToString().ToLowerInvariant();
+    private string CssClass => AdditionalAttributes?.TryGetValue("class", out var value) == true && value is not null
+        ? $"status-page status-page--{VariantClass} {value}"
+        : $"status-page status-page--{VariantClass}";
+}

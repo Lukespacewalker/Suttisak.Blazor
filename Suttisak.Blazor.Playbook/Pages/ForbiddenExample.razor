@@ -4,16 +4,17 @@
 
 <PlaybookShell>
     <AccessPageFrame Title="403 access denied state">
-        <StatusPattern Code="403"
-                       Variant="forbidden"
-                       Eyebrow="ACCESS DENIED"
-                       Title="You’ve reached a protected space."
-                       Description="Your account is signed in, but it does not have permission to view this page. Ask an administrator for access or return to your workspace."
-                       FooterText="Your session is still secure">
+        <StatusPage Code="403"
+                    Variant="StatusPageVariant.Forbidden"
+                    Eyebrow="ACCESS DENIED"
+                    Title="You’ve reached a protected space."
+                    Description="Your account is signed in, but it does not have permission to view this page. Ask an administrator for access or return to your workspace."
+                    FooterText="Your session is still secure">
+            <BrandContent><AccessBrand /></BrandContent>
             <Actions>
                 <AppButton Href="application-shell" Variant="AppButtonVariant.Primary" Class="access-primary-action">Return to workspace</AppButton>
                 <AppButton Variant="AppButtonVariant.Subtle" Class="access-secondary-link access-link-button">Request access</AppButton>
             </Actions>
-        </StatusPattern>
+        </StatusPage>
     </AccessPageFrame>
 </PlaybookShell>

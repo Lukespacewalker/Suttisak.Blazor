@@ -1,0 +1,17 @@
+.status-page-demo-brand {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .35rem .6rem;
+}
+
+.status-page-demo-brand small {
+    color: var(--app-foreground-muted);
+    font-size: .68rem;
+}
+
+.status-page-demo-visual {
+    font-family: var(--app-font-heading);
+    font-size: clamp(3rem, 10cqi, 6rem);
+    line-height: 1;
+}

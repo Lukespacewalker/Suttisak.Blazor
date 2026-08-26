@@ -7,7 +7,8 @@ const feedbackRoutes = [
   '/components/app-progress',
   '/components/app-skeleton',
   '/components/feedback-banner',
-  '/components/status-panel'
+  '/components/status-panel',
+  '/components/status-page'
 ];
 
 test('AsyncContent specimen executes ready, error, retry, and loading states', async ({ page }) => {
@@ -88,10 +89,32 @@ test('StatusPanel specimen exposes loading state through the shared status contr
   await expect(status).toHaveAttribute('aria-live', 'polite');
 });
 
+test('StatusPage specimen exposes slots, variants, and heading association', async ({ page }) => {
+  await page.goto('/components/status-page');
+
+  const status = page.getByTestId('status-page-specimen').locator('section.status-page');
+  await expect(status).toHaveAttribute('role', 'region');
+  await expect(status).toHaveAttribute('aria-labelledby', 'status-page-demo-heading');
+  await expect(status.getByRole('heading', { level: 1, name: /protected space/i })).toBeVisible();
+  await expect(status).toContainText('Application-owned slot');
+  await expect(status).toContainText('Reference: STATUS-DEMO-42');
+
+  await page.getByLabel('Variant').selectOption('Error');
+  await expect(status).toHaveAttribute('role', 'alert');
+  await expect(status).toHaveAttribute('aria-live', 'assertive');
+
+  await page.getByLabel('Custom visual slot').check();
+  await expect(status).toContainText('◎');
+});
+
 for (const path of feedbackRoutes) {
   test(`feedback workbench has no serious or critical axe violations on ${path}`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('main')).toBeVisible();
+    if (path === '/components/status-page') {
+      await expect(page.locator('.status-page')).toBeVisible();
+      await page.waitForTimeout(800);
+    }
 
     const results = await new AxeBuilder({ page })
       .include('main')

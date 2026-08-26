@@ -6,6 +6,7 @@ using Suttisak.Blazor.UserInterface.Components.Marketing;
 using Suttisak.Blazor.UserInterface.Components.Navigation;
 using Suttisak.Blazor.UserInterface.Components.Pages;
 using Suttisak.Blazor.UserInterface.Components.Timezone;
+using Suttisak.Blazor.UserInterface.Routing;
 
 namespace Suttisak.Blazor.Playbook.ComponentDocs;
 
@@ -51,6 +52,7 @@ public static class PlaybookSpecimenRegistry
             ["AppSkeleton"] = new(typeof(AppSkeleton), typeof(FeedbackAsyncSpecimen)),
             ["FeedbackBanner"] = new(typeof(FeedbackBanner), typeof(FeedbackAsyncSpecimen)),
             ["StatusPanel"] = new(typeof(StatusPanel), typeof(FeedbackAsyncSpecimen)),
+            ["StatusPage"] = new(typeof(StatusPage), typeof(StatusPageSpecimen)),
             ["AppCard"] = new(typeof(AppCard), typeof(LayoutDisplaySpecimen)),
             ["AppStack"] = new(typeof(AppStack), typeof(LayoutDisplaySpecimen)),
             ["AppDivider"] = new(typeof(AppDivider), typeof(LayoutDisplaySpecimen)),

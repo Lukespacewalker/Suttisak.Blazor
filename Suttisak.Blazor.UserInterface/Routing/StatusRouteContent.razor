@@ -4,60 +4,42 @@
 
 <PageTitle>@StatusCode · @Content.Title</PageTitle>
 
-<section class="status-route status-route--@Variant"
-         role="@(StatusCode >= 500 ? "alert" : "region")"
-         aria-live="@(StatusCode >= 500 ? "assertive" : "polite")"
-         aria-labelledby="@HeadingId">
-    <header class="status-route__brand">
-        @if (!string.IsNullOrWhiteSpace(ActiveOptions.LogoUrl))
-        {
-            <AppLogo AssetPath="@ActiveOptions.LogoUrl" />
-        }
-        <strong>@ActiveOptions.BrandName</strong>
-        <span>Service status / @StatusCode</span>
-    </header>
-
-    <span class="status-route__code" aria-hidden="true">@StatusCode</span>
-    <div class="status-route__signal" aria-hidden="true">
-        <Suttisak.Blazor.Icons.Icon Name="@IconName" Size="24" />
-        <i></i>
-    </div>
-
-    <div class="status-route__copy">
-        <span class="status-route__eyebrow">@Content.Eyebrow</span>
-        <h1 id="@HeadingId">@Content.Title</h1>
-        <p>@Content.Message</p>
-
-        <div class="status-route__actions">
-            @if (Content.RetryPrimaryAction)
+<StatusPage Code="@StatusCode.ToString()"
+            Variant="@PageVariant"
+            Eyebrow="@Content.Eyebrow"
+            Title="@Content.Title"
+            Description="@Content.Message"
+            SupplementaryContent="@RequestReference">
+    <BrandContent>
+        <div class="status-page__route-brand">
+            @if (!string.IsNullOrWhiteSpace(ActiveOptions.LogoUrl))
             {
-                <button class="status-route__primary" type="button" @onclick="Retry">@Content.PrimaryActionLabel</button>
+                <AppLogo AssetPath="@ActiveOptions.LogoUrl" />
             }
-            else
-            {
-                <a class="status-route__primary" href="@PrimaryHref">@Content.PrimaryActionLabel</a>
-            }
-
-            @if (!string.IsNullOrWhiteSpace(Content.SecondaryActionLabel))
-            {
-                <a class="status-route__secondary" href="@SecondaryHref">@Content.SecondaryActionLabel</a>
-            }
+            <strong>@ActiveOptions.BrandName</strong>
+            <span>Service status / @StatusCode</span>
         </div>
-
-        @if (ActiveOptions.ShowRequestId && !string.IsNullOrWhiteSpace(RequestId))
+    </BrandContent>
+    <Actions>
+        @if (Content.RetryPrimaryAction)
         {
-            <div class="status-route__reference">
-                <span>@ActiveOptions.RequestIdLabel</span>
-                <code>@RequestId</code>
-            </div>
+            <button class="status-page__primary" type="button" @onclick="Retry">@Content.PrimaryActionLabel</button>
         }
-    </div>
+        else
+        {
+            <a class="status-page__primary" href="@PrimaryHref">@Content.PrimaryActionLabel</a>
+        }
 
-    <footer>
+        @if (!string.IsNullOrWhiteSpace(Content.SecondaryActionLabel))
+        {
+            <a class="status-page__secondary" href="@SecondaryHref">@Content.SecondaryActionLabel</a>
+        }
+    </Actions>
+    <FooterContent>
         <span>@StatusCode / @ActiveOptions.BrandName</span>
         <span>@Content.FooterText</span>
-    </footer>
-</section>
+    </FooterContent>
+</StatusPage>
 
 @code {
     private readonly StatusRouteOptions _defaults = new();
@@ -66,35 +48,36 @@
     [Parameter] public string? RequestId { get; set; }
     [Parameter] public StatusRouteOptions? Options { get; set; }
 
-    private string HeadingId => $"status-route-{StatusCode}-title";
-    private StatusRouteOptions ActiveOptions
-    {
-        get
-        {
-            if (Options is not null)
-                return Options;
+    private StatusRouteOptions ActiveOptions => Options ??
+        (Services.GetService(typeof(IOptions<StatusRouteOptions>)) is IOptions<StatusRouteOptions> configured
+            ? configured.Value
+            : _defaults);
 
-            return Services.GetService(typeof(IOptions<StatusRouteOptions>)) is IOptions<StatusRouteOptions> configured
-                ? configured.Value
-                : _defaults;
-        }
-    }
     private StatusRoutePageOptions Content => ActiveOptions.Resolve(StatusCode);
     private string PrimaryHref => Content.PrimaryActionHref ?? ActiveOptions.HomeHref;
     private string SecondaryHref => Content.SecondaryActionHref ?? ActiveOptions.HomeHref;
-    private string Variant => StatusCode switch
+    private StatusPageVariant PageVariant => StatusCode switch
     {
-        403 => "forbidden",
-        404 => "missing",
-        >= 500 => "error",
-        _ => "status"
+        403 => StatusPageVariant.Forbidden,
+        404 => StatusPageVariant.Missing,
+        >= 500 => StatusPageVariant.Error,
+        _ => StatusPageVariant.Status
     };
-    private string IconName => StatusCode switch
-    {
-        403 => "LockClosed",
-        404 => "DocumentDismiss",
-        _ => "ErrorCircle"
-    };
+
+    private RenderFragment? RequestReference => ActiveOptions.ShowRequestId && !string.IsNullOrWhiteSpace(RequestId)
+        ? builder =>
+        {
+            builder.OpenElement(0, "div");
+            builder.AddAttribute(1, "class", "status-page__reference");
+            builder.OpenElement(2, "span");
+            builder.AddContent(3, ActiveOptions.RequestIdLabel);
+            builder.CloseElement();
+            builder.OpenElement(4, "code");
+            builder.AddContent(5, RequestId);
+            builder.CloseElement();
+            builder.CloseElement();
+        }
+        : null;
 
     private void Retry() => Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
 }

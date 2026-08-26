@@ -1,10 +1,12 @@
-<StatusPattern Code="404"
-               Eyebrow="PAGE NOT FOUND"
-               Title="This path ends here."
-               Description="The page may have moved, or the address may be incomplete. Return to a known place and continue from there."
-               FooterText="Nothing was changed">
+<StatusPage Code="404"
+            Variant="StatusPageVariant.Missing"
+            Eyebrow="PAGE NOT FOUND"
+            Title="This path ends here."
+            Description="The page may have moved, or the address may be incomplete. Return to a known place and continue from there."
+            FooterText="Nothing was changed">
+    <BrandContent><AccessBrand /></BrandContent>
     <Actions>
             <AppButton Href="./" Variant="AppButtonVariant.Primary" Class="access-primary-action">Return to components</AppButton>
             <AppButton Href="access/login" Class="access-secondary-link">View login pattern</AppButton>
     </Actions>
-</StatusPattern>
+</StatusPage>

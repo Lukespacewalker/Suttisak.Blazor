@@ -1,0 +1,79 @@
+.status-page {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-height: min(48rem, 82dvh);
+    box-sizing: border-box;
+    grid-template-rows: auto 1fr auto;
+    padding: clamp(1.5rem, 4cqi, 4.5rem);
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 45%, var(--app-accent-soft), transparent 32%), var(--app-surface);
+    color: var(--app-foreground);
+    isolation: isolate;
+    container-type: inline-size;
+}
+
+.status-page--error { background: radial-gradient(circle at 50% 45%, var(--app-danger-soft), transparent 34%), var(--app-surface); }
+.status-page__brand { position: relative; z-index: 3; min-width: 0; grid-row: 1; }
+.status-page__brand ::deep img { width: 2.35rem; height: 2.35rem; object-fit: contain; }
+.status-page__brand ::deep .status-page__route-brand { display: grid; min-width: 0; grid-template-columns: auto auto 1fr; align-items: center; gap: .65rem; }
+.status-page__brand ::deep .status-page__route-brand strong { font-family: var(--app-font-heading); font-size: .9rem; }
+.status-page__brand ::deep .status-page__route-brand span { justify-self: end; color: var(--app-foreground-muted); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.status-page__code { position: absolute; z-index: -2; color: var(--app-foreground); font-family: var(--app-font-heading); font-size: clamp(10rem, 35cqi, 34rem); font-weight: 850; line-height: 1; letter-spacing: -.11em; opacity: .05; inset: 50% auto auto 50%; transform: translate(-52%, -52%); white-space: nowrap; }
+.status-page__visual { position: absolute; z-index: -1; display: grid; width: clamp(12rem, 25cqi, 25rem); aspect-ratio: 1; place-items: center; border: 1px solid var(--app-accent-border); border-radius: 50%; color: var(--app-accent); inset: 50% auto auto 50%; transform: translate(-50%, -50%); background: color-mix(in srgb, var(--app-accent-soft) 68%, transparent); box-shadow: 0 0 0 clamp(1rem, 3cqi, 3rem) color-mix(in srgb, var(--app-accent-soft) 42%, transparent); }
+.status-page--error .status-page__visual { border-color: var(--app-danger-border); background: color-mix(in srgb, var(--app-danger-soft) 68%, transparent); box-shadow: 0 0 0 clamp(1rem, 3cqi, 3rem) color-mix(in srgb, var(--app-danger-soft) 40%, transparent); color: var(--app-danger); }
+.status-page--forbidden .status-page__visual { border-radius: 2rem; transform: translate(-50%, -50%) rotate(6deg); }
+.status-page__locator { display: grid; width: 25%; aspect-ratio: 1; place-items: center; border: .45rem solid currentColor; border-radius: 50%; }
+.status-page__locator i { width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
+.status-page__lock { position: relative; display: block; width: 28%; height: 25%; border: .45rem solid currentColor; border-radius: .4rem; }
+.status-page__lock::before { position: absolute; width: 58%; height: 65%; border: .45rem solid currentColor; border-bottom: 0; border-radius: 99rem 99rem 0 0; content: ""; inset: auto auto calc(100% + .35rem) 50%; transform: translateX(-50%); }
+.status-page__lock i { position: absolute; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; inset: 30% auto auto 50%; transform: translateX(-50%); }
+.status-page__lock b { position: absolute; width: .22rem; height: 25%; background: currentColor; inset: 45% auto auto 50%; transform: translateX(-50%); }
+.status-page__pulse { display: flex; height: 32%; align-items: end; gap: .35rem; }
+.status-page__pulse i { width: .38rem; height: 35%; border-radius: 99rem; background: currentColor; animation: status-page-pulse 1.4s ease-in-out infinite alternate; }
+.status-page__pulse i:nth-child(2) { height: 68%; animation-delay: -.5s; }
+.status-page__pulse i:nth-child(3) { height: 100%; animation-delay: -.9s; }
+.status-page__pulse i:nth-child(4) { height: 55%; animation-delay: -.3s; }
+.status-page__pulse i:nth-child(5) { height: 78%; animation-delay: -.7s; }
+.status-page__copy { position: relative; z-index: 2; align-self: center; justify-self: center; max-width: 46rem; padding-block: 5rem 2rem; grid-row: 2; text-align: center; }
+.status-page__eyebrow { color: var(--app-accent); font-size: .65rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+.status-page--error .status-page__eyebrow { color: var(--app-danger); }
+.status-page__copy h1 { margin: .65rem 0 .85rem; font-family: var(--app-font-heading); font-size: clamp(3.2rem, 8cqi, 7.5rem); line-height: .86; letter-spacing: -.065em; text-wrap: balance; }
+.status-page__copy p { max-width: 38rem; margin: 0 auto; color: var(--app-foreground-muted); font-size: .88rem; line-height: 1.65; text-wrap: pretty; }
+.status-page__supplementary { max-width: 38rem; margin: 1.25rem auto 0; color: var(--app-foreground-muted); font-size: .76rem; line-height: 1.55; }
+.status-page__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1.7rem; }
+.status-page__actions ::deep :is(a, button) { display: inline-flex; min-height: 2.9rem; box-sizing: border-box; align-items: center; justify-content: center; padding-inline: 1rem; font: inherit; font-size: .76rem; font-weight: 800; text-decoration: none; cursor: pointer; }
+.status-page__actions ::deep .status-page__primary { border: 1px solid var(--app-brand); border-radius: var(--app-radius-md); background: var(--app-brand); color: var(--app-on-brand); box-shadow: var(--app-shadow-sm); }
+.status-page__actions ::deep .status-page__secondary { border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface); color: var(--app-foreground); }
+.status-page__actions ::deep .status-page__primary:hover,
+.status-page__actions ::deep .status-page__secondary:hover { filter: brightness(1.06); }
+.status-page__actions ::deep :is(a, button):focus-visible { outline: 3px solid var(--app-focus-ring); outline-offset: 3px; }
+.status-page__supplementary ::deep .status-page__reference { display: inline-grid; min-width: min(100%, 20rem); grid-template-columns: auto minmax(0, 1fr); gap: .75rem; padding: .55rem .7rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface-muted); text-align: left; }
+.status-page__supplementary ::deep .status-page__reference span { color: var(--app-foreground-muted); font-size: .62rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+.status-page__supplementary ::deep .status-page__reference code { overflow: hidden; color: var(--app-foreground); font-family: var(--app-font-mono); font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+.status-page__footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 1rem; padding-top: 1rem; grid-row: 3; border-top: 1px solid var(--app-border); color: var(--app-foreground-muted); font-size: .65rem; font-weight: 780; letter-spacing: .08em; }
+.status-page__footer ::deep code { font-family: var(--app-font-mono); }
+
+@media (max-width: 38rem) {
+    .status-page { min-height: 42rem; padding: 1.35rem; }
+    .status-page__copy { padding-top: 7rem; }
+    .status-page__copy h1 { font-size: clamp(2.55rem, 14cqi, 4.4rem); }
+    .status-page__brand ::deep .status-page__route-brand { grid-template-columns: auto 1fr; }
+    .status-page__brand ::deep .status-page__route-brand span { display: none; }
+    .status-page__actions { display: grid; }
+    .status-page__actions ::deep :is(a, button) { width: 100%; }
+    .status-page__footer { gap: .5rem; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .status-page__visual { animation: status-page-arrive .65s ease-out both; }
+    .status-page__copy { animation: status-page-copy .55s .12s ease-out both; }
+}
+
+@keyframes status-page-arrive { from { opacity: 0; transform: translate(-50%, -52%) scale(.86); } }
+@keyframes status-page-copy { from { opacity: 0; transform: translateY(.8rem); } }
+@keyframes status-page-pulse { from { opacity: .45; transform: scaleY(.72); } to { opacity: 1; transform: scaleY(1); } }
+
+@media (forced-colors: active) {
+    .status-page { background: Canvas; }
+}

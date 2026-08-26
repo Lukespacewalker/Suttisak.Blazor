@@ -52,6 +52,36 @@ The application remains responsible for copy, localization, routes, authorizatio
 
 ## HTTP status route adapters
 
+### `StatusPage`
+
+`StatusPage` is the reusable visual and semantic composition for status-like
+pages, including application-owned custom error, maintenance, and access
+states. It owns the responsive status visual, heading relationship,
+reduced-motion behavior, and inferred `region`/`alert` live-region semantics;
+the consuming application owns branding and content through named slots.
+
+```razor
+@using Suttisak.Blazor.UserInterface.Routing
+
+<StatusPage Code="maintenance"
+           Variant="StatusPageVariant.Status"
+           Eyebrow="PLANNED MAINTENANCE"
+           Title="We’ll be back shortly."
+           Description="The workspace is being updated. Your data is safe.">
+    <BrandContent><img src="/assets/logo.svg" alt="Product name" /></BrandContent>
+    <Actions>
+        <a href="/">Return to home</a>
+    </Actions>
+    <SupplementaryContent>
+        <p>Support reference: MAINT-2025</p>
+    </SupplementaryContent>
+</StatusPage>
+```
+
+Use `VisualContent` to replace the default ornament, and `FooterContent` for
+structured footer markup. Supply `HeadingId`, `Role`, or `AriaLive` only when
+the host needs explicit relationships or live-region behavior.
+
 The package includes a source generator that places the shared status routes in
 the consuming application's assembly. Add the generator as an analyzer when
 using a local project reference, then request the routes once:

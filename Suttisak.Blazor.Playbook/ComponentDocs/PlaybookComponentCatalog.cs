@@ -3,6 +3,7 @@ using Suttisak.Blazor.UserInterface.Components.Marketing;
 using Suttisak.Blazor.UserInterface.Components.Navigation;
 using Suttisak.Blazor.UserInterface.Components.Common;
 using Suttisak.Blazor.UserInterface.Layouts.Shared;
+using Suttisak.Blazor.UserInterface.Routing;
 
 namespace Suttisak.Blazor.Playbook.ComponentDocs;
 
@@ -83,6 +84,7 @@ public static class PlaybookComponentCatalog
         D("AsyncContent", "Feedback & async", "#library-directory", "Common", ["async", "loading", "content"]),
         D("FeedbackBanner", "Feedback & async", "#app-feedback", "Common", ["banner", "feedback", "status"]),
         D("StatusPanel", "Feedback & async", "#library-directory", "Common", ["status", "feedback", "panel"]),
+        D("StatusPage", "Feedback & async", "#status-page", "Routing", ["status", "error", "page", "composition"], typeof(StatusPage)),
 
         // Overlays
         D("AppDialog", "Overlays", "#app-dialog", "Common", ["dialog", "modal", "overlay"]),

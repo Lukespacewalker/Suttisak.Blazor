@@ -4,16 +4,17 @@
 
 <PlaybookShell>
     <AccessPageFrame Title="500 unexpected error state">
-        <StatusPattern Code="500"
-                       Variant="error"
-                       Eyebrow="SYSTEM INTERRUPTION"
-                       Title="Something stopped unexpectedly."
-                       Description="Your work has not been intentionally changed. Try again in a moment, or return to the workspace while the service recovers."
-                       FooterText="Incident reference: DEMO-500">
+        <StatusPage Code="500"
+                    Variant="StatusPageVariant.Error"
+                    Eyebrow="SYSTEM INTERRUPTION"
+                    Title="Something stopped unexpectedly."
+                    Description="Your work has not been intentionally changed. Try again in a moment, or return to the workspace while the service recovers."
+                    FooterText="Incident reference: DEMO-500">
+            <BrandContent><AccessBrand /></BrandContent>
             <Actions>
                 <AppButton Variant="AppButtonVariant.Primary" Class="access-primary-action">Try again</AppButton>
                 <AppButton Href="application-shell" Class="access-secondary-link">Return to workspace</AppButton>
             </Actions>
-        </StatusPattern>
+        </StatusPage>
     </AccessPageFrame>
 </PlaybookShell>
