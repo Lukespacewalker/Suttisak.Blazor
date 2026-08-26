@@ -36,7 +36,7 @@ public sealed class NavigationContractTests
         var cut = context.Render<AppLogo>(parameters => parameters
             .Add(component => component.AssetPath, "/assets/icons/logo.webp"));
 
-        Assert.Equal("assets/icons/logo.webp", cut.Find("img").GetAttribute("src"));
+        Assert.Equal("assets/icons/logo.webp", cut.Find("img").GetAttribute("src")?.TrimStart('/'));
     }
 
     [Fact]

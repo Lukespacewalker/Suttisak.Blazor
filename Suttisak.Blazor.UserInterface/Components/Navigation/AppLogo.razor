@@ -42,7 +42,7 @@ else if (!string.IsNullOrWhiteSpace(AssetPath))
                 || AssetPath.StartsWith("data:", StringComparison.OrdinalIgnoreCase)
                 || AssetPath.StartsWith("blob:", StringComparison.OrdinalIgnoreCase)
                     ? AssetPath
-                    : Assets[AssetPath.TrimStart('/')].TrimStart('/');
+                    : Assets[AssetPath.TrimStart('/')];
         }
     }
 }
