@@ -32,7 +32,7 @@ The package ships an opt-in MSBuild target that concatenates application global 
 
 Reference only `app.css` from the host page. Source items aren't published, and the bundled output is a normal Static Web Asset.
 
-For immutable URLs, use the host's static-asset fingerprinting mechanism. ASP.NET Core-hosted applications should use `MapStaticAssets` and resolve links through `@Assets[...]`. A standalone Blazor WebAssembly publish doesn't rewrite CSS links to fingerprinted filenames, so it needs a deployment/CDN asset-rewrite step if immutable filenames are required.
+For immutable URLs, use the host's static-asset fingerprinting mechanism. ASP.NET Core-hosted applications should use `MapStaticAssets` and resolve links through `@Assets[...]`. A standalone Blazor WebAssembly publish doesn't rewrite CSS links to fingerprinted filenames. Use a version query string instead (for example, `app.css?v=1.0.7`) and change it whenever the bundled CSS changes, provided the deployment/CDN includes query strings in its cache key.
 
 ## Marketing quick start
 
