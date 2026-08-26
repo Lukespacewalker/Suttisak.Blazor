@@ -37,7 +37,7 @@ test.describe('UI Playbook shared-component contracts', () => {
   test('Component Browser indexes the complete catalog and links to live specimens', async ({ page }) => {
     await page.goto('/components');
 
-    await expect(page.locator('[data-component-name]')).toHaveCount(85);
+    await expect(page.locator('[data-component-name]')).toHaveCount(86);
 
     const search = page.getByRole('searchbox', { name: 'Find a component' });
     await search.fill('AppTextBox');

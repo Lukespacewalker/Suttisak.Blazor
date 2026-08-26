@@ -18,10 +18,7 @@
     <ApplicationShell SkipLinkText="@GlobalDesign.Value.SkipLinkText">
         <Brand>
             <a class="main-layout__brand" href="/" aria-label="Home">
-                @if (!string.IsNullOrWhiteSpace(GlobalDesign.Value.LogoAssetPath))
-                {
-                    <img src="@GlobalDesign.Value.LogoAssetPath" alt="" />
-                }
+                <AppLogo AssetPath="@GlobalDesign.Value.LogoAssetPath" ChildContent="@LogoContent" />
                 <span><SectionOutlet SectionId="HeaderSection" /></span>
             </a>
         </Brand>
@@ -57,6 +54,13 @@
     public static object NavigationSection = new();
     public static object NavigationFooterSection = new();
     public static object MessageBarSection = new();
+
+    /// <summary>
+    /// Allows an application-owned layout to provide fingerprinted logo markup.
+    /// The shared <see cref="AppLogo"/> falls back to <see cref="BlazorUIOptions.LogoAssetPath"/>
+    /// when this slot is not supplied.
+    /// </summary>
+    protected virtual RenderFragment? LogoContent => null;
 
     private Breadcrumb[] _breadcrumbs = Array.Empty<Breadcrumb>();
 

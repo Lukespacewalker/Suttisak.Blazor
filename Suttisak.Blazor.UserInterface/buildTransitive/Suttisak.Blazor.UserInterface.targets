@@ -1,0 +1,25 @@
+<Project>
+  <!-- Opt in with SuttisakBlazorBundleGlobalCss, an output path, and ordered source items. -->
+  <ItemGroup Condition="'$(SuttisakBlazorBundleGlobalCss)' == 'true'">
+    <Content Remove="@(SuttisakBlazorGlobalCssSource)" />
+    <Content Remove="$(SuttisakBlazorGlobalCssBundleOutput)" />
+    <Content Include="$(SuttisakBlazorGlobalCssBundleOutput)" />
+  </ItemGroup>
+
+  <Target Name="SuttisakBlazorBundleGlobalCss"
+          BeforeTargets="ResolveProjectStaticWebAssets"
+          Condition="'$(SuttisakBlazorBundleGlobalCss)' == 'true'"
+          Inputs="@(SuttisakBlazorGlobalCssSource);$(MSBuildProjectFullPath)"
+          Outputs="$(MSBuildProjectDirectory)\$(SuttisakBlazorGlobalCssBundleOutput)">
+    <ReadLinesFromFile File="%(SuttisakBlazorGlobalCssSource.FullPath)">
+      <Output TaskParameter="Lines" ItemName="_SuttisakBlazorGlobalCssLines" />
+    </ReadLinesFromFile>
+    <WriteLinesToFile File="$(MSBuildProjectDirectory)\$(SuttisakBlazorGlobalCssBundleOutput)"
+                      Lines="@(_SuttisakBlazorGlobalCssLines)"
+                      Overwrite="true"
+                      WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <FileWrites Include="$(MSBuildProjectDirectory)\$(SuttisakBlazorGlobalCssBundleOutput)" />
+    </ItemGroup>
+  </Target>
+</Project>

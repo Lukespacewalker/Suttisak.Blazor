@@ -17,9 +17,9 @@ test('Component Browser reports and filters the complete catalog from one source
 
   const summary = page.getByRole('complementary', { name: 'Component coverage summary' });
   await expect(summary).toBeVisible();
-  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('85');
+  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('86');
   await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('74');
-  await expect(page.locator('[data-component-name]')).toHaveCount(85, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(86, { timeout: wasmTimeout });
 
   const interactiveFilter = page.locator('.component-browser__coverage-filter button').filter({ hasText: 'Interactive' });
   await expect(interactiveFilter).toHaveCount(1);
@@ -37,7 +37,7 @@ test('Component Browser reports and filters the complete catalog from one source
 
 test('Component Browser has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/components');
-  await expect(page.locator('[data-component-name]')).toHaveCount(85, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(86, { timeout: wasmTimeout });
   await expectNoSeriousOrCriticalViolations(page);
 });
 

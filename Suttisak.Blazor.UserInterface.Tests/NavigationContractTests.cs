@@ -7,6 +7,39 @@ namespace Suttisak.Blazor.UserInterface.Tests;
 public sealed class NavigationContractTests
 {
     [Fact]
+    public void App_logo_prefers_application_owned_markup_over_the_fallback_path()
+    {
+        using var context = new BunitContext();
+        var cut = context.Render<AppLogo>(parameters => parameters
+            .Add(component => component.AssetPath, "/assets/legacy-logo.webp")
+            .Add(component => component.ChildContent,
+                builder => builder.AddMarkupContent(0, "<img src=\"assets/logo.fingerprint.webp\" alt=\"\">")));
+
+        var image = cut.Find("img");
+        Assert.Equal("assets/logo.fingerprint.webp", image.GetAttribute("src"));
+    }
+
+    [Fact]
+    public void App_logo_keeps_an_absolute_external_url()
+    {
+        using var context = new BunitContext();
+        var cut = context.Render<AppLogo>(parameters => parameters
+            .Add(component => component.AssetPath, "https://cdn.example.com/logo.webp"));
+
+        Assert.Equal("https://cdn.example.com/logo.webp", cut.Find("img").GetAttribute("src"));
+    }
+
+    [Fact]
+    public void App_logo_normalizes_a_rooted_local_asset_path()
+    {
+        using var context = new BunitContext();
+        var cut = context.Render<AppLogo>(parameters => parameters
+            .Add(component => component.AssetPath, "/assets/icons/logo.webp"));
+
+        Assert.Equal("assets/icons/logo.webp", cut.Find("img").GetAttribute("src"));
+    }
+
+    [Fact]
     public void Nav_group_owns_the_shared_label_and_item_hierarchy()
     {
         using var context = new BunitContext();

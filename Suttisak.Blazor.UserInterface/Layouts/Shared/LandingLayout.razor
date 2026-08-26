@@ -8,7 +8,7 @@
         <header class="landing-layout__header">
             <div class="landing-layout__header-inner">
                 <a class="landing-layout__brand" href="/" aria-label="Home">
-                    <img src="@GlobalDesign.Value.LogoAssetPath" alt="" />
+                    <AppLogo AssetPath="@GlobalDesign.Value.LogoAssetPath" ChildContent="@LogoContent" />
                     <strong><SectionOutlet SectionId="HeaderSection" /></strong>
                 </a>
                 <nav class="landing-layout__navigation" aria-label="Landing page sections">
@@ -27,6 +27,9 @@
 @code {
     public static object HeaderSection = new();
     public static object NavigationSection = new();
+
+    /// <summary>Allows an application-owned layout to provide fingerprinted logo markup.</summary>
+    protected virtual RenderFragment? LogoContent => null;
 
     public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 }

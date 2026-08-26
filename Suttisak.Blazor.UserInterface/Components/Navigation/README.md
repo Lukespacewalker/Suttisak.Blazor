@@ -1,5 +1,21 @@
 # Navigation components
 
+## AppLogo
+
+Use `AppLogo` in shared layout composition when the application needs to supply
+an asset-manifest-aware logo URL. The shared layouts keep `LogoAssetPath` as a
+fallback for consumers that have not migrated yet. `AppLogo` resolves local
+fallback paths through the active resource collection and preserves absolute
+external URLs. An application-owned layout can override its `LogoContent` slot
+and resolve the logo explicitly with `@Assets[...]`.
+
+```razor
+@code {
+    protected override RenderFragment? LogoContent =>
+        @<img src="@Assets["assets/icons/logo.webp"]" alt="" />;
+}
+```
+
 ## Primary navigation
 
 Compose application navigation from `NavGroup`, `NavItem`, and `NavSubmenu`.

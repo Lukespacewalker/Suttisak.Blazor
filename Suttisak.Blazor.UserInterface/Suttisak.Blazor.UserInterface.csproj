@@ -9,7 +9,7 @@
 		<Description>A collection of useful components for Blazor</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>1.0.6</AssemblyVersion>
+		<AssemblyVersion>1.0.7</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -32,6 +32,27 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.11" />
 		<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.11" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<SuttisakBlazorBundleGlobalCss>true</SuttisakBlazorBundleGlobalCss>
+		<SuttisakBlazorGlobalCssBundleOutput>wwwroot\css\main.css</SuttisakBlazorGlobalCssBundleOutput>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\main.source.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\components\_button.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\components\_form-controls.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\components\_content.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\components\_glass.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\components\_utility.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\utilities\_identity.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\color.css" />
+		<SuttisakBlazorGlobalCssSource Include="wwwroot\css\application.css" />
+		<None Remove="buildTransitive\Suttisak.Blazor.UserInterface.targets" />
+		<None Include="buildTransitive\Suttisak.Blazor.UserInterface.targets" Pack="true" PackagePath="buildTransitive" />
+	</ItemGroup>
+
+	<Import Project="buildTransitive\Suttisak.Blazor.UserInterface.targets" />
 
 	<ItemGroup>
 		<Compile Update="Components\ProfileMenu.razor.Designer.cs">

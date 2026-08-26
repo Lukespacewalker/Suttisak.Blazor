@@ -1,0 +1,48 @@
+@if (ChildContent is not null)
+{
+    @ChildContent
+}
+else if (!string.IsNullOrWhiteSpace(AssetPath))
+{
+    <img src="@ResolvedAssetPath"
+         alt="@Alt"
+         class="@Class"
+         @attributes="AdditionalAttributes" />
+}
+
+@code {
+    /// <summary>
+    /// The application-owned logo markup. When supplied, it replaces the legacy
+    /// <see cref="AssetPath"/> fallback so the host can resolve the asset through
+    /// its own static-asset manifest (for example, with <c>@Assets[...]</c>).
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// A logical static-asset path or absolute logo URL used when no
+    /// application-owned markup is supplied. Local paths are fingerprinted
+    /// through the active resource collection.
+    /// </summary>
+    [Parameter] public string? AssetPath { get; set; }
+
+    [Parameter] public string Alt { get; set; } = string.Empty;
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string? ResolvedAssetPath
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(AssetPath)) return null;
+
+            return Uri.TryCreate(AssetPath, UriKind.Absolute, out _)
+                || AssetPath.StartsWith("//", StringComparison.Ordinal)
+                || AssetPath.StartsWith("data:", StringComparison.OrdinalIgnoreCase)
+                || AssetPath.StartsWith("blob:", StringComparison.OrdinalIgnoreCase)
+                    ? AssetPath
+                    : Assets[AssetPath.TrimStart('/')];
+        }
+    }
+}

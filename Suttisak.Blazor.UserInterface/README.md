@@ -13,6 +13,27 @@ See [`Components/Marketing/README.md`](Components/Marketing/README.md) for the M
 
 Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 
+## Global CSS bundling
+
+The package ships an opt-in MSBuild target that concatenates application global CSS into one static-web-asset file. It needs no Node.js or `package.json`. Keep the entry file and partials as source-only files, then declare their intended order in the consuming project's `.csproj`:
+
+```xml
+<PropertyGroup>
+  <SuttisakBlazorBundleGlobalCss>true</SuttisakBlazorBundleGlobalCss>
+  <SuttisakBlazorGlobalCssBundleOutput>wwwroot\css\app.css</SuttisakBlazorGlobalCssBundleOutput>
+</PropertyGroup>
+
+<ItemGroup>
+  <SuttisakBlazorGlobalCssSource Include="wwwroot\css\app.source.css" />
+  <SuttisakBlazorGlobalCssSource Include="wwwroot\css\components\_forms.css" />
+  <SuttisakBlazorGlobalCssSource Include="wwwroot\css\themes.css" />
+</ItemGroup>
+```
+
+Reference only `app.css` from the host page. Source items aren't published, and the bundled output is a normal Static Web Asset.
+
+For immutable URLs, use the host's static-asset fingerprinting mechanism. ASP.NET Core-hosted applications should use `MapStaticAssets` and resolve links through `@Assets[...]`. A standalone Blazor WebAssembly publish doesn't rewrite CSS links to fingerprinted filenames, so it needs a deployment/CDN asset-rewrite step if immutable filenames are required.
+
 ## Marketing quick start
 
 ```razor

@@ -89,6 +89,7 @@ public static class PlaybookComponentCatalog
         D("AppDrawer", "Overlays", "#app-dialog", "Common", ["drawer", "panel", "overlay"]),
 
         // Navigation
+        D("AppLogo", "Navigation", "#library-directory", "Navigation", ["logo", "branding", "layout"]),
         D("AppTabs", "Navigation", "#app-tabs", "Navigation", ["tabs", "navigation", "keyboard"]),
         D("AppTab", "Navigation", "#app-tabs", "Navigation", ["tab", "navigation"]),
         D("Nav", "Navigation", "application-shell", "Navigation", ["navigation", "shell"]),

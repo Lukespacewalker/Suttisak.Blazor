@@ -11,7 +11,7 @@
     <header class="status-route__brand">
         @if (!string.IsNullOrWhiteSpace(ActiveOptions.LogoUrl))
         {
-            <img src="@ActiveOptions.LogoUrl" alt="" />
+            <AppLogo AssetPath="@ActiveOptions.LogoUrl" />
         }
         <strong>@ActiveOptions.BrandName</strong>
         <span>Service status / @StatusCode</span>

@@ -44,6 +44,15 @@
     display: none;
 }
 
+/*
+   A SectionOutlet leaves a Blazor placeholder when its section has no content,
+   so :empty alone cannot collapse this slot. Only reserve the page-heading
+   surface when the outlet rendered an actual element.
+*/
+.application-page-heading:not(:has(.application-page-heading__visual > *)) {
+    display: none;
+}
+
 .application-page-heading--with-breadcrumbs:has(.application-page-heading__visual:not(:empty))
     .application-page-heading__breadcrumbs {
     border-end-start-radius: 0;

@@ -374,3 +374,7 @@ samp {
         animation-iteration-count: 1 !important;
     }
 }
+/* A SectionOutlet can retain a Blazor placeholder without rendering a page heading. */
+.app-shell__page-heading:has(> .application-page-heading:not(:has(.application-page-heading__visual > *))) {
+    display: none;
+}

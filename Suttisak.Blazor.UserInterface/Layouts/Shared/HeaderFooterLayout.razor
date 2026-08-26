@@ -8,9 +8,9 @@
     <div class="root" style="position:relative">
         <div class="header-footer-shell">
             <header class="header-footer-header">
-                <img src="@GlobalDesign.Value.LogoAssetPath" 
-                     alt=""
-                     class="header-footer-logo" />
+                <AppLogo AssetPath="@GlobalDesign.Value.LogoAssetPath"
+                         Class="header-footer-logo"
+                         ChildContent="@LogoContent" />
                 <SectionOutlet SectionId="HeaderSection" />
                 <span class="header-footer-spacer" aria-hidden="true"></span>
                 <HeaderControlWithUser LoginUrl="@GlobalDesign.Value.LoginUrl"
@@ -25,6 +25,9 @@
 </CascadingValue>
 @code {
     public static object HeaderSection = new();
+
+    /// <summary>Allows an application-owned layout to provide fingerprinted logo markup.</summary>
+    protected virtual RenderFragment? LogoContent => null;
 
     public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 }

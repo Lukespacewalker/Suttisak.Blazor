@@ -1,17 +1,17 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('machine-readable manifest tracks the 85-component catalog', async ({ request }) => {
+test('machine-readable manifest tracks the 86-component catalog', async ({ request }) => {
   const response = await request.get('/component-manifest.json');
   expect(response.ok()).toBeTruthy();
 
   const manifest = await response.json();
   expect(manifest.schemaVersion).toBe(1);
-  expect(manifest.componentCount).toBe(85);
+  expect(manifest.componentCount).toBe(86);
 
   const names = manifest.groups.flatMap(group => group.components);
-  expect(names).toHaveLength(85);
-  expect(new Set(names).size).toBe(85);
+  expect(names).toHaveLength(86);
+  expect(new Set(names).size).toBe(86);
   expect(names).toContain('AppButton');
   expect(names).toContain('ApplicationShell');
 });
