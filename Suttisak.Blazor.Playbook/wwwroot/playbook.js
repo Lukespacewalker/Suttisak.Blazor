@@ -73,42 +73,50 @@ window.playbookLoader = (() => {
         setState("Downloading the workspace…", `Loaded ${completedResources} application resource${completedResources === 1 ? "" : "s"}`, percent);
     }
 
-    async function loadBootResource(type, name, defaultUri, integrity) {
-        const response = await fetch(defaultUri, { integrity, cache: "no-cache" });
-        const contentLength = Number(response.headers.get("content-length"));
-
-        if (!response.body || !Number.isFinite(contentLength) || contentLength <= 0) {
-            completedResources++;
-            reportProgress();
-            return response;
+    function loadBootResource(type, name, defaultUri, integrity) {
+        // .NET 10 requires a URI for the dotnetjs runtime resource. Other boot
+        // resources can be streamed as Responses to report loading progress.
+        if (type === "dotnetjs") {
+            return defaultUri;
         }
 
-        knownTotalBytes += contentLength;
-        const reader = response.body.getReader();
-        const stream = new ReadableStream({
-            async pull(controller) {
-                const { done, value } = await reader.read();
-                if (done) {
-                    completedResources++;
-                    reportProgress();
-                    controller.close();
-                    return;
-                }
+        return (async () => {
+            const response = await fetch(defaultUri, { integrity, cache: "no-cache" });
+            const contentLength = Number(response.headers.get("content-length"));
 
-                receivedBytes += value.byteLength;
+            if (!response.body || !Number.isFinite(contentLength) || contentLength <= 0) {
+                completedResources++;
                 reportProgress();
-                controller.enqueue(value);
-            },
-            cancel(reason) {
-                return reader.cancel(reason);
+                return response;
             }
-        });
 
-        return new Response(stream, {
-            headers: response.headers,
-            status: response.status,
-            statusText: response.statusText
-        });
+            knownTotalBytes += contentLength;
+            const reader = response.body.getReader();
+            const stream = new ReadableStream({
+                async pull(controller) {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        completedResources++;
+                        reportProgress();
+                        controller.close();
+                        return;
+                    }
+
+                    receivedBytes += value.byteLength;
+                    reportProgress();
+                    controller.enqueue(value);
+                },
+                cancel(reason) {
+                    return reader.cancel(reason);
+                }
+            });
+
+            return new Response(stream, {
+                headers: response.headers,
+                status: response.status,
+                statusText: response.statusText
+            });
+        })();
     }
 
     return {
