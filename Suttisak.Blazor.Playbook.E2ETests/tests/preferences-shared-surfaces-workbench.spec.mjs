@@ -115,6 +115,7 @@ test('Hero and CompanyFooter preserve headings, contextual footer semantics, and
 
   const footer = page.locator('[data-testid="shared-surfaces-workbench"] footer.company-footer');
   await expect(footer).toContainText('Created by');
+  await expect(footer).toContainText('v1.4.2');
   const company = footer.getByRole('link', { name: 'Northstar Studio' });
   await expect(company).toHaveAttribute('target', '_blank');
   await expect(company).toHaveAttribute('rel', 'noopener noreferrer');

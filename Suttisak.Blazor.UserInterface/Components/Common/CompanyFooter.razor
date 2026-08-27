@@ -3,6 +3,11 @@
     <a href="@CompanyUrl" target="_blank" rel="noopener noreferrer">@CompanyName</a>
     <span class="company-footer__separator" aria-hidden="true">·</span>
     <span>@CreatorName</span>
+    @if (!string.IsNullOrWhiteSpace(DisplayedApplicationVersion))
+    {
+        <span class="company-footer__separator" aria-hidden="true">·</span>
+        <span class="company-footer__version">v@DisplayedApplicationVersion</span>
+    }
 </footer>
 
 @code {
@@ -10,4 +15,8 @@
     [Parameter, EditorRequired] public string CompanyName { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string CompanyUrl { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string CreatorName { get; set; } = string.Empty;
+    [Parameter] public string? ApplicationVersion { get; set; }
+
+    private string? DisplayedApplicationVersion =>
+        ApplicationVersion ?? System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3);
 }
