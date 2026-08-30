@@ -1,21 +1,21 @@
 @using System.Globalization
-@using Microsoft.JSInterop
-@inject IJSRuntime Js
+@using Microsoft.Extensions.Options
 @inject NavigationManager Navigation
+@inject IOptions<BlazorUIOptions> Options
 
-<div class="culture-selector" aria-label="Language">
-    <button class="@(IsCurrentCulture("en-US") ? "active" : null)" type="button" aria-label="Use English" aria-pressed="@Pressed(IsCurrentCulture("en-US"))" @onclick='() => SetCultureAsync("en-US")'>EN</button>
-    <button class="@(IsCurrentCulture("th-TH") ? "active" : null)" type="button" aria-label="ใช้ภาษาไทย" aria-pressed="@Pressed(IsCurrentCulture("th-TH"))" @onclick='() => SetCultureAsync("th-TH")'>ไทย</button>
-</div>
+<form class="culture-selector" aria-label="Language" method="get" action="@Options.Value.CultureSetUrl"
+      data-culture-selector data-default-culture="@Options.Value.DefaultCulture">
+    <input type="hidden" name="redirectUri" value="@RedirectUri" />
+    <button type="submit" name="culture" value="auto" data-culture-preference="auto"
+            aria-label="Use device language" aria-pressed="false">Auto</button>
+    <button class="@(IsCurrentCulture("en-US") ? "active" : null)" type="submit" name="culture" value="en-US"
+            data-culture-preference="en" aria-label="Use English" aria-pressed="@Pressed(IsCurrentCulture("en-US"))">EN</button>
+    <button class="@(IsCurrentCulture("th-TH") ? "active" : null)" type="submit" name="culture" value="th-TH"
+            data-culture-preference="th" aria-label="ใช้ภาษาไทย" aria-pressed="@Pressed(IsCurrentCulture("th-TH"))">ไทย</button>
+</form>
 
 @code {
     private static string Pressed(bool value) => value ? "true" : "false";
     private static bool IsCurrentCulture(string cultureName) => cultureName == CultureInfo.CurrentCulture.Name;
-    private async Task SetCultureAsync(string cultureName)
-    {
-        if (Equals(CultureInfo.CurrentCulture.Name, cultureName)) return;
-        await Js.InvokeVoidAsync("blazorCulture.set", cultureName);
-        var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-        Navigation.NavigateTo($"Culture/Set?culture={Uri.EscapeDataString(cultureName)}&redirectUri={Uri.EscapeDataString(uri)}", forceLoad: true);
-    }
+    private string RedirectUri => new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
 }

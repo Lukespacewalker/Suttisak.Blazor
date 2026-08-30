@@ -14,11 +14,11 @@ builder.Services.AddSingleton<PlaybookState>();
 builder.Services.AddSingleton<DemoRecordStore>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, PlaybookAuthenticationStateProvider>();
-builder.Services.AddBlazorUserInterface(_ => { });
+builder.Services.AddBlazorUserInterface(options => options.DefaultCulture = "en-US");
 
 var host = builder.Build();
 var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();
-var storedCultureName = await jsRuntime.InvokeAsync<string?>("blazorCulture.get");
+var storedCultureName = await jsRuntime.InvokeAsync<string?>("blazorCulture.get", "en-US");
 if (!string.IsNullOrWhiteSpace(storedCultureName))
 {
     try

@@ -450,7 +450,23 @@ Load the bootstrap script in the document `<head>` before application styles:
 The script resolves the persisted `light`, `dark`, or `system` preference before
 first paint. It writes the resolved scheme to one contract only:
 `html[data-theme="light"]` or `html[data-theme="dark"]`. `ThemeSwitcher`
-keeps that attribute current for system-preference and cross-tab changes once it
-is interactive. Applications should use semantic CSS tokens for their accent
+uses delegated JavaScript, so it also works in static SSR without a Blazor render
+mode, and keeps that attribute current for system-preference and cross-tab changes.
+Applications should use semantic CSS tokens for their accent
 colors and retain their `<meta name="theme-color">`; do not add theme attributes
 to `body` or depend on a JavaScript global.
+
+`CultureSelector` likewise works in static SSR. It submits `auto`, `en-US`, or
+`th-TH` to the application-owned culture endpoint and performs a full reload.
+Configure the application fallback and endpoint through `BlazorUIOptions`:
+
+```csharp
+services.AddBlazorUserInterface(options =>
+{
+    options.DefaultCulture = "en-US";
+    options.CultureSetUrl = "Culture/Set";
+});
+```
+
+The host owns culture-cookie creation. Selecting `auto` should clear that cookie
+so request localization can use the browser's language preferences.

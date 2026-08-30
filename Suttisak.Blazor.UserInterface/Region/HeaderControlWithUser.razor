@@ -1,7 +1,5 @@
 @using Suttisak.Blazor.UserInterface.Components
 @using Suttisak.Blazor.UserInterface.Helper
-@inject NavigationManager NavigationManager
-
 <div class="header-user-controls @(CompactOnMobile ? "header-user-controls--mobile-hidden" : null)">
     <PreferencesSelector />
     <span aria-hidden="true" style="width:6px"></span>
@@ -12,7 +10,7 @@
         <NotAuthorized>
             <AppButton IconStartName="Key" IconStartSize="24"
                        Variant="AppButtonVariant.Primary"
-                       OnClick="@(_ => OnClickHandler())">
+                       Href="@LoginUrl">
                 @Helper.TryGetCustomStringThenFallbackToResource(LoginText, ProfileMenu_razor.Login)
             </AppButton>
         </NotAuthorized>
@@ -29,10 +27,4 @@
     [Parameter] public string? ProfileImageUrl { get; set; }
 
     [Parameter] public bool CompactOnMobile { get; set; }
-
-    private void OnClickHandler()
-    {
-        if (string.IsNullOrWhiteSpace(LoginUrl)) return;
-        NavigationManager.NavigateTo(LoginUrl);
-    }
 }

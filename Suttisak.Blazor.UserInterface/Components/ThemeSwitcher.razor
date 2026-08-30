@@ -1,103 +1,11 @@
-@using Microsoft.JSInterop
-@using Suttisak.Blazor.UserInterface.Interfaces.Theme
-@implements IAsyncDisposable
-@inject IThemeService ThemeService
-@inject IJSRuntime JsRuntime
-
-<div class="theme-selector" role="group" aria-label="Color scheme">
-    <button class="@(IsCurrentTheme(DesignThemeMode.Light) ? "active" : null)"
-            type="button" aria-label="Use light theme" aria-pressed="@Pressed(IsCurrentTheme(DesignThemeMode.Light))"
-            @onclick="@(() => SetThemeAsync(DesignThemeMode.Light))">
+<div class="theme-selector" role="group" aria-label="Color scheme" data-theme-selector>
+    <button type="button" data-theme-preference="light" aria-label="Use light theme" aria-pressed="false">
         <span aria-hidden="true">☼</span>
     </button>
-    <button class="@(IsCurrentTheme(DesignThemeMode.Dark) ? "active" : null)"
-            type="button" aria-label="Use dark theme" aria-pressed="@Pressed(IsCurrentTheme(DesignThemeMode.Dark))"
-            @onclick="@(() => SetThemeAsync(DesignThemeMode.Dark))">
+    <button type="button" data-theme-preference="dark" aria-label="Use dark theme" aria-pressed="false">
         <span aria-hidden="true">◐</span>
     </button>
-    <button class="@(IsCurrentTheme(DesignThemeMode.System) ? "active" : null)"
-            type="button" aria-label="Use system theme" aria-pressed="@Pressed(IsCurrentTheme(DesignThemeMode.System))"
-            @onclick="@(() => SetThemeAsync(DesignThemeMode.System))">
+    <button type="button" data-theme-preference="system" aria-label="Use system theme" aria-pressed="true" class="active">
         <span aria-hidden="true">A</span>
     </button>
 </div>
-
-@code {
-    private readonly DotNetObjectReference<ThemeSwitcher> _reference;
-    private IJSObjectReference? _module;
-    private long? _subscriptionId;
-    private DesignThemeMode _currentThemeMode = DesignThemeMode.System;
-
-    public ThemeSwitcher()
-    {
-        _reference = DotNetObjectReference.Create(this);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender) return;
-
-        _module = await JsRuntime.InvokeAsync<IJSObjectReference>(
-            "import",
-            "./_content/Suttisak.Blazor.UserInterface/Components/ThemeSwitcher.razor.js");
-        _subscriptionId = await _module.InvokeAsync<long>("subscribeTheme", _reference);
-    }
-
-    protected override void OnInitialized()
-    {
-        // A selector can be recreated when Blazor switches layouts during navigation.
-        // Preserve the choice already made in the current interactive scope until the
-        // browser preference is read after rendering.
-        _currentThemeMode = ThemeService.ThemeConfiguration;
-    }
-
-    [JSInvokable]
-    public Task UpdateTheme(string preference, string scheme)
-    {
-        ApplyThemeState(preference, scheme);
-        return InvokeAsync(StateHasChanged);
-    }
-
-    private bool IsCurrentTheme(DesignThemeMode mode) => _currentThemeMode == mode;
-
-    private static string Pressed(bool value) => value ? "true" : "false";
-
-    private async Task SetThemeAsync(DesignThemeMode mode)
-    {
-        if (_module is null) return;
-        await _module.InvokeVoidAsync("setTheme", mode.ToString());
-    }
-
-    private void ApplyThemeState(string preference, string scheme)
-    {
-        _currentThemeMode = Enum.TryParse<DesignThemeMode>(preference, true, out var mode)
-            ? mode
-            : DesignThemeMode.System;
-        var currentTheme = string.Equals(scheme, "dark", StringComparison.OrdinalIgnoreCase)
-            ? ThemeMode.Dark
-            : ThemeMode.Light;
-        ThemeService.SetTheme(_currentThemeMode, currentTheme);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_module is not null)
-        {
-            try
-            {
-                if (_subscriptionId is not null)
-                {
-                    await _module.InvokeVoidAsync("unsubscribeTheme", _subscriptionId.Value);
-                }
-
-                await _module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-                // The circuit ended before the browser module could be released.
-            }
-        }
-
-        _reference.Dispose();
-    }
-}

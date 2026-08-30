@@ -131,7 +131,7 @@ test('ProfileMenu expands from the keyboard and retains focus on its summary', a
   await summary.press('Enter');
   await expect(profile).toHaveAttribute('open', '');
   await expect(summary).toBeFocused();
-  await expect(profile.getByRole('button', { name: 'Manage account' })).toBeVisible();
+  await expect(profile.getByRole('link', { name: 'Manage account' })).toBeVisible();
   await summary.press('Enter');
   await expect(profile).not.toHaveAttribute('open', '');
 });

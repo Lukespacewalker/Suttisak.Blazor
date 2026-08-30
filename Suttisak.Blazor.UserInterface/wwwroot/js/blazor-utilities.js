@@ -1,20 +1,43 @@
 window.blazorCulture = {
     storageKey: "BlazorCulture",
 
-    get() {
+    normalizePreference(value) {
+        const normalized = String(value ?? "").trim().toLowerCase();
+        if (normalized === "auto") return "auto";
+        if (normalized === "en" || normalized.startsWith("en-")) return "en";
+        if (normalized === "th" || normalized.startsWith("th-")) return "th";
+        return null;
+    },
+
+    getPreference() {
         try {
-            return window.localStorage.getItem(this.storageKey);
+            return this.normalizePreference(window.localStorage.getItem(this.storageKey)) ?? "auto";
         } catch {
-            return null;
+            return "auto";
         }
     },
 
-    set(cultureName) {
+    get(defaultCulture = "en-US") {
+        const preference = this.getPreference();
+        if (preference === "en") return "en-US";
+        if (preference === "th") return "th-TH";
+
+        for (const language of navigator.languages ?? [navigator.language]) {
+            const browserPreference = this.normalizePreference(language);
+            if (browserPreference === "en") return "en-US";
+            if (browserPreference === "th") return "th-TH";
+        }
+        return this.normalizePreference(defaultCulture) === "en" ? "en-US" : "th-TH";
+    },
+
+    set(value) {
+        const preference = this.normalizePreference(value) ?? "auto";
         try {
-            window.localStorage.setItem(this.storageKey, cultureName);
+            window.localStorage.setItem(this.storageKey, preference);
         } catch {
             // The current page can still apply the culture when storage is unavailable.
         }
+        this.synchronizeSelectors();
     },
 
     clear() {
@@ -23,8 +46,28 @@ window.blazorCulture = {
         } catch {
             // There is no stored value to recover when storage is unavailable.
         }
+        this.synchronizeSelectors();
+    },
+
+    synchronizeSelectors(root = document) {
+        const preference = this.getPreference();
+        root.querySelectorAll("[data-culture-selector]").forEach(selector => {
+            selector.querySelectorAll("[data-culture-preference]").forEach(button => {
+                const selected = button.dataset.culturePreference === preference;
+                button.classList.toggle("active", selected);
+                button.setAttribute("aria-pressed", String(selected));
+            });
+        });
     }
 };
+
+document.addEventListener("click", event => {
+    const target = event.target instanceof Element ? event.target.closest("[data-culture-preference]") : null;
+    if (target) window.blazorCulture.set(target.dataset.culturePreference);
+});
+addEventListener("storage", event => {
+    if (event.key === window.blazorCulture.storageKey) window.blazorCulture.synchronizeSelectors();
+});
 
 window.downloadFileFromStream = async (fileName, contentStreamReference) => {
     const arrayBuffer = await contentStreamReference.arrayBuffer();
@@ -80,7 +123,10 @@ const appGridObserver = new MutationObserver(mutations => {
     const needsSynchronization = mutations.some(mutation =>
         mutation.type === 'childList' ||
         (mutation.type === 'attributes' && mutation.attributeName === 'class'));
-    if (needsSynchronization) synchronizeAppGridSelection();
+    if (needsSynchronization) {
+        synchronizeAppGridSelection();
+        window.blazorCulture.synchronizeSelectors();
+    }
 });
 
 appGridObserver.observe(document.documentElement, {
@@ -91,7 +137,11 @@ appGridObserver.observe(document.documentElement, {
 });
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => synchronizeAppGridSelection(), { once: true });
+    document.addEventListener('DOMContentLoaded', () => {
+        synchronizeAppGridSelection();
+        window.blazorCulture.synchronizeSelectors();
+    }, { once: true });
 } else {
     synchronizeAppGridSelection();
+    window.blazorCulture.synchronizeSelectors();
 }

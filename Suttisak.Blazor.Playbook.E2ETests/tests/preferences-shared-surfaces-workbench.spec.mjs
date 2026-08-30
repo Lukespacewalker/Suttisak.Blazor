@@ -25,7 +25,7 @@ for (const [path, parameter, workbench] of routes) {
   });
 }
 
-test('CultureSelector persists and applies Thai culture through the host redirect contract', async ({ page }) => {
+test('CultureSelector persists auto, English, and Thai preferences through the host redirect contract', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => window.blazorCulture.set('en-US'));
   await page.goto('/components/culture-selector');
@@ -43,6 +43,12 @@ test('CultureSelector persists and applies Thai culture through the host redirec
   await page.reload();
   selector = page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .culture-selector');
   await expect(selector.getByRole('button', { name: 'ใช้ภาษาไทย' })).toHaveAttribute('aria-pressed', 'true');
+
+  await selector.getByRole('button', { name: 'Use device language' }).click();
+  await expect(page).toHaveURL(/\/components\/culture-selector$/);
+  await expect.poll(() => page.evaluate(() => window.blazorCulture.getPreference())).toBe('auto');
+  selector = page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .culture-selector');
+  await expect(selector.getByRole('button', { name: 'Use device language' })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('ThemeSwitcher persists light and dark choices and follows live system-scheme changes', async ({ page }) => {
