@@ -59,3 +59,35 @@ test('record editor keeps validated actions in the fixed drawer footer and submi
   await expect(drawer).not.toBeVisible();
   await expect(page.getByText('Browser drawer record', { exact: true })).toBeVisible();
 });
+
+test('record editor fills a constrained viewport without losing its fixed actions', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/application-shell/records');
+  await page.getByRole('button', { name: 'New record' }).click();
+
+  const drawer = page.getByRole('dialog', { name: 'Record editor' });
+  const footer = drawer.locator('.app-drawer__footer');
+  await expect(drawer).toHaveCSS('transform', 'none');
+  const geometry = await drawer.evaluate((element) => {
+    const drawerBox = element.getBoundingClientRect();
+    const surfaceBox = element.querySelector('.app-drawer__surface').getBoundingClientRect();
+    const footerBox = element.querySelector('.app-drawer__footer').getBoundingClientRect();
+    const grid = element.querySelector('.form-grid');
+
+    return {
+      x: drawerBox.x,
+      width: drawerBox.width,
+      viewportWidth: window.innerWidth,
+      footerBottom: footerBox.bottom,
+      surfaceBottom: surfaceBox.bottom,
+      gridColumns: getComputedStyle(grid).gridTemplateColumns.split(' ').length
+    };
+  });
+
+  await expect(drawer).toBeVisible();
+  await expect(footer).toBeVisible();
+  expect(Math.abs(geometry.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(geometry.width - geometry.viewportWidth)).toBeLessThanOrEqual(1);
+  expect(Math.abs(geometry.footerBottom - geometry.surfaceBottom)).toBeLessThanOrEqual(1);
+  expect(geometry.gridColumns).toBe(1);
+});
