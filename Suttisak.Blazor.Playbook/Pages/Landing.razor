@@ -18,7 +18,7 @@
                 <header class="landing-site-header">
                     <MarketingContainer>
                         <a class="landing-site-brand" href="#landing-demo" aria-label="@CurrentTheme.Name home">
-                            <img src="@CurrentTheme.LogoPath" alt="" />
+                            <img src="@CurrentTheme.LogoPath" alt="" width="@CurrentTheme.LogoWidth" height="@CurrentTheme.LogoHeight" />
                             <strong>@CurrentTheme.Name</strong>
                         </a>
                         <nav aria-label="Landing page sections">
@@ -35,7 +35,7 @@
                                Description="@($"{CurrentTheme.Name} turns complex information into a focused next step for every person who needs it.")">
                     <Eyebrow>
                         <span class="landing-brand-lockup">
-                            <span class="landing-brand-lockup__mark"><img src="@CurrentTheme.LogoPath" alt="" /></span>
+                            <span class="landing-brand-lockup__mark"><img src="@CurrentTheme.LogoPath" alt="" width="@CurrentTheme.LogoWidth" height="@CurrentTheme.LogoHeight" /></span>
                             <span><strong>@CurrentTheme.Name</strong><small>DESIGNED FOR CLARITY</small></span>
                         </span>
                     </Eyebrow>
@@ -45,7 +45,7 @@
                     </Actions>
                     <Media>
                         <figure class="landing-hero-visual @(CurrentTheme.CropHero ? "landing-hero-visual--framed landing-hero-visual--cover" : "landing-hero-visual--floating")">
-                            <img src="@CurrentTheme.HeroPath" alt="@CurrentTheme.HeroAlt" />
+                            <img src="@CurrentTheme.HeroPath" alt="@CurrentTheme.HeroAlt" width="@CurrentTheme.HeroWidth" height="@CurrentTheme.HeroHeight" fetchpriority="high" />
                             <figcaption><i aria-hidden="true"></i><span>Original @CurrentTheme.Name hero asset</span></figcaption>
                         </figure>
                     </Media>

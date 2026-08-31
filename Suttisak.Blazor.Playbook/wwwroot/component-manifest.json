@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentCount": 87,
+  "componentCount": 93,
   "detailRouteTemplate": "components/{kebab-case-component-name}",
   "statusPolicy": {
     "stable": "normal consumption; breaking changes require deliberate migration",
@@ -8,61 +8,2608 @@
     "experimental": "exploration only; broad dependency is discouraged",
     "deprecated": "existing use may remain temporarily; new use should move to the documented replacement"
   },
+  "components": [
+    {
+      "name": "AppTextBox",
+      "slug": "app-text-box",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Single-line text input with shared labels, descriptions, validation, and focus behavior.",
+      "tags": [
+        "text",
+        "input",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow",
+        "virtualized-data-workspace",
+        "secure-access-flow",
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppTextArea",
+      "slug": "app-text-area",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Multiline text input with the same accessible support contract as other form controls.",
+      "tags": [
+        "text",
+        "multiline",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppNumberInput",
+      "slug": "app-number-input",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Generic numeric input that binds typed values while preserving shared form semantics.",
+      "tags": [
+        "number",
+        "input",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppSelect",
+      "slug": "app-select",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Typed single-choice select with application-owned options and integrated validation support.",
+      "tags": [
+        "select",
+        "choice",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow",
+        "virtualized-data-workspace",
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppSelectItem",
+      "slug": "app-select-item",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Typed option definition consumed by AppSelect to describe one selectable value.",
+      "tags": [
+        "select",
+        "option",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppMultiSelect",
+      "slug": "app-multi-select",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Typed multiple-choice control for selecting and reviewing more than one value.",
+      "tags": [
+        "select",
+        "multiple",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppRadioGroup",
+      "slug": "app-radio-group",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Typed radio-group owner that coordinates labels, validation, and the selected value.",
+      "tags": [
+        "radio",
+        "choice",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppRadio",
+      "slug": "app-radio",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "One typed radio choice designed to participate in an AppRadioGroup contract.",
+      "tags": [
+        "radio",
+        "choice",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppCheckbox",
+      "slug": "app-checkbox",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Boolean checkbox with shared label, description, validation, and disabled-state treatment.",
+      "tags": [
+        "checkbox",
+        "boolean",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "secure-access-flow"
+      ]
+    },
+    {
+      "name": "AppSwitch",
+      "slug": "app-switch",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Boolean switch for immediate settings whose state remains clear to assistive technology.",
+      "tags": [
+        "switch",
+        "boolean",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppCalendarPicker",
+      "slug": "app-calendar-picker",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Calendar-based date picker with typed binding and keyboard-aware date selection.",
+      "tags": [
+        "date",
+        "picker",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppTimePicker",
+      "slug": "app-time-picker",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Time-of-day picker that exposes a consistent typed form-control contract.",
+      "tags": [
+        "time",
+        "picker",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppDateTimePicker",
+      "slug": "app-date-time-picker",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Combined date-and-time picker for workflows that require one coordinated value.",
+      "tags": [
+        "date",
+        "time",
+        "picker"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "FormSection",
+      "slug": "form-section",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Semantic form grouping with a heading, optional introduction, and structured child content.",
+      "tags": [
+        "form",
+        "composition",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow"
+      ]
+    },
+    {
+      "name": "FormGrid",
+      "slug": "form-grid",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Responsive field grid that collapses form columns when the actual viewport is constrained.",
+      "tags": [
+        "form",
+        "grid",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow",
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "FormField",
+      "slug": "form-field",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Layout wrapper that aligns one label-and-control unit within composed forms.",
+      "tags": [
+        "form",
+        "field",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow"
+      ]
+    },
+    {
+      "name": "FormActions",
+      "slug": "form-actions",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Action row that positions primary and supporting form operations consistently.",
+      "tags": [
+        "form",
+        "actions",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow"
+      ]
+    },
+    {
+      "name": "FormValidationSummary",
+      "slug": "form-validation-summary",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Form-level validation summary that links users to errors requiring attention.",
+      "tags": [
+        "form",
+        "validation",
+        "feedback"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow"
+      ]
+    },
+    {
+      "name": "AppButton",
+      "slug": "app-button",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Shared button or action link with semantic variants, sizes, icons, loading, and disabled states.",
+      "tags": [
+        "button",
+        "action",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "validated-form-workflow",
+        "virtualized-data-workspace",
+        "secure-access-flow",
+        "record-management-workflow",
+        "status-route-recovery"
+      ]
+    },
+    {
+      "name": "AppCard",
+      "slug": "app-card",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "General content surface with consistent border, radius, padding, and theme behavior.",
+      "tags": [
+        "card",
+        "surface",
+        "container"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppDivider",
+      "slug": "app-divider",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Semantic visual separator for dividing related regions without application-specific styling.",
+      "tags": [
+        "divider",
+        "separator"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppStack",
+      "slug": "app-stack",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Flow layout primitive that applies consistent spacing between composed children.",
+      "tags": [
+        "stack",
+        "layout",
+        "spacing"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "CardMenu",
+      "slug": "card-menu",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Compact action menu surface intended for contextual operations associated with a card.",
+      "tags": [
+        "card",
+        "menu",
+        "action"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "CompanyFooter",
+      "slug": "company-footer",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Reusable company-footer composition for organization identity and supporting links.",
+      "tags": [
+        "footer",
+        "company",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "Hero",
+      "slug": "hero",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Application hero surface for a prominent heading, explanation, and supporting content.",
+      "tags": [
+        "hero",
+        "heading",
+        "surface"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "Pill",
+      "slug": "pill",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Compact badge-like label for status, metadata, or short categorical information.",
+      "tags": [
+        "pill",
+        "badge",
+        "status"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "Toolbar",
+      "slug": "toolbar",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Semantic toolbar that groups a coordinated set of page or content actions.",
+      "tags": [
+        "toolbar",
+        "actions",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "PageActionToolbar",
+      "slug": "page-action-toolbar",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Page-heading action region that keeps primary and secondary operations aligned.",
+      "tags": [
+        "toolbar",
+        "page",
+        "actions"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "PageHeading",
+      "slug": "page-heading",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Page title composition with eyebrow, description, metadata, and action slots.",
+      "tags": [
+        "heading",
+        "page",
+        "layout"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "application-workspace-shell",
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "AppBreadcrumb",
+      "slug": "app-breadcrumb",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Breadcrumb navigation that renders a typed trail with a distinct current location.",
+      "tags": [
+        "breadcrumb",
+        "navigation"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppGridShell",
+      "slug": "app-grid-shell",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Grid framing surface that composes data controls, result context, and the table region.",
+      "tags": [
+        "grid",
+        "shell",
+        "toolbar"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "virtualized-data-workspace",
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppGrid",
+      "slug": "app-grid",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Virtualization-ready typed data grid for scalable application record collections.",
+      "tags": [
+        "data",
+        "grid",
+        "table"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "virtualized-data-workspace",
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppGridPaginator",
+      "slug": "app-grid-paginator",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Pagination controls and result context for paged AppGrid data sources.",
+      "tags": [
+        "grid",
+        "pagination"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppGridPropertyColumn",
+      "slug": "app-grid-property-column",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Typed AppGrid column that reads and formats one item property.",
+      "tags": [
+        "grid",
+        "column",
+        "property"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "virtualized-data-workspace"
+      ]
+    },
+    {
+      "name": "AppGridTemplateColumn",
+      "slug": "app-grid-template-column",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Typed AppGrid column that delegates each cell to application-owned markup.",
+      "tags": [
+        "grid",
+        "column",
+        "template"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "virtualized-data-workspace"
+      ]
+    },
+    {
+      "name": "PageBreadcrumbs",
+      "slug": "page-breadcrumbs",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Page-level breadcrumb state provider used by application shell compositions.",
+      "tags": [
+        "breadcrumb",
+        "page",
+        "navigation"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "application-workspace-shell",
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "AppLoading",
+      "slug": "app-loading",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Accessible loading indicator for indeterminate work and deferred content transitions.",
+      "tags": [
+        "loading",
+        "async",
+        "feedback"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppProgress",
+      "slug": "app-progress",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Determinate progress indicator that communicates a known completion value.",
+      "tags": [
+        "progress",
+        "async",
+        "feedback"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppSkeleton",
+      "slug": "app-skeleton",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Placeholder surface that preserves content shape while data is unavailable.",
+      "tags": [
+        "skeleton",
+        "loading",
+        "feedback"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AsyncContent",
+      "slug": "async-content",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Asynchronous content boundary that switches between loading, success, empty, and failure states.",
+      "tags": [
+        "async",
+        "loading",
+        "content"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "FeedbackBanner",
+      "slug": "feedback-banner",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Prominent feedback message for success, warning, informational, or error outcomes.",
+      "tags": [
+        "banner",
+        "feedback",
+        "status"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "StatusPanel",
+      "slug": "status-panel",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Contained status explanation with optional visual, detail, and recovery actions.",
+      "tags": [
+        "status",
+        "feedback",
+        "panel"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "StatusPage",
+      "slug": "status-page",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Full-page status composition with brand, heading, visual, actions, reference, and footer slots.",
+      "tags": [
+        "status",
+        "error",
+        "page",
+        "composition"
+      ],
+      "sourceArea": "Routing",
+      "relatedPatternIds": [
+        "status-route-recovery"
+      ]
+    },
+    {
+      "name": "StatusRouteContent",
+      "slug": "status-route-content",
+      "category": "Feedback \u0026 async",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Route-aware status composition that resolves configured copy and actions for an HTTP status code.",
+      "tags": [
+        "status",
+        "routing",
+        "error",
+        "composition"
+      ],
+      "sourceArea": "Routing",
+      "relatedPatternIds": [
+        "status-route-recovery"
+      ]
+    },
+    {
+      "name": "AppDialog",
+      "slug": "app-dialog",
+      "category": "Overlays",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Modal overlay contract with labelled content, focus management, and explicit dismissal behavior.",
+      "tags": [
+        "dialog",
+        "modal",
+        "overlay"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppDrawer",
+      "slug": "app-drawer",
+      "category": "Overlays",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Edge-aligned overlay panel for contained workflows that retain the underlying page context.",
+      "tags": [
+        "drawer",
+        "panel",
+        "overlay"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppLogo",
+      "slug": "app-logo",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Application-owned logo slot with a legacy static-asset image fallback.",
+      "tags": [
+        "logo",
+        "branding",
+        "layout"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppTabs",
+      "slug": "app-tabs",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Keyboard-aware tab list that coordinates selection and associated panel content.",
+      "tags": [
+        "tabs",
+        "navigation",
+        "keyboard"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppTab",
+      "slug": "app-tab",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "One labelled tab and panel definition registered with an owning AppTabs instance.",
+      "tags": [
+        "tab",
+        "navigation"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "Nav",
+      "slug": "nav",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Primary application navigation container with responsive open and collapsed state coordination.",
+      "tags": [
+        "navigation",
+        "shell"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": [
+        "application-workspace-shell",
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "NavGroup",
+      "slug": "nav-group",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Labelled navigation group for organizing related application destinations.",
+      "tags": [
+        "navigation",
+        "group"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "NavItem",
+      "slug": "nav-item",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Single navigation destination with icon, label, active-state, and optional badge support.",
+      "tags": [
+        "navigation",
+        "item"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "NavSubmenu",
+      "slug": "nav-submenu",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Expandable navigation branch that contains a nested set of destinations.",
+      "tags": [
+        "navigation",
+        "submenu"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "SectionNavigation",
+      "slug": "section-navigation",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Local section navigation for switching views within one application workspace.",
+      "tags": [
+        "navigation",
+        "section"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "MobileNavigationAccount",
+      "slug": "mobile-navigation-account",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Mobile account region that brings identity and preferences into the navigation surface.",
+      "tags": [
+        "navigation",
+        "mobile",
+        "account"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ProfileMenu",
+      "slug": "profile-menu",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Authenticated profile disclosure with account context, preferences, and sign-out action.",
+      "tags": [
+        "navigation",
+        "profile",
+        "menu"
+      ],
+      "sourceArea": "Navigation",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "HeaderControl",
+      "slug": "header-control",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "reference",
+      "summary": "Legacy header-region adapter that places the shared preference selector.",
+      "tags": [
+        "navigation",
+        "header",
+        "preferences"
+      ],
+      "sourceArea": "Region",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "HeaderControlWithUser",
+      "slug": "header-control-with-user",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Header action group that combines preferences with authenticated or anonymous identity controls.",
+      "tags": [
+        "navigation",
+        "header",
+        "identity"
+      ],
+      "sourceArea": "Region",
+      "relatedPatternIds": [
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "ShellProfileControl",
+      "slug": "shell-profile-control",
+      "category": "Navigation",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Compact shell account control that switches between profile disclosure and login link.",
+      "tags": [
+        "navigation",
+        "profile",
+        "identity"
+      ],
+      "sourceArea": "Region",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "CultureSelector",
+      "slug": "culture-selector",
+      "category": "Preferences \u0026 time",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Culture chooser that lets an application expose its supported locales consistently.",
+      "tags": [
+        "culture",
+        "locale",
+        "preferences"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "PreferencesSelector",
+      "slug": "preferences-selector",
+      "category": "Preferences \u0026 time",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Combined preference surface for theme, culture, and related user settings.",
+      "tags": [
+        "preferences",
+        "settings"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ThemeSwitcher",
+      "slug": "theme-switcher",
+      "category": "Preferences \u0026 time",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Theme-mode selector for applying the shared light, dark, or system preference contract.",
+      "tags": [
+        "theme",
+        "light",
+        "dark"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "InitializeTimeZone",
+      "slug": "initialize-time-zone",
+      "category": "Preferences \u0026 time",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Bootstrap component that discovers and initializes the browser time-zone context.",
+      "tags": [
+        "timezone",
+        "initialization"
+      ],
+      "sourceArea": "Timezone",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "LocalTime",
+      "slug": "local-time",
+      "category": "Preferences \u0026 time",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Time display that converts an instant through the active local time-zone provider.",
+      "tags": [
+        "timezone",
+        "time",
+        "display"
+      ],
+      "sourceArea": "Timezone",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ExperienceCard",
+      "slug": "experience-card",
+      "category": "Experience",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Reader-facing card for presenting a cohesive result, explanation, or guidance block.",
+      "tags": [
+        "experience",
+        "card",
+        "content"
+      ],
+      "sourceArea": "Experience",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ExperienceDisclosure",
+      "slug": "experience-disclosure",
+      "category": "Experience",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Expandable reader-facing detail that keeps optional explanation accessible on demand.",
+      "tags": [
+        "experience",
+        "disclosure",
+        "content"
+      ],
+      "sourceArea": "Experience",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ExperienceDisclosureGroup",
+      "slug": "experience-disclosure-group",
+      "category": "Experience",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Coordinated group of disclosures for progressively revealing related guidance.",
+      "tags": [
+        "experience",
+        "disclosure",
+        "group"
+      ],
+      "sourceArea": "Experience",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ExperienceHeading",
+      "slug": "experience-heading",
+      "category": "Experience",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Experience-section heading with consistent hierarchy and supporting explanation.",
+      "tags": [
+        "experience",
+        "heading",
+        "content"
+      ],
+      "sourceArea": "Experience",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "MarketingActionLink",
+      "slug": "marketing-action-link",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Styled marketing link for application-owned calls to action and destinations.",
+      "tags": [
+        "marketing",
+        "link",
+        "action"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingCallToAction",
+      "slug": "marketing-call-to-action",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Prominent marketing conversion block with copy, actions, and optional supporting content.",
+      "tags": [
+        "marketing",
+        "cta",
+        "action"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingCard",
+      "slug": "marketing-card",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Composable marketing content card with application-owned message and media.",
+      "tags": [
+        "marketing",
+        "card",
+        "content"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingContainer",
+      "slug": "marketing-container",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Width and gutter boundary that aligns marketing sections across a page.",
+      "tags": [
+        "marketing",
+        "container",
+        "layout"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingFeatureGrid",
+      "slug": "marketing-feature-grid",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Responsive feature layout that arranges application-composed marketing cards.",
+      "tags": [
+        "marketing",
+        "feature",
+        "grid"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingHero",
+      "slug": "marketing-hero",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Above-fold marketing composition for value proposition, actions, proof, and product media.",
+      "tags": [
+        "marketing",
+        "hero",
+        "heading"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingPage",
+      "slug": "marketing-page",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Marketing page landmark and skip-target owner for a complete landing composition.",
+      "tags": [
+        "marketing",
+        "page",
+        "layout"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingProductFrame",
+      "slug": "marketing-product-frame",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Framed product-media surface for screenshots, previews, or application-owned demonstrations.",
+      "tags": [
+        "marketing",
+        "product",
+        "frame"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingProofItem",
+      "slug": "marketing-proof-item",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "One compact evidence item such as a metric, credential, or customer outcome.",
+      "tags": [
+        "marketing",
+        "proof",
+        "content"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingProofStrip",
+      "slug": "marketing-proof-strip",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Horizontal or wrapping composition of concise MarketingProofItem evidence.",
+      "tags": [
+        "marketing",
+        "proof",
+        "strip"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "MarketingSectionHeader",
+      "slug": "marketing-section-header",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Marketing section introduction with eyebrow, heading, and supporting copy.",
+      "tags": [
+        "marketing",
+        "heading",
+        "section"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "MarketingStep",
+      "slug": "marketing-step",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "One numbered or sequenced step in an application-owned marketing explanation.",
+      "tags": [
+        "marketing",
+        "step",
+        "content"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "MarketingStepList",
+      "slug": "marketing-step-list",
+      "category": "Marketing",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Responsive sequence that composes multiple MarketingStep instructions.",
+      "tags": [
+        "marketing",
+        "steps",
+        "content"
+      ],
+      "sourceArea": "Marketing",
+      "relatedPatternIds": [
+        "product-marketing-landing"
+      ]
+    },
+    {
+      "name": "AccessPageLayout",
+      "slug": "access-page-layout",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Complete access-page structure for brand, identity controls, form content, and showcase.",
+      "tags": [
+        "layout",
+        "access",
+        "identity"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "secure-access-flow"
+      ]
+    },
+    {
+      "name": "ApplicationShell",
+      "slug": "application-shell",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Responsive application frame owning skip navigation, header, primary navigation, and main content.",
+      "tags": [
+        "layout",
+        "application",
+        "shell"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "application-workspace-shell",
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "ApplicationPageHeading",
+      "slug": "application-page-heading",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Shell heading region that combines optional breadcrumbs with application-owned heading content.",
+      "tags": [
+        "layout",
+        "heading",
+        "breadcrumb"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "application-workspace-shell"
+      ]
+    },
+    {
+      "name": "HeaderFooterLayout",
+      "slug": "header-footer-layout",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Router layout that composes a sticky header, section outlets, and the page main region.",
+      "tags": [
+        "layout",
+        "header",
+        "footer"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "IdentityLayout",
+      "slug": "identity-layout",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Router layout that maps identity sections into the shared AccessPageLayout contract.",
+      "tags": [
+        "layout",
+        "identity",
+        "access"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "LandingLayout",
+      "slug": "landing-layout",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Router layout for a marketing header whose body retains ownership of the main landmark.",
+      "tags": [
+        "layout",
+        "landing",
+        "marketing"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "MainLayout",
+      "slug": "main-layout",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Router layout that maps application sections, breadcrumbs, and body content into ApplicationShell.",
+      "tags": [
+        "layout",
+        "application",
+        "main"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "RootLayout",
+      "slug": "root-layout",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Outermost router layout for time-zone initialization, child layout content, and error recovery UI.",
+      "tags": [
+        "layout",
+        "root",
+        "application"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "router-level-layout-composition"
+      ]
+    },
+    {
+      "name": "AppInputSupport",
+      "slug": "app-input-support",
+      "category": "Infrastructure",
+      "status": "beta",
+      "coverage": "reference",
+      "summary": "Infrastructure child that renders an owning input\u0027s description and validation message relationship.",
+      "tags": [
+        "infrastructure",
+        "input",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "AppOverlayHost",
+      "slug": "app-overlay-host",
+      "category": "Infrastructure",
+      "status": "beta",
+      "coverage": "reference",
+      "summary": "Service-backed host that dequeues and renders application-requested dialogs or drawers.",
+      "tags": [
+        "infrastructure",
+        "overlay",
+        "host"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "LayoutMobileMenuButtonWrapper",
+      "slug": "layout-mobile-menu-button-wrapper",
+      "category": "Infrastructure",
+      "status": "beta",
+      "coverage": "reference",
+      "summary": "Legacy adapter between cascading navigation state and the mobile menu button contract.",
+      "tags": [
+        "infrastructure",
+        "mobile",
+        "layout"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": []
+    },
+    {
+      "name": "ParameterizedStatusRouteAdapter",
+      "slug": "parameterized-status-route-adapter",
+      "category": "Infrastructure",
+      "status": "beta",
+      "coverage": "reference",
+      "summary": "Generated-route bridge that forwards a bound status code into StatusRouteContent.",
+      "tags": [
+        "infrastructure",
+        "routing",
+        "status"
+      ],
+      "sourceArea": "Routing",
+      "relatedPatternIds": [
+        "status-route-recovery"
+      ]
+    }
+  ],
   "groups": [
     {
-      "category": "Forms & inputs",
+      "category": "Forms \u0026 inputs",
       "status": "stable",
-      "components": ["AppTextBox", "AppTextArea", "AppNumberInput", "AppSelect", "AppSelectItem", "AppMultiSelect", "AppRadioGroup", "AppRadio", "AppCheckbox", "AppSwitch", "AppCalendarPicker", "AppTimePicker", "AppDateTimePicker", "FormSection", "FormGrid", "FormField", "FormActions", "FormValidationSummary"]
+      "components": [
+        "AppTextBox",
+        "AppTextArea",
+        "AppNumberInput",
+        "AppSelect",
+        "AppSelectItem",
+        "AppMultiSelect",
+        "AppRadioGroup",
+        "AppRadio",
+        "AppCheckbox",
+        "AppSwitch",
+        "AppCalendarPicker",
+        "AppTimePicker",
+        "AppDateTimePicker",
+        "FormSection",
+        "FormGrid",
+        "FormField",
+        "FormActions",
+        "FormValidationSummary"
+      ]
     },
     {
-      "category": "Actions & surfaces",
+      "category": "Actions \u0026 surfaces",
       "status": "stable",
-      "components": ["AppButton", "AppCard", "AppDivider", "AppStack", "CardMenu", "CompanyFooter", "Hero", "Pill", "Toolbar", "PageActionToolbar", "PageHeading"]
+      "components": [
+        "AppButton",
+        "AppCard",
+        "AppDivider",
+        "AppStack",
+        "CardMenu",
+        "CompanyFooter",
+        "Hero",
+        "Pill",
+        "Toolbar",
+        "PageActionToolbar",
+        "PageHeading"
+      ]
     },
     {
-      "category": "Data & display",
+      "category": "Data \u0026 display",
       "status": "stable",
-      "components": ["AppBreadcrumb", "AppGrid", "AppGridPaginator", "AppGridPropertyColumn", "AppGridShell", "AppGridTemplateColumn", "PageBreadcrumbs"]
+      "components": [
+        "AppBreadcrumb",
+        "AppGridShell",
+        "AppGrid",
+        "AppGridPaginator",
+        "AppGridPropertyColumn",
+        "AppGridTemplateColumn",
+        "PageBreadcrumbs"
+      ]
     },
     {
-      "category": "Feedback & async",
+      "category": "Feedback \u0026 async",
       "status": "stable",
-      "components": ["AppLoading", "AppProgress", "AppSkeleton", "AsyncContent", "FeedbackBanner", "StatusPanel", "StatusPage"]
+      "components": [
+        "AppLoading",
+        "AppProgress",
+        "AppSkeleton",
+        "AsyncContent",
+        "FeedbackBanner",
+        "StatusPanel",
+        "StatusPage",
+        "StatusRouteContent"
+      ]
     },
     {
       "category": "Overlays",
       "status": "stable",
-      "components": ["AppDialog", "AppDrawer"]
+      "components": [
+        "AppDialog",
+        "AppDrawer"
+      ]
     },
     {
       "category": "Navigation",
       "status": "stable",
-      "components": ["AppLogo", "AppTabs", "AppTab", "Nav", "NavGroup", "NavItem", "NavSubmenu", "SectionNavigation", "MobileNavigationAccount", "ProfileMenu"]
+      "components": [
+        "AppLogo",
+        "AppTabs",
+        "AppTab",
+        "Nav",
+        "NavGroup",
+        "NavItem",
+        "NavSubmenu",
+        "SectionNavigation",
+        "MobileNavigationAccount",
+        "ProfileMenu",
+        "HeaderControl",
+        "HeaderControlWithUser",
+        "ShellProfileControl"
+      ]
     },
     {
-      "category": "Preferences & time",
+      "category": "Preferences \u0026 time",
       "status": "stable",
-      "components": ["CultureSelector", "PreferencesSelector", "ThemeSwitcher", "InitializeTimeZone", "LocalTime"]
+      "components": [
+        "CultureSelector",
+        "PreferencesSelector",
+        "ThemeSwitcher",
+        "InitializeTimeZone",
+        "LocalTime"
+      ]
     },
     {
       "category": "Experience",
       "status": "stable",
-      "components": ["ExperienceCard", "ExperienceDisclosure", "ExperienceDisclosureGroup", "ExperienceHeading"]
+      "components": [
+        "ExperienceCard",
+        "ExperienceDisclosure",
+        "ExperienceDisclosureGroup",
+        "ExperienceHeading"
+      ]
     },
     {
       "category": "Marketing",
       "status": "stable",
-      "components": ["MarketingActionLink", "MarketingCallToAction", "MarketingCard", "MarketingContainer", "MarketingFeatureGrid", "MarketingHero", "MarketingPage", "MarketingProductFrame", "MarketingProofItem", "MarketingProofStrip", "MarketingSectionHeader", "MarketingStep", "MarketingStepList"]
+      "components": [
+        "MarketingActionLink",
+        "MarketingCallToAction",
+        "MarketingCard",
+        "MarketingContainer",
+        "MarketingFeatureGrid",
+        "MarketingHero",
+        "MarketingPage",
+        "MarketingProductFrame",
+        "MarketingProofItem",
+        "MarketingProofStrip",
+        "MarketingSectionHeader",
+        "MarketingStep",
+        "MarketingStepList"
+      ]
     },
     {
       "category": "Application layouts",
       "status": "stable",
-      "components": ["AccessPageLayout", "ApplicationShell", "HeaderFooterLayout", "IdentityLayout", "LandingLayout", "MainLayout", "RootLayout"]
+      "components": [
+        "AccessPageLayout",
+        "ApplicationShell",
+        "ApplicationPageHeading",
+        "HeaderFooterLayout",
+        "IdentityLayout",
+        "LandingLayout",
+        "MainLayout",
+        "RootLayout"
+      ]
     },
     {
       "category": "Infrastructure",
       "status": "beta",
-      "components": ["AppInputSupport", "AppOverlayHost", "LayoutMobileMenuButtonWrapper"]
+      "components": [
+        "AppInputSupport",
+        "AppOverlayHost",
+        "LayoutMobileMenuButtonWrapper",
+        "ParameterizedStatusRouteAdapter"
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "name": "Validated form workflow",
+      "slug": "validated-form-workflow",
+      "category": "Data entry",
+      "maturity": "stable",
+      "summary": "Compose a readable EditForm from field primitives, responsive geometry, validation feedback, and an explicit action boundary.",
+      "intent": "Use this pattern when a page collects related values that must remain understandable before, during, and after validation.",
+      "tags": [
+        "form",
+        "validation",
+        "responsive",
+        "edit-context"
+      ],
+      "ingredients": [
+        {
+          "componentId": "form-section",
+          "componentName": "FormSection",
+          "role": "Names the task and groups its supporting guidance."
+        },
+        {
+          "componentId": "form-grid",
+          "componentName": "FormGrid",
+          "role": "Defines responsive field geometry without owning business fields."
+        },
+        {
+          "componentId": "form-field",
+          "componentName": "FormField",
+          "role": "Lets an individual control opt into column span and placement."
+        },
+        {
+          "componentId": "app-text-box",
+          "componentName": "AppTextBox",
+          "role": "Provides the labelled text-input contract."
+        },
+        {
+          "componentId": "app-select",
+          "componentName": "AppSelect",
+          "role": "Provides a typed choice contract."
+        },
+        {
+          "componentId": "form-validation-summary",
+          "componentName": "FormValidationSummary",
+          "role": "Collects model-level errors when a summary is useful."
+        },
+        {
+          "componentId": "form-actions",
+          "componentName": "FormActions",
+          "role": "Separates commit and cancel actions from the data fields."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Expresses submit priority and secondary actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Start with the model boundary",
+          "detail": "Create one EditContext or model for the task and keep validation rules beside that model."
+        },
+        {
+          "title": "Group before arranging",
+          "detail": "Use FormSection to explain the task, then FormGrid and FormField to describe geometry."
+        },
+        {
+          "title": "Bind semantic controls",
+          "detail": "Choose inputs by value type and always provide a visible label and useful description."
+        },
+        {
+          "title": "Close with an action boundary",
+          "detail": "Place validation feedback before FormActions so the submit path is predictable in reading and focus order."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Label, description, validation, and focus presentation",
+          "Responsive grid collapse and field spacing",
+          "Button hierarchy and disabled presentation"
+        ],
+        "applicationResponsibilities": [
+          "Form model, annotations, and cross-field rules",
+          "Submission side effects, authorization, and error recovery",
+          "Product copy, defaults, and cancellation behavior"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CEditForm Model=\u0022@Profile\u0022 OnValidSubmit=\u0022SaveAsync\u0022\u003E\n    \u003CDataAnnotationsValidator /\u003E\n    \u003CFormSection Title=\u0022Profile\u0022\u003E\n        \u003CFormValidationSummary /\u003E\n        \u003CFormGrid Columns=\u00222\u0022\u003E\n            \u003CFormField\u003E\u003CAppTextBox Label=\u0022Name\u0022 @bind-Value=\u0022Profile.Name\u0022 /\u003E\u003C/FormField\u003E\n            \u003CFormField\u003E\u003CAppSelect Label=\u0022Team\u0022 Options=\u0022@Teams\u0022 @bind-Value=\u0022Profile.Team\u0022 /\u003E\u003C/FormField\u003E\n        \u003C/FormGrid\u003E\n        \u003CFormActions\u003E\u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESave\u003C/AppButton\u003E\u003C/FormActions\u003E\n    \u003C/FormSection\u003E\n\u003C/EditForm\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "Every field keeps a visible label, error association, and a logical keyboard order."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "At the narrow breakpoint, the field grid becomes one readable column without changing source order."
+        },
+        {
+          "dimension": "State",
+          "requirement": "Loading, server failure, and successful submission remain distinguishable without relying on color alone."
+        }
+      ],
+      "liveHref": "form-controls",
+      "liveLabel": "Open the form controls laboratory",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "form-composition-workbench.spec.mjs",
+          "guarantee": "Exercises section, grid, field, validation, and action composition."
+        },
+        {
+          "kind": "Browser",
+          "source": "playbook.spec.mjs",
+          "guarantee": "Verifies the routed interactive and static form contracts."
+        }
+      ]
+    },
+    {
+      "name": "Virtualized data workspace",
+      "slug": "virtualized-data-workspace",
+      "category": "Data operations",
+      "maturity": "stable",
+      "summary": "Place search, filters, actions, a virtualized grid, and operational feedback inside one labelled data surface.",
+      "intent": "Use this pattern for large, scan-heavy datasets where stable row identity and bounded DOM work matter more than page-at-a-time navigation.",
+      "tags": [
+        "data",
+        "grid",
+        "virtualization",
+        "performance"
+      ],
+      "ingredients": [
+        {
+          "componentId": "app-grid-shell",
+          "componentName": "AppGridShell",
+          "role": "Names the workspace and arranges search, filters, actions, data, and footer slots."
+        },
+        {
+          "componentId": "app-grid",
+          "componentName": "AppGrid",
+          "role": "Owns table semantics, sorting hooks, and the virtualized row window."
+        },
+        {
+          "componentId": "app-grid-property-column",
+          "componentName": "AppGridPropertyColumn",
+          "role": "Projects sortable scalar values."
+        },
+        {
+          "componentId": "app-grid-template-column",
+          "componentName": "AppGridTemplateColumn",
+          "role": "Renders richer cells and row actions."
+        },
+        {
+          "componentId": "app-text-box",
+          "componentName": "AppTextBox",
+          "role": "Collects the search query."
+        },
+        {
+          "componentId": "app-select",
+          "componentName": "AppSelect",
+          "role": "Applies a typed status or facet filter."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Hosts export, create, and row-level actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Name the dataset",
+          "detail": "Give AppGridShell a task-oriented accessible label, not a generic label such as Data table."
+        },
+        {
+          "title": "Shape the query first",
+          "detail": "Apply search, filters, and authorization before exposing IQueryable items to the grid."
+        },
+        {
+          "title": "Declare virtual geometry",
+          "detail": "Use a fixed ItemSize, a restrained OverscanCount, and an ItemKey that survives sorting and refresh."
+        },
+        {
+          "title": "Keep actions explicit",
+          "detail": "Give icon-only row actions record-specific names and keep bulk actions outside the table body."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Table semantics, sort interaction, and virtual row rendering",
+          "Workspace slot layout and visual hierarchy",
+          "Keyboard-visible control and row-action states"
+        ],
+        "applicationResponsibilities": [
+          "Query execution, filtering, paging, and authorization",
+          "Column meaning, formatting, and record navigation",
+          "Export jobs, mutations, telemetry, and empty-state copy"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CAppGridShell AriaLabel=\u0022Assessment register\u0022\u003E\n    \u003CSearch\u003E\u003CAppTextBox Label=\u0022Search records\u0022 @bind-Value=\u0022Search\u0022 /\u003E\u003C/Search\u003E\n    \u003CChildContent\u003E\n        \u003CAppGrid TGridItem=\u0022Assessment\u0022 Items=\u0022@Rows\u0022 Virtualize=\u0022true\u0022\n                 ItemSize=\u002240\u0022 OverscanCount=\u00223\u0022 ItemKey=\u0022row =\u003E row.Id\u0022\u003E\n            \u003CAppGridPropertyColumn Property=\u0022row =\u003E row.Owner\u0022 Title=\u0022Owner\u0022 Sortable=\u0022true\u0022 /\u003E\n            \u003CAppGridTemplateColumn Title=\u0022Status\u0022\u003E@context.Status\u003C/AppGridTemplateColumn\u003E\n        \u003C/AppGrid\u003E\n    \u003C/ChildContent\u003E\n\u003C/AppGridShell\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "The shell and grid have distinct task labels; every row action names its target record."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "Narrow screens preserve access to columns through intentional overflow or a documented alternate view."
+        },
+        {
+          "dimension": "Performance",
+          "requirement": "Rendered rows remain bounded while scrolling the full source and row height stays equal to ItemSize."
+        }
+      ],
+      "liveHref": "grid-performance",
+      "liveLabel": "Run the 100,000-row performance laboratory",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "playbook.spec.mjs",
+          "guarantee": "Asserts the 100,000-record source keeps a bounded row window."
+        },
+        {
+          "kind": "Browser",
+          "source": "pagination-data-workbench.spec.mjs",
+          "guarantee": "Covers labelled paged and virtual grid shells."
+        },
+        {
+          "kind": "Browser",
+          "source": "data-grid-workbench.spec.mjs",
+          "guarantee": "Covers search, sorting, loading, and empty data states."
+        }
+      ]
+    },
+    {
+      "name": "Product marketing landing",
+      "slug": "product-marketing-landing",
+      "category": "Marketing",
+      "maturity": "stable",
+      "summary": "Build a product narrative from a promise, proof, product frame, benefits, steps, and a final call to action.",
+      "intent": "Use this pattern for a public product entry point that needs application-owned identity and content on top of shared responsive sections.",
+      "tags": [
+        "marketing",
+        "landing",
+        "story",
+        "conversion"
+      ],
+      "ingredients": [
+        {
+          "componentId": "marketing-page",
+          "componentName": "MarketingPage",
+          "role": "Provides the main landmark and skip-target contract."
+        },
+        {
+          "componentId": "marketing-container",
+          "componentName": "MarketingContainer",
+          "role": "Keeps narrative sections on one shared reading measure."
+        },
+        {
+          "componentId": "marketing-hero",
+          "componentName": "MarketingHero",
+          "role": "Pairs the primary promise with actions and product media."
+        },
+        {
+          "componentId": "marketing-proof-strip",
+          "componentName": "MarketingProofStrip",
+          "role": "Groups concise evidence immediately after the promise."
+        },
+        {
+          "componentId": "marketing-proof-item",
+          "componentName": "MarketingProofItem",
+          "role": "Expresses one proof point with value and explanation."
+        },
+        {
+          "componentId": "marketing-product-frame",
+          "componentName": "MarketingProductFrame",
+          "role": "Frames a credible product preview without owning its content."
+        },
+        {
+          "componentId": "marketing-feature-grid",
+          "componentName": "MarketingFeatureGrid",
+          "role": "Arranges differentiated benefits."
+        },
+        {
+          "componentId": "marketing-card",
+          "componentName": "MarketingCard",
+          "role": "Carries one benefit and its supporting visual."
+        },
+        {
+          "componentId": "marketing-step-list",
+          "componentName": "MarketingStepList",
+          "role": "Explains the progression from signal to outcome."
+        },
+        {
+          "componentId": "marketing-call-to-action",
+          "componentName": "MarketingCallToAction",
+          "role": "Closes the narrative with one next step."
+        },
+        {
+          "componentId": "marketing-action-link",
+          "componentName": "MarketingActionLink",
+          "role": "Provides primary and secondary marketing actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Lead with one promise",
+          "detail": "Give MarketingHero a reader outcome, supporting explanation, and no more than two competing actions."
+        },
+        {
+          "title": "Earn the next scroll",
+          "detail": "Place compact proof directly after the hero, then show a concrete product frame before abstract benefits."
+        },
+        {
+          "title": "Explain the path",
+          "detail": "Use feature and step compositions to answer why this matters and what happens next."
+        },
+        {
+          "title": "Close the loop",
+          "detail": "Repeat the primary action in MarketingCallToAction after the reader has enough evidence to decide."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Responsive section geometry and shared reading widths",
+          "Action variants, feature grids, proof strips, and step rhythm",
+          "Skip-link and landmark plumbing inside MarketingPage"
+        ],
+        "applicationResponsibilities": [
+          "Product promise, claims, proof, and legal review",
+          "Brand assets, image crops, destinations, and analytics",
+          "Product preview contents and conversion behavior"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CMarketingPage Id=\u0022product\u0022 SkipTarget=\u0022benefits\u0022\u003E\n    \u003CMarketingHero Title=\u0022Understand the signal. Act with confidence.\u0022\n                   Description=\u0022A focused path from information to action.\u0022\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022#benefits\u0022\u003EExplore\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingHero\u003E\n    \u003CMarketingProofStrip AriaLabel=\u0022Product proof\u0022\u003E\n        \u003CMarketingProofItem Value=\u0022AA\u0022 Title=\u0022Accessible\u0022 Description=\u0022Built on a tested foundation.\u0022 /\u003E\n    \u003C/MarketingProofStrip\u003E\n    \u003CMarketingFeatureGrid id=\u0022benefits\u0022\u003E\n        \u003CMarketingCard Title=\u0022One clear benefit\u0022\u003E...\u003C/MarketingCard\u003E\n    \u003C/MarketingFeatureGrid\u003E\n    \u003CMarketingCallToAction\u003E\n        \u003CContent\u003E\u003Ch2\u003EReady to continue?\u003C/h2\u003E\u003C/Content\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022/start\u0022\u003EGet started\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingCallToAction\u003E\n\u003C/MarketingPage\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "The page has one main landmark, a working skip target, ordered headings, and meaningful media alternatives."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "Proof, feature, and CTA layouts stack without reordering the product narrative."
+        },
+        {
+          "dimension": "Content",
+          "requirement": "Claims have evidence, actions describe their destination, and decorative media stays silent."
+        }
+      ],
+      "liveHref": "landing",
+      "liveLabel": "Open the themed landing-page sandbox",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "marketing-workbench.spec.mjs",
+          "guarantee": "Exercises the shared marketing compositions and routed MarketingPage landmark."
+        },
+        {
+          "kind": "Browser",
+          "source": "layout-infrastructure-contracts.spec.mjs",
+          "guarantee": "Verifies MarketingPage is executed by the real landing route."
+        }
+      ]
+    },
+    {
+      "name": "Secure access flow",
+      "slug": "secure-access-flow",
+      "category": "Access",
+      "maturity": "stable",
+      "summary": "Compose sign-in or registration inside a branded, responsive access frame while authentication policy stays application-owned.",
+      "intent": "Use this pattern for unauthenticated routes that need a consistent identity surface, clear credentials path, and optional provider choices.",
+      "tags": [
+        "access",
+        "identity",
+        "authentication",
+        "responsive"
+      ],
+      "ingredients": [
+        {
+          "componentId": "access-page-layout",
+          "componentName": "AccessPageLayout",
+          "role": "Arranges brand, preferences, form copy, controls, and the product showcase."
+        },
+        {
+          "componentId": "app-text-box",
+          "componentName": "AppTextBox",
+          "role": "Collects credential values with the correct input type and autocomplete token."
+        },
+        {
+          "componentId": "app-checkbox",
+          "componentName": "AppCheckbox",
+          "role": "Hosts explicit session-persistence consent."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Expresses the primary credential action and secondary recovery actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Frame the access task",
+          "detail": "Provide one route-specific title and short explanation through AccessPageLayout slots."
+        },
+        {
+          "title": "Offer enabled methods only",
+          "detail": "Show provider, passkey, or password paths only when the application has configured them."
+        },
+        {
+          "title": "Use browser semantics",
+          "detail": "Set email, username, current-password, and new-password autocomplete values accurately."
+        },
+        {
+          "title": "Keep recovery nearby",
+          "detail": "Place account creation and credential recovery beside the form without competing with the primary action."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Responsive access geometry and visual slot order",
+          "Shared input, checkbox, and button semantics",
+          "Theme-aware surface, focus, and error presentation"
+        ],
+        "applicationResponsibilities": [
+          "Authentication providers, antiforgery, rate limits, and session policy",
+          "Brand copy, consent language, links, and telemetry",
+          "Server validation, redirects, and account-recovery workflows"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CAccessPageLayout HeadingId=\u0022sign-in-title\u0022 ShowcaseLabel=\u0022Product message\u0022\u003E\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\n    \u003CTitle\u003ESign in to continue\u003C/Title\u003E\n    \u003CChildContent\u003E\n        \u003CEditForm Model=\u0022@Credentials\u0022 OnValidSubmit=\u0022SignInAsync\u0022\u003E\n            \u003CAppTextBox Label=\u0022Email\u0022 Type=\u0022email\u0022 Autocomplete=\u0022username\u0022 @bind-Value=\u0022Credentials.Email\u0022 /\u003E\n            \u003CAppTextBox Label=\u0022Password\u0022 Type=\u0022password\u0022 Autocomplete=\u0022current-password\u0022 @bind-Value=\u0022Credentials.Password\u0022 /\u003E\n            \u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESign in\u003C/AppButton\u003E\n        \u003C/EditForm\u003E\n    \u003C/ChildContent\u003E\n\u003C/AccessPageLayout\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "The route focuses one visible heading, labels every credential field, and reports authentication failure without moving focus unexpectedly."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "The form precedes optional showcase content in reading order and remains usable at 320 CSS pixels."
+        },
+        {
+          "dimension": "Security",
+          "requirement": "The Playbook demonstrates layout only; production auth, CSRF protection, and redirect validation stay server-owned."
+        }
+      ],
+      "liveHref": "access/login",
+      "liveLabel": "Open the login composition",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "playbook.spec.mjs",
+          "guarantee": "Covers the real access route, credential controls, language, and theme variants."
+        },
+        {
+          "kind": "Browser",
+          "source": "layout-infrastructure-contracts.spec.mjs",
+          "guarantee": "Verifies AccessPageLayout executes on a routed page."
+        }
+      ]
+    },
+    {
+      "name": "Application workspace shell",
+      "slug": "application-workspace-shell",
+      "category": "Application structure",
+      "maturity": "stable",
+      "summary": "Compose persistent product identity, grouped navigation, user controls, breadcrumbs, and page actions around one routed main region.",
+      "intent": "Use this pattern as the authenticated frame for task-oriented applications with multiple sections and responsive navigation.",
+      "tags": [
+        "application",
+        "shell",
+        "navigation",
+        "layout"
+      ],
+      "ingredients": [
+        {
+          "componentId": "application-shell",
+          "componentName": "ApplicationShell",
+          "role": "Owns the responsive chrome and single routed main landmark."
+        },
+        {
+          "componentId": "application-page-heading",
+          "componentName": "ApplicationPageHeading",
+          "role": "Connects breadcrumb state and the route heading to the shell."
+        },
+        {
+          "componentId": "page-breadcrumbs",
+          "componentName": "PageBreadcrumbs",
+          "role": "Publishes hierarchical route context."
+        },
+        {
+          "componentId": "page-heading",
+          "componentName": "PageHeading",
+          "role": "Names the current task and hosts page-level actions."
+        },
+        {
+          "componentId": "page-action-toolbar",
+          "componentName": "PageActionToolbar",
+          "role": "Groups contextual route actions."
+        },
+        {
+          "componentId": "nav",
+          "componentName": "Nav",
+          "role": "Provides the navigation landmark and embedded shell treatment."
+        },
+        {
+          "componentId": "nav-group",
+          "componentName": "NavGroup",
+          "role": "Labels related destination groups."
+        },
+        {
+          "componentId": "nav-item",
+          "componentName": "NavItem",
+          "role": "Represents a routed destination and active state."
+        },
+        {
+          "componentId": "nav-submenu",
+          "componentName": "NavSubmenu",
+          "role": "Reveals nested administration destinations."
+        },
+        {
+          "componentId": "profile-menu",
+          "componentName": "ProfileMenu",
+          "role": "Hosts signed-in identity and account actions when the application uses the shared implementation."
+        },
+        {
+          "componentId": "shell-profile-control",
+          "componentName": "ShellProfileControl",
+          "role": "Selects the signed-in profile menu or access entry point for the shell."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Establish one main owner",
+          "detail": "Let ApplicationShell own the routed main landmark; pages contribute content rather than another main."
+        },
+        {
+          "title": "Group destinations by task",
+          "detail": "Compose NavGroup and NavItem labels from the user mental model, not the code namespace."
+        },
+        {
+          "title": "Publish route context",
+          "detail": "Provide breadcrumbs and one PageHeading for every routed workspace."
+        },
+        {
+          "title": "Adapt the chrome",
+          "detail": "At narrow widths, move navigation into the shell overlay while preserving destination and focus state."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Shell landmarks, responsive navigation, and overlay mechanics",
+          "Navigation-group, item, heading, and breadcrumb presentation",
+          "Slots for brand, preferences, profile, messages, and route content"
+        ],
+        "applicationResponsibilities": [
+          "Route table, authorization, product identity, and destination labels",
+          "Profile commands, notification data, and navigation badges",
+          "Page content, contextual actions, breadcrumbs, and mutation behavior"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CApplicationShell MainContentId=\u0022workspace-main\u0022\u003E\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\n    \u003CNavigation\u003E\n        \u003CNav Embedded=\u0022true\u0022\u003E\n            \u003CNavGroup Label=\u0022Workspace\u0022\u003E\n                \u003CNavItem Href=\u0022records\u0022 IconRestName=\u0022Table\u0022\u003ERecords\u003C/NavItem\u003E\n            \u003C/NavGroup\u003E\n        \u003C/Nav\u003E\n    \u003C/Navigation\u003E\n    \u003CHeading\u003E\u003CApplicationPageHeading Breadcrumbs=\u0022@Breadcrumbs\u0022\u003E@Heading\u003C/ApplicationPageHeading\u003E\u003C/Heading\u003E\n    \u003CChildContent\u003E@Body\u003C/ChildContent\u003E\n\u003C/ApplicationShell\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "Exactly one main landmark exists; navigation, menu buttons, profile controls, and route headings have stable names."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "The mobile menu traps no focus, restores focus to its opener, and does not hide routed content from assistive technology."
+        },
+        {
+          "dimension": "Routing",
+          "requirement": "Active navigation and breadcrumb state follow the current URI and clear when the route changes."
+        }
+      ],
+      "liveHref": "application-shell",
+      "liveLabel": "Open the authenticated workspace",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "playbook.spec.mjs",
+          "guarantee": "Exercises desktop collapse, mobile navigation, and application routes."
+        },
+        {
+          "kind": "Browser",
+          "source": "layout-infrastructure-contracts.spec.mjs",
+          "guarantee": "Verifies the real ApplicationShell contract and its slots."
+        },
+        {
+          "kind": "Browser",
+          "source": "navigation-workbench.spec.mjs",
+          "guarantee": "Covers grouped and nested shared navigation behavior."
+        }
+      ]
+    },
+    {
+      "name": "Record management workflow",
+      "slug": "record-management-workflow",
+      "category": "Application workflows",
+      "maturity": "beta",
+      "summary": "Connect a searchable record grid to create and edit drawers, destructive confirmation, paging, and record detail navigation.",
+      "intent": "Use this pattern for bounded CRUD work where list context should remain visible while a user edits or confirms a record action.",
+      "tags": [
+        "records",
+        "crud",
+        "drawer",
+        "dialog",
+        "grid"
+      ],
+      "ingredients": [
+        {
+          "componentId": "app-grid-shell",
+          "componentName": "AppGridShell",
+          "role": "Frames search, record count, grid, and pagination."
+        },
+        {
+          "componentId": "app-grid",
+          "componentName": "AppGrid",
+          "role": "Presents sortable records and row actions."
+        },
+        {
+          "componentId": "app-grid-paginator",
+          "componentName": "AppGridPaginator",
+          "role": "Moves through bounded result windows."
+        },
+        {
+          "componentId": "app-drawer",
+          "componentName": "AppDrawer",
+          "role": "Keeps list context while creating or editing one record."
+        },
+        {
+          "componentId": "app-dialog",
+          "componentName": "AppDialog",
+          "role": "Confirms a destructive record operation."
+        },
+        {
+          "componentId": "form-grid",
+          "componentName": "FormGrid",
+          "role": "Arranges fields inside the editor."
+        },
+        {
+          "componentId": "app-text-box",
+          "componentName": "AppTextBox",
+          "role": "Collects search and editable text values."
+        },
+        {
+          "componentId": "app-select",
+          "componentName": "AppSelect",
+          "role": "Edits a constrained record state."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Hosts create, edit, save, cancel, and delete actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Keep the list authoritative",
+          "detail": "Search, sorting, pagination, and visible counts all derive from the same filtered record source."
+        },
+        {
+          "title": "Edit a draft",
+          "detail": "Open AppDrawer with a copy so cancellation never mutates the visible record."
+        },
+        {
+          "title": "Commit intentionally",
+          "detail": "Enable Save only when the draft is valid, then replace or append through the application store."
+        },
+        {
+          "title": "Confirm irreversible work",
+          "detail": "Name the target inside AppDialog and make the safe exit at least as easy to find as Delete."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Grid, drawer, dialog, paginator, field, and button interaction contracts",
+          "Overlay focus containment, dismissal, and dangerous visual intent",
+          "Responsive data-surface and editor geometry"
+        ],
+        "applicationResponsibilities": [
+          "Record store, persistence, optimistic concurrency, and authorization",
+          "Draft validation, server errors, audit history, and undo policy",
+          "Column definitions, product terminology, and post-save navigation"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CAppGridShell AriaLabel=\u0022Program records\u0022\u003E\n    \u003CSearch\u003E\u003CAppTextBox Label=\u0022Search records\u0022 @bind-Value=\u0022Search\u0022 /\u003E\u003C/Search\u003E\n    \u003CChildContent\u003E\u003CAppGrid TGridItem=\u0022Record\u0022 Items=\u0022@FilteredRecords\u0022\u003E...\u003C/AppGrid\u003E\u003C/ChildContent\u003E\n    \u003CPagination\u003E\u003CAppGridPaginator State=\u0022@Pagination\u0022 /\u003E\u003C/Pagination\u003E\n\u003C/AppGridShell\u003E\n\n@code {\n    private Task\u003CAppOverlayResult\u003CRecord\u003E\u003E EditAsync() =\u003E\n        OverlayService.ShowDrawerAsync\u003CRecordEditor, Record\u003E(\n            new AppOverlayOptions { Title = \u0022Record editor\u0022, DrawerPosition = AppDrawerPosition.End });\n\n    private Task\u003CAppOverlayResult\u003Cbool\u003E\u003E DeleteAsync() =\u003E\n        OverlayService.ShowConfirmationAsync(new AppConfirmationOptions\n        {\n            Title = \u0022Delete this record?\u0022,\n            Message = \u0022This action cannot be undone.\u0022,\n            Dangerous = true\n        });\n}",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "Every row action names its record; drawer and dialog headings describe the active operation and target."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "The editor remains operable without hiding the close action, while the record list preserves a deliberate overflow strategy."
+        },
+        {
+          "dimension": "Safety",
+          "requirement": "Cancel leaves source data untouched and destructive confirmation states whether recovery or undo is available."
+        }
+      ],
+      "liveHref": "application-shell/records",
+      "liveLabel": "Run the record-management workflow",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "data-grid-workbench.spec.mjs",
+          "guarantee": "Covers shared search, sorting, loading, and empty grid states."
+        },
+        {
+          "kind": "Browser",
+          "source": "design-system-playbook.spec.mjs",
+          "guarantee": "Covers drawer and dialog focus, dismissal, and dangerous variants."
+        },
+        {
+          "kind": "Executable route",
+          "source": "application-shell/records",
+          "guarantee": "Provides create, edit, delete, search, sort, paginate, and detail navigation in one composition."
+        }
+      ]
+    },
+    {
+      "name": "Status route recovery",
+      "slug": "status-route-recovery",
+      "category": "Routing \u0026 recovery",
+      "maturity": "stable",
+      "summary": "Map HTTP outcomes to a branded StatusPage with route-safe actions, support context, and application-owned recovery copy.",
+      "intent": "Use this pattern for forbidden, missing, and server-error routes that must explain what happened and offer a credible next action.",
+      "tags": [
+        "status",
+        "routing",
+        "error",
+        "recovery"
+      ],
+      "ingredients": [
+        {
+          "componentId": "status-route-content",
+          "componentName": "StatusRouteContent",
+          "role": "Resolves route options, status semantics, actions, and optional request reference."
+        },
+        {
+          "componentId": "status-page",
+          "componentName": "StatusPage",
+          "role": "Renders the shared visual hierarchy and live-region behavior."
+        },
+        {
+          "componentId": "parameterized-status-route-adapter",
+          "componentName": "ParameterizedStatusRouteAdapter",
+          "role": "Adapts a status-code route parameter into the shared content contract."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Expresses retry, return, and support actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Resolve the outcome",
+          "detail": "Map the route status code to a known forbidden, not-found, or server-error configuration."
+        },
+        {
+          "title": "Explain without blame",
+          "detail": "State what is known, preserve security boundaries, and avoid exposing exception details."
+        },
+        {
+          "title": "Offer recovery",
+          "detail": "Provide one primary action that can succeed now and a stable path back to a known application route."
+        },
+        {
+          "title": "Attach support context",
+          "detail": "Show a safe request reference only when it helps support correlate the failure."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Status semantics, page composition, and accessible announcement mode",
+          "Shared visual hierarchy for code, title, description, actions, and reference",
+          "Adapter between route status parameters and presentation"
+        ],
+        "applicationResponsibilities": [
+          "Brand, copy, safe home path, retry behavior, and support guidance",
+          "Logging, exception handling, correlation IDs, and observability",
+          "Which incident details are safe to reveal to the current user"
+        ]
+      },
+      "minimalRazorRecipe": "builder.Services.AddSuttisakStatusRoutes(options =\u003E\n{\n    options.BrandName = \u0022Product\u0022;\n    options.HomeHref = \u0022/workspace\u0022;\n    options.Error.PrimaryActionLabel = \u0022Try again\u0022;\n});\n\n\u003CStatusRouteContent StatusCode=\u0022@StatusCode\u0022 RequestId=\u0022@RequestId\u0022 /\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "Forbidden and not-found states use polite region semantics; unexpected errors use an assertive alert without repeated announcements."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "Actions wrap in reading order and the status explanation remains readable without horizontal scrolling."
+        },
+        {
+          "dimension": "Security",
+          "requirement": "Copy and request references reveal no stack, resource existence, account detail, or authorization rule."
+        }
+      ],
+      "liveHref": "access/custom-error",
+      "liveLabel": "Configure and preview a status route",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "catalog-and-design-tokens.spec.mjs",
+          "guarantee": "Verifies custom status route actions, status semantics, brand, and request reference."
+        },
+        {
+          "kind": "Browser",
+          "source": "design-system-playbook.spec.mjs",
+          "guarantee": "Covers StatusPage variants and live-region behavior."
+        },
+        {
+          "kind": "Executable routes",
+          "source": "access/forbidden \u00B7 access/not-found \u00B7 access/server-error",
+          "guarantee": "Exercise fixed forbidden, missing, and unexpected-error outcomes."
+        }
+      ]
+    },
+    {
+      "name": "Router-level layout composition",
+      "slug": "router-level-layout-composition",
+      "category": "Application structure",
+      "maturity": "beta",
+      "summary": "Choose the layout that owns the page chrome, then fill named sections without introducing a second shell or main landmark.",
+      "intent": "Use this pattern when Blazor routing must select application, identity, landing, or header/body chrome while pages retain content ownership.",
+      "tags": [
+        "router",
+        "layout",
+        "sections",
+        "landmarks"
+      ],
+      "ingredients": [
+        {
+          "componentId": "root-layout",
+          "componentName": "RootLayout",
+          "role": "Provides initialization and recoverable root infrastructure."
+        },
+        {
+          "componentId": "main-layout",
+          "componentName": "MainLayout",
+          "role": "Composes the authenticated application layout at router level."
+        },
+        {
+          "componentId": "header-footer-layout",
+          "componentName": "HeaderFooterLayout",
+          "role": "Provides a compact header and routed body contract."
+        },
+        {
+          "componentId": "identity-layout",
+          "componentName": "IdentityLayout",
+          "role": "Maps identity sections into the access composition."
+        },
+        {
+          "componentId": "landing-layout",
+          "componentName": "LandingLayout",
+          "role": "Frames marketing routes while the page owns its main story."
+        },
+        {
+          "componentId": "application-shell",
+          "componentName": "ApplicationShell",
+          "role": "Supplies the main and responsive navigation used by MainLayout."
+        },
+        {
+          "componentId": "header-control-with-user",
+          "componentName": "HeaderControlWithUser",
+          "role": "Composes preferences with the authenticated or anonymous header action."
+        },
+        {
+          "componentId": "page-breadcrumbs",
+          "componentName": "PageBreadcrumbs",
+          "role": "Publishes page hierarchy to the selected layout."
+        },
+        {
+          "componentId": "page-heading",
+          "componentName": "PageHeading",
+          "role": "Fills the shared route-heading section."
+        },
+        {
+          "componentId": "nav",
+          "componentName": "Nav",
+          "role": "Fills the application navigation section."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Choose one chrome owner",
+          "detail": "Select the layout with @layout or router configuration and do not wrap the page in a competing shell."
+        },
+        {
+          "title": "Fill named sections",
+          "detail": "Supply brand, navigation, breadcrumbs, heading, and controls through the section IDs exposed by that layout."
+        },
+        {
+          "title": "Keep landmarks singular",
+          "detail": "Know whether the layout or body component owns main before adding routed content."
+        },
+        {
+          "title": "Clear route state",
+          "detail": "Ensure breadcrumb and named-section content does not leak after navigating to a page that omits it."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Layout landmarks, section outlet IDs, responsive chrome, and root infrastructure",
+          "Shared shell, access, landing, and header/body geometry",
+          "The contract used by pages to publish navigation and heading content"
+        ],
+        "applicationResponsibilities": [
+          "Layout selection per route, route hierarchy, and authorization",
+          "Section content, brand, destinations, breadcrumbs, and page actions",
+          "Routed body, application state, initialization policy, and error telemetry"
+        ]
+      },
+      "minimalRazorRecipe": "@page \u0022/workspace\u0022\n@layout MainLayout\n\n\u003CSectionContent SectionId=\u0022@MainLayout.NavigationSection\u0022\u003E\n    \u003CNav Embedded=\u0022true\u0022\u003E...\u003C/Nav\u003E\n\u003C/SectionContent\u003E\n\u003CSectionContent SectionName=\u0022@CommonSections.PageHeading\u0022\u003E\n    \u003CPageHeading Title=\u0022Workspace\u0022 /\u003E\n\u003C/SectionContent\u003E\n\n\u003CPageBreadcrumbs Items=\u0022@Breadcrumbs\u0022 /\u003E\n\u003Csection aria-labelledby=\u0022workspace-title\u0022\u003E...\u003C/section\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Accessibility",
+          "requirement": "The rendered route has one main landmark, one visible page heading, and uniquely named navigation landmarks."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "Layout chrome adapts at its own media queries while routed body content remains independently responsive."
+        },
+        {
+          "dimension": "Lifecycle",
+          "requirement": "Named-section and breadcrumb content clears after navigation and root initialization does not duplicate across layouts."
+        }
+      ],
+      "liveHref": "layout-patterns/application",
+      "liveLabel": "Open the real MainLayout route",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "layout-infrastructure-contracts.spec.mjs",
+          "guarantee": "Runs MainLayout, RootLayout, HeaderFooterLayout, IdentityLayout, and LandingLayout as real router layouts."
+        },
+        {
+          "kind": "Executable routes",
+          "source": "layout-patterns/application \u00B7 layout-patterns/identity \u00B7 layout-patterns/landing \u00B7 layout-patterns/header-footer",
+          "guarantee": "Expose each layout boundary without a nested Playbook shell."
+        }
+      ]
     }
   ]
 }

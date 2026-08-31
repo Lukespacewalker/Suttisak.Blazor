@@ -52,6 +52,13 @@ public static class PlaybookComponentCoverage
                 ["Brand, routes, navigation information architecture, profile, preferences, and page content."],
                 ["The /application-shell route exercises desktop and mobile navigation, focus, active routes, and breadcrumbs."],
                 ["MainLayout", "Nav", "PageHeading"]),
+            ["ApplicationPageHeading"] = Pattern(
+                "ApplicationPageHeading coordinates application breadcrumbs with the page-owned visual heading slot, so its useful contract depends on shell composition.",
+                "application-shell",
+                ["Render breadcrumb navigation only when items exist.", "Keep the visual heading slot available with or without breadcrumbs."],
+                ["Breadcrumb data, localized navigation label, heading level, page title, and page actions."],
+                ["ApplicationPageHeadingTests verifies empty and populated breadcrumb states.", "The /application-shell route executes the real heading region inside the shell."],
+                ["ApplicationShell", "AppBreadcrumb", "PageHeading"]),
             ["HeaderFooterLayout"] = Pattern(
                 "HeaderFooterLayout is a router-level layout with section outlets and a page main; rendering it in Component Detail would duplicate page structure.",
                 "layout-patterns/header-footer",
@@ -87,6 +94,35 @@ public static class PlaybookComponentCoverage
                 ["The selected child layout, route tree, host bootstrap, and error logging policy."],
                 ["Every dedicated layout-pattern route executes RootLayout as its outer layout."],
                 ["InitializeTimeZone", "MainLayout", "IdentityLayout"]),
+            ["HeaderControlWithUser"] = Pattern(
+                "HeaderControlWithUser composes preferences and identity actions whose authenticated and anonymous states require an application header context.",
+                "layout-patterns/header-footer",
+                ["Place preference controls beside the signed-in profile menu or anonymous login action.", "Optionally hide the full control group at mobile breakpoints."],
+                ["Login endpoint, localized labels, profile image, authentication state, and responsive placement."],
+                ["The header/footer layout route renders the real control through HeaderFooterLayout."],
+                ["HeaderFooterLayout", "PreferencesSelector", "ProfileMenu"]),
+            ["ShellProfileControl"] = Pattern(
+                "ShellProfileControl is the compact account control used inside ApplicationShell and changes composition with authentication state.",
+                "application-shell",
+                ["Render the profile disclosure for authenticated users and a compact login link for anonymous users."],
+                ["Authentication state, login endpoint, localized labels, profile image, and surrounding shell navigation."],
+                ["The /application-shell route renders the real control inside MainLayout and the shell account region."],
+                ["ApplicationShell", "ProfileMenu", "MobileNavigationAccount"]),
+            ["StatusRouteContent"] = Pattern(
+                "StatusRouteContent resolves status-specific copy and actions, then composes StatusPage with routing and application option services.",
+                "access/custom-error",
+                ["Resolve the active status-page options.", "Map status codes to visual variants and expose request references according to policy."],
+                ["Brand, status copy, action destinations, request-ID policy, and retry behavior."],
+                ["StatusPageTests verifies option resolution and request references.", "The custom-error route executes the real route content for selectable status codes."],
+                ["StatusPage", "ParameterizedStatusRouteAdapter", "AppLogo"]),
+            ["HeaderControl"] = Reference(
+                "HeaderControl is a minimal region adapter that renders PreferencesSelector. Its useful behavior is the parent preference component rather than a separate visual contract.",
+                "components/preferences-selector",
+                "Open the preference workbench",
+                ["Place the shared preference selector in legacy header regions."],
+                ["The consuming header owns placement, landmark structure, and account controls."],
+                ["The PreferencesSelector workbench exercises the rendered preference controls."],
+                ["PreferencesSelector", "HeaderControlWithUser", "HeaderFooterLayout"]),
             ["AppInputSupport"] = Reference(
                 "AppInputSupport is the internal description and validation-message child used by form controls. A standalone preview would omit the aria-describedby relationship that gives it meaning.",
                 "components/app-text-box",
@@ -110,7 +146,15 @@ public static class PlaybookComponentCoverage
                 ["Translate NavComponentState into the mobile menu button label, expanded state, and toggle action.", "Detach the state-change subscription when disposed."],
                 ["The parent layout owns NavComponentState lifetime and the menu panel controlled by the button."],
                 ["InfrastructureReferenceTests verifies state toggling, expanded semantics, and label changes through the real cascade."],
-                ["Nav", "NavComponentState", "ApplicationShell"])
+                ["Nav", "NavComponentState", "ApplicationShell"]),
+            ["ParameterizedStatusRouteAdapter"] = Reference(
+                "ParameterizedStatusRouteAdapter is the generated-route bridge that forwards a bound status code into StatusRouteContent. It has no independent visual surface.",
+                "access/custom-error",
+                "Open the executable status route",
+                ["Accept the route or middleware status-code parameter and render StatusRouteContent with the current request identifier."],
+                ["Route templates, middleware re-execution, status options, and host error handling."],
+                ["The status route generator smoke tests verify generated adapters inherit this contract.", "The custom-error route demonstrates the resulting StatusRouteContent composition."],
+                ["StatusRouteContent", "StatusPage", "RootLayout"])
         };
 
     public static PlaybookComponentCoverageSummary Summary { get; } = CreateSummary(PlaybookComponentCatalog.All);
@@ -118,24 +162,14 @@ public static class PlaybookComponentCoverage
     public static PlaybookCoverageDocumentation? DocumentationFor(PlaybookComponentDefinition component) =>
         Documentation.GetValueOrDefault(component.Name);
 
-    public static PlaybookComponentCoverageKind KindFor(PlaybookComponentDefinition component)
-    {
-        if (PlaybookSpecimenRegistry.TryGet(component.Name, out _))
-        {
-            return PlaybookComponentCoverageKind.Interactive;
-        }
-
-        return component.HasPatternPage
-            ? PlaybookComponentCoverageKind.Pattern
-            : PlaybookComponentCoverageKind.Reference;
-    }
+    public static PlaybookComponentCoverageKind KindFor(PlaybookComponentDefinition component) => component.Coverage;
 
     public static string LabelFor(PlaybookComponentDefinition component) => LabelFor(KindFor(component));
 
     public static string LabelFor(PlaybookComponentCoverageKind kind) => kind switch
     {
         PlaybookComponentCoverageKind.Interactive => "Interactive",
-        PlaybookComponentCoverageKind.Pattern => "Pattern",
+        PlaybookComponentCoverageKind.Pattern => "Pattern-backed",
         _ => "Reference"
     };
 
@@ -146,7 +180,7 @@ public static class PlaybookComponentCoverage
     public static string DescriptionFor(PlaybookComponentDefinition component) => KindFor(component) switch
     {
         PlaybookComponentCoverageKind.Interactive => "Executable specimen, responsive preview, runtime API metadata, and accessibility guidance.",
-        PlaybookComponentCoverageKind.Pattern => "Documented in a production-shaped integration page because the contract depends on surrounding application composition.",
+        PlaybookComponentCoverageKind.Pattern => "Backed by a first-class composition pattern because the contract depends on surrounding application structure.",
         _ => "Catalogued reference with maturity, API metadata when available, relationships, and a deliberate path to a future executable specimen."
     };
 

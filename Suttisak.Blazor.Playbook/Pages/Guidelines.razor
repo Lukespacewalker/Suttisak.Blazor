@@ -45,13 +45,24 @@
             </div>
         </section>
 
+        <section class="guidelines-page__section" aria-labelledby="documentation-guide-title">
+            <header><span>05</span><div><h2 id="documentation-guide-title">Documentation model</h2><p>Components, executable stories, and composition patterns answer different questions and are counted separately.</p></div></header>
+            <div class="guidelines-page__cards">
+                <article><strong>@PlaybookComponentCatalog.All.Count Components</strong><p>A component is a reusable public Razor contract. Its <code>/components/{slug}</code> route owns API and source guidance, maturity, coverage, and links to the patterns that use it.</p></article>
+                <article><strong>@PlaybookSpecimenRegistry.InteractiveSpecimenCount mappings / @PlaybookSpecimenRegistry.DistinctSpecimenCount workbenches</strong><p>A focused Story or Specimen executes a component state or interaction in a controlled context. Several component mappings may deliberately share one broader workbench; neither number is a Pattern count.</p></article>
+                <article><strong>@PlaybookPatternCatalog.All.Count Patterns</strong><p>A Pattern is a first-class composition recipe. <a href="patterns">The Pattern Library</a> names ingredients, assembly steps, ownership, minimal Razor, quality checks, a live route, and regression evidence.</p></article>
+                <article><strong>One derived manifest</strong><p>The checked-in machine manifest is generated from the typed component and pattern catalogs, then contract-tested against the exported public component surface.</p></article>
+            </div>
+        </section>
+
         <section class="guidelines-page__section guidelines-page__agent" aria-labelledby="agent-guide-title">
-            <header><span>05</span><div><h2 id="agent-guide-title">AI / agent workflow</h2><p>The Playbook is also a machine-facing map of what already exists.</p></div></header>
+            <header><span>06</span><div><h2 id="agent-guide-title">AI / agent workflow</h2><p>The Playbook is also a machine-facing map of what already exists.</p></div></header>
             <ol>
                 <li><strong>Search the component catalog first.</strong><span>Do not introduce raw markup or a new component until existing primitives and patterns have been checked.</span></li>
-                <li><strong>Open the component detail route.</strong><span>Inspect status, API metadata, states, responsive behavior, and related components before composing a page.</span></li>
+                <li><strong>Open the component detail route.</strong><span>Inspect status, API metadata, the focused specimen or honest reference guidance, responsive behavior, and “Used in patterns” relationships before composing a page.</span></li>
+                <li><strong>Open the Pattern Library.</strong><span>Use <code>/patterns</code> and <code>/patterns/{slug}</code> to learn the ingredients, assembly order, ownership boundary, and verified live route.</span></li>
                 <li><strong>Use semantic tokens.</strong><span>Never hard-code a product palette into reusable library CSS.</span></li>
-                <li><strong>Update the Playbook with public API changes.</strong><span>A component that cannot be discovered or exercised here is only half integrated.</span></li>
+                <li><strong>Update the catalogs and regenerate the manifest.</strong><span>Record public API changes in the typed catalogs, then run <code>dotnet run --project scripts/PlaybookManifestGenerator/PlaybookManifestGenerator.csproj</code>. Contract tests compare the result with exported component types, pattern backlinks, and live routes.</span></li>
                 <li><strong>Run component and browser verification.</strong><span>Build, bUnit, Playwright, axe, mobile width, reduced motion, and theme checks form one definition of done.</span></li>
             </ol>
             <a href="component-manifest.json">Open machine-readable component manifest →</a>

@@ -1,17 +1,18 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('machine-readable manifest tracks the 87-component catalog', async ({ request }) => {
+test('machine-readable manifest is internally complete and unique', async ({ request }) => {
   const response = await request.get('/component-manifest.json');
   expect(response.ok()).toBeTruthy();
 
   const manifest = await response.json();
   expect(manifest.schemaVersion).toBe(1);
-  expect(manifest.componentCount).toBe(87);
-
-  const names = manifest.groups.flatMap(group => group.components);
-  expect(names).toHaveLength(87);
-  expect(new Set(names).size).toBe(87);
+  const names = manifest.components.map(component => component.name);
+  const groupedNames = manifest.groups.flatMap(group => group.components);
+  expect(manifest.componentCount).toBe(names.length);
+  expect(new Set(names).size).toBe(names.length);
+  expect(groupedNames.sort()).toEqual([...names].sort());
+  expect(manifest.patterns.length).toBeGreaterThan(0);
   expect(names).toContain('AppButton');
   expect(names).toContain('ApplicationShell');
 });
@@ -28,13 +29,16 @@ test('AppButton detail route exposes controls, states, and runtime API metadata'
   await page.getByLabel('Text').fill('Publish report');
   await expect(page.getByRole('button', { name: 'Publish report' }).first()).toBeVisible();
 
-  const frame = page.locator('.component-detail__preview-frame');
   await page.getByRole('button', { name: '375' }).click();
-  await expect(frame).toHaveClass(/component-detail__preview-frame--mobile/);
+  const host = page.getByTestId('isolated-specimen-frame');
+  await expect(host).toBeVisible();
   await expect.poll(
-    () => frame.evaluate(element => element.getBoundingClientRect().width),
+    () => host.evaluate(element => element.contentWindow?.innerWidth ?? 0),
     { timeout: 2_000 }
-  ).toBeLessThanOrEqual(376);
+  ).toBe(375);
+
+  const isolated = page.frameLocator('[data-testid="isolated-specimen-frame"]');
+  await expect(isolated.getByRole('button', { name: 'Save changes' }).first()).toBeVisible();
 });
 
 test('AppTextBox detail route exposes inherited input API and live controls', async ({ page }) => {

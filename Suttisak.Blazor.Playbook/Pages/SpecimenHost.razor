@@ -1,0 +1,71 @@
+@page "/specimens/{Slug}"
+@inject PlaybookState State
+@inject IThemeService ThemeService
+@inject IJSRuntime JsRuntime
+
+<PageTitle>@(Component?.Name ?? "Unknown component") isolated specimen · UI Playbook</PageTitle>
+
+<main class="playbook specimen-host theme-@ActiveTheme"
+      data-viewport="wide"
+      data-color-mode="@ActiveMode"
+      style="color-scheme: @ColorSchemeValue;"
+      aria-label="@(Component is null ? "Unknown component specimen" : $"{Component.Name} isolated specimen")">
+    @if (Component is null)
+    {
+        <section class="specimen-host__missing">
+            <h1>Specimen not found</h1>
+            <p>The component slug is not registered in the Playbook catalog.</p>
+        </section>
+    }
+    else if (SpecimenType is null)
+    {
+        <section class="specimen-host__missing">
+            <h1>@Component.Name has no executable specimen</h1>
+            <p>Open its Reference or Pattern documentation from the Component Browser.</p>
+        </section>
+    }
+    else
+    {
+        <DynamicComponent Type="@SpecimenType" Parameters="@SpecimenParameters" />
+    }
+</main>
+
+@code {
+    [Parameter] public string? Slug { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "theme")] public string? Theme { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "mode")] public string? Mode { get; set; }
+
+    private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
+    private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
+    private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = "full" };
+
+    private string ActiveTheme => PlaybookCatalog.Themes.Any(theme => theme.Key == Theme) ? Theme! : State.Theme;
+    private string ActiveMode => Mode is "light" or "dark" or "auto" ? Mode : State.Mode;
+    private string ColorSchemeValue => ActiveMode == "auto" ? "light dark" : ActiveMode;
+
+    protected override void OnParametersSet()
+    {
+        State.Theme = ActiveTheme;
+        State.Mode = ActiveMode;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        var theme = PlaybookCatalog.Themes.First(value => value.Key == ActiveTheme);
+        var isDark = ActiveMode == "dark"
+            || ActiveMode == "auto" && await JsRuntime.InvokeAsync<bool>("playbookTheme.prefersDark");
+        ThemeService.ThemeConfiguration = ActiveMode switch
+        {
+            "light" => DesignThemeMode.Light,
+            "dark" => DesignThemeMode.Dark,
+            _ => DesignThemeMode.System
+        };
+        ThemeService.CurrentThemeMode = isDark ? ThemeMode.Dark : ThemeMode.Light;
+        await JsRuntime.InvokeVoidAsync("playbookTheme.setPrimaryColor", theme.PrimaryColor);
+    }
+}

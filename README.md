@@ -31,7 +31,7 @@
 | `Suttisak.Blazor.UserInterface.Tests` | Fast bUnit contract tests |
 | `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage |
 
-The Playbook maintains a metadata-driven catalog of **90 components**. Every component has a stable detail route. **79 components currently have executable workbenches**; the rest are explicitly marked as production-shaped **Pattern** documentation or honest **Reference** coverage rather than being represented by decorative fake demos.
+The Playbook maintains a metadata-driven catalog of **93 public components**, each with a stable detail route. **76 components have interactive mappings across 26 distinct executable workbenches**, and a separate library teaches **8 first-class composition patterns**. Components that cannot be exercised honestly in isolation remain explicit **Pattern** or **Reference** coverage instead of receiving decorative fake demos.
 
 ### Design principles
 
@@ -62,7 +62,9 @@ The Playbook exposes:
 
 - `/components` for the complete coverage-aware Component Browser
 - `/components/{slug}` for deep-linkable component documentation and executable workbenches
-- `/catalog` for compact searchable discovery
+- `/patterns` for searchable, first-class composition patterns
+- `/patterns/{slug}` for ingredients, assembly steps, ownership boundaries, recipes, checks, and live evidence
+- `/catalog` as a compatibility redirect to the compact `/components?view=compact` view
 - `/tokens` and `/foundations` for the manifest-driven design-token explorer
 - `/guidelines` for accessibility, theming, responsive behavior, and maturity rules
 - `/component-manifest.json` for agents and tooling
@@ -136,17 +138,40 @@ Applications retain ownership of product copy, routing decisions, branding, and 
 
 ## Component Playbook
 
-The Component Browser and detail pages are driven by one catalog instead of maintaining a second hand-written navigation list.
+The Playbook has two first-class discovery surfaces driven by typed catalogs: the Component Browser explains reusable contracts, while the Pattern Library teaches how those contracts compose. The current verified inventory is:
+
+| Artifact | Count |
+|---|---:|
+| Catalogued public components | **93** |
+| Components with interactive mappings | **76** |
+| Distinct executable workbenches | **26** |
+| First-class composition patterns | **8** |
+
+These terms are deliberately separate:
+
+| Concept | Meaning |
+|---|---|
+| **Component** | A reusable public Razor contract with a stable `/components/{slug}` detail route, API/source guidance, maturity, and pattern relationships |
+| **Focused Story / Specimen** | An executable state or interaction that demonstrates one component in a controlled context. A registry mapping links a component to a specimen; several mappings may deliberately reuse one broader workbench, so mapping count and distinct-workbench count are reported separately |
+| **Pattern** | A first-class composition recipe under `/patterns/{slug}` that names its component ingredients, assembly steps, library/application ownership boundary, minimal Razor, quality checks, executable route, and regression evidence |
+
+Component coverage remains explicit metadata:
 
 | Coverage | Meaning |
 |---|---|
-| **Interactive** | Executable specimen, responsive widths, runtime API metadata, state controls, and browser accessibility checks |
-| **Pattern** | A full application-shaped example because the component depends on surrounding routing, authentication, layout, or content composition |
-| **Reference** | Searchable and deep-linkable metadata, maturity, API information when available, and related contracts without pretending a placeholder is a real demo |
+| **Interactive** | A registered executable specimen with responsive widths, runtime API metadata, state controls, and browser accessibility checks |
+| **Pattern** | The component needs surrounding routing, authentication, layout, or application content to be exercised truthfully; its detail page points to the relevant production-shaped route and pattern relationships |
+| **Reference** | Searchable metadata, rationale, maturity, API/source guidance, and related contracts without pretending a placeholder is a real demo |
 
-The browser reports the current coverage counts at runtime. Registering a new component begins in `PlaybookComponentCatalog`; adding a live workbench is a separate, deliberate registration in `PlaybookSpecimenRegistry`.
+Registering a new component begins in `PlaybookComponentCatalog`; adding a live story is a separate registration in `PlaybookSpecimenRegistry`; composition recipes belong in `PlaybookPatternCatalog`.
 
-Machine-readable catalog:
+The checked-in machine catalog is derived from those typed sources. Regenerate it from the repository root after changing either catalog:
+
+```bash
+dotnet run --project scripts/PlaybookManifestGenerator/PlaybookManifestGenerator.csproj
+```
+
+The generator writes `Suttisak.Blazor.Playbook/wwwroot/component-manifest.json`. `PlaybookCatalogContractTests` then verifies that exported concrete public components, typed component metadata, pattern metadata, component backlinks, live routes, and the derived manifest remain synchronized. The published machine-readable route is:
 
 ```text
 /component-manifest.json

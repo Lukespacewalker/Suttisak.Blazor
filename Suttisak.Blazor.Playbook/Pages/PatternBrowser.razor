@@ -1,0 +1,184 @@
+@page "/patterns"
+@inject NavigationManager Navigation
+
+<PageTitle>Pattern library · Suttisak.Blazor UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <main class="pattern-browser">
+        <header class="pattern-browser__hero">
+            <div class="pattern-browser__hero-copy">
+                <span class="playbook-kicker">Composition field guide</span>
+                <h1>Patterns are recipes.<br /><em>Not redirects.</em></h1>
+                <p>Start with the problem, inspect the shared ingredients, then follow the ownership boundary into a real executable route. Every entry teaches a composition that an application can adapt without surrendering its product decisions.</p>
+            </div>
+
+            <aside class="pattern-browser__ledger" aria-label="Pattern library summary">
+                <div class="pattern-browser__ledger-mark" aria-hidden="true">P</div>
+                <dl>
+                    <div><dt>Patterns</dt><dd>@PlaybookPatternCatalog.All.Count</dd></div>
+                    <div><dt>Domains</dt><dd>@PlaybookPatternCatalog.Categories.Count</dd></div>
+                    <div><dt>Ingredients</dt><dd>@UniqueIngredientCount</dd></div>
+                </dl>
+                <p>Typed recipes backed by live routes and regression evidence.</p>
+            </aside>
+        </header>
+
+        <section class="pattern-browser__controls" aria-label="Filter pattern library">
+            <label class="pattern-browser__search">
+                <span>Find a composition</span>
+                <span class="pattern-browser__search-field">
+                    <span aria-hidden="true">⌕</span>
+                    <input type="search"
+                           name="pattern-search"
+                           autocomplete="off"
+                           placeholder="Shell, validation, routing…"
+                           aria-label="Find a pattern"
+                           value="@Search"
+                           @oninput="HandleSearchInput" />
+                </span>
+            </label>
+
+            <fieldset class="pattern-browser__filters">
+                <legend>Domain</legend>
+                <button type="button"
+                        class="@FilterClass(null)"
+                        aria-pressed="@Pressed(Category is null)"
+                        @onclick="() => SetCategory(null)">All</button>
+                @foreach (var category in PlaybookPatternCatalog.Categories)
+                {
+                    <button type="button"
+                            class="@FilterClass(category)"
+                            aria-pressed="@Pressed(CategoryEquals(category))"
+                            @onclick="() => SetCategory(category)">@category</button>
+                }
+            </fieldset>
+        </section>
+
+        <div class="pattern-browser__results-heading">
+            <p aria-live="polite" aria-atomic="true">
+                <strong>@FilteredPatterns.Count</strong>
+                <span>@(FilteredPatterns.Count == 1 ? "composition" : "compositions") ready to inspect</span>
+            </p>
+            <span>Problem → ingredients → recipe → evidence</span>
+        </div>
+
+        @if (FilteredPatterns.Count > 0)
+        {
+            <section class="pattern-browser__grid" aria-label="Pattern results">
+                @for (var index = 0; index < FilteredPatterns.Count; index++)
+                {
+                    var pattern = FilteredPatterns[index];
+                    <article class="pattern-browser__card" data-pattern-slug="@pattern.Slug">
+                        <header>
+                            <span class="pattern-browser__index">@((index + 1).ToString("00"))</span>
+                            <div>
+                                <span>@pattern.Category</span>
+                                <span class="pattern-browser__maturity pattern-browser__maturity--@pattern.Maturity.ToString().ToLowerInvariant()">@pattern.Maturity</span>
+                            </div>
+                        </header>
+
+                        <div class="pattern-browser__card-copy">
+                            <h2><a href="@pattern.DetailHref">@pattern.Name</a></h2>
+                            <p>@pattern.Summary</p>
+                        </div>
+
+                        <div class="pattern-browser__ingredients" aria-label="Key ingredients">
+                            @foreach (var ingredient in pattern.Ingredients.Take(4))
+                            {
+                                <span>@ingredient.ComponentName</span>
+                            }
+                            @if (pattern.Ingredients.Count > 4)
+                            {
+                                <span>+@(pattern.Ingredients.Count - 4)</span>
+                            }
+                        </div>
+
+                        <footer>
+                            <span>@pattern.CompositionSteps.Count steps · @pattern.Evidence.Count evidence sources</span>
+                            <a href="@pattern.DetailHref" aria-label="Inspect @pattern.Name">Inspect recipe <span aria-hidden="true">↗</span></a>
+                        </footer>
+                    </article>
+                }
+            </section>
+        }
+        else
+        {
+            <section class="pattern-browser__empty" aria-live="polite">
+                <span aria-hidden="true">∅</span>
+                <strong>No composition matches this view.</strong>
+                <p>Try a component name, task, or another domain.</p>
+                <button type="button" @onclick="ClearFilters">Clear filters</button>
+            </section>
+        }
+    </main>
+</PlaybookShell>
+
+@code {
+    [Parameter, SupplyParameterFromQuery(Name = "q")] public string? Search { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "category")] public string? Category { get; set; }
+
+    private static int UniqueIngredientCount => PlaybookPatternCatalog.All
+        .SelectMany(pattern => pattern.Ingredients)
+        .Select(ingredient => ingredient.ComponentId)
+        .Distinct(StringComparer.Ordinal)
+        .Count();
+
+    private IReadOnlyList<PlaybookPatternDefinition> FilteredPatterns =>
+        PlaybookPatternCatalog.All
+            .Where(pattern => Category is null || pattern.Category.Equals(Category, StringComparison.Ordinal))
+            .Where(MatchesSearch)
+            .ToArray();
+
+    private bool MatchesSearch(PlaybookPatternDefinition pattern)
+    {
+        if (string.IsNullOrWhiteSpace(Search))
+        {
+            return true;
+        }
+
+        var query = Search.Trim();
+        return pattern.Name.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || pattern.Category.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || pattern.Summary.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || pattern.Intent.Contains(query, StringComparison.OrdinalIgnoreCase)
+            || pattern.Tags.Any(tag => tag.Contains(query, StringComparison.OrdinalIgnoreCase))
+            || pattern.Ingredients.Any(ingredient => ingredient.ComponentName.Contains(query, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private bool CategoryEquals(string category) =>
+        string.Equals(Category, category, StringComparison.Ordinal);
+
+    private string FilterClass(string? category) =>
+        string.Equals(Category, category, StringComparison.Ordinal) ? "is-active" : string.Empty;
+
+    private static string Pressed(bool value) => value ? "true" : "false";
+
+    private void HandleSearchInput(ChangeEventArgs args)
+    {
+        Search = args.Value?.ToString();
+        SyncUrl();
+    }
+
+    private void SetCategory(string? category)
+    {
+        Category = category;
+        SyncUrl();
+    }
+
+    private void SyncUrl()
+    {
+        var uri = Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
+        {
+            ["q"] = string.IsNullOrWhiteSpace(Search) ? null : Search.Trim(),
+            ["category"] = string.IsNullOrWhiteSpace(Category) ? null : Category
+        });
+        Navigation.NavigateTo(uri, replace: true);
+    }
+
+    private void ClearFilters()
+    {
+        Search = null;
+        Category = null;
+        SyncUrl();
+    }
+}

@@ -1,4 +1,7 @@
 @page "/components/{Slug}"
+@inject NavigationManager Navigation
+@inject PlaybookState State
+@inject IJSRuntime JsRuntime
 
 <PageTitle>@(Component is null ? "Component not found" : $"{Component.Name} · UI Playbook")</PageTitle>
 
@@ -51,7 +54,7 @@
                             <span>@Component.SourceArea</span>
                             @if (CoverageKind == PlaybookComponentCoverageKind.Interactive)
                             {
-                                <span>Executable workbench</span>
+                                <span>@SpecimenCoverageLabel</span>
                             }
                             else if (CoverageDocumentation?.IntegrationRoute is not null)
                             {
@@ -70,18 +73,31 @@
                     <p>@PlaybookComponentCoverage.DescriptionFor(Component)</p>
                     @if (HasInteractiveSpecimen)
                     {
-                        <div class="component-detail__viewport" aria-label="Preview width">
-                            <button class="@ViewportClass("mobile")" @onclick='() => _viewport = "mobile"'>375</button>
-                            <button class="@ViewportClass("tablet")" @onclick='() => _viewport = "tablet"'>768</button>
-                            <button class="@ViewportClass("desktop")" @onclick='() => _viewport = "desktop"'>1280</button>
-                            <button class="@ViewportClass("full")" @onclick='() => _viewport = "full"'>Full</button>
+                        <div class="component-detail__viewport" role="group" aria-label="Preview viewport">
+                            <button type="button" class="@ViewportClass("mobile")" aria-pressed="@Pressed(ActiveViewport == "mobile")" @onclick='() => SetViewport("mobile")'>375</button>
+                            <button type="button" class="@ViewportClass("tablet")" aria-pressed="@Pressed(ActiveViewport == "tablet")" @onclick='() => SetViewport("tablet")'>768</button>
+                            <button type="button" class="@ViewportClass("desktop")" aria-pressed="@Pressed(ActiveViewport == "desktop")" @onclick='() => SetViewport("desktop")'>1280</button>
+                            <button type="button" class="@ViewportClass("full")" aria-pressed="@Pressed(ActiveViewport == "full")" @onclick='() => SetViewport("full")'>Full</button>
                         </div>
                     }
                 </header>
 
                 @if (SpecimenType is not null)
                 {
-                    <DynamicComponent Type="@SpecimenType" Parameters="@SpecimenParameters" />
+                    @if (ActiveViewport == "full")
+                    {
+                        <DynamicComponent Type="@SpecimenType" Parameters="@SpecimenParameters" />
+                    }
+                    else
+                    {
+                        <div class="component-detail__isolated-stage" data-testid="isolated-specimen-stage">
+                            <iframe class="component-detail__isolated-frame component-detail__isolated-frame--@ActiveViewport"
+                                    src="@IsolatedSpecimenHref"
+                                    title="@($"{Component.Name} at {ViewportLabel}")"
+                                    loading="eager"
+                                    data-testid="isolated-specimen-frame"></iframe>
+                        </div>
+                    }
                 }
                 else
                 {
@@ -126,13 +142,31 @@
                 }
                     </section>
 
+                    <section class="component-detail__section" aria-labelledby="usage-title">
+                <header><div><span>03 / Use</span><h2 id="usage-title">@(HasCuratedUsage ? "Focused usage" : "Usage skeleton")</h2></div><p>@UsageGuidance</p></header>
+                <div class="component-detail__usage">
+                    <pre tabindex="0" aria-label="@($"{Component.Name} Razor usage")"><code>@UsageExample</code></pre>
+                    <div>
+                        @if (HasCuratedUsage)
+                        {
+                            <button type="button" @onclick="CopyUsageAsync">Copy Razor</button>
+                        }
+                        else
+                        {
+                            <a href="patterns">Find a complete composition recipe →</a>
+                        }
+                        <span role="status" aria-live="polite">@_copyStatus</span>
+                    </div>
+                </div>
+                    </section>
+
                     <section class="component-detail__section" aria-labelledby="api-title">
-                <header><div><span>02 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where one is registered, so public API changes remain visible without maintaining a second handwritten table.</p></header>
+                <header><div><span>04 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where one is registered, so public API changes remain visible without maintaining a second handwritten table.</p></header>
                 <ComponentParameterTable ComponentType="@ResolvedRuntimeType" />
                     </section>
 
                     <section class="component-detail__section" aria-labelledby="accessibility-title">
-                <header><div><span>03 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div><p>Coverage is not complete merely because a component renders. Semantics, focus, keyboard behavior, responsive containment, and reduced motion remain part of the public contract.</p></header>
+                <header><div><span>05 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div><p>Coverage is not complete merely because a component renders. Semantics, focus, keyboard behavior, responsive containment, and reduced motion remain part of the public contract.</p></header>
                 <div class="component-detail__quality-grid">
                     <article><strong>Keyboard</strong><p>Interactive controls must remain reachable and usable without a pointing device.</p></article>
                     <article><strong>Focus</strong><p>Focus visibility is tokenized and must survive every product theme.</p></article>
@@ -141,8 +175,26 @@
                 </div>
                     </section>
 
+                    @if (ComponentPatterns.Count > 0)
+                    {
+                        <section class="component-detail__section" aria-labelledby="patterns-title">
+                            <header><div><span>06 / Patterns</span><h2 id="patterns-title">Used in patterns</h2></div><p>Open a complete recipe to see this component’s responsibility, neighboring ingredients, and application-owned boundary.</p></header>
+                            <div class="component-detail__patterns">
+                                @foreach (var pattern in ComponentPatterns)
+                                {
+                                    <a href="@pattern.DetailHref">
+                                        <span>@pattern.Category</span>
+                                        <strong>@pattern.Name</strong>
+                                        <p>@pattern.Summary</p>
+                                        <small>Open composition recipe →</small>
+                                    </a>
+                                }
+                            </div>
+                        </section>
+                    }
+
                     <section class="component-detail__section" aria-labelledby="related-title">
-                <header><div><span>04 / Compose</span><h2 id="related-title">Related components</h2></div><p>Nearby contracts from the same category help agents and developers reuse the system instead of inventing parallel UI.</p></header>
+                <header><div><span>07 / Neighbors</span><h2 id="related-title">Related components</h2></div><p>These contracts share an actual composition pattern with @Component.Name; category neighbors are used only when no pattern relationship exists yet.</p></header>
                 <div class="component-detail__related">
                     @foreach (var related in RelatedComponents)
                     {
@@ -156,7 +208,9 @@
                     </section>
 
                     <footer class="component-detail__footer">
-                <span>Machine-readable ID</span><code>@Component.Slug</code><span>Tags</span><p>@string.Join(" · ", Component.Tags)</p>
+                <span>Machine-readable ID</span><code>@Component.Slug</code>
+                <span>Tags</span><p>@string.Join(" · ", Component.Tags)</p>
+                <span>Source</span><p><a href="@SourceSearchHref" target="_blank" rel="noreferrer">Search repository source for @Component.Name ↗</a></p>
                     </footer>
                 </div>
             </div>
@@ -167,15 +221,44 @@
 @code {
     [Parameter] public string? Slug { get; set; }
 
-    private string _viewport = "desktop";
+    [Parameter, SupplyParameterFromQuery(Name = "viewport")] public string? Viewport { get; set; }
+    private string _copyStatus = string.Empty;
 
     private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
     private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
     private Type? ResolvedRuntimeType => Component is null ? null : PlaybookSpecimenRegistry.RuntimeTypeFor(Component);
     private bool HasInteractiveSpecimen => SpecimenType is not null;
+    private int MappedComponentCount => SpecimenType is null
+        ? 0
+        : PlaybookSpecimenRegistry.All.Values.Count(registration => registration.SpecimenType == SpecimenType);
+    private string SpecimenCoverageLabel => MappedComponentCount <= 1
+        ? "Focused component story"
+        : $"Shared composition workbench · {MappedComponentCount} mapped components";
     private PlaybookComponentCoverageKind CoverageKind => Component is null ? PlaybookComponentCoverageKind.Reference : PlaybookComponentCoverage.KindFor(Component);
     private PlaybookCoverageDocumentation? CoverageDocumentation => Component is null ? null : PlaybookComponentCoverage.DocumentationFor(Component);
-    private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = _viewport };
+    private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = "full" };
+
+    private string ActiveViewport => Viewport is "mobile" or "tablet" or "desktop" ? Viewport : "full";
+    private string ViewportLabel => ActiveViewport switch
+    {
+        "mobile" => "375 pixel viewport",
+        "tablet" => "768 pixel viewport",
+        "desktop" => "1280 pixel viewport",
+        _ => "the full browser width"
+    };
+
+    private string IsolatedSpecimenHref => Component is null
+        ? string.Empty
+        : $"specimens/{Component.Slug}?theme={Uri.EscapeDataString(State.Theme)}&mode={Uri.EscapeDataString(State.Mode)}";
+
+    private string UsageExample => Component is null ? string.Empty : PlaybookUsageExamples.For(Component);
+    private bool HasCuratedUsage => Component is not null && PlaybookUsageExamples.HasCuratedExample(Component);
+    private string UsageGuidance => HasCuratedUsage
+        ? "Start from this minimal Razor composition, then open a complete Pattern when the component depends on surrounding application structure."
+        : "This honest skeleton is not a complete recipe. Supply required parameters from the API table or open a Pattern that uses the component in context.";
+    private string SourceSearchHref => Component is null
+        ? string.Empty
+        : $"https://github.com/Lukespacewalker/Suttisak.Blazor/search?q={Uri.EscapeDataString(Component.Name)}&type=code";
 
     private string PreviewTitle => CoverageKind switch
     {
@@ -184,9 +267,37 @@
         _ => "Reference contract"
     };
 
-    private IEnumerable<PlaybookComponentDefinition> RelatedComponents => Component is null
+    private IReadOnlyList<PlaybookPatternDefinition> ComponentPatterns => Component is null
         ? []
-        : PlaybookComponentCatalog.All.Where(candidate => candidate.Category == Component.Category && candidate.Slug != Component.Slug).Take(6);
+        : PlaybookPatternCatalog.PatternsForComponent(Component.Name);
+
+    private IEnumerable<PlaybookComponentDefinition> RelatedComponents
+    {
+        get
+        {
+            if (Component is null)
+            {
+                return [];
+            }
+
+            var composed = ComponentPatterns
+                .SelectMany(pattern => pattern.Ingredients)
+                .Where(ingredient => !ingredient.ComponentName.Equals(Component.Name, StringComparison.OrdinalIgnoreCase))
+                .Select(ingredient => PlaybookComponentCatalog.All.FirstOrDefault(candidate =>
+                    candidate.Name.Equals(ingredient.ComponentName, StringComparison.OrdinalIgnoreCase)))
+                .Where(candidate => candidate is not null)
+                .Cast<PlaybookComponentDefinition>()
+                .DistinctBy(candidate => candidate.Name)
+                .Take(6)
+                .ToArray();
+
+            return composed.Length > 0
+                ? composed
+                : PlaybookComponentCatalog.All
+                    .Where(candidate => candidate.Category == Component.Category && candidate.Slug != Component.Slug)
+                    .Take(6);
+        }
+    }
 
     private IEnumerable<PlaybookComponentDefinition> DocumentationRelatedComponents => CoverageDocumentation is null
         ? []
@@ -201,5 +312,25 @@
     private string ComponentLinkClass(PlaybookComponentDefinition candidate) =>
         candidate.Slug == Component?.Slug ? "is-current" : string.Empty;
 
-    private string ViewportClass(string candidate) => candidate == _viewport ? "is-active" : string.Empty;
+    private void SetViewport(string viewport)
+    {
+        Viewport = viewport == "full" ? null : viewport;
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("viewport", Viewport), replace: true);
+    }
+
+    private async Task CopyUsageAsync()
+    {
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", UsageExample);
+            _copyStatus = "Copied.";
+        }
+        catch (JSException)
+        {
+            _copyStatus = "Copy failed; select the code manually.";
+        }
+    }
+
+    private string ViewportClass(string candidate) => candidate == ActiveViewport ? "is-active" : string.Empty;
+    private static string Pressed(bool value) => value ? "true" : "false";
 }

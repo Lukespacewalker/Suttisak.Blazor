@@ -30,8 +30,8 @@
                             <AppButton OnClick="@(_ => SetStatus("Assessment printed."))">Print</AppButton>
                         </SupportingActions>
                         <OverflowActions>
-                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetStatus("Assessment archived."))">Archive</AppButton>
-                            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => SetStatus("Delete requested."))">Delete</AppButton>
+                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetStatus("Archive request opened; no data changed in this specimen."))">Request archive</AppButton>
+                            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => SetStatus("Delete confirmation required; no data changed in this specimen."))">Request delete</AppButton>
                         </OverflowActions>
                     </PageActionToolbar>
                 </PageActions>
@@ -53,6 +53,11 @@
                     </SectionNavigation>
                 </Navigation>
             </PageHeading>
+
+            <div id="@($"page-composition-{_activeSection}")" class="page-composition-specimen__active-panel" tabindex="-1">
+                <strong>@CurrentTitle</strong>
+                <span>Active section target</span>
+            </div>
 
             <p class="page-composition-specimen__status" role="status">@_status</p>
         </div>

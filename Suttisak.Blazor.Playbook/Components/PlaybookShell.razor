@@ -5,6 +5,8 @@
 @implements IDisposable
 
 <div class="playbook theme-@State.Theme" data-viewport="@State.Viewport" data-color-mode="@State.Mode" style="color-scheme: @ColorSchemeValue;">
+    <a class="playbook-skip-link" href="#playbook-main-content" @onclick="FocusMainContentAsync" @onclick:preventDefault>Skip to main content</a>
+
     <header class="playbook-bar">
         <NavLink class="playbook-brand" href="" Match="NavLinkMatch.All" aria-label="UI Playbook component gallery">
             <span>SB</span>
@@ -17,28 +19,23 @@
             <details class="playbook-nav-group">
                 <summary class="@(IsComponentsActive ? "active" : null)">Components <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
-                    <a class="playbook-nav-group__lead" href="catalog"><strong>Documentation catalog</strong><span>Searchable metadata and deep component routes</span></a>
-                    <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Live previews and integration specimens</span></a>
-                    <span class="playbook-nav-group__label">Browse live categories</span>
-                    <a href="components#forms">Forms &amp; inputs</a>
-                    <a href="components#actions">Actions</a>
-                    <a href="components#overlays">Overlays</a>
-                    <a href="components#navigation">Navigation</a>
-                    <a href="components#feedback">Feedback</a>
-                    <span class="playbook-nav-group__label">Deep-link example</span>
-                    <NavLink href="components/app-button">AppButton documentation</NavLink>
+                    <a class="playbook-nav-group__lead" href="components"><strong>Component Browser</strong><span>Searchable contracts, focused stories, API, and pattern backlinks</span></a>
+                    <span class="playbook-nav-group__label">Browse categories</span>
+                    @foreach (var group in PlaybookComponentCatalog.Groups)
+                    {
+                        <a href="@($"components#components-{PlaybookSlug.FromText(group.Key)}")">@group.Key</a>
+                    }
                 </div>
             </details>
             <details class="playbook-nav-group">
                 <summary class="@(IsPatternsActive ? "active" : null)">Patterns <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
-                    <span class="playbook-nav-group__label">Focused patterns</span>
-                    <NavLink href="form-controls">Form controls</NavLink>
-                    <NavLink href="grid-performance">Virtual grid</NavLink>
-                    <span class="playbook-nav-group__label">Templates</span>
-                    <NavLink href="landing">Landing page</NavLink>
-                    <NavLink href="access/login">Access flows</NavLink>
-                    <NavLink href="application-shell">Application shell</NavLink>
+                    <a class="playbook-nav-group__lead" href="patterns"><strong>Pattern Browser</strong><span>Problems, ingredients, recipes, ownership, and executable routes</span></a>
+                    <span class="playbook-nav-group__label">Composition recipes</span>
+                    @foreach (var pattern in PlaybookPatternCatalog.All)
+                    {
+                        <NavLink href="@pattern.DetailHref">@pattern.Name</NavLink>
+                    }
                 </div>
             </details>
             <NavLink href="guidelines">Guidelines</NavLink>
@@ -47,22 +44,27 @@
         <div class="playbook-control">
             <label for="theme-select">Application</label>
             <AppSelect TValue="string" Id="theme-select" Options="@ThemeOptions"
-                       @bind-Value="State.Theme" @bind-Value:after="ApplyThemeAsync" />
+                       @bind-Value="State.Theme" @bind-Value:after="ChangeThemeAsync" />
         </div>
 
-        <div class="playbook-segment playbook-segment--theme" aria-label="Color scheme">
-            <button class="@Active(State.Mode, "light")" aria-label="Use light theme" title="Light" @onclick='() => ChangeModeAsync("light")'><span aria-hidden="true">☼</span></button>
-            <button class="@Active(State.Mode, "dark")" aria-label="Use dark theme" title="Dark" @onclick='() => ChangeModeAsync("dark")'><span aria-hidden="true">◐</span></button>
-            <button class="@Active(State.Mode, "auto")" aria-label="Use system theme" title="Auto" @onclick='() => ChangeModeAsync("auto")'><span aria-hidden="true">A</span></button>
+        <div class="playbook-segment playbook-segment--theme" role="group" aria-label="Color scheme">
+            <button type="button" class="@Active(State.Mode, "light")" aria-label="Use light theme" aria-pressed="@Pressed(State.Mode, "light")" title="Light" @onclick='() => ChangeModeAsync("light")'><span aria-hidden="true">☼</span></button>
+            <button type="button" class="@Active(State.Mode, "dark")" aria-label="Use dark theme" aria-pressed="@Pressed(State.Mode, "dark")" title="Dark" @onclick='() => ChangeModeAsync("dark")'><span aria-hidden="true">◐</span></button>
+            <button type="button" class="@Active(State.Mode, "auto")" aria-label="Use system theme" aria-pressed="@Pressed(State.Mode, "auto")" title="Auto" @onclick='() => ChangeModeAsync("auto")'><span aria-hidden="true">A</span></button>
         </div>
 
-        <div class="playbook-segment playbook-segment--viewport" aria-label="Preview width">
-            <button class="@Active(State.Viewport, "wide")" @onclick='() => State.Viewport = "wide"'>Wide</button>
-            <button class="@Active(State.Viewport, "narrow")" @onclick='() => State.Viewport = "narrow"'>Narrow</button>
-        </div>
+        @if (SupportsGlobalViewport)
+        {
+            <div class="playbook-segment playbook-segment--viewport" role="group" aria-label="Global preview width">
+                <button type="button" class="@Active(State.Viewport, "wide")" aria-pressed="@Pressed(State.Viewport, "wide")" @onclick='() => ChangeViewport("wide")'>Wide</button>
+                <button type="button" class="@Active(State.Viewport, "narrow")" aria-pressed="@Pressed(State.Viewport, "narrow")" @onclick='() => ChangeViewport("narrow")'>Narrow</button>
+            </div>
+        }
     </header>
 
-    @ChildContent
+    <div id="playbook-main-content" class="playbook-main-content" tabindex="-1">
+        @ChildContent
+    </div>
 </div>
 
 @code {
@@ -70,18 +72,30 @@
 
     private static string Active(string value, string candidate) =>
         value == candidate ? "is-active" : string.Empty;
+    private static string Pressed(string value, string candidate) =>
+        value == candidate ? "true" : "false";
     private string CurrentPath => Navigation.ToBaseRelativePath(Navigation.Uri).Split('?', '#')[0].Trim('/');
     private bool IsComponentsActive => CurrentPath is "components" or "component-browser" or "catalog"
         || CurrentPath.StartsWith("components/", StringComparison.Ordinal);
-    private bool IsPatternsActive => CurrentPath is "form-controls" or "grid-performance" or "landing" or "application-shell"
-        || CurrentPath.StartsWith("access/", StringComparison.Ordinal)
-        || CurrentPath.StartsWith("application-shell/", StringComparison.Ordinal);
+    private bool IsPatternsActive => CurrentPath.Equals("patterns", StringComparison.Ordinal)
+        || CurrentPath.StartsWith("patterns/", StringComparison.Ordinal)
+        || PlaybookPatternCatalog.All.Any(pattern =>
+        {
+            var livePath = pattern.LiveHref.Trim('/');
+            return CurrentPath.Equals(livePath, StringComparison.Ordinal)
+                || CurrentPath.StartsWith($"{livePath}/", StringComparison.Ordinal);
+        });
+    private bool SupportsGlobalViewport => CurrentPath.Equals("landing", StringComparison.Ordinal)
+        || CurrentPath.Equals("application-shell", StringComparison.Ordinal)
+        || CurrentPath.StartsWith("application-shell/", StringComparison.Ordinal)
+        || CurrentPath.StartsWith("access/", StringComparison.Ordinal);
     private string ColorSchemeValue => State.Mode == "auto" ? "light dark" : State.Mode;
     private static AppSelectOption<string>[] ThemeOptions =>
         PlaybookCatalog.Themes.Select(theme => new AppSelectOption<string>(theme.Key, theme.Name)).ToArray();
 
     protected override void OnInitialized()
     {
+        HydrateShellState();
         State.Changed += HandleStateChanged;
     }
 
@@ -95,8 +109,23 @@
 
     private async Task ChangeModeAsync(string mode)
     {
-        State.Mode = mode;
+        if (!State.TrySetMode(mode)) return;
+
         await ApplyThemeAsync();
+        ReplaceQueryParameter("mode", State.Mode);
+    }
+
+    private async Task ChangeThemeAsync()
+    {
+        await ApplyThemeAsync();
+        ReplaceQueryParameter("theme", State.Theme);
+    }
+
+    private void ChangeViewport(string viewport)
+    {
+        if (!State.TrySetViewport(viewport)) return;
+
+        ReplaceQueryParameter("globalViewport", State.Viewport);
     }
 
     private async Task ApplyThemeAsync()
@@ -113,6 +142,41 @@
         };
         ThemeService.CurrentThemeMode = isDark ? ThemeMode.Dark : ThemeMode.Light;
     }
+
+    private void HydrateShellState()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        State.TrySetTheme(QueryValue(uri, "theme"));
+        State.TrySetMode(QueryValue(uri, "mode"));
+        State.TrySetViewport(QueryValue(uri, "globalViewport"));
+    }
+
+    private static string? QueryValue(Uri uri, string name)
+    {
+        foreach (var pair in uri.Query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var separator = pair.IndexOf('=');
+            var key = separator < 0 ? pair : pair[..separator];
+            if (!string.Equals(System.Net.WebUtility.UrlDecode(key), name, StringComparison.Ordinal)) continue;
+
+            var value = separator < 0 ? string.Empty : pair[(separator + 1)..];
+            return System.Net.WebUtility.UrlDecode(value);
+        }
+
+        return null;
+    }
+
+    private void ReplaceQueryParameter(string name, string value)
+    {
+        var uri = Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
+        {
+            [name] = value
+        });
+        Navigation.NavigateTo(uri, replace: true);
+    }
+
+    private Task FocusMainContentAsync() =>
+        JsRuntime.InvokeVoidAsync("playbookFocus.focusById", "playbook-main-content").AsTask();
 
     private void HandleStateChanged() => _ = InvokeAsync(StateHasChanged);
 

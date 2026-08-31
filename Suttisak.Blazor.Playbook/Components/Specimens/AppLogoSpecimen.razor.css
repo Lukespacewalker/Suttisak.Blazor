@@ -1,0 +1,41 @@
+.app-logo-specimen {
+    min-height: 16rem;
+    display: grid;
+    place-items: center;
+}
+
+.app-logo-specimen__wordmark,
+.app-logo-specimen__compact-wordmark {
+    display: inline-grid;
+    place-items: center;
+    color: var(--color-text-on-brand, #fff);
+    background: var(--color-surface-inverse, #18243a);
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    box-shadow: var(--shadow-lg);
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.app-logo-specimen__wordmark {
+    width: 7rem;
+    aspect-ratio: 1;
+    border-radius: 2rem;
+    font-size: 1.4rem;
+}
+
+.app-logo-specimen__compact-wordmark {
+    width: 3.5rem;
+    aspect-ratio: 1;
+    border-radius: 1rem;
+}
+
+::deep .app-logo-specimen__fallback {
+    display: block;
+    width: 5rem;
+    height: 5rem;
+}
+
+::deep .app-logo-specimen__fallback--compact {
+    width: 3.5rem;
+    height: 3.5rem;
+}

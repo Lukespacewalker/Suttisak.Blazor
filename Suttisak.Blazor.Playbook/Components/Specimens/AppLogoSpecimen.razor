@@ -1,0 +1,55 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppLogo controls">
+    <Preview>
+        <div class="app-logo-specimen" data-testid="app-logo-specimen">
+            @if (_useApplicationMarkup)
+            {
+                <AppLogo>
+                    <span class="app-logo-specimen__wordmark" role="img" aria-label="@_alt">
+                        <span aria-hidden="true">S/B</span>
+                    </span>
+                </AppLogo>
+            }
+            else
+            {
+                <AppLogo AssetPath="@FallbackAsset"
+                         Alt="@_alt"
+                         Class="app-logo-specimen__fallback"
+                         width="80"
+                         height="80" />
+            }
+        </div>
+    </Preview>
+    <Controls>
+        <label>Accessible name<input @bind="_alt" @bind:event="oninput" /></label>
+        <label class="component-detail__check"><input type="checkbox" @bind="_useApplicationMarkup" /> Application-owned markup</label>
+    </Controls>
+    <States>
+        <article>
+            <span>Preferred</span>
+            <AppLogo>
+                <span class="app-logo-specimen__compact-wordmark" role="img" aria-label="Suttisak Blazor">
+                    <span aria-hidden="true">S/B</span>
+                </span>
+            </AppLogo>
+            <small>A RenderFragment lets the application resolve fingerprinted assets or provide a semantic wordmark.</small>
+        </article>
+        <article>
+            <span>Legacy fallback</span>
+            <AppLogo AssetPath="@FallbackAsset"
+                     Alt="Sample application"
+                     Class="app-logo-specimen__fallback app-logo-specimen__fallback--compact"
+                     width="56"
+                     height="56" />
+            <small>AssetPath remains available for absolute URLs and application static-asset paths.</small>
+        </article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    private const string FallbackAsset = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTgiIGZpbGw9IiMxODI0M2EiLz48cGF0aCBkPSJNMjEgMjRoMzh2OUgzNHYxMGgyMXY5SDM0djEzSDIxeiIgZmlsbD0iI2Y0Yjg2MCIvPjwvc3ZnPg==";
+
+    [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    private string _alt = "Suttisak Blazor";
+    private bool _useApplicationMarkup = true;
+}

@@ -4,9 +4,10 @@ test('Component Browser links resolve to stable component detail routes', async 
   await page.goto('/component-browser');
 
   const sidebar = page.locator('.component-browser__sidebar');
-  await sidebar.getByText('Actions & surfaces', { exact: true }).click();
+  const categoryLink = sidebar.getByRole('link', { name: /Actions & surfaces/ });
+  await categoryLink.click();
 
-  const appButtonLink = sidebar.getByRole('link', { name: /AppButton/ });
+  const appButtonLink = page.locator('[data-component-name="AppButton"]');
   await expect(appButtonLink).toBeVisible();
   await expect(appButtonLink).toHaveAttribute('href', 'components/app-button');
   await appButtonLink.click();

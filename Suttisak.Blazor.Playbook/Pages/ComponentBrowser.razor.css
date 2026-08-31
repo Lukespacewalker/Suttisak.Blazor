@@ -189,63 +189,28 @@
     font: 700 .58rem var(--app-font-mono);
 }
 
-.component-browser__sidebar nav {
+.component-browser__category-links {
     display: grid;
     gap: .35rem;
     padding-top: 1rem;
     border-top: 1px solid var(--app-border);
 }
 
-.component-browser__sidebar summary {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: .5rem;
-    padding: .48rem .55rem;
-    border-radius: var(--app-radius-sm);
-    list-style: none;
-    cursor: pointer;
-}
-
-.component-browser__sidebar summary::-webkit-details-marker {
-    display: none;
-}
-
-.component-browser__sidebar summary:hover {
-    background: var(--app-surface-muted);
-}
-
-.component-browser__sidebar summary span {
+.component-browser__category-links > span {
+    padding: 0 .55rem .25rem;
     color: var(--app-accent);
     font-size: .6rem;
     font-weight: 850;
-    letter-spacing: .08em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 }
 
-.component-browser__sidebar summary > small {
-    display: grid;
-    min-width: 1.35rem;
-    height: 1.35rem;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--app-surface-muted);
-    color: var(--app-foreground-muted);
-    font: 700 .56rem var(--app-font-mono);
-}
-
-.component-browser__sidebar details > div {
-    display: grid;
-    gap: .15rem;
-    padding: .15rem 0 .55rem .35rem;
-}
-
-.component-browser__sidebar details a {
+.component-browser__category-links a {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: .5rem;
     align-items: center;
-    padding: .42rem .55rem;
+    padding: .5rem .55rem;
     border-left: 2px solid transparent;
     border-radius: 0 var(--app-radius-sm) var(--app-radius-sm) 0;
     color: var(--app-foreground-muted);
@@ -254,24 +219,15 @@
     text-decoration: none;
 }
 
-.component-browser__sidebar details a:hover,
-.component-browser__sidebar details a:focus-visible {
+.component-browser__category-links a:hover,
+.component-browser__category-links a:focus-visible {
     border-left-color: var(--app-accent);
     background: var(--app-accent-soft);
     color: var(--app-foreground);
     outline: none;
 }
 
-.component-browser__mini-coverage {
-    font-size: .48rem;
-    font-weight: 850;
-    letter-spacing: .03em;
-    text-transform: uppercase;
-}
-
-.component-browser__mini-coverage--interactive { color: var(--app-success); }
-.component-browser__mini-coverage--pattern { color: var(--app-accent); }
-.component-browser__mini-coverage--reference { color: var(--app-foreground-muted); }
+.component-browser__category-links small { font: 750 .6rem var(--app-font-mono); }
 
 .component-browser__content {
     min-width: 0;
@@ -303,6 +259,25 @@
 .component-browser__results-header strong {
     font: 750 clamp(1.35rem, 3vw, 2rem) var(--app-font-heading);
 }
+
+.component-browser__results-actions {
+    display: flex !important;
+    align-items: center;
+    gap: .6rem !important;
+}
+
+.component-browser__view-switcher {
+    display: inline-flex !important;
+    grid-template-columns: none !important;
+    gap: .2rem !important;
+    padding: .2rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-sm);
+    background: var(--app-surface-muted);
+}
+
+.component-browser__view-switcher button { border-color: transparent; background: transparent; }
+.component-browser__view-switcher button.is-active { border-color: var(--app-accent-border); background: var(--app-surface); color: var(--app-accent); }
 
 .component-browser__results-header button,
 .component-browser__empty button {
@@ -361,6 +336,23 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: .75rem;
 }
+
+.component-browser__grid--compact { grid-template-columns: 1fr; gap: .4rem; }
+
+.component-browser__grid--compact .component-browser__card {
+    grid-template-columns: 10rem minmax(11rem, .65fr) minmax(16rem, 1fr) minmax(9rem, auto);
+    min-height: 0;
+    align-items: center;
+    gap: .75rem 1rem;
+    padding: .72rem .8rem;
+    border-radius: var(--app-radius-sm);
+}
+
+.component-browser__grid--compact .component-browser__card-meta { grid-column: 1; grid-row: 1; }
+.component-browser__grid--compact .component-browser__card h3 { grid-column: 2; grid-row: 1; margin: 0; }
+.component-browser__grid--compact .component-browser__card p { grid-column: 3; grid-row: 1; }
+.component-browser__grid--compact .component-browser__card > small { display: none; }
+.component-browser__grid--compact .component-browser__card footer { grid-column: 4; grid-row: 1; margin: 0; padding: 0; }
 
 .component-browser__card {
     display: grid;
@@ -461,6 +453,7 @@
 
 @media (max-width: 76rem) {
     .component-browser__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .component-browser__grid--compact { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 64rem) {
@@ -468,7 +461,13 @@
     .component-browser__coverage-summary { max-width: 42rem; }
     .component-browser__workspace { grid-template-columns: 1fr; gap: 0; }
     .component-browser__sidebar { position: static; max-height: none; padding: 1.25rem 0; overflow: visible; border-bottom: 1px solid var(--app-border); }
-    .component-browser__sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .component-browser__category-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .component-browser__category-links > span { grid-column: 1 / -1; }
+    .component-browser__grid--compact .component-browser__card { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .component-browser__grid--compact .component-browser__card-meta { grid-column: 1; }
+    .component-browser__grid--compact .component-browser__card h3 { grid-column: 2; }
+    .component-browser__grid--compact .component-browser__card p { display: none; }
+    .component-browser__grid--compact .component-browser__card footer { grid-column: 3; }
 }
 
 @media (max-width: 44rem) {
@@ -476,12 +475,17 @@
     .component-browser__coverage-summary article:nth-child(3) { border-top: 1px solid var(--app-border); border-left: 0; }
     .component-browser__coverage-summary article:nth-child(4) { border-top: 1px solid var(--app-border); }
     .component-browser__grid,
-    .component-browser__sidebar nav { grid-template-columns: 1fr; }
+    .component-browser__category-links { grid-template-columns: 1fr; }
+    .component-browser__grid--compact .component-browser__card { grid-template-columns: minmax(0, 1fr) auto; }
+    .component-browser__grid--compact .component-browser__card-meta { display: none; }
+    .component-browser__grid--compact .component-browser__card h3 { grid-column: 1; }
+    .component-browser__grid--compact .component-browser__card footer { grid-column: 2; }
 }
 
 @media (max-width: 34rem) {
     .component-browser { width: min(100% - 1rem, 94rem); }
     .component-browser__results-header { align-items: start; flex-direction: column; }
+    .component-browser__results-actions { width: 100%; align-items: stretch; flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {

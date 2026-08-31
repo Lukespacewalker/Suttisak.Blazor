@@ -1,6 +1,11 @@
-.page-composition-specimen { display: grid; min-width: 0; gap: .65rem; container: page-composition-specimen / inline-size; }
+.page-composition-specimen { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 100%; min-width: 0; gap: .65rem; container: page-composition-specimen / inline-size; }
+.page-composition-specimen ::deep .page-heading { width: 100%; max-width: 100%; box-sizing: border-box; }
 .page-composition-specimen__breadcrumbs { padding: .6rem .8rem; border: 1px solid var(--app-border); border-radius: .7rem; background: var(--app-surface); }
 .page-composition-specimen__status { margin: 0; color: var(--app-foreground-muted); font-size: .72rem; }
+.page-composition-specimen__active-panel { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .7rem .8rem; border: 1px dashed var(--app-border); border-radius: .65rem; background: var(--app-surface-muted); }
+.page-composition-specimen__active-panel strong { color: var(--app-foreground); font-size: .76rem; }
+.page-composition-specimen__active-panel span { color: var(--app-foreground-muted); font-size: .66rem; }
+.page-composition-specimen__active-panel:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .page-composition-specimen ::deep .page-composition-specimen__section-link { position: relative; display: inline-flex; min-width: max-content; min-height: 3.75rem; align-items: center; padding: .55rem .72rem; border: 0; border-radius: .55rem; background: transparent; color: var(--app-foreground-muted); font: inherit; font-size: .76rem; font-weight: 720; cursor: pointer; }
 .page-composition-specimen ::deep .page-composition-specimen__section-link:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
 .page-composition-specimen ::deep .page-composition-specimen__section-link.active { background: var(--app-accent-soft); color: var(--app-accent); }

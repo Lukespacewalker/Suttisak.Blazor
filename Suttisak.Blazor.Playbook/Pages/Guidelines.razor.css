@@ -12,6 +12,8 @@
 .guidelines-page__cards article, .guidelines-page__status-grid article { padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .guidelines-page__cards strong, .guidelines-page__status-grid strong, .guidelines-page__split h3 { color: var(--app-accent); font-size: .8rem; }
 .guidelines-page__cards p, .guidelines-page__status-grid p { margin: .55rem 0 0; color: var(--app-foreground-muted); font-size: .74rem; line-height: 1.55; }
+.guidelines-page__cards a { color: var(--app-accent); font-weight: 750; }
+.guidelines-page__cards code, .guidelines-page__agent code { overflow-wrap: anywhere; color: var(--app-foreground); font-size: .68rem; }
 .guidelines-page__split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
 .guidelines-page__split > div { padding: 1.1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .guidelines-page__split ul { margin: .8rem 0 0; padding-left: 1.15rem; color: var(--app-foreground-muted); font-size: .76rem; line-height: 1.8; }

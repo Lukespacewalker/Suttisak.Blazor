@@ -1,116 +1,19 @@
 @page "/catalog"
+@inject NavigationManager Navigation
 
-<PageTitle>Component catalog · Suttisak.Blazor UI Playbook</PageTitle>
+<PageTitle>Opening compact Component Browser · Suttisak.Blazor UI Playbook</PageTitle>
 
-<PlaybookShell>
-    <main class="component-catalog-page">
-        <header class="component-catalog-page__hero">
-            <div>
-                <span class="playbook-kicker">Compact metadata directory</span>
-                <h1>Every component.<br /><em>One map.</em></h1>
-                <p>Search the complete component catalog, inspect maturity and documentation coverage, then open the deep-linkable detail route for the executable workbench, integration pattern, or reference contract.</p>
-            </div>
-            <div class="component-catalog-page__summary" aria-label="Catalog summary">
-                <article><strong>@Coverage.Total</strong><span>catalogued</span></article>
-                <article><strong>@Coverage.Interactive</strong><span>interactive</span></article>
-                <a href="components">Open Component Browser →</a>
-            </div>
-        </header>
-
-        <div class="component-catalog-page__toolbar">
-            <label class="component-catalog-page__search">
-                <span>Find component, category, or tag</span>
-                <input type="search" placeholder="AppButton, navigation, form…" @bind="_search" @bind:event="oninput" />
-            </label>
-
-            <fieldset class="component-catalog-page__filters">
-                <legend>Coverage</legend>
-                <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(_coverageFilter is null)" @onclick="() => _coverageFilter = null">All</button>
-                @foreach (var kind in CoverageKinds)
-                {
-                    <button type="button" class="@FilterClass(kind)" aria-pressed="@Pressed(_coverageFilter == kind)" @onclick="() => _coverageFilter = kind">@PlaybookComponentCoverage.LabelFor(kind)</button>
-                }
-            </fieldset>
-        </div>
-
-        <div class="component-catalog-page__groups">
-            @foreach (var group in FilteredGroups)
-            {
-                <section aria-labelledby="@GroupId(group.Key)">
-                    <header><h2 id="@GroupId(group.Key)">@group.Key</h2><span>@group.Count()</span></header>
-                    <div>
-                        @foreach (var component in group)
-                        {
-                            var coverage = PlaybookComponentCoverage.KindFor(component);
-                            <a href="@component.DetailHref" data-catalog-component="@component.Name" data-catalog-coverage="@PlaybookComponentCoverage.SlugFor(coverage)">
-                                <div>
-                                    <span class="component-catalog-page__status component-catalog-page__status--@component.Status.ToString().ToLowerInvariant()">@component.Status</span>
-                                    <span class="component-catalog-page__coverage component-catalog-page__coverage--@PlaybookComponentCoverage.SlugFor(coverage)">@PlaybookComponentCoverage.LabelFor(coverage)</span>
-                                </div>
-                                <strong>@component.Name</strong>
-                                <p>@component.Summary</p>
-                                <small>@component.SourceArea · @string.Join(" · ", component.Tags)</small>
-                            </a>
-                        }
-                    </div>
-                </section>
-            }
-        </div>
-
-        @if (!FilteredGroups.Any())
-        {
-            <section class="component-catalog-page__empty" aria-live="polite">
-                <strong>No catalog entry matches those filters.</strong>
-                <button type="button" @onclick="ClearFilters">Clear filters</button>
-            </section>
-        }
-    </main>
-</PlaybookShell>
+<main class="playbook-compatibility-redirect" aria-labelledby="catalog-redirect-title">
+    <h1 id="catalog-redirect-title">Opening the compact Component Browser…</h1>
+    <p>The catalog now shares one discovery surface with component cards, filters, and deep links.</p>
+    <a href="components?view=compact">Continue to Components</a>
+</main>
 
 @code {
-    private static readonly PlaybookComponentCoverageKind[] CoverageKinds =
-    [
-        PlaybookComponentCoverageKind.Interactive,
-        PlaybookComponentCoverageKind.Pattern,
-        PlaybookComponentCoverageKind.Reference
-    ];
-
-    private string _search = string.Empty;
-    private PlaybookComponentCoverageKind? _coverageFilter;
-
-    private static PlaybookComponentCoverageSummary Coverage => PlaybookComponentCoverage.Summary;
-
-    private IReadOnlyList<IGrouping<string, PlaybookComponentDefinition>> FilteredGroups =>
-        PlaybookComponentCatalog.All
-            .Where(MatchesSearch)
-            .Where(component => _coverageFilter is null || PlaybookComponentCoverage.KindFor(component) == _coverageFilter)
-            .GroupBy(component => component.Category)
-            .ToArray();
-
-    private bool MatchesSearch(PlaybookComponentDefinition component)
+    protected override void OnInitialized()
     {
-        if (string.IsNullOrWhiteSpace(_search))
-        {
-            return true;
-        }
-
-        var search = _search.Trim();
-        return component.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.Category.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.Summary.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.Tags.Any(tag => tag.Contains(search, StringComparison.OrdinalIgnoreCase));
+        var target = Navigation.GetUriWithQueryParameter("view", "compact")
+            .Replace("/catalog", "/components", StringComparison.OrdinalIgnoreCase);
+        Navigation.NavigateTo(target, replace: true);
     }
-
-    private void ClearFilters()
-    {
-        _search = string.Empty;
-        _coverageFilter = null;
-    }
-
-    private string FilterClass(PlaybookComponentCoverageKind? kind) => _coverageFilter == kind ? "is-active" : string.Empty;
-
-    private static string Pressed(bool value) => value ? "true" : "false";
-
-    private static string GroupId(string category) =>
-        $"catalog-{new string(category.ToLowerInvariant().Select(character => char.IsLetterOrDigit(character) ? character : '-').ToArray()).Trim('-')}";
 }

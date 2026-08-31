@@ -8,6 +8,12 @@ window.playbookTheme = {
     }
 };
 
+window.playbookFocus = {
+    focusById(id) {
+        document.getElementById(id)?.focus();
+    }
+};
+
 window.playbookMotion = {
     observer: null,
 

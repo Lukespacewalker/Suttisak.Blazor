@@ -4,6 +4,7 @@
   <Project Path="Suttisak.Blazor.Identity/Suttisak.Blazor.Identity.csproj" />
   <Project Path="Suttisak.Blazor.Icons/Suttisak.Blazor.Icons.csproj" />
   <Project Path="Suttisak.Blazor.Playbook/Suttisak.Blazor.Playbook.csproj" />
+  <Project Path="scripts/PlaybookManifestGenerator/PlaybookManifestGenerator.csproj" />
   <Project Path="Suttisak.Blazor.UserInterface.Generator/Suttisak.Blazor.UserInterface.Generator.csproj" />
   <Project Path="Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.csproj" />
   <Project Path="Suttisak.Blazor.UserInterface.Tests/Suttisak.Blazor.UserInterface.Tests.csproj" />

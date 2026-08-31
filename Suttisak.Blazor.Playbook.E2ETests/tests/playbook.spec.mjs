@@ -3,8 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 test.describe('UI Playbook shared-component contracts', () => {
   test('ThemeSelector updates the one html data-theme contract', async ({ page }) => {
-    await page.goto('/');
-    const selector = page.locator('.playbook-preferences .theme-selector');
+    await page.goto('/components/theme-switcher');
+    const selector = page.locator('.component-detail__preview-frame .theme-selector').first();
     await expect(selector).toBeVisible();
 
     await selector.getByRole('button', { name: 'Use dark theme' }).click();
@@ -34,10 +34,11 @@ test.describe('UI Playbook shared-component contracts', () => {
     await expect(page.locator(`#${panelId}`)).toContainText('Recent activity and audit events.');
   });
 
-  test('Component Browser indexes the complete catalog and links to live specimens', async ({ page }) => {
+  test('Component Browser indexes the complete catalog and links to live specimens', async ({ page, request }) => {
+    const manifest = await (await request.get('/component-manifest.json')).json();
     await page.goto('/components');
 
-    await expect(page.locator('[data-component-name]')).toHaveCount(87);
+    await expect(page.locator('[data-component-name]')).toHaveCount(manifest.componentCount);
 
     const search = page.getByRole('searchbox', { name: 'Find a component' });
     await search.fill('AppTextBox');

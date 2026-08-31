@@ -1,0 +1,216 @@
+@page "/patterns/{Slug}"
+@inject IJSRuntime JsRuntime
+
+<PageTitle>@(Pattern is null ? "Pattern not found" : $"{Pattern.Name} · UI Playbook")</PageTitle>
+
+<PlaybookShell>
+    @if (Pattern is null)
+    {
+        <main class="pattern-detail pattern-detail--missing">
+            <span class="playbook-kicker">Unknown pattern</span>
+            <h1>This recipe is not in the field guide.</h1>
+            <p>The pattern may have moved or the address may be incomplete.</p>
+            <a href="patterns">Return to the Pattern Library</a>
+        </main>
+    }
+    else
+    {
+        var pattern = Pattern!;
+        <main class="pattern-detail" data-pattern-detail="@pattern.Slug">
+            <nav class="pattern-detail__breadcrumb" aria-label="Pattern breadcrumb">
+                <a href="patterns">Pattern library</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">@pattern.Name</span>
+            </nav>
+
+            <header class="pattern-detail__hero">
+                <div class="pattern-detail__hero-copy">
+                    <div class="pattern-detail__eyebrow">
+                        <span>@pattern.Category</span>
+                        <span class="pattern-detail__maturity pattern-detail__maturity--@pattern.Maturity.ToString().ToLowerInvariant()">@pattern.Maturity</span>
+                    </div>
+                    <h1>@pattern.Name</h1>
+                    <p class="pattern-detail__summary">@pattern.Summary</p>
+                    <div class="pattern-detail__intent">
+                        <span>Use when</span>
+                        <p>@pattern.Intent</p>
+                    </div>
+                    <a class="pattern-detail__launch" href="@pattern.LiveHref">
+                        <span>Launch live composition</span>
+                        <strong>@pattern.LiveLabel</strong>
+                        <i aria-hidden="true">↗</i>
+                    </a>
+                </div>
+
+                <aside class="pattern-detail__passport" aria-label="Pattern contract">
+                    <div class="pattern-detail__passport-mark" aria-hidden="true">@PatternInitials(pattern.Name)</div>
+                    <dl>
+                        <div><dt>Pattern ID</dt><dd><code>@pattern.Slug</code></dd></div>
+                        <div><dt>Live route</dt><dd><code>/@pattern.LiveHref</code></dd></div>
+                        <div><dt>Ingredients</dt><dd>@pattern.Ingredients.Count shared components</dd></div>
+                        <div><dt>Evidence</dt><dd>@pattern.Evidence.Count regression sources</dd></div>
+                    </dl>
+                    <div class="pattern-detail__tags">
+                        @foreach (var tag in pattern.Tags)
+                        {
+                            <span>@tag</span>
+                        }
+                    </div>
+                </aside>
+            </header>
+
+            <div class="pattern-detail__body">
+                <section class="pattern-detail__anatomy" aria-labelledby="pattern-anatomy-title">
+                    <header class="pattern-detail__section-heading">
+                        <span>01 / Assembly</span>
+                        <h2 id="pattern-anatomy-title">Composition anatomy</h2>
+                        <p>Build the boundary in this order; preserve the reading order even when visual geometry changes.</p>
+                    </header>
+
+                    <ol class="pattern-detail__steps">
+                        @for (var index = 0; index < pattern.CompositionSteps.Count; index++)
+                        {
+                            var step = pattern.CompositionSteps[index];
+                            <li>
+                                <span>@((index + 1).ToString("00"))</span>
+                                <div><strong>@step.Title</strong><p>@step.Detail</p></div>
+                            </li>
+                        }
+                    </ol>
+                </section>
+
+                <aside class="pattern-detail__ingredient-panel" aria-labelledby="pattern-ingredients-title">
+                    <header>
+                        <span>Shared inventory</span>
+                        <h2 id="pattern-ingredients-title">Ingredients</h2>
+                    </header>
+                    <ol>
+                        @foreach (var ingredient in pattern.Ingredients)
+                        {
+                            <li>
+                                <a href="@ingredient.ComponentHref" data-pattern-ingredient="@ingredient.ComponentName">
+                                    <span><strong>@ingredient.ComponentName</strong><code>@ingredient.ComponentId</code></span>
+                                    <i aria-hidden="true">→</i>
+                                </a>
+                                <p>@ingredient.Role</p>
+                            </li>
+                        }
+                    </ol>
+                </aside>
+
+                <section class="pattern-detail__recipe" aria-labelledby="pattern-recipe-title">
+                    <header class="pattern-detail__section-heading pattern-detail__section-heading--recipe">
+                        <div>
+                            <span>02 / Minimal Razor</span>
+                            <h2 id="pattern-recipe-title">Start from the contract.</h2>
+                            <p>The recipe shows component shape, not application policy. Replace the sample values and ellipses with product-owned behavior.</p>
+                        </div>
+                        <div class="pattern-detail__copy-control">
+                            <button type="button" aria-label="Copy Razor recipe" @onclick="CopyRecipeAsync">Copy Razor</button>
+                            <span aria-live="polite">@_copyStatus</span>
+                        </div>
+                    </header>
+                    <pre data-testid="pattern-recipe"><code>@pattern.MinimalRazorRecipe</code></pre>
+                </section>
+
+                <section class="pattern-detail__ownership" aria-labelledby="pattern-ownership-title">
+                    <header class="pattern-detail__section-heading">
+                        <span>03 / Boundary</span>
+                        <h2 id="pattern-ownership-title">Ownership stays explicit.</h2>
+                    </header>
+                    <div class="pattern-detail__ownership-grid">
+                        <article>
+                            <span>Library owns</span>
+                            <ul>
+                                @foreach (var responsibility in pattern.Ownership.LibraryResponsibilities)
+                                {
+                                    <li>@responsibility</li>
+                                }
+                            </ul>
+                        </article>
+                        <article>
+                            <span>Application owns</span>
+                            <ul>
+                                @foreach (var responsibility in pattern.Ownership.ApplicationResponsibilities)
+                                {
+                                    <li>@responsibility</li>
+                                }
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="pattern-detail__checks" aria-labelledby="pattern-checks-title">
+                    <header class="pattern-detail__section-heading">
+                        <span>04 / Definition of done</span>
+                        <h2 id="pattern-checks-title">Quality checks</h2>
+                    </header>
+                    <div class="pattern-detail__check-list">
+                        @foreach (var check in pattern.QualityChecks)
+                        {
+                            <article>
+                                <span>@check.Dimension</span>
+                                <p>@check.Requirement</p>
+                            </article>
+                        }
+                    </div>
+                </section>
+
+                <section class="pattern-detail__evidence" aria-labelledby="pattern-evidence-title">
+                    <header class="pattern-detail__section-heading">
+                        <span>05 / Regression trail</span>
+                        <h2 id="pattern-evidence-title">Evidence, not decoration.</h2>
+                    </header>
+                    <ol>
+                        @for (var index = 0; index < pattern.Evidence.Count; index++)
+                        {
+                            var evidence = pattern.Evidence[index];
+                            <li>
+                                <span>@((index + 1).ToString("00"))</span>
+                                <div><small>@evidence.Kind</small><code>@evidence.Source</code><p>@evidence.Guarantee</p></div>
+                            </li>
+                        }
+                    </ol>
+                    <a class="pattern-detail__evidence-launch" href="@pattern.LiveHref">
+                        <span>Executable proof</span>
+                        <strong>@pattern.LiveLabel</strong>
+                        <i aria-hidden="true">→</i>
+                    </a>
+                </section>
+            </div>
+        </main>
+    }
+</PlaybookShell>
+
+@code {
+    [Parameter] public string? Slug { get; set; }
+
+    private string _copyStatus = "Ready to copy";
+    private PlaybookPatternDefinition? Pattern => PlaybookPatternCatalog.Find(Slug);
+
+    protected override void OnParametersSet() => _copyStatus = "Ready to copy";
+
+    private async Task CopyRecipeAsync()
+    {
+        if (Pattern is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", Pattern.MinimalRazorRecipe);
+            _copyStatus = "Copied to clipboard";
+        }
+        catch (JSException)
+        {
+            _copyStatus = "Select the recipe to copy";
+        }
+    }
+
+    private static string PatternInitials(string name) =>
+        string.Concat(name
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Take(2)
+            .Select(part => char.ToUpperInvariant(part[0])));
+}

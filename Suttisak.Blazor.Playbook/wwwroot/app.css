@@ -60,6 +60,32 @@ select { font: inherit; }
 .playbook::-webkit-scrollbar-corner,
 .playbook *::-webkit-scrollbar-corner { background: var(--app-surface-muted); }
 
+.playbook-skip-link {
+    position: fixed;
+    z-index: 100;
+    top: .75rem;
+    left: .75rem;
+    padding: .65rem .9rem;
+    border: 2px solid var(--app-accent);
+    border-radius: .55rem;
+    background: var(--app-surface);
+    box-shadow: 0 .65rem 1.75rem var(--app-shadow-color);
+    color: var(--app-foreground);
+    font-size: .78rem;
+    font-weight: 800;
+    text-decoration: none;
+    transform: translateY(calc(-100% - 1.5rem));
+}
+
+.playbook-skip-link:focus-visible {
+    outline: 3px solid var(--app-accent-border);
+    outline-offset: 2px;
+    transform: translateY(0);
+}
+
+.playbook-main-content { min-width: 0; scroll-margin-top: 5rem; }
+.playbook-main-content:focus { outline: none; }
+
 .theme-audiogramiq {
     --app-brand: light-dark(#08777d, #4cd7d4); --app-on-brand: light-dark(#fff, #062628); --app-brand-secondary: light-dark(#c63f35, #ff897e); --app-accent: var(--app-brand-secondary);
     --app-accent-soft: light-dark(rgb(198 63 53 / .12), rgb(255 137 126 / .18)); --app-accent-border: light-dark(#e4a29c, #96544f); --app-brand-soft: light-dark(rgb(8 119 125 / .10), rgb(76 215 212 / .16)); --app-brand-secondary-soft: light-dark(rgb(198 63 53 / .11), rgb(255 137 126 / .17));
@@ -364,9 +390,9 @@ select { font: inherit; }
 .custom-error-editor textarea,
 .custom-error-editor select { width: 100%; min-width: 0; box-sizing: border-box; padding: .62rem .68rem; border: 1px solid var(--app-border); border-radius: .55rem; outline: none; background: var(--app-surface-muted); color: var(--app-foreground); font: inherit; font-weight: 550; }
 .custom-error-editor textarea { resize: vertical; line-height: 1.5; }
-.custom-error-editor input:focus,
-.custom-error-editor textarea:focus,
-.custom-error-editor select:focus { border-color: var(--app-accent); box-shadow: 0 0 0 3px var(--app-accent-soft); }
+.custom-error-editor input:focus-visible,
+.custom-error-editor textarea:focus-visible,
+.custom-error-editor select:focus-visible { border-color: var(--app-accent); box-shadow: 0 0 0 3px var(--app-accent-soft); }
 .custom-error-editor__row { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
 .custom-error-editor .custom-error-editor__check { display: flex; align-items: center; gap: .55rem; padding: .7rem; border: 1px solid var(--app-border); border-radius: .55rem; background: var(--app-surface-muted); }
 .custom-error-editor__check input { width: 1rem; height: 1rem; padding: 0; accent-color: var(--app-accent); }
@@ -388,7 +414,7 @@ select { font: inherit; }
     .custom-error-preview { padding: .5rem; }
 }
 
-@container access-preview (max-width: 55rem) {
+@container access-preview (max-width: 58rem) {
     .access-page { grid-template-columns: 1fr; }
     .access-story { min-height: 25rem; }
     .access-story blockquote { font-size: clamp(2.6rem, 10cqi, 4.8rem); }
@@ -742,7 +768,12 @@ select { font: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .playbook, .playbook-sheet, .landing-reveal.is-reveal-ready { transition: none; }
+    .playbook,
+    .playbook-sheet,
+    .landing-preview,
+    .access-preview,
+    .application-shell-workbench,
+    .landing-reveal.is-reveal-ready { transition: none; }
     .landing-reveal.is-reveal-ready { opacity: 1; transform: none; }
     .playbook-loading::before,
     .playbook-loading__mark { animation: none; }

@@ -1,4 +1,4 @@
-.component-detail__lab { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; gap: 1rem; align-items: start; padding: 1rem; border: 1px solid var(--app-border); border-radius: 1rem; background: var(--app-surface-muted); overflow: hidden; }
+.component-detail__lab { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; gap: 1rem; align-items: start; padding: 1rem; border: 1px solid var(--app-border); border-radius: 1rem; background: var(--app-surface-muted); overflow: auto; overscroll-behavior: contain; }
 .component-detail__preview-frame { width: 100%; max-width: 100%; margin-inline: auto; box-sizing: border-box; padding: clamp(1.25rem, 4vw, 3rem); border: 1px solid var(--app-border); border-radius: .8rem; background: linear-gradient(135deg, var(--app-brand-soft), transparent 48%), var(--app-surface); box-shadow: 0 1rem 2.5rem var(--app-shadow-color); transition: max-width .2s ease; }
 .component-detail__preview-frame--mobile { max-width: 23.4375rem; }
 .component-detail__preview-frame--tablet { max-width: 48rem; }

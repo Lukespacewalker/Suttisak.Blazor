@@ -17,6 +17,7 @@ public static class PlaybookSpecimenRegistry
     private static readonly IReadOnlyDictionary<string, PlaybookSpecimenRegistration> Registrations =
         new Dictionary<string, PlaybookSpecimenRegistration>(StringComparer.OrdinalIgnoreCase)
         {
+            ["AppLogo"] = new(typeof(AppLogo), typeof(AppLogoSpecimen)),
             ["AppButton"] = new(typeof(AppButton), typeof(AppButtonSpecimen)),
             ["AppTextBox"] = new(typeof(AppTextBox), typeof(AppTextBoxSpecimen)),
             ["AppTextArea"] = new(typeof(AppTextArea), typeof(AppTextAreaSpecimen)),
@@ -97,6 +98,8 @@ public static class PlaybookSpecimenRegistry
     public static bool TryGet(string componentName, out PlaybookSpecimenRegistration registration) =>
         Registrations.TryGetValue(componentName, out registration!);
 
+    public static IReadOnlyDictionary<string, PlaybookSpecimenRegistration> All => Registrations;
+
     public static Type? RuntimeTypeFor(PlaybookComponentDefinition component) =>
         TryGet(component.Name, out var registration) ? registration.RuntimeType : component.RuntimeType;
 
@@ -104,4 +107,9 @@ public static class PlaybookSpecimenRegistry
         TryGet(component.Name, out var registration) ? registration.SpecimenType : null;
 
     public static int InteractiveSpecimenCount => Registrations.Count;
+
+    public static int DistinctSpecimenCount => Registrations.Values
+        .Select(registration => registration.SpecimenType)
+        .Distinct()
+        .Count();
 }

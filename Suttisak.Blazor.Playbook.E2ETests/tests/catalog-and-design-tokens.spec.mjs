@@ -10,23 +10,25 @@ async function expectNoSeriousOrCriticalViolations(page) {
   expect(blocking).toEqual([]);
 }
 
-test('Component Browser reports and filters the complete catalog from one source', async ({ page }) => {
+test('Component Browser reports and filters the complete catalog from one source', async ({ page, request }) => {
+  const manifest = await (await request.get('/component-manifest.json')).json();
+  const interactiveCount = manifest.components.filter(component => component.coverage === 'interactive').length;
   await page.goto('/components');
 
-  await expect(page.getByRole('heading', { level: 1, name: /Every component/i })).toBeVisible({ timeout: wasmTimeout });
+  await expect(page.getByRole('heading', { level: 1, name: /Find the contract/i })).toBeVisible({ timeout: wasmTimeout });
 
   const summary = page.getByRole('complementary', { name: 'Component coverage summary' });
   await expect(summary).toBeVisible();
-  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText('87');
-  await expect(summary.locator('article').nth(1).locator('strong')).toHaveText('75');
-  await expect(page.locator('[data-component-name]')).toHaveCount(87, { timeout: wasmTimeout });
+  await expect(summary.locator('article').nth(0).locator('strong')).toHaveText(String(manifest.componentCount));
+  await expect(summary.locator('article').nth(1).locator('strong')).toHaveText(String(interactiveCount));
+  await expect(page.locator('[data-component-name]')).toHaveCount(manifest.componentCount, { timeout: wasmTimeout });
 
   const interactiveFilter = page.locator('.component-browser__coverage-filter button').filter({ hasText: 'Interactive' });
   await expect(interactiveFilter).toHaveCount(1);
   await interactiveFilter.click();
   await expect(interactiveFilter).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(75, { timeout: wasmTimeout });
-  await expect(page.locator('[data-component-name]')).toHaveCount(75, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(interactiveCount, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(interactiveCount, { timeout: wasmTimeout });
 
   await page.getByRole('searchbox', { name: 'Find a component' }).fill('AppButton');
   await expect(page.locator('[data-component-name="AppButton"]')).toHaveCount(1);
@@ -35,17 +37,23 @@ test('Component Browser reports and filters the complete catalog from one source
   await expect(page.getByRole('heading', { level: 1, name: 'AppButton' })).toBeVisible({ timeout: wasmTimeout });
 });
 
-test('Component Browser has no serious or critical accessibility violations', async ({ page }) => {
+test('Component Browser has no serious or critical accessibility violations', async ({ page, request }) => {
+  const manifest = await (await request.get('/component-manifest.json')).json();
   await page.goto('/components');
-  await expect(page.locator('[data-component-name]')).toHaveCount(87, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(manifest.componentCount, { timeout: wasmTimeout });
   await expectNoSeriousOrCriticalViolations(page);
 });
 
-test('Playbook home reports Interactive coverage from the shared coverage source', async ({ page }) => {
+test('Playbook home reports the same distinct workbench count as the Component Browser', async ({ page }) => {
+  await page.goto('/components');
+  const browserMetric = page.getByRole('complementary', { name: 'Component coverage summary' })
+    .locator('article').filter({ hasText: 'workbenches' }).locator('strong');
+  const workbenchCount = await browserMetric.textContent({ timeout: wasmTimeout });
+
   await page.goto('/');
 
-  const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Linked live specimens' });
-  await expect(metric.locator('strong')).toHaveText('75');
+  const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Distinct workbenches' });
+  await expect(metric.locator('strong')).toHaveText(workbenchCount ?? '');
 });
 
 test('StatusPage detail executes the shared visual contract and error semantics', async ({ page }) => {

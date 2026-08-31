@@ -1,5 +1,6 @@
 @page "/component-browser"
 @page "/components"
+@inject NavigationManager Navigation
 
 <PageTitle>Component Browser · Suttisak.Blazor UI Playbook</PageTitle>
 
@@ -7,11 +8,11 @@
     <main class="component-browser">
         <header class="component-browser__hero">
             <div>
-                <span class="playbook-kicker">Catalog-driven component explorer</span>
-                <h1>Every component.<br /><em>Honest coverage.</em></h1>
-                <p>The browser is generated from the same 90-component catalog used by detail routes and agent tooling. Interactive specimens, production-shaped patterns, and reference-only contracts are labelled explicitly.</p>
+                <span class="playbook-kicker">Component Browser</span>
+                <h1>Find the contract.<br /><em>Inspect the behavior.</em></h1>
+                <p>Search the public component surface, open a focused executable story, and follow each building block into the patterns that use it. Coverage labels describe what is actually available.</p>
                 <div class="component-browser__hero-actions">
-                    <a href="catalog">Open compact catalog →</a>
+                    <a href="patterns">Browse composition patterns →</a>
                     <a href="tokens">Inspect design tokens →</a>
                     <a href="component-manifest.json">Open component manifest ↗</a>
                 </div>
@@ -20,10 +21,10 @@
             <aside class="component-browser__coverage-summary" aria-label="Component coverage summary">
                 <article><strong>@Coverage.Total</strong><span>catalogued</span></article>
                 <article><strong>@Coverage.Interactive</strong><span>interactive</span></article>
-                <article><strong>@Coverage.Pattern</strong><span>patterns</span></article>
+                <article><strong>@PlaybookSpecimenRegistry.DistinctSpecimenCount</strong><span>workbenches</span></article>
                 <article><strong>@Coverage.Reference</strong><span>references</span></article>
                 <div><span style="@InteractiveProgressStyle"></span></div>
-                <p>@Coverage.InteractivePercent% of the catalog currently has an executable workbench.</p>
+                <p>@Coverage.InteractivePercent% of catalogued components have executable coverage across @PlaybookSpecimenRegistry.DistinctSpecimenCount distinct workbenches.</p>
             </aside>
         </header>
 
@@ -31,49 +32,50 @@
             <aside class="component-browser__sidebar" aria-label="Component Browser filters">
                 <label class="component-browser__search">
                     <span>Find a component</span>
-                    <input type="search" placeholder="Button, grid, navigation…" @bind="_search" @bind:event="oninput" />
+                    <input type="search"
+                           name="component-search"
+                           autocomplete="off"
+                           placeholder="Button, grid, navigation…"
+                           value="@Search"
+                           @oninput="HandleSearchInput" />
                 </label>
 
                 <fieldset class="component-browser__coverage-filter">
                     <legend>Coverage</legend>
-                    <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(_coverageFilter is null)" @onclick="() => SetCoverageFilter(null)">All <small>@Coverage.Total</small></button>
+                    <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(SelectedCoverage is null)" @onclick="() => SetCoverageFilter(null)">All <small>@Coverage.Total</small></button>
                     @foreach (var kind in CoverageKinds)
                     {
-                        <button type="button" class="@FilterClass(kind)" aria-pressed="@Pressed(_coverageFilter == kind)" @onclick="() => SetCoverageFilter(kind)">
+                        <button type="button" class="@FilterClass(kind)" aria-pressed="@Pressed(SelectedCoverage == kind)" @onclick="() => SetCoverageFilter(kind)">
                             @PlaybookComponentCoverage.LabelFor(kind) <small>@CoverageCount(kind)</small>
                         </button>
                     }
                 </fieldset>
 
-                <nav aria-label="Filtered component groups">
+                <nav class="component-browser__category-links" aria-label="Visible component categories">
+                    <span>Jump to category</span>
                     @foreach (var group in FilteredGroups)
                     {
-                        <details open="@(HasActiveFilters || group.Key == "Forms & inputs")">
-                            <summary><span>@group.Key</span><small>@group.Count()</small></summary>
-                            <div>
-                                @foreach (var component in group)
-                                {
-                                    <a href="@component.DetailHref">
-                                        <span>@component.Name</span>
-                                        <small class="component-browser__mini-coverage component-browser__mini-coverage--@PlaybookComponentCoverage.SlugFor(component)">@PlaybookComponentCoverage.LabelFor(component)</small>
-                                    </a>
-                                }
-                            </div>
-                        </details>
+                        <a href="@CategoryHref(group.Key)"><span>@group.Key</span><small>@group.Count()</small></a>
                     }
                 </nav>
             </aside>
 
             <div class="component-browser__content">
-                <header class="component-browser__results-header">
-                    <div>
+                <header class="component-browser__results-header" aria-live="polite" aria-atomic="true">
+                    <div class="component-browser__results-copy">
                         <span>@FilteredComponentCount results</span>
                         <strong>@ResultsHeading</strong>
                     </div>
-                    @if (HasActiveFilters)
-                    {
-                        <button type="button" @onclick="ClearFilters">Clear filters</button>
-                    }
+                    <div class="component-browser__results-actions">
+                        <div class="component-browser__view-switcher" role="group" aria-label="Catalog view">
+                            <button type="button" aria-pressed="@Pressed(ViewMode == "cards")" class="@(ViewMode == "cards" ? "is-active" : null)" @onclick='() => SetView("cards")'>Cards</button>
+                            <button type="button" aria-pressed="@Pressed(ViewMode == "compact")" class="@(ViewMode == "compact" ? "is-active" : null)" @onclick='() => SetView("compact")'>Compact</button>
+                        </div>
+                        @if (HasActiveFilters)
+                        {
+                            <button type="button" @onclick="ClearFilters">Clear filters</button>
+                        }
+                    </div>
                 </header>
 
                 @if (FilteredComponentCount == 0)
@@ -94,7 +96,7 @@
                                 <span>@group.Count()</span>
                             </header>
 
-                            <div class="component-browser__grid">
+                            <div class="component-browser__grid component-browser__grid--@ViewMode">
                                 @foreach (var component in group)
                                 {
                                     var coverageKind = PlaybookComponentCoverage.KindFor(component);
@@ -129,10 +131,16 @@
         PlaybookComponentCoverageKind.Reference
     ];
 
-    private string _search = string.Empty;
-    private PlaybookComponentCoverageKind? _coverageFilter;
+    [Parameter, SupplyParameterFromQuery(Name = "q")] public string? Search { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "coverage")] public string? CoverageFilter { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "view")] public string? View { get; set; }
 
     private static PlaybookComponentCoverageSummary Coverage => PlaybookComponentCoverage.Summary;
+
+    private PlaybookComponentCoverageKind? SelectedCoverage =>
+        Enum.TryParse<PlaybookComponentCoverageKind>(CoverageFilter, true, out var value) ? value : null;
+
+    private string ViewMode => View?.Equals("compact", StringComparison.OrdinalIgnoreCase) == true ? "compact" : "cards";
 
     private IEnumerable<PlaybookComponentDefinition> FilteredComponents =>
         PlaybookComponentCatalog.All.Where(MatchesSearch).Where(MatchesCoverage);
@@ -141,21 +149,21 @@
         FilteredComponents.GroupBy(component => component.Category).ToArray();
 
     private int FilteredComponentCount => FilteredComponents.Count();
-    private bool HasActiveFilters => !string.IsNullOrWhiteSpace(_search) || _coverageFilter is not null;
+    private bool HasActiveFilters => !string.IsNullOrWhiteSpace(Search) || SelectedCoverage is not null;
     private string InteractiveProgressStyle => $"width:{Coverage.InteractivePercent.ToString(System.Globalization.CultureInfo.InvariantCulture)}%";
 
-    private string ResultsHeading => _coverageFilter is null
-        ? string.IsNullOrWhiteSpace(_search) ? "Complete component map" : $"Matching “{_search.Trim()}”"
-        : $"{PlaybookComponentCoverage.LabelFor(_coverageFilter.Value)} coverage";
+    private string ResultsHeading => SelectedCoverage is null
+        ? string.IsNullOrWhiteSpace(Search) ? "Complete component map" : $"Matching “{Search.Trim()}”"
+        : $"{PlaybookComponentCoverage.LabelFor(SelectedCoverage.Value)} coverage";
 
     private bool MatchesSearch(PlaybookComponentDefinition component)
     {
-        if (string.IsNullOrWhiteSpace(_search))
+        if (string.IsNullOrWhiteSpace(Search))
         {
             return true;
         }
 
-        var search = _search.Trim();
+        var search = Search.Trim();
         return component.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
             || component.Category.Contains(search, StringComparison.OrdinalIgnoreCase)
             || component.Summary.Contains(search, StringComparison.OrdinalIgnoreCase)
@@ -164,17 +172,45 @@
     }
 
     private bool MatchesCoverage(PlaybookComponentDefinition component) =>
-        _coverageFilter is null || PlaybookComponentCoverage.KindFor(component) == _coverageFilter;
+        SelectedCoverage is null || PlaybookComponentCoverage.KindFor(component) == SelectedCoverage;
 
-    private void SetCoverageFilter(PlaybookComponentCoverageKind? kind) => _coverageFilter = kind;
+    private void HandleSearchInput(ChangeEventArgs args)
+    {
+        Search = args.Value?.ToString();
+        SyncUrl();
+    }
+
+    private void SetCoverageFilter(PlaybookComponentCoverageKind? kind)
+    {
+        CoverageFilter = kind?.ToString().ToLowerInvariant();
+        SyncUrl();
+    }
+
+    private void SetView(string view)
+    {
+        View = view;
+        SyncUrl();
+    }
 
     private void ClearFilters()
     {
-        _search = string.Empty;
-        _coverageFilter = null;
+        Search = null;
+        CoverageFilter = null;
+        SyncUrl();
     }
 
-    private string FilterClass(PlaybookComponentCoverageKind? kind) => _coverageFilter == kind ? "is-active" : string.Empty;
+    private void SyncUrl()
+    {
+        var uri = Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
+        {
+            ["q"] = string.IsNullOrWhiteSpace(Search) ? null : Search.Trim(),
+            ["coverage"] = SelectedCoverage?.ToString().ToLowerInvariant(),
+            ["view"] = ViewMode == "compact" ? "compact" : null
+        });
+        Navigation.NavigateTo(uri, replace: true);
+    }
+
+    private string FilterClass(PlaybookComponentCoverageKind? kind) => SelectedCoverage == kind ? "is-active" : string.Empty;
 
     private static string Pressed(bool value) => value ? "true" : "false";
 
@@ -192,6 +228,11 @@
         _ => "Open component reference"
     };
 
-    private static string GroupId(string category) =>
-        $"components-{new string(category.ToLowerInvariant().Select(character => char.IsLetterOrDigit(character) ? character : '-').ToArray()).Trim('-')}";
+    private static string GroupId(string category) => $"components-{PlaybookSlug.FromText(category)}";
+
+    private string CategoryHref(string category)
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        return $"{uri.PathAndQuery}#{GroupId(category)}";
+    }
 }

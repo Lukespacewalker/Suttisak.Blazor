@@ -8,7 +8,7 @@
                     CloseMenuLabel="Close demo navigation">
     <Brand>
         <NavLink class="demo-app-brand" href="application-shell" Match="NavLinkMatch.All">
-            <span aria-hidden="true"><img src="@CurrentTheme.LogoPath" alt="" /></span>
+            <span aria-hidden="true"><img src="@CurrentTheme.LogoPath" alt="" width="@CurrentTheme.LogoWidth" height="@CurrentTheme.LogoHeight" /></span>
             <div><strong>@CurrentTheme.Name</strong><small>Operations workspace</small></div>
         </NavLink>
     </Brand>
@@ -33,8 +33,8 @@
             <summary aria-label="Open profile menu"><span>KS</span><b>Kanda</b><Suttisak.Blazor.Icons.Icon Name="ChevronDown" Size="16"  /></summary>
             <div class="demo-profile__menu">
                 <div><span>KS</span><p><strong>Kanda S.</strong><small>Workspace administrator</small></p></div>
-                <a href="#demo-profile"><Suttisak.Blazor.Icons.Icon Name="Person" Size="20"  /> Profile</a>
-                <a href="#demo-signout"><Suttisak.Blazor.Icons.Icon Name="SignOut" Size="20"  /> Sign out</a>
+                <a href="application-shell/person"><Suttisak.Blazor.Icons.Icon Name="Person" Size="20"  /> Profile workspace</a>
+                <a href="access/login"><Suttisak.Blazor.Icons.Icon Name="Key" Size="20"  /> Access pattern</a>
             </div>
         </details>
     </Profile>

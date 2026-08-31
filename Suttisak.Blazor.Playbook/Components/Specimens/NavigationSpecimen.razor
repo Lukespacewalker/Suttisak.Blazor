@@ -12,7 +12,7 @@
                     <NavItem Href="/catalog"
                              IconRestName="AppsList">
                         <ChildContent>Component catalog</ChildContent>
-                        <TrailingContent><span aria-label="53 executable components">53</span></TrailingContent>
+                        <TrailingContent><span aria-label="@($"{PlaybookSpecimenRegistry.InteractiveSpecimenCount} components with executable coverage")">@PlaybookSpecimenRegistry.InteractiveSpecimenCount</span></TrailingContent>
                     </NavItem>
                     <NavSubmenu Label="Reports"
                                 IconName="Document"

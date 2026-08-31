@@ -97,8 +97,9 @@ test('page toolbar and section navigation use native keyboard disclosures when c
   await page.goto('/components/page-action-toolbar');
   await page.getByRole('button', { name: '375' }).click();
 
-  const frame = page.locator('.component-detail__preview-frame');
-  await expect.poll(() => frame.evaluate(element => element.getBoundingClientRect().width)).toBeLessThanOrEqual(376);
+  const host = page.getByTestId('isolated-specimen-frame');
+  await expect.poll(() => host.evaluate(element => element.contentWindow?.innerWidth ?? 0)).toBe(375);
+  const frame = page.frameLocator('[data-testid="isolated-specimen-frame"]');
 
   const toolbar = frame.getByRole('toolbar', { name: 'Assessment actions' });
   await expect(toolbar).toHaveAttribute('data-overflowing', 'true');
@@ -107,7 +108,7 @@ test('page toolbar and section navigation use native keyboard disclosures when c
   await more.press('Enter');
   await expect(toolbar.locator('details')).toHaveAttribute('open', '');
   await expect(more).toBeFocused();
-  await expect(toolbar.getByRole('button', { name: 'Archive' })).toBeVisible();
+  await expect(toolbar.getByRole('button', { name: 'Request archive' })).toBeVisible();
 
   const mobileDisclosure = frame.locator('.section-navigation__mobile');
   await expect(mobileDisclosure).toBeVisible();
@@ -117,7 +118,8 @@ test('page toolbar and section navigation use native keyboard disclosures when c
   await expect(mobileDisclosure).toHaveAttribute('open', '');
   await expect(mobileSummary).toBeFocused();
 
-  const containment = await frame.evaluate(element => ({ client: element.clientWidth, scroll: element.scrollWidth }));
+  const preview = frame.locator('.component-detail__preview-frame');
+  const containment = await preview.evaluate(element => ({ client: element.clientWidth, scroll: element.scrollWidth }));
   expect(containment.scroll).toBeLessThanOrEqual(containment.client + 1);
 });
 
@@ -141,7 +143,8 @@ test('MobileNavigationAccount contains real account and preference controls at 3
   await page.goto('/components/mobile-navigation-account');
   await page.getByRole('button', { name: '375' }).click();
 
-  const account = page.locator('.account-navigation-specimen .mobile-nav-account');
+  const frame = page.frameLocator('[data-testid="isolated-specimen-frame"]');
+  const account = frame.locator('.account-navigation-specimen .mobile-nav-account');
   await expect(account).toContainText('Kanda Srisuk');
   await expect(account.getByRole('group', { name: 'Color scheme' })).toBeVisible();
   await expect(account.getByLabel('Language', { exact: true })).toBeVisible();

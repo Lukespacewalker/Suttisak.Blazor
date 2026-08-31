@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Suttisak.Blazor.Playbook\Suttisak.Blazor.Playbook.csproj" />
     <ProjectReference Include="..\Suttisak.Blazor.UserInterface\Suttisak.Blazor.UserInterface.csproj" />
     <ProjectReference Include="..\Suttisak.Blazor.Identity\Suttisak.Blazor.Identity.csproj" />
     <PackageReference Include="bunit" Version="2.9.0" />
@@ -28,6 +29,9 @@
           CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\Suttisak.Blazor.UserInterface\wwwroot\css\main.css"
           Link="DesignTokenFixtures\main.css"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Suttisak.Blazor.Playbook\wwwroot\component-manifest.json"
+          Link="PlaybookFixtures\component-manifest.json"
           CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
