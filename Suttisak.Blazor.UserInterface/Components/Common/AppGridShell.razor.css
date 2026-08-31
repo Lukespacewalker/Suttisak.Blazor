@@ -1,8 +1,11 @@
-.app-grid-shell { box-sizing: border-box; display: flex; flex: 1 1 0; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid var(--app-glass-border); border-radius: var(--app-radius-lg); background: var(--app-glass-surface-strong); box-shadow: var(--app-shadow-md); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); scrollbar-gutter: stable; overscroll-behavior-inline: contain; }
+.app-grid-shell { box-sizing: border-box; display: flex; flex: 1 1 0; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid var(--app-glass-border); border-radius: var(--app-radius-lg); background: var(--app-glass-surface-strong); box-shadow: var(--app-shadow-md); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); overscroll-behavior-inline: contain; }
 .app-grid-shell__commandbar,
 .app-grid-shell__toolbar { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: .65rem; padding: .75rem; border-bottom: 1px solid var(--app-border); background: var(--app-surface-muted); }
 .app-grid-shell__toolbar { justify-content: space-between; }
 .app-grid-shell__search { min-width: min(18rem, 100%); flex: 1 1 18rem; }
+.app-grid-shell__search ::deep .app-form-control__input-wrap { border-color: var(--app-border); background: var(--app-surface); box-shadow: 0 .18rem .55rem var(--app-shadow-color); }
+.app-grid-shell__search ::deep .app-form-control__input-wrap:hover { border-color: var(--app-accent-border); background: var(--app-surface); }
+.app-grid-shell__search ::deep .app-form-control__input-wrap:focus-within { border-color: var(--app-accent-border); background: var(--app-surface); box-shadow: 0 0 0 .22rem var(--app-brand-soft), 0 .45rem 1rem var(--app-shadow-color); }
 .app-grid-shell__filters { display: flex; min-width: 0; flex: 1 1 auto; flex-wrap: wrap; gap: .45rem; }
 .app-grid-shell__actions { display: flex; margin-inline-start: auto; flex-wrap: wrap; gap: .45rem; }
 .app-grid-shell__viewport { min-width: 0; min-height: 0; overflow: auto; }

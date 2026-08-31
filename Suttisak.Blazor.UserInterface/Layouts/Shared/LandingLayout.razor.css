@@ -38,7 +38,7 @@
     text-decoration: none;
 }
 
-.landing-layout__brand img {
+.landing-layout__brand ::deep img {
     width: 2rem;
     height: 2rem;
     flex: 0 0 auto;

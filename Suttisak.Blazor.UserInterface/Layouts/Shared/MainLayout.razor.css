@@ -7,7 +7,7 @@
     text-decoration: none;
 }
 
-.main-layout__brand img {
+.main-layout__brand ::deep img {
     width: 2.2rem;
     height: 2.2rem;
     flex: 0 0 auto;
@@ -25,5 +25,5 @@
 
 @container app-shell (max-width: 30rem) {
     .main-layout__brand span { max-width: 8.5rem; font-size: .78rem; }
-    .main-layout__brand img { width: 1.9rem; height: 1.9rem; }
+    .main-layout__brand ::deep img { width: 1.9rem; height: 1.9rem; }
 }

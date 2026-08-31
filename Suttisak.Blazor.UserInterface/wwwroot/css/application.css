@@ -297,7 +297,6 @@ samp {
     box-shadow: var(--app-shadow-md);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    scrollbar-gutter: stable;
 }
 
 .app-grid-shell .app-grid {
