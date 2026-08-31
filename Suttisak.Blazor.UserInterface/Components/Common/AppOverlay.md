@@ -30,8 +30,14 @@ class or instance dependency.
 
 ```csharp
 var result = await Overlays.ShowDrawerAsync<PersonEditor, PersonEditModel>(
-    new AppOverlayOptions { Title = "Edit person", DrawerSize = AppDrawerSize.Wide },
-    AppOverlayParameters.Create((nameof(PersonEditor.Content), draft)));
+    new AppOverlayOptions
+    {
+        Title = "Edit person",
+        CloseLabel = "Close person editor",
+        DrawerSize = AppDrawerSize.Wide
+    },
+    AppOverlayParameters.Create((nameof(PersonEditor.Content), draft)),
+    footer: controller => @<PersonEditorFooter Controller="@controller" FormId="person-editor" />);
 
 if (result.HasValue)
     await SaveAsync(result.Value!);
@@ -46,3 +52,5 @@ dialogs or lose their result. `AppOverlayOptions.Dismissible` and
 `PreventDismissOnOutsideClick` apply equally to service-hosted dialogs and
 drawers. Set `PreventDismissOnOutsideClick` when a drawer should retain the
 close button and Escape but protect an in-progress form from backdrop clicks.
+The host cancels the active overlay and any queued requests when client-side
+navigation changes the owning route.

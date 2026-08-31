@@ -174,20 +174,20 @@ test('AppDrawer supports X and Escape while protecting against backdrop dismissa
 test('Foundations exposes semantic tokens instead of a parallel palette', async ({ page }) => {
   await page.goto('/foundations');
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Tokens before decoration.' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Design tokens' })).toBeVisible();
   await expect(page.locator('.foundations-page__token-grid article')).toHaveCount(71);
   await expect(page.getByText('--app-brand', { exact: true })).toBeVisible();
   await expect(page.getByText('--app-space-4', { exact: true })).toBeVisible();
   await expect(page.getByText('--app-radius-lg', { exact: true })).toBeVisible();
 });
 
-test('Guidelines publishes the agent-first component discovery workflow', async ({ page }) => {
+test('Guidelines publishes the component discovery workflow', async ({ page }) => {
   await page.goto('/guidelines');
 
-  await expect(page.getByRole('heading', { level: 2, name: 'AI / agent workflow' })).toBeVisible();
-  await expect(page.getByText('Search the component catalog first.')).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Repository workflow' })).toBeVisible();
+  await expect(page.getByText('Search the component catalog.')).toBeVisible();
 
-  const manifestLink = page.getByRole('link', { name: /machine-readable component manifest/i });
+  const manifestLink = page.getByRole('link', { name: /View component manifest/i });
   await expect(manifestLink).toHaveAttribute('href', 'component-manifest.json');
 });
 

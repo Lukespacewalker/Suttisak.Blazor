@@ -80,6 +80,117 @@ public class AppOverlayHostTests
     }
 
     [Fact]
+    public void Component_drawer_renders_application_footer_outside_the_scrollable_body()
+    {
+        using var context = new BunitContext();
+        context.Services.AddAppOverlays();
+
+        var overlayModule = context.JSInterop.SetupModule(
+            "./_content/Suttisak.Blazor.UserInterface/js/app-overlay.js");
+        overlayModule.SetupVoid("showModal", _ => true).SetVoidResult();
+
+        var host = context.Render<AppOverlayHost>();
+        var service = context.Services.GetRequiredService<AppOverlayService>();
+        RenderFragment<AppOverlayController> footer = controller => builder =>
+        {
+            builder.OpenElement(0, "button");
+            builder.AddAttribute(1, "data-testid", "drawer-footer-action");
+            builder.AddContent(2, "Save changes");
+            builder.CloseElement();
+        };
+
+        host.InvokeAsync(() =>
+        {
+            _ = service.ShowDrawerAsync<TestOverlayBody, string>(
+                new AppOverlayOptions { Title = "Edit record" },
+                AppOverlayParameters.Create((nameof(TestOverlayBody.Text), "Component body")),
+                footer);
+        });
+
+        host.WaitForAssertion(() =>
+        {
+            Assert.Equal("Component body", host.Find(".app-drawer__body [data-testid='drawer-body']").TextContent);
+            Assert.Equal("Save changes", host.Find(".app-drawer__footer [data-testid='drawer-footer-action']").TextContent);
+            Assert.Empty(host.FindAll(".app-drawer__body [data-testid='drawer-footer-action']"));
+        });
+    }
+
+    [Fact]
+    public void Service_hosted_drawer_uses_the_application_owned_close_label()
+    {
+        using var context = new BunitContext();
+        context.Services.AddAppOverlays();
+
+        var overlayModule = context.JSInterop.SetupModule(
+            "./_content/Suttisak.Blazor.UserInterface/js/app-overlay.js");
+        overlayModule.SetupVoid("showModal", _ => true).SetVoidResult();
+
+        var host = context.Render<AppOverlayHost>();
+        var service = context.Services.GetRequiredService<AppOverlayService>();
+
+        host.InvokeAsync(() =>
+        {
+            _ = service.ShowDrawerAsync<TestOverlayBody, string>(
+                new AppOverlayOptions
+                {
+                    Title = "แก้ไขข้อมูล",
+                    CloseLabel = "ปิดแผงแก้ไข"
+                },
+                AppOverlayParameters.Create((nameof(TestOverlayBody.Text), "Drawer content")));
+        });
+
+        host.WaitForAssertion(() =>
+            Assert.Equal("ปิดแผงแก้ไข", host.Find(".app-drawer__close").GetAttribute("aria-label")));
+    }
+
+    [Fact]
+    public async Task Route_change_cancels_the_current_and_queued_overlays_and_keeps_the_queue_reusable()
+    {
+        using var context = new BunitContext();
+        context.Services.AddAppOverlays();
+
+        var overlayModule = context.JSInterop.SetupModule(
+            "./_content/Suttisak.Blazor.UserInterface/js/app-overlay.js");
+        overlayModule.SetupVoid("showModal", _ => true).SetVoidResult();
+        overlayModule.SetupVoid("close", _ => true).SetVoidResult();
+
+        var host = context.Render<AppOverlayHost>();
+        var service = context.Services.GetRequiredService<AppOverlayService>();
+        var navigation = context.Services.GetRequiredService<NavigationManager>();
+        Task<AppOverlayResult<string>>? currentTask = null;
+        Task<AppOverlayResult<string>>? queuedTask = null;
+
+        await host.InvokeAsync(() =>
+        {
+            currentTask = service.ShowDrawerAsync<TestOverlayBody, string>(
+                new AppOverlayOptions { Title = "Current drawer" },
+                AppOverlayParameters.Create((nameof(TestOverlayBody.Text), "Current")));
+            queuedTask = service.ShowDrawerAsync<TestOverlayBody, string>(
+                new AppOverlayOptions { Title = "Queued drawer" },
+                AppOverlayParameters.Create((nameof(TestOverlayBody.Text), "Queued")));
+        });
+        host.WaitForElement("[data-testid='drawer-body']");
+
+        await host.InvokeAsync(() => navigation.NavigateTo("/next-page"));
+
+        var currentResult = await currentTask!.WaitAsync(
+            TimeSpan.FromSeconds(1), Xunit.TestContext.Current.CancellationToken);
+        var queuedResult = await queuedTask!.WaitAsync(
+            TimeSpan.FromSeconds(1), Xunit.TestContext.Current.CancellationToken);
+        Assert.True(currentResult.IsCancelled);
+        Assert.True(queuedResult.IsCancelled);
+
+        await host.InvokeAsync(() =>
+        {
+            _ = service.ShowDrawerAsync<TestOverlayBody, string>(
+                new AppOverlayOptions { Title = "Next page drawer" },
+                AppOverlayParameters.Create((nameof(TestOverlayBody.Text), "Next page")));
+        });
+        host.WaitForAssertion(() =>
+            Assert.Equal("Next page", host.Find("[data-testid='drawer-body']").TextContent));
+    }
+
+    [Fact]
     public async Task Drawer_cancel_completes_only_after_javascript_closes_the_element()
     {
         using var context = new BunitContext();

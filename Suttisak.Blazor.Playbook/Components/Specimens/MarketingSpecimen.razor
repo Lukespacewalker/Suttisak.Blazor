@@ -12,14 +12,14 @@
                     <MarketingActionLink Href="#marketing-specimen-features"
                                          Variant="@_primaryActionVariant"
                                          data-testid="marketing-primary-action">
-                        Explore the workflow
+                        View workflow
                     </MarketingActionLink>
                     @if (_showSecondaryAction)
                     {
                         <MarketingActionLink Href="#marketing-specimen-proof"
                                              Variant="MarketingActionVariant.Secondary"
                                              data-testid="marketing-secondary-action">
-                            Review assurances
+                            View details
                         </MarketingActionLink>
                     }
                 </Actions>
@@ -43,19 +43,19 @@
 
             @if (_showProofStrip)
             {
-                <MarketingProofStrip AriaLabel="Product assurances"
+                <MarketingProofStrip AriaLabel="Product details"
                                      Class="marketing-specimen__proof"
                                      data-testid="marketing-proof-strip"
                                      id="marketing-specimen-proof">
                     <MarketingProofItem Value="AA"
-                                        Title="Accessible foundation"
+                                        Title="Accessibility support"
                                         Description="Focus, contrast, and responsive behavior remain part of the shared contract."
                                         data-testid="marketing-proof-item" />
                     <MarketingProofItem Value="01"
                                         Title="One component language"
                                         Description="Every product composes the same primitives without inheriting another product's copy." />
                     <MarketingProofItem Value="24/7"
-                                        Title="Theme-ready"
+                                        Title="Theme support"
                                         Description="Semantic tokens carry the experience across light, dark, and product themes." />
                 </MarketingProofStrip>
             }
@@ -63,30 +63,30 @@
             <section id="marketing-specimen-features" class="marketing-specimen__section" aria-labelledby="marketing-specimen-features-title">
                 <MarketingContainer data-testid="marketing-container">
                     <MarketingSectionHeader HeadingId="marketing-specimen-features-title"
-                                            Title="A product story built from real components"
-                                            Description="Change the controls to exercise the public presentation contract rather than a static screenshot."
+                                            Title="Landing page sections"
+                                            Description="The controls update the component parameters in this example."
                                             Compact="@_compactHeader"
                                             data-testid="marketing-section-header">
                         <Eyebrow><span class="marketing-specimen__eyebrow">Core capabilities</span></Eyebrow>
                     </MarketingSectionHeader>
 
                     <MarketingFeatureGrid data-testid="marketing-feature-grid">
-                        <MarketingCard Title="Lead with the outcome"
+                        <MarketingCard Title="Page heading"
                                        Featured="@_featuredCard"
                                        Compact="@_compactCards"
                                        data-testid="marketing-featured-card">
                             <Visual><span class="marketing-specimen__card-number">01</span></Visual>
-                            <ChildContent><p>Use the hero and primary action to make the next useful step obvious.</p></ChildContent>
+                            <ChildContent><p>The hero contains the page heading and primary action.</p></ChildContent>
                         </MarketingCard>
-                        <MarketingCard Title="Prove the workflow"
+                        <MarketingCard Title="Product preview"
                                        Compact="@_compactCards"
                                        data-testid="marketing-standard-card">
                             <Visual><span class="marketing-specimen__card-number">02</span></Visual>
-                            <ChildContent><p>Product frames, proof items, and cards explain value without inventing business metrics.</p></ChildContent>
+                            <ChildContent><p>Product frames and cards show the interface and supporting details.</p></ChildContent>
                         </MarketingCard>
-                        <MarketingCard Title="Close with intent" Compact="@_compactCards">
+                        <MarketingCard Title="Final action" Compact="@_compactCards">
                             <Visual><span class="marketing-specimen__card-number">03</span></Visual>
-                            <ChildContent><p>Steps and a final call to action keep the page moving toward one coherent decision.</p></ChildContent>
+                            <ChildContent><p>The step list is followed by the final page action.</p></ChildContent>
                         </MarketingCard>
                     </MarketingFeatureGrid>
                 </MarketingContainer>
@@ -95,13 +95,13 @@
             <section class="marketing-specimen__section marketing-specimen__section--steps" aria-labelledby="marketing-specimen-steps-title">
                 <MarketingContainer>
                     <MarketingSectionHeader HeadingId="marketing-specimen-steps-title"
-                                            Title="From signal to next step"
-                                            Description="The ordered list preserves the sequence in both visual and assistive-technology reading modes."
+                                            Title="Workflow steps"
+                                            Description="The ordered list keeps the same sequence visually and for assistive technology."
                                             Compact="true" />
                     <MarketingStepList data-testid="marketing-step-list">
-                        <MarketingStep Number="01" Title="Frame the outcome" Description="Name the audience and the decision the page supports." data-testid="marketing-step" />
-                        <MarketingStep Number="02" Title="Show credible proof" Description="Use real product states and verified assurances." />
-                        <MarketingStep Number="03" Title="Offer one next action" Description="Make the final path explicit and easy to complete." />
+                        <MarketingStep Number="01" Title="Write the heading" Description="Name the audience and the task supported by the page." data-testid="marketing-step" />
+                        <MarketingStep Number="02" Title="Add product details" Description="Show the relevant interface states and supporting information." />
+                        <MarketingStep Number="03" Title="Add the final action" Description="Give the action a specific label and destination." />
                     </MarketingStepList>
                 </MarketingContainer>
             </section>
@@ -112,12 +112,12 @@
                     <MarketingContainer>
                         <MarketingCallToAction data-testid="marketing-call-to-action">
                             <Content>
-                                <span class="marketing-specimen__eyebrow">Ready to continue?</span>
-                                <h2>Turn the product promise into one clear action.</h2>
-                                <p>The application still owns this wording, destination, authorization, and analytics.</p>
+                                <span class="marketing-specimen__eyebrow">Page action</span>
+                                <h2>Continue to the next page</h2>
+                                <p>The application supplies the label, destination, authorization, and analytics.</p>
                             </Content>
                             <Actions>
-                                <MarketingActionLink Href="#marketing-specimen-hero-title">Return to the product story</MarketingActionLink>
+                                <MarketingActionLink Href="#marketing-specimen-hero-title">Return to heading</MarketingActionLink>
                             </Actions>
                         </MarketingCallToAction>
                     </MarketingContainer>
@@ -146,19 +146,19 @@
         <label><input type="checkbox" @bind="_showCallToAction" /> Closing call to action</label>
     </Controls>
     <States>
-        <article><span>Hero</span><strong>Outcome-first composition</strong><small>Copy, media, and actions remain explicit application-owned slots.</small></article>
-        <article><span>Proof</span><strong>Verified claims only</strong><small>Proof items describe real assurances or outcomes rather than decorative statistics.</small></article>
-        <article><span>Feature grid</span><strong>Featured and compact states</strong><small>Cards vary emphasis without changing their semantic article contract.</small></article>
+        <article><span>Hero</span><strong>Heading, media, and actions</strong><small>The application supplies content for each slot.</small></article>
+        <article><span>Details</span><strong>Product information</strong><small>Proof items contain metrics, credentials, or outcomes supplied by the application.</small></article>
+        <article><span>Feature grid</span><strong>Featured and compact cards</strong><small>Cards vary emphasis while keeping article semantics.</small></article>
         <article><span>Workflow</span><strong>Ordered steps</strong><small>StepList and Step preserve sequence through native list semantics.</small></article>
-        <article><span>Action</span><strong>Anchor behavior</strong><small>MarketingActionLink keeps navigation semantics while sharing primary and secondary treatments.</small></article>
-        <article><span>Page wrapper</span><strong>Pattern-level coverage</strong><small>MarketingPage remains documented by the full landing route because nesting a second main landmark would be invalid.</small></article>
+        <article><span>Action</span><strong>Links</strong><small>MarketingActionLink uses anchor semantics with primary and secondary styles.</small></article>
+        <article><span>Page wrapper</span><strong>MarketingPage</strong><small>The landing route documents MarketingPage because it owns the main landmark.</small></article>
     </States>
 </ComponentSpecimenLayout>
 
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
-    private string _heroTitle = "Make the next decision feel simple.";
+    private string _heroTitle = "Review the result and next steps";
     private MarketingActionVariant _primaryActionVariant = MarketingActionVariant.Primary;
     private bool _showSecondaryAction = true;
     private bool _showProductFrame = true;

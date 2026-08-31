@@ -44,12 +44,12 @@
                         <span>@(IsThai ? $"เพิ่งเริ่มใช้ {CurrentTheme.Name}?" : $"New to {CurrentTheme.Name}?")</span>
                         <a href="access/register">@(IsThai ? "สร้างบัญชี" : "Create an account")</a>
                     </div>
-                    <p class="access-demo-note">@T("Playbook preview — authentication actions are intentionally disabled.", "ตัวอย่าง Playbook — การยืนยันตัวตนถูกปิดไว้โดยตั้งใจ")</p>
+                    <p class="access-demo-note">@T("Authentication is disabled in this preview.", "ตัวอย่างนี้ปิดการยืนยันตัวตนไว้")</p>
             </ChildContent>
             <Showcase>
                 <span class="access-story__index">@(IsThai ? "การเข้าถึงที่ปลอดภัย" : "SECURE ACCESS")</span>
                 <div>
-                    <blockquote>@(IsThai ? "“ประตูเดียวที่ชัดเจน สู่งานสำคัญของคุณ”" : "“One clear doorway into the work that matters.”")</blockquote>
+                    <blockquote>@(IsThai ? "ลงชื่อเข้าใช้เพื่อเปิดพื้นที่ทำงานของคุณ" : "Sign in to access your workspace.")</blockquote>
                     <p>@(IsThai ? $"เข้าสู่ระบบอย่างปลอดภัยเพื่อทำงานต่อใน {CurrentTheme.Name}" : $"Sign in securely to continue your work in {CurrentTheme.Name}.")</p>
                 </div>
                 <div class="access-story__status"><i></i><span>@(IsThai ? "การเข้าถึงส่วนบุคคลที่ได้รับการปกป้อง" : "Private, protected access")</span><b>@CurrentTheme.Name.ToUpperInvariant()</b></div>

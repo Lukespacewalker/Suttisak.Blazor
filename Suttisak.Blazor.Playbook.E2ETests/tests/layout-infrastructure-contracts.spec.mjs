@@ -2,14 +2,14 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const contracts = [
-  { slug: 'marketing-page', kind: 'Pattern-backed', parameter: 'Id', route: 'landing' },
-  { slug: 'access-page-layout', kind: 'Pattern-backed', parameter: 'Title', route: 'access/login' },
-  { slug: 'application-shell', kind: 'Pattern-backed', parameter: 'Brand', route: 'application-shell' },
-  { slug: 'header-footer-layout', kind: 'Pattern-backed', parameter: 'Body', route: 'layout-patterns/header-footer' },
-  { slug: 'identity-layout', kind: 'Pattern-backed', parameter: 'Body', route: 'layout-patterns/identity' },
-  { slug: 'landing-layout', kind: 'Pattern-backed', parameter: 'Body', route: 'layout-patterns/landing' },
-  { slug: 'main-layout', kind: 'Pattern-backed', parameter: 'Body', route: 'layout-patterns/application' },
-  { slug: 'root-layout', kind: 'Pattern-backed', parameter: 'Body', route: 'layout-patterns/application' },
+  { slug: 'marketing-page', kind: 'Pattern docs', parameter: 'Id', route: 'landing' },
+  { slug: 'access-page-layout', kind: 'Pattern docs', parameter: 'Title', route: 'access/login' },
+  { slug: 'application-shell', kind: 'Pattern docs', parameter: 'Brand', route: 'application-shell' },
+  { slug: 'header-footer-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/header-footer' },
+  { slug: 'identity-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/identity' },
+  { slug: 'landing-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/landing' },
+  { slug: 'main-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/application' },
+  { slug: 'root-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/application' },
   { slug: 'app-input-support', kind: 'Reference', parameter: 'Description', route: 'components/app-text-box' },
   { slug: 'app-overlay-host', kind: 'Reference', parameter: null, route: 'components/app-dialog' },
   { slug: 'layout-mobile-menu-button-wrapper', kind: 'Reference', parameter: null, route: null }
@@ -24,18 +24,18 @@ async function expectNoSeriousOrCriticalViolations(page, include) {
 }
 
 for (const contract of contracts) {
-  test(`${contract.slug} has deliberate ${contract.kind} documentation and runtime metadata`, async ({ page }) => {
+  test(`${contract.slug} has ${contract.kind} and runtime metadata`, async ({ page }) => {
     await page.goto(`/components/${contract.slug}`);
 
     await expect(page.locator('.component-detail__coverage')).toHaveText(contract.kind);
     const documentation = page.getByTestId('coverage-documentation');
     await expect(documentation).toBeVisible();
-    await expect(documentation.getByText('Documentation only · not executed here')).toBeVisible();
-    const documentationKind = contract.kind === 'Pattern-backed' ? 'Pattern' : contract.kind;
-    await expect(documentation.getByRole('heading', { level: 3, name: `Why this is a ${documentationKind}` })).toBeVisible();
+    const documentationKind = contract.kind === 'Pattern docs' ? 'Pattern' : 'Reference';
+    await expect(documentation.getByText(`${documentationKind} documentation`)).toBeVisible();
+    await expect(documentation.getByRole('heading', { level: 3, name: `${documentationKind} coverage` })).toBeVisible();
     await expect(documentation.getByText('Composition responsibilities', { exact: true })).toBeVisible();
     await expect(documentation.getByText('Application-owned responsibilities', { exact: true })).toBeVisible();
-    await expect(documentation.getByText('Regression evidence', { exact: true })).toBeVisible();
+    await expect(documentation.getByText('Tests', { exact: true })).toBeVisible();
     await expect(documentation.getByText('Related components', { exact: true })).toBeVisible();
     await expect(page.locator('.component-detail__generic-preview')).toHaveCount(0);
 

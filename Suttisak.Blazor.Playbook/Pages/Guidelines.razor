@@ -5,18 +5,18 @@
 <PlaybookShell>
     <main class="guidelines-page">
         <header class="guidelines-page__hero">
-            <span class="playbook-kicker">Shared UI guardrails</span>
-            <h1>Ship the contract,<br /><em>not the screenshot.</em></h1>
-            <p>A component is complete only when its behavior survives themes, keyboard navigation, constrained containers, asynchronous state, and application-owned content.</p>
+            <span class="playbook-kicker">Shared UI requirements</span>
+            <h1>Component requirements</h1>
+            <p>Shared components must work across themes, keyboard navigation, constrained containers, asynchronous states, and application content.</p>
         </header>
 
         <section class="guidelines-page__section" aria-labelledby="accessibility-guide-title">
-            <header><span>01</span><div><h2 id="accessibility-guide-title">Accessibility</h2><p>Accessibility is a component API concern, not a final audit pass.</p></div></header>
+            <header><span>01</span><div><h2 id="accessibility-guide-title">Accessibility</h2><p>Accessibility requirements are part of the component API.</p></div></header>
             <div class="guidelines-page__cards">
-                <article><strong>Native first</strong><p>Prefer the semantic HTML element that already owns the expected browser and assistive-technology behavior.</p></article>
-                <article><strong>Keyboard complete</strong><p>Tab, Enter, Space, arrows, and Escape must follow the interaction model of the control, including overlays and composite widgets.</p></article>
-                <article><strong>Focus visible</strong><p>Every interactive state must preserve a visible focus indicator in product themes and forced-colors mode.</p></article>
-                <article><strong>Relationships explicit</strong><p>Labels, descriptions, errors, headings, panels, and controls must remain connected through semantic attributes.</p></article>
+                <article><strong>Native elements</strong><p>Use the semantic HTML element that provides the expected browser and assistive-technology behavior.</p></article>
+                <article><strong>Keyboard behavior</strong><p>Tab, Enter, Space, arrow keys, and Escape must follow the interaction model of the control.</p></article>
+                <article><strong>Visible focus</strong><p>Every interactive state needs a visible focus indicator in product themes and forced-colors mode.</p></article>
+                <article><strong>Semantic relationships</strong><p>Connect labels, descriptions, errors, headings, panels, and controls with semantic attributes.</p></article>
             </div>
         </section>
 
@@ -36,11 +36,11 @@
         </section>
 
         <section class="guidelines-page__section" aria-labelledby="status-guide-title">
-            <header><span>04</span><div><h2 id="status-guide-title">Component maturity</h2><p>Status communicates how aggressively consumers and agents may depend on a public contract.</p></div></header>
+            <header><span>04</span><div><h2 id="status-guide-title">Component maturity</h2><p>Status indicates how much change consumers should expect.</p></div></header>
             <div class="guidelines-page__status-grid">
-                <article><strong>Stable</strong><p>Public contract is intended for normal consumption. Breaking changes require deliberate migration.</p></article>
-                <article><strong>Beta</strong><p>Useful and testable, but public API or composition may still move as integration evidence grows.</p></article>
-                <article><strong>Experimental</strong><p>Exploration only. Do not make it a broad dependency without explicitly accepting churn.</p></article>
+                <article><strong>Stable</strong><p>Suitable for normal use. Breaking changes require a migration.</p></article>
+                <article><strong>Beta</strong><p>Available for use, but its API or composition may still change.</p></article>
+                <article><strong>Experimental</strong><p>Intended for evaluation. Expect frequent changes.</p></article>
                 <article><strong>Deprecated</strong><p>Existing consumers may remain temporarily, but new code should use the documented replacement.</p></article>
             </div>
         </section>
@@ -48,24 +48,24 @@
         <section class="guidelines-page__section" aria-labelledby="documentation-guide-title">
             <header><span>05</span><div><h2 id="documentation-guide-title">Documentation model</h2><p>Components, executable stories, and composition patterns answer different questions and are counted separately.</p></div></header>
             <div class="guidelines-page__cards">
-                <article><strong>@PlaybookComponentCatalog.All.Count Components</strong><p>A component is a reusable public Razor contract. Its <code>/components/{slug}</code> route owns API and source guidance, maturity, coverage, and links to the patterns that use it.</p></article>
-                <article><strong>@PlaybookSpecimenRegistry.InteractiveSpecimenCount mappings / @PlaybookSpecimenRegistry.DistinctSpecimenCount workbenches</strong><p>A focused Story or Specimen executes a component state or interaction in a controlled context. Several component mappings may deliberately share one broader workbench; neither number is a Pattern count.</p></article>
-                <article><strong>@PlaybookPatternCatalog.All.Count Patterns</strong><p>A Pattern is a first-class composition recipe. <a href="patterns">The Pattern Library</a> names ingredients, assembly steps, ownership, minimal Razor, quality checks, a live route, and regression evidence.</p></article>
-                <article><strong>One derived manifest</strong><p>The checked-in machine manifest is generated from the typed component and pattern catalogs, then contract-tested against the exported public component surface.</p></article>
+                <article><strong>@PlaybookComponentCatalog.All.Count components</strong><p>Each <code>/components/{slug}</code> page lists API details, source links, maturity, coverage, and related patterns.</p></article>
+                <article><strong>@PlaybookSpecimenRegistry.InteractiveSpecimenCount mappings / @PlaybookSpecimenRegistry.DistinctSpecimenCount workbenches</strong><p>A specimen displays a component state or interaction. Several components may share a workbench.</p></article>
+                <article><strong>@PlaybookPatternCatalog.All.Count patterns</strong><p>Each <a href="patterns">pattern</a> lists its components, assembly steps, responsibilities, sample Razor, page route, and tests.</p></article>
+                <article><strong>Generated manifest</strong><p>The manifest is generated from the component and pattern catalogs. Contract tests compare it with the exported component types.</p></article>
             </div>
         </section>
 
-        <section class="guidelines-page__section guidelines-page__agent" aria-labelledby="agent-guide-title">
-            <header><span>06</span><div><h2 id="agent-guide-title">AI / agent workflow</h2><p>The Playbook is also a machine-facing map of what already exists.</p></div></header>
+        <section class="guidelines-page__section guidelines-page__workflow" aria-labelledby="workflow-guide-title">
+            <header><span>06</span><div><h2 id="workflow-guide-title">Repository workflow</h2><p>Use this sequence when adding or changing shared UI.</p></div></header>
             <ol>
-                <li><strong>Search the component catalog first.</strong><span>Do not introduce raw markup or a new component until existing primitives and patterns have been checked.</span></li>
-                <li><strong>Open the component detail route.</strong><span>Inspect status, API metadata, the focused specimen or honest reference guidance, responsive behavior, and “Used in patterns” relationships before composing a page.</span></li>
-                <li><strong>Open the Pattern Library.</strong><span>Use <code>/patterns</code> and <code>/patterns/{slug}</code> to learn the ingredients, assembly order, ownership boundary, and verified live route.</span></li>
-                <li><strong>Use semantic tokens.</strong><span>Never hard-code a product palette into reusable library CSS.</span></li>
-                <li><strong>Update the catalogs and regenerate the manifest.</strong><span>Record public API changes in the typed catalogs, then run <code>dotnet run --project scripts/PlaybookManifestGenerator/PlaybookManifestGenerator.csproj</code>. Contract tests compare the result with exported component types, pattern backlinks, and live routes.</span></li>
-                <li><strong>Run component and browser verification.</strong><span>Build, bUnit, Playwright, axe, mobile width, reduced motion, and theme checks form one definition of done.</span></li>
+                <li><strong>Search the component catalog.</strong><span>Check existing components and patterns before adding markup or another component.</span></li>
+                <li><strong>Read the component page.</strong><span>Check its status, API, specimen, responsive behavior, and related patterns.</span></li>
+                <li><strong>Check page patterns.</strong><span><code>/patterns</code> lists the components, assembly order, responsibilities, and page route.</span></li>
+                <li><strong>Use semantic tokens.</strong><span>Reusable CSS must not contain a product palette.</span></li>
+                <li><strong>Regenerate the manifest.</strong><span>Update the catalogs, then run <code>dotnet run --project scripts/PlaybookManifestGenerator/PlaybookManifestGenerator.csproj</code>.</span></li>
+                <li><strong>Run the tests.</strong><span>Build the solution, run bUnit, and run the Playwright suite.</span></li>
             </ol>
-            <a href="component-manifest.json">Open machine-readable component manifest →</a>
+            <a href="component-manifest.json">View component manifest →</a>
         </section>
     </main>
 </PlaybookShell>

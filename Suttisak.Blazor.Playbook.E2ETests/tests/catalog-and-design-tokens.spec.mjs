@@ -10,12 +10,12 @@ async function expectNoSeriousOrCriticalViolations(page) {
   expect(blocking).toEqual([]);
 }
 
-test('Component Browser reports and filters the complete catalog from one source', async ({ page, request }) => {
+test('Component Browser reports and filters the catalog from the manifest', async ({ page, request }) => {
   const manifest = await (await request.get('/component-manifest.json')).json();
   const interactiveCount = manifest.components.filter(component => component.coverage === 'interactive').length;
   await page.goto('/components');
 
-  await expect(page.getByRole('heading', { level: 1, name: /Find the contract/i })).toBeVisible({ timeout: wasmTimeout });
+  await expect(page.getByRole('heading', { level: 1, name: /Browse components/i })).toBeVisible({ timeout: wasmTimeout });
 
   const summary = page.getByRole('complementary', { name: 'Component coverage summary' });
   await expect(summary).toBeVisible();
@@ -44,7 +44,7 @@ test('Component Browser has no serious or critical accessibility violations', as
   await expectNoSeriousOrCriticalViolations(page);
 });
 
-test('Playbook home reports the same distinct workbench count as the Component Browser', async ({ page }) => {
+test('Playbook home reports the same workbench count as the Component Browser', async ({ page }) => {
   await page.goto('/components');
   const browserMetric = page.getByRole('complementary', { name: 'Component coverage summary' })
     .locator('article').filter({ hasText: 'workbenches' }).locator('strong');
@@ -52,7 +52,7 @@ test('Playbook home reports the same distinct workbench count as the Component B
 
   await page.goto('/');
 
-  const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Distinct workbenches' });
+  const metric = page.locator('.playbook-home__metrics article').filter({ hasText: 'Workbenches' });
   await expect(metric.locator('strong')).toHaveText(workbenchCount ?? '');
 });
 
@@ -112,7 +112,7 @@ test('packaged design-token manifest is complete and unique', async ({ request }
 test('token explorer renders the packaged contract and passes axe', async ({ page }) => {
   await page.goto('/tokens');
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Tokens before decoration.' })).toBeVisible({ timeout: wasmTimeout });
+  await expect(page.getByRole('heading', { level: 1, name: 'Design tokens' })).toBeVisible({ timeout: wasmTimeout });
   await expect(page.locator('[data-design-token]')).toHaveCount(71, { timeout: wasmTimeout });
   await expect(page.locator('[data-design-token="--app-brand"]')).toBeVisible();
   await expect(page.locator('[data-design-token="--app-duration-normal"]')).toBeVisible();

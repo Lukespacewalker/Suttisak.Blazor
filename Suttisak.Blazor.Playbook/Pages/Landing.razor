@@ -9,7 +9,7 @@
     <div class="landing-workbench">
         <header class="landing-workbench__note">
             <div><span class="playbook-kicker">Live composition</span><strong>@CurrentTheme.Name landing page</strong></div>
-            <p>Built entirely from shared Marketing components. Edit this route to prototype a product landing page without touching an application.</p>
+            <p>This page uses the shared Marketing components and the selected application theme.</p>
             <span class="landing-workbench__badge">@State.Mode · @State.Viewport</span>
         </header>
 
@@ -26,13 +26,13 @@
                             <a href="#landing-features">Benefits</a>
                             <a href="#landing-how">How it works</a>
                         </nav>
-                        <a class="landing-site-header__action" href="#landing-product-preview">Explore</a>
+                        <a class="landing-site-header__action" href="#landing-product-preview">Product</a>
                     </MarketingContainer>
                 </header>
 
                 <MarketingHero Class="landing-reveal landing-reveal--hero"
-                               Title="Understand the signal. Act with confidence."
-                               Description="@($"{CurrentTheme.Name} turns complex information into a focused next step for every person who needs it.")">
+                               Title="See the result and decide what to do next"
+                               Description="@($"{CurrentTheme.Name} presents the result, supporting detail, and available follow-up in one page.")">
                     <Eyebrow>
                         <span class="landing-brand-lockup">
                             <span class="landing-brand-lockup__mark"><img src="@CurrentTheme.LogoPath" alt="" width="@CurrentTheme.LogoWidth" height="@CurrentTheme.LogoHeight" /></span>
@@ -40,8 +40,8 @@
                         </span>
                     </Eyebrow>
                     <Actions>
-                        <MarketingActionLink Href="#landing-features">Explore the product</MarketingActionLink>
-                        <MarketingActionLink Href="#landing-product-preview" Variant="MarketingActionVariant.Secondary">See live preview</MarketingActionLink>
+                        <MarketingActionLink Href="#landing-features">View benefits</MarketingActionLink>
+                        <MarketingActionLink Href="#landing-product-preview" Variant="MarketingActionVariant.Secondary">View product</MarketingActionLink>
                     </Actions>
                     <Media>
                         <figure class="landing-hero-visual @(CurrentTheme.CropHero ? "landing-hero-visual--framed landing-hero-visual--cover" : "landing-hero-visual--floating")">
@@ -51,24 +51,24 @@
                     </Media>
                 </MarketingHero>
 
-                <MarketingProofStrip Class="landing-reveal" AriaLabel="Product highlights">
-                    <MarketingProofItem Value="01" Title="One clear source" Description="Shared language across every role." />
-                    <MarketingProofItem Value="24/7" Title="Ready when needed" Description="Responsive from desk to phone." />
-                    <MarketingProofItem Value="AA" Title="Accessible foundation" Description="Contrast and focus built into the system." />
+                <MarketingProofStrip Class="landing-reveal" AriaLabel="Product details">
+                    <MarketingProofItem Value="01" Title="Shared data" Description="The same result appears across user roles." />
+                    <MarketingProofItem Value="24/7" Title="Responsive layout" Description="The page adapts from desktop to phone width." />
+                    <MarketingProofItem Value="AA" Title="Keyboard support" Description="Controls include visible focus and semantic labels." />
                 </MarketingProofStrip>
 
                 <section class="landing-product-preview landing-reveal" id="landing-product-preview" aria-labelledby="landing-preview-title">
                     <MarketingContainer>
                         <div class="landing-product-preview__heading">
-                            <div><span class="landing-section__eyebrow">LIVE PRODUCT PREVIEW</span><h2 id="landing-preview-title">See the product before the details.</h2></div>
-                            <p>The real hero establishes each app’s identity first. This preview follows as product proof, where the interface can be refined without competing with the opening message.</p>
+                                    <div><span class="landing-section__eyebrow">PRODUCT PREVIEW</span><h2 id="landing-preview-title">Product overview</h2></div>
+                                    <p>The preview shows the interface after the page introduction.</p>
                         </div>
                         <MarketingProductFrame Label="INTERACTIVE PRODUCT DIRECTION">
                             <div class="landing-dashboard">
                                 <div class="landing-dashboard__top"><span></span><span></span><span></span><b>@CurrentTheme.ShortName</b></div>
                                 <div class="landing-dashboard__body">
                                     <div class="landing-dashboard__score"><strong>82</strong><span>On track</span></div>
-                                    <div class="landing-dashboard__copy"><small>LATEST INSIGHT</small><h3>Your result, explained clearly</h3><p>Three focused recommendations are ready to review.</p></div>
+                                    <div class="landing-dashboard__copy"><small>LATEST RESULT</small><h3>Assessment summary</h3><p>Three follow-up recommendations are available.</p></div>
                                 </div>
                                 <div class="landing-dashboard__bars"><i></i><i></i><i></i><i></i><i></i></div>
                             </div>
@@ -78,13 +78,13 @@
 
                 <section class="landing-section landing-reveal" id="landing-features" aria-labelledby="landing-features-title">
                     <MarketingContainer>
-                        <MarketingSectionHeader HeadingId="landing-features-title" Title="Useful detail, without the noise" Description="A complete product story composed from reusable blocks. Swap the app theme above and the identity changes without changing the page structure.">
+                        <MarketingSectionHeader HeadingId="landing-features-title" Title="What the product helps with" Description="The same page structure is shown with each application theme.">
                             <Eyebrow><span class="landing-section__eyebrow">WHY @CurrentTheme.ShortName</span></Eyebrow>
                         </MarketingSectionHeader>
                         <MarketingFeatureGrid>
-                            <MarketingCard Title="A guided next step" Featured="true"><Visual><span class="landing-card-number">01</span></Visual><ChildContent><p>Lead with the action that matters now, then reveal detail when the reader asks for it.</p></ChildContent></MarketingCard>
-                            <MarketingCard Title="Evidence in context"><Visual><span class="landing-card-number">02</span></Visual><ChildContent><p>Keep scores, trends, and explanations together so decisions are easier to trust.</p></ChildContent></MarketingCard>
-                            <MarketingCard Title="One system, every screen"><Visual><span class="landing-card-number">03</span></Visual><ChildContent><p>Move from an overview to administration without losing the product’s visual voice.</p></ChildContent></MarketingCard>
+                            <MarketingCard Title="Recommended action" Featured="true"><Visual><span class="landing-card-number">01</span></Visual><ChildContent><p>Show the current recommendation before the supporting detail.</p></ChildContent></MarketingCard>
+                            <MarketingCard Title="Result details"><Visual><span class="landing-card-number">02</span></Visual><ChildContent><p>Keep scores, trends, and explanations on the same page.</p></ChildContent></MarketingCard>
+                            <MarketingCard Title="Responsive layout"><Visual><span class="landing-card-number">03</span></Visual><ChildContent><p>Use the same page structure at desktop and phone widths.</p></ChildContent></MarketingCard>
                         </MarketingFeatureGrid>
                     </MarketingContainer>
                 </section>
@@ -92,13 +92,13 @@
                 <section class="landing-section landing-section--muted landing-reveal" id="landing-how" aria-labelledby="landing-how-title">
                     <MarketingContainer>
                         <div class="landing-split">
-                            <MarketingSectionHeader HeadingId="landing-how-title" Title="From information to action" Description="A short, visible path helps a general audience understand what happens next." Compact="true">
+                            <MarketingSectionHeader HeadingId="landing-how-title" Title="How the workflow works" Description="The steps explain what happens after the result is available." Compact="true">
                                 <Eyebrow><span class="landing-section__eyebrow">HOW IT WORKS</span></Eyebrow>
                             </MarketingSectionHeader>
                             <MarketingStepList>
-                                <MarketingStep Number="01" Title="Bring the signal together" Description="Collect only the information needed for this decision." />
-                                <MarketingStep Number="02" Title="Explain what it means" Description="Use reader-first language and progressive disclosure." />
-                                <MarketingStep Number="03" Title="Offer a practical next step" Description="Turn the result into an action someone can complete." />
+                                <MarketingStep Number="01" Title="Collect the required information" Description="Request the fields needed to calculate the result." />
+                                <MarketingStep Number="02" Title="Display the result" Description="Show the summary before optional detail." />
+                                <MarketingStep Number="03" Title="Show the next action" Description="Link the recommendation to a specific task." />
                             </MarketingStepList>
                         </div>
                     </MarketingContainer>
@@ -107,8 +107,8 @@
                 <section class="landing-section landing-section--cta landing-reveal">
                     <MarketingContainer>
                         <MarketingCallToAction>
-                            <Content><span class="landing-section__eyebrow">READY TO BEGIN?</span><h2>Make the next decision feel simple.</h2><p>This is a sandbox CTA—safe to reshape while refining the shared component system.</p></Content>
-                            <Actions><MarketingActionLink Href="#landing-demo">Start with @CurrentTheme.Name</MarketingActionLink></Actions>
+                            <Content><span class="landing-section__eyebrow">PAGE EXAMPLE</span><h2>Review the product workflow</h2><p>Shared Marketing components are used throughout this page.</p></Content>
+                            <Actions><MarketingActionLink Href="#landing-demo">Back to top</MarketingActionLink></Actions>
                         </MarketingCallToAction>
                     </MarketingContainer>
                 </section>

@@ -6,7 +6,7 @@
             <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" novalidate>
                 <DataAnnotationsValidator />
                 <FormSection Title="Review profile"
-                             Description="A complete EditForm using shared layout, inputs, validation, and actions."
+                             Description="An EditForm using the shared layout, input, validation, and action components."
                              Id="review-profile-title">
                     <FormValidationSummary data-testid="validation-summary" />
 
@@ -76,7 +76,7 @@
         <article><span>Composition</span><strong>Section → grid → field → actions</strong><small>Layout primitives stay independent from field value and validation behavior</small></article>
         <article><span>Invalid</span><strong>Summary + inline errors</strong><small>EditContext validation flows into aria-invalid, descriptions, and assertive summary feedback</small></article>
         <article><span>Valid</span><strong>Submit contract</strong><small>Successful submission occurs only after DataAnnotations validation passes</small></article>
-        <article><span>Responsive</span><strong>Clamped grid spans</strong><small>Columns and field spans remain within the shared 1–4 column contract</small></article>
+        <article><span>Responsive</span><strong>Grid spans</strong><small>Columns and field spans stay within the supported range of 1 to 4</small></article>
     </States>
 </ComponentSpecimenLayout>
 

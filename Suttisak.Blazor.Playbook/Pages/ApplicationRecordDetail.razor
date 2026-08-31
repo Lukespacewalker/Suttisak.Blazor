@@ -18,7 +18,7 @@
                     <PageHeading Title="@Record.Name"
                                  SectionTitle="Program records"
                                  SectionDescription="@($"Record #{Record.Id}")"
-                                 Description="A focused detail page using the same compact heading, breadcrumb trail, and toolbar contract."
+                                 Description="A record detail page with breadcrumbs and page actions."
                                  IconName="@("Document")">
                         <PageActions>
                             <AppButton Href="application-shell/records">Back to list</AppButton>
@@ -41,7 +41,7 @@
                     <section class="demo-detail-primary">
                         <span class="demo-detail-label">PROGRAM SUMMARY</span>
                         <h2>@Record.Program</h2>
-                        <p>This Playbook detail view proves the complete navigation path while keeping product-owned data and routes outside the reusable shell.</p>
+                        <p>The page keeps record data and routes in the application while using the shared shell.</p>
                         <dl class="demo-detail-list">
                             <div><dt>Owner</dt><dd>@Record.Owner</dd></div>
                             <div><dt>Status</dt><dd><span class="demo-status demo-status--@Slug(Record.Status)">@Record.Status</span></dd></div>

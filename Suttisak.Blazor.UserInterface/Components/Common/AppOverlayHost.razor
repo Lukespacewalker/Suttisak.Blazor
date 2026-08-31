@@ -1,5 +1,7 @@
 @implements IDisposable
 @inject AppOverlayService OverlayService
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Routing
 
 @if (_current?.Kind == AppOverlayKind.Drawer)
 {
@@ -9,6 +11,7 @@
                Dangerous="@_current.Options.Dangerous" Mode="@_current.Options.Mode"
                Dismissible="@_current.Options.Dismissible"
                PreventDismissOnOutsideClick="@_current.Options.PreventDismissOnOutsideClick"
+               CloseLabel="@(_current.Options.CloseLabel ?? "Close drawer")"
                Class="@_current.Options.Class"
                Body="@BodyContent" Footer="@FooterContent" />
 }
@@ -19,6 +22,7 @@ else
                Dangerous="@(_current?.Options.Dangerous ?? false)" Mode="@(_current?.Options.Mode ?? AppDialogMode.Default)"
                Dismissible="@(_current?.Options.Dismissible ?? true)"
                PreventDismissOnOutsideClick="@(_current?.Options.PreventDismissOnOutsideClick ?? false)"
+               CloseLabel="@(_current?.Options.CloseLabel ?? "Close dialog")"
                Class="@_current?.Options.Class"
                Body="@BodyContent" Footer="@FooterContent" />
 }
@@ -48,6 +52,7 @@ else
     protected override void OnInitialized()
     {
         OverlayService.Attach(_queueSignal);
+        NavigationManager.LocationChanged += HandleLocationChanged;
         _ = OnQueueChangedAsync();
     }
 
@@ -108,6 +113,31 @@ else
         });
     }
 
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs args)
+    {
+        OverlayService.CancelQueuedRequests();
+        _ = InvokeAsync(CancelCurrentForNavigationAsync);
+    }
+
+    private async Task CancelCurrentForNavigationAsync()
+    {
+        if (_current is null) return;
+
+        if (_openAfterRender)
+        {
+            var request = _current;
+            _openAfterRender = false;
+            _current = null;
+            _showing = false;
+            request.Complete(AppOverlayResult<object?>.Cancelled());
+            StateHasChanged();
+            await OnQueueChangedAsync();
+            return;
+        }
+
+        await _current.Controller!.CancelAsync();
+    }
+
     private RenderFragment RenderBody(AppOverlayRequest request) => builder =>
     {
         if (request.Preset is { } preset)
@@ -137,9 +167,9 @@ else
             }
             builder.CloseComponent();
         }
-        else if (request.Fragments is not null)
+        else if (request.Fragments?.Body is { } body)
         {
-            builder.AddContent(2, request.Fragments.Body(request.Controller!));
+            builder.AddContent(2, body(request.Controller!));
         }
     };
 
@@ -168,5 +198,9 @@ else
         return request.Fragments?.Footer?.Invoke(request.Controller!);
     }
 
-    public void Dispose() => OverlayService.Detach(_queueSignal);
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+        OverlayService.Detach(_queueSignal);
+    }
 }

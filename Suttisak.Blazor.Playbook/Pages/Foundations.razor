@@ -8,12 +8,12 @@
     <main class="foundations-page">
         <header class="foundations-page__hero">
             <div>
-                <span class="playbook-kicker">Machine-readable foundations</span>
-                <h1>Tokens before decoration.</h1>
-                <p>The packaged manifest and the public CSS contract describe the same semantic roles. Product themes may replace values, but shared components keep consuming stable names.</p>
+                <span class="playbook-kicker">Token reference</span>
+                <h1>Design tokens</h1>
+                <p>The JSON manifest and public CSS define the same semantic token names. Product themes replace values without changing those names.</p>
                 <div class="foundations-page__hero-actions">
-                    <a href="_content/Suttisak.Blazor.UserInterface/design-tokens.json">Open JSON manifest ↗</a>
-                    <a href="components">See components consume the contract →</a>
+                    <a href="_content/Suttisak.Blazor.UserInterface/design-tokens.json">View JSON manifest ↗</a>
+                    <a href="components">View components →</a>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
         else if (_manifest is null)
         {
             <section class="foundations-page__state" aria-live="polite">
-                <strong>Loading the packaged token contract…</strong>
+                <strong>Loading design tokens…</strong>
             </section>
         }
         else
@@ -85,16 +85,16 @@
                 <header>
                     <span>rules</span>
                     <div>
-                        <h2 id="guardrails-title">Foundation guardrails</h2>
-                        <p>The manifest is a public contract, not a palette generator. Applications own branded values; components own semantic consumption.</p>
+                        <h2 id="guardrails-title">Token usage</h2>
+                        <p>Applications set brand values. Shared components use semantic token names.</p>
                     </div>
                     <strong>4</strong>
                 </header>
                 <div>
-                    <article><strong>Semantic first</strong><p>Choose the role that describes intent, not the literal color currently visible.</p></article>
-                    <article><strong>Theme-safe</strong><p>Override semantic roles with explicit light and dark values and verify readable contrast.</p></article>
-                    <article><strong>Focus survives</strong><p>Keyboard focus remains visible in product themes, forced colors, and reduced-motion contexts.</p></article>
-                    <article><strong>No private aliases</strong><p>A shared component must not introduce a product-specific color or a local magic-number token.</p></article>
+                    <article><strong>Use semantic roles</strong><p>Choose the token by purpose rather than by its current color.</p></article>
+                    <article><strong>Define both modes</strong><p>Set light and dark values and check their contrast.</p></article>
+                    <article><strong>Keep focus visible</strong><p>Keyboard focus must remain visible in product themes and forced-colors mode.</p></article>
+                    <article><strong>Keep product colors outside the library</strong><p>Shared components must not define product colors or local token aliases.</p></article>
                 </div>
             </section>
         }

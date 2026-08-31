@@ -238,7 +238,7 @@
       "category": "Forms \u0026 inputs",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Responsive field grid that collapses form columns when the actual viewport is constrained.",
+      "summary": "Responsive field grid that collapses form columns when the browser viewport is constrained.",
       "tags": [
         "form",
         "grid",
@@ -726,7 +726,7 @@
       "category": "Overlays",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Modal overlay contract with labelled content, focus management, and explicit dismissal behavior.",
+      "summary": "Modal overlay with labelled content, focus management, and configurable dismissal behavior.",
       "tags": [
         "dialog",
         "modal",
@@ -1675,8 +1675,8 @@
       "slug": "validated-form-workflow",
       "category": "Data entry",
       "maturity": "stable",
-      "summary": "Compose a readable EditForm from field primitives, responsive geometry, validation feedback, and an explicit action boundary.",
-      "intent": "Use this pattern when a page collects related values that must remain understandable before, during, and after validation.",
+      "summary": "A validated EditForm built with shared field and layout components.",
+      "intent": "Forms that collect related values and display validation errors.",
       "tags": [
         "form",
         "validation",
@@ -1727,20 +1727,20 @@
       ],
       "compositionSteps": [
         {
-          "title": "Start with the model boundary",
-          "detail": "Create one EditContext or model for the task and keep validation rules beside that model."
+          "title": "Create the form model",
+          "detail": "Use one EditContext or model and keep its validation rules with the model."
         },
         {
-          "title": "Group before arranging",
-          "detail": "Use FormSection to explain the task, then FormGrid and FormField to describe geometry."
+          "title": "Add the form layout",
+          "detail": "Use FormSection for the group, then FormGrid and FormField for field placement."
         },
         {
           "title": "Bind semantic controls",
           "detail": "Choose inputs by value type and always provide a visible label and useful description."
         },
         {
-          "title": "Close with an action boundary",
-          "detail": "Place validation feedback before FormActions so the submit path is predictable in reading and focus order."
+          "title": "Add form actions",
+          "detail": "Place validation feedback before FormActions so reading and focus order stay predictable."
         }
       ],
       "ownership": {
@@ -1771,27 +1771,27 @@
         }
       ],
       "liveHref": "form-controls",
-      "liveLabel": "Open the form controls laboratory",
+      "liveLabel": "View form controls",
       "evidence": [
         {
           "kind": "Browser",
           "source": "form-composition-workbench.spec.mjs",
-          "guarantee": "Exercises section, grid, field, validation, and action composition."
+          "guarantee": "Covers sections, grids, fields, validation, and form actions."
         },
         {
           "kind": "Browser",
           "source": "playbook.spec.mjs",
-          "guarantee": "Verifies the routed interactive and static form contracts."
+          "guarantee": "Covers interactive and static form routes."
         }
       ]
     },
     {
-      "name": "Virtualized data workspace",
+      "name": "Virtualized data table",
       "slug": "virtualized-data-workspace",
       "category": "Data operations",
       "maturity": "stable",
-      "summary": "Place search, filters, actions, a virtualized grid, and operational feedback inside one labelled data surface.",
-      "intent": "Use this pattern for large, scan-heavy datasets where stable row identity and bounded DOM work matter more than page-at-a-time navigation.",
+      "summary": "A searchable and sortable AppGrid with virtualized rows.",
+      "intent": "Large tables where virtualization keeps the number of DOM rows low.",
       "tags": [
         "data",
         "grid",
@@ -1837,20 +1837,20 @@
       ],
       "compositionSteps": [
         {
-          "title": "Name the dataset",
-          "detail": "Give AppGridShell a task-oriented accessible label, not a generic label such as Data table."
+          "title": "Label the table",
+          "detail": "Give AppGridShell a specific accessible label such as Assessment register."
         },
         {
-          "title": "Shape the query first",
-          "detail": "Apply search, filters, and authorization before exposing IQueryable items to the grid."
+          "title": "Filter the query",
+          "detail": "Apply search, filters, and authorization before passing IQueryable items to the grid."
         },
         {
           "title": "Declare virtual geometry",
           "detail": "Use a fixed ItemSize, a restrained OverscanCount, and an ItemKey that survives sorting and refresh."
         },
         {
-          "title": "Keep actions explicit",
-          "detail": "Give icon-only row actions record-specific names and keep bulk actions outside the table body."
+          "title": "Label row actions",
+          "detail": "Give icon-only actions record-specific names and keep bulk actions outside the table body."
         }
       ],
       "ownership": {
@@ -1873,7 +1873,7 @@
         },
         {
           "dimension": "Responsive",
-          "requirement": "Narrow screens preserve access to columns through intentional overflow or a documented alternate view."
+          "requirement": "Narrow screens keep columns available through horizontal scrolling or an alternate view."
         },
         {
           "dimension": "Performance",
@@ -1881,12 +1881,12 @@
         }
       ],
       "liveHref": "grid-performance",
-      "liveLabel": "Run the 100,000-row performance laboratory",
+      "liveLabel": "View the 100,000-row example",
       "evidence": [
         {
           "kind": "Browser",
           "source": "playbook.spec.mjs",
-          "guarantee": "Asserts the 100,000-record source keeps a bounded row window."
+          "guarantee": "Checks that the 100,000-record source keeps a bounded row window."
         },
         {
           "kind": "Browser",
@@ -1901,12 +1901,12 @@
       ]
     },
     {
-      "name": "Product marketing landing",
+      "name": "Product landing page",
       "slug": "product-marketing-landing",
       "category": "Marketing",
       "maturity": "stable",
-      "summary": "Build a product narrative from a promise, proof, product frame, benefits, steps, and a final call to action.",
-      "intent": "Use this pattern for a public product entry point that needs application-owned identity and content on top of shared responsive sections.",
+      "summary": "A landing page with a hero, product preview, benefits, steps, and final action.",
+      "intent": "Public product pages that use application copy and assets with shared section components.",
       "tags": [
         "marketing",
         "landing",
@@ -1942,7 +1942,7 @@
         {
           "componentId": "marketing-product-frame",
           "componentName": "MarketingProductFrame",
-          "role": "Frames a credible product preview without owning its content."
+          "role": "Frames a product preview without owning its content."
         },
         {
           "componentId": "marketing-feature-grid",
@@ -1972,20 +1972,20 @@
       ],
       "compositionSteps": [
         {
-          "title": "Lead with one promise",
-          "detail": "Give MarketingHero a reader outcome, supporting explanation, and no more than two competing actions."
+          "title": "Write the page heading",
+          "detail": "Give MarketingHero a specific outcome, a short explanation, and no more than two actions."
         },
         {
-          "title": "Earn the next scroll",
-          "detail": "Place compact proof directly after the hero, then show a concrete product frame before abstract benefits."
+          "title": "Add proof and a product preview",
+          "detail": "Place proof after the hero, followed by a product frame."
         },
         {
-          "title": "Explain the path",
-          "detail": "Use feature and step compositions to answer why this matters and what happens next."
+          "title": "Add benefits and steps",
+          "detail": "Use feature cards and ordered steps to describe the product and workflow."
         },
         {
-          "title": "Close the loop",
-          "detail": "Repeat the primary action in MarketingCallToAction after the reader has enough evidence to decide."
+          "title": "Add the final action",
+          "detail": "Repeat the primary action in MarketingCallToAction after the supporting content."
         }
       ],
       "ownership": {
@@ -2000,7 +2000,7 @@
           "Product preview contents and conversion behavior"
         ]
       },
-      "minimalRazorRecipe": "\u003CMarketingPage Id=\u0022product\u0022 SkipTarget=\u0022benefits\u0022\u003E\n    \u003CMarketingHero Title=\u0022Understand the signal. Act with confidence.\u0022\n                   Description=\u0022A focused path from information to action.\u0022\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022#benefits\u0022\u003EExplore\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingHero\u003E\n    \u003CMarketingProofStrip AriaLabel=\u0022Product proof\u0022\u003E\n        \u003CMarketingProofItem Value=\u0022AA\u0022 Title=\u0022Accessible\u0022 Description=\u0022Built on a tested foundation.\u0022 /\u003E\n    \u003C/MarketingProofStrip\u003E\n    \u003CMarketingFeatureGrid id=\u0022benefits\u0022\u003E\n        \u003CMarketingCard Title=\u0022One clear benefit\u0022\u003E...\u003C/MarketingCard\u003E\n    \u003C/MarketingFeatureGrid\u003E\n    \u003CMarketingCallToAction\u003E\n        \u003CContent\u003E\u003Ch2\u003EReady to continue?\u003C/h2\u003E\u003C/Content\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022/start\u0022\u003EGet started\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingCallToAction\u003E\n\u003C/MarketingPage\u003E",
+      "minimalRazorRecipe": "\u003CMarketingPage Id=\u0022product\u0022 SkipTarget=\u0022benefits\u0022\u003E\n    \u003CMarketingHero Title=\u0022Understand the signal. Act with confidence.\u0022\n                   Description=\u0022A summary of the result and the available next step.\u0022\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022#benefits\u0022\u003EView benefits\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingHero\u003E\n    \u003CMarketingProofStrip AriaLabel=\u0022Product proof\u0022\u003E\n        \u003CMarketingProofItem Value=\u0022AA\u0022 Title=\u0022Accessible\u0022 Description=\u0022Built on a tested foundation.\u0022 /\u003E\n    \u003C/MarketingProofStrip\u003E\n    \u003CMarketingFeatureGrid id=\u0022benefits\u0022\u003E\n        \u003CMarketingCard Title=\u0022One clear benefit\u0022\u003E...\u003C/MarketingCard\u003E\n    \u003C/MarketingFeatureGrid\u003E\n    \u003CMarketingCallToAction\u003E\n        \u003CContent\u003E\u003Ch2\u003ENext step\u003C/h2\u003E\u003C/Content\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022/start\u0022\u003EGet started\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingCallToAction\u003E\n\u003C/MarketingPage\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -2012,31 +2012,31 @@
         },
         {
           "dimension": "Content",
-          "requirement": "Claims have evidence, actions describe their destination, and decorative media stays silent."
+          "requirement": "Support product claims, label action destinations, and hide decorative media from assistive technology."
         }
       ],
       "liveHref": "landing",
-      "liveLabel": "Open the themed landing-page sandbox",
+      "liveLabel": "View the landing-page example",
       "evidence": [
         {
           "kind": "Browser",
           "source": "marketing-workbench.spec.mjs",
-          "guarantee": "Exercises the shared marketing compositions and routed MarketingPage landmark."
+          "guarantee": "Covers the marketing components and MarketingPage landmark."
         },
         {
           "kind": "Browser",
           "source": "layout-infrastructure-contracts.spec.mjs",
-          "guarantee": "Verifies MarketingPage is executed by the real landing route."
+          "guarantee": "Checks MarketingPage on the landing route."
         }
       ]
     },
     {
-      "name": "Secure access flow",
+      "name": "Sign-in page",
       "slug": "secure-access-flow",
       "category": "Access",
       "maturity": "stable",
-      "summary": "Compose sign-in or registration inside a branded, responsive access frame while authentication policy stays application-owned.",
-      "intent": "Use this pattern for unauthenticated routes that need a consistent identity surface, clear credentials path, and optional provider choices.",
+      "summary": "A sign-in form inside a responsive AccessPageLayout.",
+      "intent": "Unauthenticated sign-in and registration routes.",
       "tags": [
         "access",
         "identity",
@@ -2107,31 +2107,31 @@
         },
         {
           "dimension": "Security",
-          "requirement": "The Playbook demonstrates layout only; production auth, CSRF protection, and redirect validation stay server-owned."
+          "requirement": "This example covers layout only. Authentication, CSRF protection, and redirect validation remain server responsibilities."
         }
       ],
       "liveHref": "access/login",
-      "liveLabel": "Open the login composition",
+      "liveLabel": "View the sign-in example",
       "evidence": [
         {
           "kind": "Browser",
           "source": "playbook.spec.mjs",
-          "guarantee": "Covers the real access route, credential controls, language, and theme variants."
+          "guarantee": "Covers the access route, credential controls, language, and theme variants."
         },
         {
           "kind": "Browser",
           "source": "layout-infrastructure-contracts.spec.mjs",
-          "guarantee": "Verifies AccessPageLayout executes on a routed page."
+          "guarantee": "Checks AccessPageLayout on a routed page."
         }
       ]
     },
     {
-      "name": "Application workspace shell",
+      "name": "Application shell",
       "slug": "application-workspace-shell",
       "category": "Application structure",
       "maturity": "stable",
-      "summary": "Compose persistent product identity, grouped navigation, user controls, breadcrumbs, and page actions around one routed main region.",
-      "intent": "Use this pattern as the authenticated frame for task-oriented applications with multiple sections and responsive navigation.",
+      "summary": "An authenticated application shell with navigation, breadcrumbs, user controls, and page actions.",
+      "intent": "Applications with several sections and responsive navigation.",
       "tags": [
         "application",
         "shell",
@@ -2197,8 +2197,8 @@
       ],
       "compositionSteps": [
         {
-          "title": "Establish one main owner",
-          "detail": "Let ApplicationShell own the routed main landmark; pages contribute content rather than another main."
+          "title": "Use one main landmark",
+          "detail": "Let ApplicationShell own the routed main landmark. Pages provide content inside it."
         },
         {
           "title": "Group destinations by task",
@@ -2209,8 +2209,8 @@
           "detail": "Provide breadcrumbs and one PageHeading for every routed workspace."
         },
         {
-          "title": "Adapt the chrome",
-          "detail": "At narrow widths, move navigation into the shell overlay while preserving destination and focus state."
+          "title": "Handle narrow screens",
+          "detail": "Move navigation into the shell overlay while preserving destination and focus state."
         }
       ],
       "ownership": {
@@ -2241,7 +2241,7 @@
         }
       ],
       "liveHref": "application-shell",
-      "liveLabel": "Open the authenticated workspace",
+      "liveLabel": "View the application shell",
       "evidence": [
         {
           "kind": "Browser",
@@ -2251,7 +2251,7 @@
         {
           "kind": "Browser",
           "source": "layout-infrastructure-contracts.spec.mjs",
-          "guarantee": "Verifies the real ApplicationShell contract and its slots."
+          "guarantee": "Covers ApplicationShell and its slots."
         },
         {
           "kind": "Browser",
@@ -2261,12 +2261,12 @@
       ]
     },
     {
-      "name": "Record management workflow",
+      "name": "Record management",
       "slug": "record-management-workflow",
       "category": "Application workflows",
       "maturity": "beta",
-      "summary": "Connect a searchable record grid to create and edit drawers, destructive confirmation, paging, and record detail navigation.",
-      "intent": "Use this pattern for bounded CRUD work where list context should remain visible while a user edits or confirms a record action.",
+      "summary": "A record list with search, paging, an editor drawer, and delete confirmation.",
+      "intent": "CRUD pages that keep the list visible while a record is edited.",
       "tags": [
         "records",
         "crud",
@@ -2323,20 +2323,20 @@
       ],
       "compositionSteps": [
         {
-          "title": "Keep the list authoritative",
-          "detail": "Search, sorting, pagination, and visible counts all derive from the same filtered record source."
+          "title": "Use one filtered data source",
+          "detail": "Search, sorting, pagination, and visible counts must use the same filtered records."
         },
         {
           "title": "Edit a draft",
           "detail": "Open AppDrawer with a copy so cancellation never mutates the visible record."
         },
         {
-          "title": "Commit intentionally",
-          "detail": "Enable Save only when the draft is valid, then replace or append through the application store."
+          "title": "Save the draft",
+          "detail": "Enable Save only when the draft is valid, then update the application store."
         },
         {
-          "title": "Confirm irreversible work",
-          "detail": "Name the target inside AppDialog and make the safe exit at least as easy to find as Delete."
+          "title": "Confirm deletion",
+          "detail": "Name the target inside AppDialog and provide a clear Cancel action."
         }
       ],
       "ownership": {
@@ -2359,7 +2359,7 @@
         },
         {
           "dimension": "Responsive",
-          "requirement": "The editor remains operable without hiding the close action, while the record list preserves a deliberate overflow strategy."
+          "requirement": "The editor keeps its close action visible, and the record list handles horizontal overflow."
         },
         {
           "dimension": "Safety",
@@ -2367,7 +2367,7 @@
         }
       ],
       "liveHref": "application-shell/records",
-      "liveLabel": "Run the record-management workflow",
+      "liveLabel": "View record management",
       "evidence": [
         {
           "kind": "Browser",
@@ -2387,12 +2387,12 @@
       ]
     },
     {
-      "name": "Status route recovery",
+      "name": "Status pages",
       "slug": "status-route-recovery",
       "category": "Routing \u0026 recovery",
       "maturity": "stable",
-      "summary": "Map HTTP outcomes to a branded StatusPage with route-safe actions, support context, and application-owned recovery copy.",
-      "intent": "Use this pattern for forbidden, missing, and server-error routes that must explain what happened and offer a credible next action.",
+      "summary": "StatusRouteContent and StatusPage examples for 403, 404, and 500 routes.",
+      "intent": "Routes that need to explain an error and provide a recovery action.",
       "tags": [
         "status",
         "routing",
@@ -2427,12 +2427,12 @@
           "detail": "Map the route status code to a known forbidden, not-found, or server-error configuration."
         },
         {
-          "title": "Explain without blame",
-          "detail": "State what is known, preserve security boundaries, and avoid exposing exception details."
+          "title": "Write the status message",
+          "detail": "State what is known and do not expose exception details."
         },
         {
-          "title": "Offer recovery",
-          "detail": "Provide one primary action that can succeed now and a stable path back to a known application route."
+          "title": "Add a recovery action",
+          "detail": "Provide one primary action and a path back to a known application route."
         },
         {
           "title": "Attach support context",
@@ -2467,7 +2467,7 @@
         }
       ],
       "liveHref": "access/custom-error",
-      "liveLabel": "Configure and preview a status route",
+      "liveLabel": "View status-page options",
       "evidence": [
         {
           "kind": "Browser",
@@ -2487,12 +2487,12 @@
       ]
     },
     {
-      "name": "Router-level layout composition",
+      "name": "Router layouts",
       "slug": "router-level-layout-composition",
       "category": "Application structure",
       "maturity": "beta",
-      "summary": "Choose the layout that owns the page chrome, then fill named sections without introducing a second shell or main landmark.",
-      "intent": "Use this pattern when Blazor routing must select application, identity, landing, or header/body chrome while pages retain content ownership.",
+      "summary": "Blazor layouts with named sections for application, identity, landing, and header/body pages.",
+      "intent": "Routes that select a layout while the page supplies its own content.",
       "tags": [
         "router",
         "layout",
@@ -2553,16 +2553,16 @@
       ],
       "compositionSteps": [
         {
-          "title": "Choose one chrome owner",
-          "detail": "Select the layout with @layout or router configuration and do not wrap the page in a competing shell."
+          "title": "Choose one layout",
+          "detail": "Select the layout with @layout or router configuration and do not wrap the page in another shell."
         },
         {
           "title": "Fill named sections",
           "detail": "Supply brand, navigation, breadcrumbs, heading, and controls through the section IDs exposed by that layout."
         },
         {
-          "title": "Keep landmarks singular",
-          "detail": "Know whether the layout or body component owns main before adding routed content."
+          "title": "Use one main landmark",
+          "detail": "Check whether the layout or body component owns main before adding routed content."
         },
         {
           "title": "Clear route state",
@@ -2597,12 +2597,12 @@
         }
       ],
       "liveHref": "layout-patterns/application",
-      "liveLabel": "Open the real MainLayout route",
+      "liveLabel": "View the MainLayout example",
       "evidence": [
         {
           "kind": "Browser",
           "source": "layout-infrastructure-contracts.spec.mjs",
-          "guarantee": "Runs MainLayout, RootLayout, HeaderFooterLayout, IdentityLayout, and LandingLayout as real router layouts."
+          "guarantee": "Covers MainLayout, RootLayout, HeaderFooterLayout, IdentityLayout, and LandingLayout as router layouts."
         },
         {
           "kind": "Executable routes",

@@ -9,6 +9,7 @@ public sealed record AppOverlayOptions
     public bool Dangerous { get; init; }
     public bool Dismissible { get; init; } = true;
     public bool PreventDismissOnOutsideClick { get; init; }
+    public string? CloseLabel { get; init; }
     public string? Class { get; init; }
     public AppDrawerPosition DrawerPosition { get; init; } = AppDrawerPosition.End;
     public AppDrawerSize DrawerSize { get; init; } = AppDrawerSize.Standard;

@@ -105,8 +105,8 @@
                     {
                         <div class="component-detail__documentation component-detail__documentation--@PlaybookComponentCoverage.SlugFor(Component)" data-testid="coverage-documentation">
                             <div class="component-detail__documentation-intro">
-                                <span>Documentation only · not executed here</span>
-                                <h3>@(CoverageKind == PlaybookComponentCoverageKind.Pattern ? "Why this is a Pattern" : "Why this is a Reference")</h3>
+                                <span>@(CoverageKind == PlaybookComponentCoverageKind.Pattern ? "Pattern documentation" : "Reference documentation")</span>
+                                <h3>@(CoverageKind == PlaybookComponentCoverageKind.Pattern ? "Pattern coverage" : "Reference coverage")</h3>
                                 <p>@CoverageDocumentation.Rationale</p>
                                 @if (CoverageDocumentation.IntegrationRoute is not null)
                                 {
@@ -124,7 +124,7 @@
                                     <ul>@foreach (var item in CoverageDocumentation.ApplicationResponsibilities) { <li>@item</li> }</ul>
                                 </article>
                                 <article>
-                                    <strong>Regression evidence</strong>
+                                    <strong>Tests</strong>
                                     <ul>@foreach (var item in CoverageDocumentation.RegressionEvidence) { <li>@item</li> }</ul>
                                 </article>
                                 <article>
@@ -161,12 +161,12 @@
                     </section>
 
                     <section class="component-detail__section" aria-labelledby="api-title">
-                <header><div><span>04 / API</span><h2 id="api-title">Parameters</h2></div><p>Read from the runtime component type where one is registered, so public API changes remain visible without maintaining a second handwritten table.</p></header>
+                <header><div><span>04 / API</span><h2 id="api-title">Parameters</h2></div><p>The table is generated from the public parameters on the component type.</p></header>
                 <ComponentParameterTable ComponentType="@ResolvedRuntimeType" />
                     </section>
 
                     <section class="component-detail__section" aria-labelledby="accessibility-title">
-                <header><div><span>05 / Quality</span><h2 id="accessibility-title">Accessibility contract</h2></div><p>Coverage is not complete merely because a component renders. Semantics, focus, keyboard behavior, responsive containment, and reduced motion remain part of the public contract.</p></header>
+                <header><div><span>05 / Quality</span><h2 id="accessibility-title">Accessibility</h2></div><p>Check semantics, focus, keyboard behavior, constrained widths, and reduced motion.</p></header>
                 <div class="component-detail__quality-grid">
                     <article><strong>Keyboard</strong><p>Interactive controls must remain reachable and usable without a pointing device.</p></article>
                     <article><strong>Focus</strong><p>Focus visibility is tokenized and must survive every product theme.</p></article>
@@ -178,7 +178,7 @@
                     @if (ComponentPatterns.Count > 0)
                     {
                         <section class="component-detail__section" aria-labelledby="patterns-title">
-                            <header><div><span>06 / Patterns</span><h2 id="patterns-title">Used in patterns</h2></div><p>Open a complete recipe to see this component’s responsibility, neighboring ingredients, and application-owned boundary.</p></header>
+                            <header><div><span>06 / Patterns</span><h2 id="patterns-title">Used in patterns</h2></div><p>These patterns show the component alongside the other parts of the page.</p></header>
                             <div class="component-detail__patterns">
                                 @foreach (var pattern in ComponentPatterns)
                                 {
@@ -186,7 +186,7 @@
                                         <span>@pattern.Category</span>
                                         <strong>@pattern.Name</strong>
                                         <p>@pattern.Summary</p>
-                                        <small>Open composition recipe →</small>
+                                        <small>View pattern →</small>
                                     </a>
                                 }
                             </div>
@@ -194,7 +194,7 @@
                     }
 
                     <section class="component-detail__section" aria-labelledby="related-title">
-                <header><div><span>07 / Neighbors</span><h2 id="related-title">Related components</h2></div><p>These contracts share an actual composition pattern with @Component.Name; category neighbors are used only when no pattern relationship exists yet.</p></header>
+                <header><div><span>07 / Related</span><h2 id="related-title">Related components</h2></div><p>Components from the same page patterns are listed first, followed by components in the same category.</p></header>
                 <div class="component-detail__related">
                     @foreach (var related in RelatedComponents)
                     {
@@ -232,8 +232,8 @@
         ? 0
         : PlaybookSpecimenRegistry.All.Values.Count(registration => registration.SpecimenType == SpecimenType);
     private string SpecimenCoverageLabel => MappedComponentCount <= 1
-        ? "Focused component story"
-        : $"Shared composition workbench · {MappedComponentCount} mapped components";
+        ? "Dedicated specimen"
+        : $"Shared workbench · {MappedComponentCount} components";
     private PlaybookComponentCoverageKind CoverageKind => Component is null ? PlaybookComponentCoverageKind.Reference : PlaybookComponentCoverage.KindFor(Component);
     private PlaybookCoverageDocumentation? CoverageDocumentation => Component is null ? null : PlaybookComponentCoverage.DocumentationFor(Component);
     private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = "full" };
@@ -254,17 +254,17 @@
     private string UsageExample => Component is null ? string.Empty : PlaybookUsageExamples.For(Component);
     private bool HasCuratedUsage => Component is not null && PlaybookUsageExamples.HasCuratedExample(Component);
     private string UsageGuidance => HasCuratedUsage
-        ? "Start from this minimal Razor composition, then open a complete Pattern when the component depends on surrounding application structure."
-        : "This honest skeleton is not a complete recipe. Supply required parameters from the API table or open a Pattern that uses the component in context.";
+        ? "This sample shows the component's basic Razor structure. Page-level examples are listed under Patterns."
+        : "This skeleton omits required values. Check the API table or a related pattern before using it.";
     private string SourceSearchHref => Component is null
         ? string.Empty
         : $"https://github.com/Lukespacewalker/Suttisak.Blazor/search?q={Uri.EscapeDataString(Component.Name)}&type=code";
 
     private string PreviewTitle => CoverageKind switch
     {
-        PlaybookComponentCoverageKind.Interactive => "Interactive contract",
-        PlaybookComponentCoverageKind.Pattern => "Integration pattern",
-        _ => "Reference contract"
+        PlaybookComponentCoverageKind.Interactive => "Interactive specimen",
+        PlaybookComponentCoverageKind.Pattern => "Pattern documentation",
+        _ => "Reference notes"
     };
 
     private IReadOnlyList<PlaybookPatternDefinition> ComponentPatterns => Component is null

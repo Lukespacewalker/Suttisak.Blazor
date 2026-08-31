@@ -14,7 +14,7 @@
     </Nav>
 </SectionContent>
 <SectionContent SectionId="@MainLayout.NavigationFooterSection">
-    <small>Real MainLayout section outlet</small>
+    <small>MainLayout section outlet</small>
 </SectionContent>
 <SectionContent SectionName="@CommonSections.PageHeading">
     <PageHeading Title="Application layout contract"
@@ -26,13 +26,13 @@
 <section class="layout-contract-page" aria-labelledby="main-layout-pattern-title" data-testid="main-layout-pattern">
     <div class="layout-contract-page__intro">
         <span>Router-level application layout</span>
-        <h1 id="main-layout-pattern-title">The complete shell, without a nested workbench.</h1>
-        <p>This route executes MainLayout as a real Blazor layout. Its ApplicationShell owns the single main landmark while the page supplies sections, breadcrumbs, heading content, and routed body.</p>
+        <h1 id="main-layout-pattern-title">MainLayout page structure</h1>
+        <p>ApplicationShell supplies the main landmark. The page supplies sections, breadcrumbs, heading content, and the routed body.</p>
     </div>
     <div class="layout-contract-page__grid">
-        <article><strong>Named sections</strong><p>Header, navigation, navigation footer, messages, and page heading remain explicit.</p></article>
+        <article><strong>Named sections</strong><p>Header, navigation, navigation footer, messages, and page heading use separate section outlets.</p></article>
         <article><strong>Breadcrumb cascade</strong><p>PageBreadcrumbs populates MainLayout and clears when navigation changes.</p></article>
-        <article><strong>Responsive shell</strong><p>Desktop collapse and mobile overlay behavior come from the real ApplicationShell.</p></article>
+        <article><strong>Responsive shell</strong><p>ApplicationShell provides desktop collapse and the mobile navigation overlay.</p></article>
     </div>
     <a class="layout-contract-page__back" href="components/main-layout">Return to MainLayout documentation</a>
 </section>

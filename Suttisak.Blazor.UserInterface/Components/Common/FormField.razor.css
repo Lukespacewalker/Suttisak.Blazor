@@ -1,4 +1,5 @@
 .form-field { grid-column: span var(--form-field-span); min-width: 0; }
 .form-field ::deep .app-form-control { width: 100%; }
 
+@container form-grid (max-width: 700px) { .form-field { grid-column: 1 / -1; } }
 @media (max-width: 700px) { .form-field { grid-column: 1 / -1; } }

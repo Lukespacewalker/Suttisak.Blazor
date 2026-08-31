@@ -19,7 +19,7 @@
             <details class="playbook-nav-group">
                 <summary class="@(IsComponentsActive ? "active" : null)">Components <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
-                    <a class="playbook-nav-group__lead" href="components"><strong>Component Browser</strong><span>Searchable contracts, focused stories, API, and pattern backlinks</span></a>
+                    <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Search components and view their API</span></a>
                     <span class="playbook-nav-group__label">Browse categories</span>
                     @foreach (var group in PlaybookComponentCatalog.Groups)
                     {
@@ -30,8 +30,8 @@
             <details class="playbook-nav-group">
                 <summary class="@(IsPatternsActive ? "active" : null)">Patterns <span aria-hidden="true">⌄</span></summary>
                 <div class="playbook-nav-group__menu">
-                    <a class="playbook-nav-group__lead" href="patterns"><strong>Pattern Browser</strong><span>Problems, ingredients, recipes, ownership, and executable routes</span></a>
-                    <span class="playbook-nav-group__label">Composition recipes</span>
+                    <a class="playbook-nav-group__lead" href="patterns"><strong>Pattern browser</strong><span>Examples that combine components into pages</span></a>
+                    <span class="playbook-nav-group__label">Page patterns</span>
                     @foreach (var pattern in PlaybookPatternCatalog.All)
                     {
                         <NavLink href="@pattern.DetailHref">@pattern.Name</NavLink>

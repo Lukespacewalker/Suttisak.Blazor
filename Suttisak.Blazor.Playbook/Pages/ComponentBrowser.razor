@@ -9,12 +9,12 @@
         <header class="component-browser__hero">
             <div>
                 <span class="playbook-kicker">Component Browser</span>
-                <h1>Find the contract.<br /><em>Inspect the behavior.</em></h1>
-                <p>Search the public component surface, open a focused executable story, and follow each building block into the patterns that use it. Coverage labels describe what is actually available.</p>
+                <h1>Browse components and<br /><em>check their states.</em></h1>
+                <p>Search by name, category, or tag. Each entry links to its parameters, specimens, source, and related page patterns.</p>
                 <div class="component-browser__hero-actions">
-                    <a href="patterns">Browse composition patterns →</a>
-                    <a href="tokens">Inspect design tokens →</a>
-                    <a href="component-manifest.json">Open component manifest ↗</a>
+                    <a href="patterns">View page patterns →</a>
+                    <a href="tokens">View design tokens →</a>
+                    <a href="component-manifest.json">Download manifest ↗</a>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                 <article><strong>@PlaybookSpecimenRegistry.DistinctSpecimenCount</strong><span>workbenches</span></article>
                 <article><strong>@Coverage.Reference</strong><span>references</span></article>
                 <div><span style="@InteractiveProgressStyle"></span></div>
-                <p>@Coverage.InteractivePercent% of catalogued components have executable coverage across @PlaybookSpecimenRegistry.DistinctSpecimenCount distinct workbenches.</p>
+                <p>@Coverage.InteractivePercent% of components appear in @PlaybookSpecimenRegistry.DistinctSpecimenCount interactive workbenches.</p>
             </aside>
         </header>
 
@@ -81,9 +81,9 @@
                 @if (FilteredComponentCount == 0)
                 {
                     <section class="component-browser__empty" aria-live="polite">
-                        <strong>No component matches those filters.</strong>
-                        <p>Try a broader term or clear the coverage filter.</p>
-                        <button type="button" @onclick="ClearFilters">Show the complete catalog</button>
+                        <strong>No components match.</strong>
+                        <p>Change the search term or coverage filter.</p>
+                        <button type="button" @onclick="ClearFilters">Clear filters</button>
                     </section>
                 }
                 else
@@ -153,7 +153,7 @@
     private string InteractiveProgressStyle => $"width:{Coverage.InteractivePercent.ToString(System.Globalization.CultureInfo.InvariantCulture)}%";
 
     private string ResultsHeading => SelectedCoverage is null
-        ? string.IsNullOrWhiteSpace(Search) ? "Complete component map" : $"Matching “{Search.Trim()}”"
+        ? string.IsNullOrWhiteSpace(Search) ? "All components" : $"Results for \"{Search.Trim()}\""
         : $"{PlaybookComponentCoverage.LabelFor(SelectedCoverage.Value)} coverage";
 
     private bool MatchesSearch(PlaybookComponentDefinition component)
@@ -223,9 +223,9 @@
 
     private static string ActionLabel(PlaybookComponentCoverageKind kind) => kind switch
     {
-        PlaybookComponentCoverageKind.Interactive => "Open executable workbench",
-        PlaybookComponentCoverageKind.Pattern => "Open integration documentation",
-        _ => "Open component reference"
+        PlaybookComponentCoverageKind.Interactive => "View workbench",
+        PlaybookComponentCoverageKind.Pattern => "View pattern notes",
+        _ => "View reference"
     };
 
     private static string GroupId(string category) => $"components-{PlaybookSlug.FromText(category)}";

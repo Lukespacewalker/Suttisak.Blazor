@@ -8,65 +8,65 @@
         <section class="playbook-home__hero" aria-labelledby="playbook-home-title">
             <div class="playbook-home__hero-copy">
                 <span class="playbook-kicker">Shared UI system · @CurrentTheme.Name</span>
-                <h1 id="playbook-home-title">Build once.<br /><em>Speak every product.</em></h1>
-                <p>Explore live Razor components, learn their contracts, and test complete integration patterns against every application theme.</p>
+                <h1 id="playbook-home-title">Shared components for<br /><em>six product themes.</em></h1>
+                <p>Browse the Razor components, check their states, and see how they are combined into complete pages.</p>
                 <div class="playbook-home__actions">
                     <a class="playbook-home__primary-action" href="components">Browse components <span aria-hidden="true">→</span></a>
-                    <a class="playbook-home__secondary-action" href="patterns">Explore patterns</a>
+                    <a class="playbook-home__secondary-action" href="patterns">View patterns</a>
                 </div>
             </div>
             <div class="playbook-home__signal" aria-label="Playbook capabilities">
-                <span class="playbook-home__signal-label">One contract / six voices</span>
+                <span class="playbook-home__signal-label">Shared library / six themes</span>
                 <div class="playbook-home__signal-orbit" aria-hidden="true"><strong>SB</strong></div>
-                <div class="playbook-preferences playbook-home__preferences"><span>Theme laboratory</span><strong>Use the application and color controls in the workbench bar.</strong></div>
+                <div class="playbook-preferences playbook-home__preferences"><span>Current theme</span><strong>Change the application or color mode in the toolbar.</strong></div>
                 <ul>
-                    <li><strong>Live</strong><span>Interactive specimens</span></li>
-                    <li><strong>Adaptive</strong><span>Theme and viewport controls</span></li>
-                    <li><strong>Practical</strong><span>Full-page patterns</span></li>
+                    <li><strong>Components</strong><span>Interactive specimens</span></li>
+                    <li><strong>Viewports</strong><span>Width and theme controls</span></li>
+                    <li><strong>Patterns</strong><span>Complete page examples</span></li>
                 </ul>
             </div>
         </section>
 
         <section class="playbook-home__dashboard" aria-labelledby="dashboard-title">
-            <header><span class="playbook-kicker">Library pulse</span><h2 id="dashboard-title">Know the system before changing it.</h2></header>
+            <header><span class="playbook-kicker">Library summary</span><h2 id="dashboard-title">Current catalog coverage</h2></header>
             <div class="playbook-home__metrics">
-                <article><strong>@ComponentCount</strong><span>Catalogued components</span><p>Every current Razor building block has a machine-readable catalog entry.</p></article>
-                <article><strong>@WorkbenchCount</strong><span>Distinct workbenches</span><p>Executable stories, counted by real specimen artifact rather than repeated component mappings.</p></article>
-                <article><strong>@PatternCount</strong><span>Composition patterns</span><p>First-class recipes that name their ingredients, ownership boundary, quality checks, and live route.</p></article>
-                <article><strong>@ThemeCount</strong><span>Application themes</span><p>The same component contracts exercised against multiple product identities.</p></article>
+                <article><strong>@ComponentCount</strong><span>Components</span><p>Public Razor components listed in the generated manifest.</p></article>
+                <article><strong>@WorkbenchCount</strong><span>Workbenches</span><p>Interactive specimen pages. Some components share a workbench.</p></article>
+                <article><strong>@PatternCount</strong><span>Page patterns</span><p>Examples with component lists, sample Razor, and test references.</p></article>
+                <article><strong>@ThemeCount</strong><span>Application themes</span><p>Product themes available from the toolbar.</p></article>
             </div>
             <div class="playbook-home__dashboard-links">
-                <a href="components/app-button"><span>Deep-link example</span><strong>AppButton documentation →</strong></a>
-                <a href="guidelines"><span>Definition of done</span><strong>Accessibility, theming &amp; agent rules →</strong></a>
-                <a href="component-manifest.json"><span>For agents</span><strong>Machine-readable manifest →</strong></a>
+                <a href="components/app-button"><span>Example</span><strong>AppButton reference →</strong></a>
+                <a href="guidelines"><span>Guidelines</span><strong>Accessibility and theming →</strong></a>
+                <a href="component-manifest.json"><span>Manifest</span><strong>component-manifest.json →</strong></a>
             </div>
         </section>
 
         <section class="playbook-home__start" aria-labelledby="start-title">
-            <header><span class="playbook-kicker">Start exploring</span><h2 id="start-title">Choose the level you need.</h2></header>
+            <header><span class="playbook-kicker">Documentation</span><h2 id="start-title">Browse by topic</h2></header>
             <div class="playbook-home__path-grid">
                 <a href="foundations" class="playbook-home__path">
-                    <span>01 / Foundations</span><h3>Learn the design language</h3>
-                    <p>Inspect semantic color, type, spacing, radius, and motion contracts before styling a component.</p><strong>Open design tokens →</strong>
+                    <span>01 / Foundations</span><h3>Design tokens</h3>
+                    <p>Semantic colors, type, spacing, radius, and motion values used by the library.</p><strong>View tokens →</strong>
                 </a>
                 <a href="components" class="playbook-home__path playbook-home__path--featured">
-                    <span>02 / Components</span><h3>Inspect the building blocks</h3>
-                    <p>Browse the complete catalog, use live previews, then jump into deep-linkable component documentation.</p><strong>Open component browser →</strong>
+                    <span>02 / Components</span><h3>Component reference</h3>
+                    <p>Parameters, states, viewport previews, source links, and related patterns.</p><strong>View components →</strong>
                 </a>
                 <a href="patterns" class="playbook-home__path">
-                    <span>03 / Patterns</span><h3>Study complete composition</h3>
-                    <p>Start with the problem, inspect every ingredient, copy the minimal Razor recipe, then launch the executable route.</p><strong>Open Pattern Browser →</strong>
+                    <span>03 / Patterns</span><h3>Page patterns</h3>
+                    <p>Component lists, assembly steps, sample Razor, and working page routes.</p><strong>View patterns →</strong>
                 </a>
             </div>
         </section>
 
         <section class="playbook-home__contract" aria-labelledby="contract-title">
-            <div><span class="playbook-kicker">The library contract</span><h2 id="contract-title">Product identity changes.<br />Behavior does not.</h2></div>
+            <div><span class="playbook-kicker">Responsibilities</span><h2 id="contract-title">What the library controls</h2></div>
             <div class="playbook-home__contract-list">
                 <article><span>Theme</span><p>Switch application and color mode from the workbench bar. Every specimen responds in place.</p></article>
                 <article><span>Access</span><p>Keyboard focus, semantic state, narrow screens, and reduced motion stay part of the component contract.</p></article>
                 <article><span>Ownership</span><p>The library owns structure and behavior. Consuming applications keep their copy, routes, and assets.</p></article>
-                <article><span>Agents</span><p>Humans and AI inspect the same catalog before introducing new UI primitives or parallel styling.</p></article>
+                <article><span>Tooling</span><p>The manifest gives developers and code tools the same component catalog.</p></article>
             </div>
         </section>
     </main>

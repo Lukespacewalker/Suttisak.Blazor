@@ -7,8 +7,8 @@
     <main class="form-playbook">
         <header class="form-playbook__intro">
             <div>
-                <span class="playbook-kicker">Native first · timezone safe</span>
-                <h1>Form controls that work<br /><em>before Blazor wakes up.</em></h1>
+                <span class="playbook-kicker">Native HTML and browser time zones</span>
+                <h1>Date and time form controls</h1>
             </div>
             <p>Each control renders semantic HTML first. Calendar upgrades to our themed popup without starting a Blazor circuit, while date + time posts the local value, IANA time zone, UTC offset, and verified UTC instant.</p>
         </header>
@@ -95,8 +95,8 @@
         <section class="form-playbook__section" aria-labelledby="static-title">
             <div class="form-playbook__section-heading">
                 <span>03</span>
-                <div><h2 id="static-title">Static rendering contract</h2><p>No EditForm, event callback, circuit, or Fluent popup is required.</p></div>
-                <strong class="form-playbook__mode form-playbook__mode--static">Static SSR ready</strong>
+                <div><h2 id="static-title">Static form submission</h2><p>These inputs also work without EditForm, event callbacks, or a Blazor circuit.</p></div>
+                <strong class="form-playbook__mode form-playbook__mode--static">Static SSR</strong>
             </div>
 
             <form class="form-playbook__static-form" method="get" action="form-controls">
@@ -122,7 +122,7 @@
                 </FormGrid>
                 <div class="form-playbook__submit-row">
                     <AppButton Type="submit" Variant="AppButtonVariant.Primary">Submit as a normal HTML form</AppButton>
-                    <span>In this Playbook the form uses GET so its payload can be inspected safely in the address bar.</span>
+                    <span>This example uses GET so the submitted values appear in the address bar.</span>
                 </div>
             </form>
         </section>
@@ -130,7 +130,7 @@
         <section class="form-playbook__architecture" aria-labelledby="timezone-title">
             <div>
                 <span class="playbook-kicker">Server-safe conversion</span>
-                <h2 id="timezone-title">Never infer user time from the server clock.</h2>
+                <h2 id="timezone-title">Use the browser time zone</h2>
             </div>
             <ol>
                 <li><strong>Render</strong><span>Native inputs are present in the initial HTML.</span></li>

@@ -7,10 +7,10 @@
     @if (Pattern is null)
     {
         <main class="pattern-detail pattern-detail--missing">
-            <span class="playbook-kicker">Unknown pattern</span>
-            <h1>This recipe is not in the field guide.</h1>
+            <span class="playbook-kicker">Pattern not found</span>
+            <h1>Pattern not found</h1>
             <p>The pattern may have moved or the address may be incomplete.</p>
-            <a href="patterns">Return to the Pattern Library</a>
+            <a href="patterns">Return to patterns</a>
         </main>
     }
     else
@@ -36,19 +36,19 @@
                         <p>@pattern.Intent</p>
                     </div>
                     <a class="pattern-detail__launch" href="@pattern.LiveHref">
-                        <span>Launch live composition</span>
+                        <span>Example page</span>
                         <strong>@pattern.LiveLabel</strong>
                         <i aria-hidden="true">↗</i>
                     </a>
                 </div>
 
-                <aside class="pattern-detail__passport" aria-label="Pattern contract">
+                <aside class="pattern-detail__passport" aria-label="Pattern details">
                     <div class="pattern-detail__passport-mark" aria-hidden="true">@PatternInitials(pattern.Name)</div>
                     <dl>
                         <div><dt>Pattern ID</dt><dd><code>@pattern.Slug</code></dd></div>
                         <div><dt>Live route</dt><dd><code>/@pattern.LiveHref</code></dd></div>
                         <div><dt>Ingredients</dt><dd>@pattern.Ingredients.Count shared components</dd></div>
-                        <div><dt>Evidence</dt><dd>@pattern.Evidence.Count regression sources</dd></div>
+                        <div><dt>Tests</dt><dd>@pattern.Evidence.Count references</dd></div>
                     </dl>
                     <div class="pattern-detail__tags">
                         @foreach (var tag in pattern.Tags)
@@ -63,8 +63,8 @@
                 <section class="pattern-detail__anatomy" aria-labelledby="pattern-anatomy-title">
                     <header class="pattern-detail__section-heading">
                         <span>01 / Assembly</span>
-                        <h2 id="pattern-anatomy-title">Composition anatomy</h2>
-                        <p>Build the boundary in this order; preserve the reading order even when visual geometry changes.</p>
+                        <h2 id="pattern-anatomy-title">Assembly steps</h2>
+                        <p>Follow these steps and keep the reading order unchanged when the layout adapts.</p>
                     </header>
 
                     <ol class="pattern-detail__steps">
@@ -81,7 +81,7 @@
 
                 <aside class="pattern-detail__ingredient-panel" aria-labelledby="pattern-ingredients-title">
                     <header>
-                        <span>Shared inventory</span>
+                        <span>Components</span>
                         <h2 id="pattern-ingredients-title">Ingredients</h2>
                     </header>
                     <ol>
@@ -101,9 +101,9 @@
                 <section class="pattern-detail__recipe" aria-labelledby="pattern-recipe-title">
                     <header class="pattern-detail__section-heading pattern-detail__section-heading--recipe">
                         <div>
-                            <span>02 / Minimal Razor</span>
-                            <h2 id="pattern-recipe-title">Start from the contract.</h2>
-                            <p>The recipe shows component shape, not application policy. Replace the sample values and ellipses with product-owned behavior.</p>
+                            <span>02 / Razor</span>
+                            <h2 id="pattern-recipe-title">Sample Razor</h2>
+                            <p>The sample covers component structure. Replace its values and placeholders with application code.</p>
                         </div>
                         <div class="pattern-detail__copy-control">
                             <button type="button" aria-label="Copy Razor recipe" @onclick="CopyRecipeAsync">Copy Razor</button>
@@ -115,12 +115,12 @@
 
                 <section class="pattern-detail__ownership" aria-labelledby="pattern-ownership-title">
                     <header class="pattern-detail__section-heading">
-                        <span>03 / Boundary</span>
-                        <h2 id="pattern-ownership-title">Ownership stays explicit.</h2>
+                        <span>03 / Responsibilities</span>
+                        <h2 id="pattern-ownership-title">Responsibilities</h2>
                     </header>
                     <div class="pattern-detail__ownership-grid">
                         <article>
-                            <span>Library owns</span>
+                            <span>Library</span>
                             <ul>
                                 @foreach (var responsibility in pattern.Ownership.LibraryResponsibilities)
                                 {
@@ -129,7 +129,7 @@
                             </ul>
                         </article>
                         <article>
-                            <span>Application owns</span>
+                            <span>Application</span>
                             <ul>
                                 @foreach (var responsibility in pattern.Ownership.ApplicationResponsibilities)
                                 {
@@ -142,8 +142,8 @@
 
                 <section class="pattern-detail__checks" aria-labelledby="pattern-checks-title">
                     <header class="pattern-detail__section-heading">
-                        <span>04 / Definition of done</span>
-                        <h2 id="pattern-checks-title">Quality checks</h2>
+                        <span>04 / Checks</span>
+                        <h2 id="pattern-checks-title">Checks before use</h2>
                     </header>
                     <div class="pattern-detail__check-list">
                         @foreach (var check in pattern.QualityChecks)
@@ -158,8 +158,8 @@
 
                 <section class="pattern-detail__evidence" aria-labelledby="pattern-evidence-title">
                     <header class="pattern-detail__section-heading">
-                        <span>05 / Regression trail</span>
-                        <h2 id="pattern-evidence-title">Evidence, not decoration.</h2>
+                        <span>05 / Tests</span>
+                        <h2 id="pattern-evidence-title">Test coverage</h2>
                     </header>
                     <ol>
                         @for (var index = 0; index < pattern.Evidence.Count; index++)
@@ -172,7 +172,7 @@
                         }
                     </ol>
                     <a class="pattern-detail__evidence-launch" href="@pattern.LiveHref">
-                        <span>Executable proof</span>
+                        <span>Example page</span>
                         <strong>@pattern.LiveLabel</strong>
                         <i aria-hidden="true">→</i>
                     </a>
@@ -185,10 +185,10 @@
 @code {
     [Parameter] public string? Slug { get; set; }
 
-    private string _copyStatus = "Ready to copy";
+    private string _copyStatus = string.Empty;
     private PlaybookPatternDefinition? Pattern => PlaybookPatternCatalog.Find(Slug);
 
-    protected override void OnParametersSet() => _copyStatus = "Ready to copy";
+    protected override void OnParametersSet() => _copyStatus = string.Empty;
 
     private async Task CopyRecipeAsync()
     {

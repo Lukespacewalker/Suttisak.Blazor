@@ -7,9 +7,9 @@
     <main class="grid-lab" data-testid="virtual-grid-demo">
         <header class="grid-lab__hero">
             <div class="grid-lab__hero-copy">
-                <span class="playbook-kicker">Data operations / performance lab</span>
-                <h1>Large data.<br /><em>Calm interface.</em></h1>
-                <p>A production-shaped AppGridShell around a virtualized AppGrid. Search, filter, sort, and scan a 100,000-record source while the browser keeps only a small row window in the DOM.</p>
+                <span class="playbook-kicker">Grid performance</span>
+                <h1>Virtualized data grid</h1>
+                <p>This AppGrid renders a small row window while searching, filtering, and sorting a source with 100,000 records.</p>
             </div>
             <dl class="grid-lab__metrics" aria-label="Virtual grid performance contract">
                 <div><dt>Source</dt><dd>100,000</dd><dd class="grid-lab__metric-note">typed records</dd></div>
@@ -21,7 +21,7 @@
 
         <section class="grid-lab__showcase" aria-labelledby="virtual-grid-title">
             <header class="grid-lab__section-heading">
-                <div><span>01 / Live specimen</span><h2 id="virtual-grid-title">Assessment register</h2><p>A realistic command surface composed from the shared grid primitives.</p></div>
+                <div><span>01 / Example</span><h2 id="virtual-grid-title">Assessment register</h2><p>AppGridShell with search, status filtering, actions, and a virtualized AppGrid.</p></div>
                 <div class="grid-lab__health"><i aria-hidden="true"></i><span>Virtualization active</span></div>
             </header>
 
@@ -78,7 +78,7 @@
         <section class="grid-lab__implementation" aria-labelledby="implementation-title">
             <div class="grid-lab__recipe">
                 <span>02 / Implementation</span>
-                <h2 id="implementation-title">The performance contract is explicit.</h2>
+                <h2 id="implementation-title">Virtualization settings</h2>
                 <pre><code>&lt;AppGridShell AriaLabel="Assessment register"&gt;
     &lt;AppGrid TGridItem="Assessment"
                   Items="Records"

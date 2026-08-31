@@ -20,10 +20,10 @@ async function expectNoSeriousOrCriticalViolations(page) {
   expect(blocking).toEqual([]);
 }
 
-test('Pattern Library exposes canonical recipes and filters by domain or ingredient', async ({ page }) => {
+test('Pattern Library lists recipes and filters by domain or component', async ({ page }) => {
   await page.goto('/patterns');
 
-  await expect(page.getByRole('heading', { level: 1, name: /Patterns are recipes/i }))
+  await expect(page.getByRole('heading', { level: 1, name: /Page patterns and component recipes/i }))
     .toBeVisible({ timeout: wasmTimeout });
   const catalogSlugs = await page.locator('[data-pattern-slug]').evaluateAll(cards =>
     cards.map(card => card.getAttribute('data-pattern-slug')));
@@ -36,7 +36,7 @@ test('Pattern Library exposes canonical recipes and filters by domain or ingredi
   await expect(page).toHaveURL(/q=StatusRouteContent/);
   await expect(page.locator('[data-pattern-slug]')).toHaveCount(1);
   await expect(page.locator('[data-pattern-slug="status-route-recovery"]')).toBeVisible();
-  await expect(page.locator('.pattern-browser__results-heading p')).toContainText(/1\s*composition/);
+  await expect(page.locator('.pattern-browser__results-heading p')).toContainText(/1\s*pattern/);
   await page.reload();
   await expect(page.getByRole('searchbox', { name: 'Find a pattern' })).toHaveValue('StatusRouteContent');
   await expect(page.locator('[data-pattern-slug]')).toHaveCount(1);
@@ -49,12 +49,12 @@ test('Pattern Library exposes canonical recipes and filters by domain or ingredi
   await expect(page.locator('[data-pattern-slug]')).toHaveCount(
     canonicalPatternSlugs.filter(slug =>
       slug === 'application-workspace-shell' || slug === 'router-level-layout-composition').length);
-  await expect(page.locator('.pattern-browser__results-heading p')).toContainText(/2\s*compositions/);
+  await expect(page.locator('.pattern-browser__results-heading p')).toContainText(/2\s*patterns/);
   await page.reload();
   await expect(page.getByRole('button', { name: 'Application structure', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
-test('Every canonical pattern has a deep detail route, recipe, ingredients, evidence, and live launch', async ({ page }) => {
+test('Every pattern has a detail route, recipe, components, tests, and page link', async ({ page }) => {
   await page.goto('/patterns');
   await expect(page.locator('[data-pattern-slug]')).toHaveCount(canonicalPatternSlugs.length, { timeout: wasmTimeout });
 
@@ -66,8 +66,8 @@ test('Every canonical pattern has a deep detail route, recipe, ingredients, evid
     await expect(page.locator(`[data-pattern-detail="${slug}"]`)).toBeVisible({ timeout: wasmTimeout });
     await expect(page.getByTestId('pattern-recipe')).not.toBeEmpty();
     await expect(page.locator('[data-pattern-ingredient]').first()).toBeVisible();
-    await expect(page.getByRole('heading', { level: 2, name: 'Quality checks' })).toBeVisible();
-    await expect(page.getByRole('heading', { level: 2, name: 'Evidence, not decoration.' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: 'Checks before use' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: 'Test coverage' })).toBeVisible();
 
     const launch = page.locator('.pattern-detail__launch');
     await expect(launch).toHaveAttribute('href', /^(?!patterns\/)[a-z0-9\-/]+$/);

@@ -11,7 +11,7 @@
                              SectionTitle="Operations"
                              SectionDescription="Program administration"
                              SectionIconName="@("Briefcase")"
-                             Description="Create, review, update, and remove records from one focused workspace."
+                             Description="Create, review, update, and remove records from this page."
                              IconName="@("Table")">
                     <PageActions>
                         <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => CreateRecord())">
@@ -83,16 +83,24 @@
                Title="Record editor" Description="Changes are returned to the page only after Save is selected."
                Position="AppDrawerPosition.End" Size="AppDrawerSize.Standard">
         <Body Context="drawer">
-            <FormGrid Columns="1">
-                <FormField><AppTextBox Label="Record name" @bind-Value="drawer.Value.Name" /></FormField>
-                <FormField><AppTextBox Label="Program" @bind-Value="drawer.Value.Program" /></FormField>
-                <FormField><AppTextBox Label="Owner" @bind-Value="drawer.Value.Owner" /></FormField>
-                <FormField><AppSelect TValue="string" Label="Status" Options="@StatusOptions" @bind-Value="drawer.Value.Status" /></FormField>
-            </FormGrid>
+            <EditForm Model="@drawer.Value"
+                      id="@RecordEditorFormId"
+                      OnValidSubmit="@(_ => drawer.CloseAsync(drawer.Value))">
+                <DataAnnotationsValidator />
+                <FormGrid Columns="1">
+                    <FormField><AppTextBox Label="Record name" Required="true" @bind-Value="drawer.Value.Name" /></FormField>
+                    <FormField><AppTextBox Label="Program" Required="true" @bind-Value="drawer.Value.Program" /></FormField>
+                    <FormField><AppTextBox Label="Owner" Required="true" @bind-Value="drawer.Value.Owner" /></FormField>
+                    <FormField><AppSelect TValue="string" Label="Status" Options="@StatusOptions" @bind-Value="drawer.Value.Status" /></FormField>
+                </FormGrid>
+            </EditForm>
         </Body>
         <Footer Context="drawer">
             <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
-            <AppButton Variant="AppButtonVariant.Primary" Disabled="@(!CanSave(drawer.Value))" OnClick="@(_ => drawer.CloseAsync(drawer.Value))">Save record</AppButton>
+            <AppButton Variant="AppButtonVariant.Primary"
+                       Type="submit"
+                       form="@RecordEditorFormId"
+                       Disabled="@(!CanSave(drawer.Value))">Save record</AppButton>
         </Footer>
     </AppDrawer>
 
@@ -110,6 +118,7 @@
 @code {
     private AppDrawer<DemoRecordDraft, DemoRecordDraft>? _recordDrawer;
     private AppDialog<DemoRecord, DemoRecord>? _deleteDialog;
+    private const string RecordEditorFormId = "record-editor-form";
     private string _searchText = string.Empty;
     private readonly PaginationState _pagination = new() { ItemsPerPage = 4 };
     private static readonly AppSelectOption<string>[] StatusOptions =

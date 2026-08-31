@@ -8,7 +8,7 @@
                 </div>
                 <PreferencesSelector />
             </header>
-            <p>These are the real shared controls. Culture belongs to the host application; theme preference is synchronized through the reusable browser module.</p>
+            <p>Culture is handled by the host application. Theme preference is stored by the shared browser module.</p>
         </div>
     </Preview>
     <Controls>
@@ -36,6 +36,6 @@
     {
         "system" => "System mode follows prefers-color-scheme and updates while the page remains open.",
         "responsive" => "Below 900 pixels, the desktop controls become one keyboard-operable details disclosure.",
-        _ => "Theme and culture choices survive a direct route reload in the Playbook host."
+        _ => "Theme and culture choices persist after a route reload."
     };
 }

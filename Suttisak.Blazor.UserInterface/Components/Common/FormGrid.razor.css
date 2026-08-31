@@ -1,3 +1,11 @@
+.form-grid-container {
+    container-name: form-grid;
+    container-type: inline-size;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+}
+
 .form-grid {
     display: grid;
     grid-template-columns: repeat(var(--form-grid-columns), minmax(0, 1fr));
@@ -8,6 +16,12 @@
 
 .form-grid ::deep .app-form-control {
     width: 100%;
+}
+
+@container form-grid (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 700px) {

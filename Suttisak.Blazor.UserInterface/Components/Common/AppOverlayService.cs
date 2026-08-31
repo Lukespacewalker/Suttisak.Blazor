@@ -24,6 +24,25 @@ public sealed class AppOverlayService
         where TComponent : IComponent =>
         Enqueue<TResult>(AppOverlayKind.Drawer, typeof(TComponent), options, parameters, null);
 
+    /// <summary>
+    /// Opens a component-hosted drawer with an application-owned footer that remains outside the
+    /// scrollable component body.
+    /// </summary>
+    public Task<AppOverlayResult<TResult>> ShowDrawerAsync<TComponent, TResult>(
+        AppOverlayOptions options,
+        IReadOnlyDictionary<string, object?>? parameters,
+        RenderFragment<AppOverlayController> footer)
+        where TComponent : IComponent
+    {
+        ArgumentNullException.ThrowIfNull(footer);
+        return Enqueue<TResult>(
+            AppOverlayKind.Drawer,
+            typeof(TComponent),
+            options,
+            parameters,
+            new AppOverlayFragments(null, footer));
+    }
+
     public Task<AppOverlayResult<TResult>> ShowDialogAsync<TResult>(
         AppOverlayOptions options,
         RenderFragment<AppOverlayController> body,
@@ -94,6 +113,21 @@ public sealed class AppOverlayService
         }
     }
 
+    internal void CancelQueuedRequests()
+    {
+        AppOverlayRequest[] queuedRequests;
+        lock (_sync)
+        {
+            queuedRequests = _requests.ToArray();
+            _requests.Clear();
+        }
+
+        foreach (var request in queuedRequests)
+        {
+            request.Complete(AppOverlayResult<object?>.Cancelled());
+        }
+    }
+
     private Task<AppOverlayResult<TResult>> Enqueue<TResult>(
         AppOverlayKind kind,
         Type? componentType,
@@ -121,7 +155,7 @@ public sealed class AppOverlayService
 internal enum AppOverlayKind { Dialog, Drawer }
 
 internal sealed record AppOverlayFragments(
-    RenderFragment<AppOverlayController> Body,
+    RenderFragment<AppOverlayController>? Body,
     RenderFragment<AppOverlayController>? Footer);
 
 internal sealed record AppOverlayPreset(string Message, string ConfirmText, string? CancelText, bool IsConfirmation);

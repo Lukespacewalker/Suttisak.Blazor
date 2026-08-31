@@ -78,7 +78,7 @@ public static class PlaybookUsageExamples
             ["MarketingHero"] = """
                 <MarketingHero Title="Make the next decision clear."
                                Description="Explain the outcome before the detail.">
-                    <Actions><MarketingActionLink Href="#features">Explore features</MarketingActionLink></Actions>
+                    <Actions><MarketingActionLink Href="#features">View features</MarketingActionLink></Actions>
                 </MarketingHero>
                 """,
             ["ApplicationShell"] = """

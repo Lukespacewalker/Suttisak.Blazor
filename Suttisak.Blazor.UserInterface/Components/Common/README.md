@@ -110,6 +110,12 @@ backdrop clicks while retaining the explicit close button and Escape. Set
 open from either side and have narrow, standard, and wide sizes and also support
 `Mode`.
 
+Service-hosted component drawers can pass an application-owned footer through
+the component/footer `ShowDrawerAsync` overload. Keep Save and Cancel in that
+footer so the body remains the only scrollable region. Set `CloseLabel` on
+`AppOverlayOptions` with localized application copy. Active and queued overlays
+are cancelled when client-side navigation changes the owning route.
+
 ```razor
 <AppDialog TInput="Person" TResult="Person" @ref="deleteDialog"
            Title="Delete this person?" Dangerous="true"

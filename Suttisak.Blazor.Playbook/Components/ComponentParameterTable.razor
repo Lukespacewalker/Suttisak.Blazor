@@ -2,7 +2,7 @@
 
 @if (ComponentType is null)
 {
-    <p class="component-parameter-table__empty">API metadata is not wired for this component yet. Use the source and pattern links while its runtime type is added to the catalog.</p>
+    <p class="component-parameter-table__empty">Parameter metadata is unavailable for this component. See its source and related patterns.</p>
 }
 else
 {
@@ -46,7 +46,7 @@ else
     {
         if (ComponentType is null || ComponentType.ContainsGenericParameters)
         {
-            return "—";
+            return "N/A";
         }
 
         try
@@ -60,13 +60,13 @@ else
                 string text when string.IsNullOrEmpty(text) => "\"\"",
                 string text => $"\"{text}\"",
                 Enum enumeration => enumeration.ToString(),
-                ValueType valueType => valueType.ToString() ?? "—",
-                _ => "—"
+                ValueType valueType => valueType.ToString() ?? "N/A",
+                _ => "N/A"
             };
         }
         catch
         {
-            return "—";
+            return "N/A";
         }
     }
 

@@ -76,7 +76,7 @@ window.playbookLoader = (() => {
 
     function reportProgress() {
         const percent = knownTotalBytes > 0 ? (receivedBytes / knownTotalBytes) * 100 : undefined;
-        setState("Downloading the workspace…", `Loaded ${completedResources} application resource${completedResources === 1 ? "" : "s"}`, percent);
+        setState("Downloading files…", `${completedResources} file${completedResources === 1 ? "" : "s"} loaded`, percent);
     }
 
     function loadBootResource(type, name, defaultUri, integrity) {
@@ -127,10 +127,10 @@ window.playbookLoader = (() => {
 
     return {
         start() {
-            setState("Starting the component workspace…", "Loading application resources", 4);
+            setState("Loading application files…", "Starting application", 4);
             Blazor.start({ loadBootResource })
-                .then(() => setState("Ready", "Opening the playbook", 100))
-                .catch(() => setState("We couldn't load the playbook.", "Check your connection, then refresh the page.", 100));
+                .then(() => setState("Loaded", "Opening page", 100))
+                .catch(() => setState("UI Playbook could not start.", "Refresh the page and try again.", 100));
         }
     };
 })();

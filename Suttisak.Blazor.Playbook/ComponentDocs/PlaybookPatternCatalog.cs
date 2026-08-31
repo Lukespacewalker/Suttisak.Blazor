@@ -62,8 +62,8 @@ public static class PlaybookPatternCatalog
             "validated-form-workflow",
             "Data entry",
             PlaybookPatternMaturity.Stable,
-            "Compose a readable EditForm from field primitives, responsive geometry, validation feedback, and an explicit action boundary.",
-            "Use this pattern when a page collects related values that must remain understandable before, during, and after validation.",
+            "A validated EditForm built with shared field and layout components.",
+            "Forms that collect related values and display validation errors.",
             ["form", "validation", "responsive", "edit-context"],
             [
                 I("FormSection", "Names the task and groups its supporting guidance."),
@@ -76,10 +76,10 @@ public static class PlaybookPatternCatalog
                 I("AppButton", "Expresses submit priority and secondary actions.")
             ],
             [
-                S("Start with the model boundary", "Create one EditContext or model for the task and keep validation rules beside that model."),
-                S("Group before arranging", "Use FormSection to explain the task, then FormGrid and FormField to describe geometry."),
+                S("Create the form model", "Use one EditContext or model and keep its validation rules with the model."),
+                S("Add the form layout", "Use FormSection for the group, then FormGrid and FormField for field placement."),
                 S("Bind semantic controls", "Choose inputs by value type and always provide a visible label and useful description."),
-                S("Close with an action boundary", "Place validation feedback before FormActions so the submit path is predictable in reading and focus order.")
+                S("Add form actions", "Place validation feedback before FormActions so reading and focus order stay predictable.")
             ],
             O(
                 ["Label, description, validation, and focus presentation", "Responsive grid collapse and field spacing", "Button hierarchy and disabled presentation"],
@@ -103,19 +103,19 @@ public static class PlaybookPatternCatalog
                 Q("State", "Loading, server failure, and successful submission remain distinguishable without relying on color alone.")
             ],
             "form-controls",
-            "Open the form controls laboratory",
+            "View form controls",
             [
-                E("Browser", "form-composition-workbench.spec.mjs", "Exercises section, grid, field, validation, and action composition."),
-                E("Browser", "playbook.spec.mjs", "Verifies the routed interactive and static form contracts.")
+                E("Browser", "form-composition-workbench.spec.mjs", "Covers sections, grids, fields, validation, and form actions."),
+                E("Browser", "playbook.spec.mjs", "Covers interactive and static form routes.")
             ]),
 
         new(
-            "Virtualized data workspace",
+            "Virtualized data table",
             "virtualized-data-workspace",
             "Data operations",
             PlaybookPatternMaturity.Stable,
-            "Place search, filters, actions, a virtualized grid, and operational feedback inside one labelled data surface.",
-            "Use this pattern for large, scan-heavy datasets where stable row identity and bounded DOM work matter more than page-at-a-time navigation.",
+            "A searchable and sortable AppGrid with virtualized rows.",
+            "Large tables where virtualization keeps the number of DOM rows low.",
             ["data", "grid", "virtualization", "performance"],
             [
                 I("AppGridShell", "Names the workspace and arranges search, filters, actions, data, and footer slots."),
@@ -127,10 +127,10 @@ public static class PlaybookPatternCatalog
                 I("AppButton", "Hosts export, create, and row-level actions.")
             ],
             [
-                S("Name the dataset", "Give AppGridShell a task-oriented accessible label, not a generic label such as Data table."),
-                S("Shape the query first", "Apply search, filters, and authorization before exposing IQueryable items to the grid."),
+                S("Label the table", "Give AppGridShell a specific accessible label such as Assessment register."),
+                S("Filter the query", "Apply search, filters, and authorization before passing IQueryable items to the grid."),
                 S("Declare virtual geometry", "Use a fixed ItemSize, a restrained OverscanCount, and an ItemKey that survives sorting and refresh."),
-                S("Keep actions explicit", "Give icon-only row actions record-specific names and keep bulk actions outside the table body.")
+                S("Label row actions", "Give icon-only actions record-specific names and keep bulk actions outside the table body.")
             ],
             O(
                 ["Table semantics, sort interaction, and virtual row rendering", "Workspace slot layout and visual hierarchy", "Keyboard-visible control and row-action states"],
@@ -149,24 +149,24 @@ public static class PlaybookPatternCatalog
             """,
             [
                 Q("Accessibility", "The shell and grid have distinct task labels; every row action names its target record."),
-                Q("Responsive", "Narrow screens preserve access to columns through intentional overflow or a documented alternate view."),
+                Q("Responsive", "Narrow screens keep columns available through horizontal scrolling or an alternate view."),
                 Q("Performance", "Rendered rows remain bounded while scrolling the full source and row height stays equal to ItemSize.")
             ],
             "grid-performance",
-            "Run the 100,000-row performance laboratory",
+            "View the 100,000-row example",
             [
-                E("Browser", "playbook.spec.mjs", "Asserts the 100,000-record source keeps a bounded row window."),
+                E("Browser", "playbook.spec.mjs", "Checks that the 100,000-record source keeps a bounded row window."),
                 E("Browser", "pagination-data-workbench.spec.mjs", "Covers labelled paged and virtual grid shells."),
                 E("Browser", "data-grid-workbench.spec.mjs", "Covers search, sorting, loading, and empty data states.")
             ]),
 
         new(
-            "Product marketing landing",
+            "Product landing page",
             "product-marketing-landing",
             "Marketing",
             PlaybookPatternMaturity.Stable,
-            "Build a product narrative from a promise, proof, product frame, benefits, steps, and a final call to action.",
-            "Use this pattern for a public product entry point that needs application-owned identity and content on top of shared responsive sections.",
+            "A landing page with a hero, product preview, benefits, steps, and final action.",
+            "Public product pages that use application copy and assets with shared section components.",
             ["marketing", "landing", "story", "conversion"],
             [
                 I("MarketingPage", "Provides the main landmark and skip-target contract."),
@@ -174,7 +174,7 @@ public static class PlaybookPatternCatalog
                 I("MarketingHero", "Pairs the primary promise with actions and product media."),
                 I("MarketingProofStrip", "Groups concise evidence immediately after the promise."),
                 I("MarketingProofItem", "Expresses one proof point with value and explanation."),
-                I("MarketingProductFrame", "Frames a credible product preview without owning its content."),
+                I("MarketingProductFrame", "Frames a product preview without owning its content."),
                 I("MarketingFeatureGrid", "Arranges differentiated benefits."),
                 I("MarketingCard", "Carries one benefit and its supporting visual."),
                 I("MarketingStepList", "Explains the progression from signal to outcome."),
@@ -182,10 +182,10 @@ public static class PlaybookPatternCatalog
                 I("MarketingActionLink", "Provides primary and secondary marketing actions.")
             ],
             [
-                S("Lead with one promise", "Give MarketingHero a reader outcome, supporting explanation, and no more than two competing actions."),
-                S("Earn the next scroll", "Place compact proof directly after the hero, then show a concrete product frame before abstract benefits."),
-                S("Explain the path", "Use feature and step compositions to answer why this matters and what happens next."),
-                S("Close the loop", "Repeat the primary action in MarketingCallToAction after the reader has enough evidence to decide.")
+                S("Write the page heading", "Give MarketingHero a specific outcome, a short explanation, and no more than two actions."),
+                S("Add proof and a product preview", "Place proof after the hero, followed by a product frame."),
+                S("Add benefits and steps", "Use feature cards and ordered steps to describe the product and workflow."),
+                S("Add the final action", "Repeat the primary action in MarketingCallToAction after the supporting content.")
             ],
             O(
                 ["Responsive section geometry and shared reading widths", "Action variants, feature grids, proof strips, and step rhythm", "Skip-link and landmark plumbing inside MarketingPage"],
@@ -193,8 +193,8 @@ public static class PlaybookPatternCatalog
             """
             <MarketingPage Id="product" SkipTarget="benefits">
                 <MarketingHero Title="Understand the signal. Act with confidence."
-                               Description="A focused path from information to action.">
-                    <Actions><MarketingActionLink Href="#benefits">Explore</MarketingActionLink></Actions>
+                               Description="A summary of the result and the available next step.">
+                    <Actions><MarketingActionLink Href="#benefits">View benefits</MarketingActionLink></Actions>
                 </MarketingHero>
                 <MarketingProofStrip AriaLabel="Product proof">
                     <MarketingProofItem Value="AA" Title="Accessible" Description="Built on a tested foundation." />
@@ -203,7 +203,7 @@ public static class PlaybookPatternCatalog
                     <MarketingCard Title="One clear benefit">...</MarketingCard>
                 </MarketingFeatureGrid>
                 <MarketingCallToAction>
-                    <Content><h2>Ready to continue?</h2></Content>
+                    <Content><h2>Next step</h2></Content>
                     <Actions><MarketingActionLink Href="/start">Get started</MarketingActionLink></Actions>
                 </MarketingCallToAction>
             </MarketingPage>
@@ -211,22 +211,22 @@ public static class PlaybookPatternCatalog
             [
                 Q("Accessibility", "The page has one main landmark, a working skip target, ordered headings, and meaningful media alternatives."),
                 Q("Responsive", "Proof, feature, and CTA layouts stack without reordering the product narrative."),
-                Q("Content", "Claims have evidence, actions describe their destination, and decorative media stays silent.")
+                Q("Content", "Support product claims, label action destinations, and hide decorative media from assistive technology.")
             ],
             "landing",
-            "Open the themed landing-page sandbox",
+            "View the landing-page example",
             [
-                E("Browser", "marketing-workbench.spec.mjs", "Exercises the shared marketing compositions and routed MarketingPage landmark."),
-                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Verifies MarketingPage is executed by the real landing route.")
+                E("Browser", "marketing-workbench.spec.mjs", "Covers the marketing components and MarketingPage landmark."),
+                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Checks MarketingPage on the landing route.")
             ]),
 
         new(
-            "Secure access flow",
+            "Sign-in page",
             "secure-access-flow",
             "Access",
             PlaybookPatternMaturity.Stable,
-            "Compose sign-in or registration inside a branded, responsive access frame while authentication policy stays application-owned.",
-            "Use this pattern for unauthenticated routes that need a consistent identity surface, clear credentials path, and optional provider choices.",
+            "A sign-in form inside a responsive AccessPageLayout.",
+            "Unauthenticated sign-in and registration routes.",
             ["access", "identity", "authentication", "responsive"],
             [
                 I("AccessPageLayout", "Arranges brand, preferences, form copy, controls, and the product showcase."),
@@ -259,22 +259,22 @@ public static class PlaybookPatternCatalog
             [
                 Q("Accessibility", "The route focuses one visible heading, labels every credential field, and reports authentication failure without moving focus unexpectedly."),
                 Q("Responsive", "The form precedes optional showcase content in reading order and remains usable at 320 CSS pixels."),
-                Q("Security", "The Playbook demonstrates layout only; production auth, CSRF protection, and redirect validation stay server-owned.")
+                Q("Security", "This example covers layout only. Authentication, CSRF protection, and redirect validation remain server responsibilities.")
             ],
             "access/login",
-            "Open the login composition",
+            "View the sign-in example",
             [
-                E("Browser", "playbook.spec.mjs", "Covers the real access route, credential controls, language, and theme variants."),
-                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Verifies AccessPageLayout executes on a routed page.")
+                E("Browser", "playbook.spec.mjs", "Covers the access route, credential controls, language, and theme variants."),
+                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Checks AccessPageLayout on a routed page.")
             ]),
 
         new(
-            "Application workspace shell",
+            "Application shell",
             "application-workspace-shell",
             "Application structure",
             PlaybookPatternMaturity.Stable,
-            "Compose persistent product identity, grouped navigation, user controls, breadcrumbs, and page actions around one routed main region.",
-            "Use this pattern as the authenticated frame for task-oriented applications with multiple sections and responsive navigation.",
+            "An authenticated application shell with navigation, breadcrumbs, user controls, and page actions.",
+            "Applications with several sections and responsive navigation.",
             ["application", "shell", "navigation", "layout"],
             [
                 I("ApplicationShell", "Owns the responsive chrome and single routed main landmark."),
@@ -290,10 +290,10 @@ public static class PlaybookPatternCatalog
                 I("ShellProfileControl", "Selects the signed-in profile menu or access entry point for the shell.")
             ],
             [
-                S("Establish one main owner", "Let ApplicationShell own the routed main landmark; pages contribute content rather than another main."),
+                S("Use one main landmark", "Let ApplicationShell own the routed main landmark. Pages provide content inside it."),
                 S("Group destinations by task", "Compose NavGroup and NavItem labels from the user mental model, not the code namespace."),
                 S("Publish route context", "Provide breadcrumbs and one PageHeading for every routed workspace."),
-                S("Adapt the chrome", "At narrow widths, move navigation into the shell overlay while preserving destination and focus state.")
+                S("Handle narrow screens", "Move navigation into the shell overlay while preserving destination and focus state.")
             ],
             O(
                 ["Shell landmarks, responsive navigation, and overlay mechanics", "Navigation-group, item, heading, and breadcrumb presentation", "Slots for brand, preferences, profile, messages, and route content"],
@@ -318,20 +318,20 @@ public static class PlaybookPatternCatalog
                 Q("Routing", "Active navigation and breadcrumb state follow the current URI and clear when the route changes.")
             ],
             "application-shell",
-            "Open the authenticated workspace",
+            "View the application shell",
             [
                 E("Browser", "playbook.spec.mjs", "Exercises desktop collapse, mobile navigation, and application routes."),
-                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Verifies the real ApplicationShell contract and its slots."),
+                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Covers ApplicationShell and its slots."),
                 E("Browser", "navigation-workbench.spec.mjs", "Covers grouped and nested shared navigation behavior.")
             ]),
 
         new(
-            "Record management workflow",
+            "Record management",
             "record-management-workflow",
             "Application workflows",
             PlaybookPatternMaturity.Beta,
-            "Connect a searchable record grid to create and edit drawers, destructive confirmation, paging, and record detail navigation.",
-            "Use this pattern for bounded CRUD work where list context should remain visible while a user edits or confirms a record action.",
+            "A record list with search, paging, an editor drawer, and delete confirmation.",
+            "CRUD pages that keep the list visible while a record is edited.",
             ["records", "crud", "drawer", "dialog", "grid"],
             [
                 I("AppGridShell", "Frames search, record count, grid, and pagination."),
@@ -345,10 +345,10 @@ public static class PlaybookPatternCatalog
                 I("AppButton", "Hosts create, edit, save, cancel, and delete actions.")
             ],
             [
-                S("Keep the list authoritative", "Search, sorting, pagination, and visible counts all derive from the same filtered record source."),
+                S("Use one filtered data source", "Search, sorting, pagination, and visible counts must use the same filtered records."),
                 S("Edit a draft", "Open AppDrawer with a copy so cancellation never mutates the visible record."),
-                S("Commit intentionally", "Enable Save only when the draft is valid, then replace or append through the application store."),
-                S("Confirm irreversible work", "Name the target inside AppDialog and make the safe exit at least as easy to find as Delete.")
+                S("Save the draft", "Enable Save only when the draft is valid, then update the application store."),
+                S("Confirm deletion", "Name the target inside AppDialog and provide a clear Cancel action.")
             ],
             O(
                 ["Grid, drawer, dialog, paginator, field, and button interaction contracts", "Overlay focus containment, dismissal, and dangerous visual intent", "Responsive data-surface and editor geometry"],
@@ -376,11 +376,11 @@ public static class PlaybookPatternCatalog
             """,
             [
                 Q("Accessibility", "Every row action names its record; drawer and dialog headings describe the active operation and target."),
-                Q("Responsive", "The editor remains operable without hiding the close action, while the record list preserves a deliberate overflow strategy."),
+                Q("Responsive", "The editor keeps its close action visible, and the record list handles horizontal overflow."),
                 Q("Safety", "Cancel leaves source data untouched and destructive confirmation states whether recovery or undo is available.")
             ],
             "application-shell/records",
-            "Run the record-management workflow",
+            "View record management",
             [
                 E("Browser", "data-grid-workbench.spec.mjs", "Covers shared search, sorting, loading, and empty grid states."),
                 E("Browser", "design-system-playbook.spec.mjs", "Covers drawer and dialog focus, dismissal, and dangerous variants."),
@@ -388,12 +388,12 @@ public static class PlaybookPatternCatalog
             ]),
 
         new(
-            "Status route recovery",
+            "Status pages",
             "status-route-recovery",
             "Routing & recovery",
             PlaybookPatternMaturity.Stable,
-            "Map HTTP outcomes to a branded StatusPage with route-safe actions, support context, and application-owned recovery copy.",
-            "Use this pattern for forbidden, missing, and server-error routes that must explain what happened and offer a credible next action.",
+            "StatusRouteContent and StatusPage examples for 403, 404, and 500 routes.",
+            "Routes that need to explain an error and provide a recovery action.",
             ["status", "routing", "error", "recovery"],
             [
                 I("StatusRouteContent", "Resolves route options, status semantics, actions, and optional request reference."),
@@ -403,8 +403,8 @@ public static class PlaybookPatternCatalog
             ],
             [
                 S("Resolve the outcome", "Map the route status code to a known forbidden, not-found, or server-error configuration."),
-                S("Explain without blame", "State what is known, preserve security boundaries, and avoid exposing exception details."),
-                S("Offer recovery", "Provide one primary action that can succeed now and a stable path back to a known application route."),
+                S("Write the status message", "State what is known and do not expose exception details."),
+                S("Add a recovery action", "Provide one primary action and a path back to a known application route."),
                 S("Attach support context", "Show a safe request reference only when it helps support correlate the failure.")
             ],
             O(
@@ -426,7 +426,7 @@ public static class PlaybookPatternCatalog
                 Q("Security", "Copy and request references reveal no stack, resource existence, account detail, or authorization rule.")
             ],
             "access/custom-error",
-            "Configure and preview a status route",
+            "View status-page options",
             [
                 E("Browser", "catalog-and-design-tokens.spec.mjs", "Verifies custom status route actions, status semantics, brand, and request reference."),
                 E("Browser", "design-system-playbook.spec.mjs", "Covers StatusPage variants and live-region behavior."),
@@ -434,12 +434,12 @@ public static class PlaybookPatternCatalog
             ]),
 
         new(
-            "Router-level layout composition",
+            "Router layouts",
             "router-level-layout-composition",
             "Application structure",
             PlaybookPatternMaturity.Beta,
-            "Choose the layout that owns the page chrome, then fill named sections without introducing a second shell or main landmark.",
-            "Use this pattern when Blazor routing must select application, identity, landing, or header/body chrome while pages retain content ownership.",
+            "Blazor layouts with named sections for application, identity, landing, and header/body pages.",
+            "Routes that select a layout while the page supplies its own content.",
             ["router", "layout", "sections", "landmarks"],
             [
                 I("RootLayout", "Provides initialization and recoverable root infrastructure."),
@@ -454,9 +454,9 @@ public static class PlaybookPatternCatalog
                 I("Nav", "Fills the application navigation section.")
             ],
             [
-                S("Choose one chrome owner", "Select the layout with @layout or router configuration and do not wrap the page in a competing shell."),
+                S("Choose one layout", "Select the layout with @layout or router configuration and do not wrap the page in another shell."),
                 S("Fill named sections", "Supply brand, navigation, breadcrumbs, heading, and controls through the section IDs exposed by that layout."),
-                S("Keep landmarks singular", "Know whether the layout or body component owns main before adding routed content."),
+                S("Use one main landmark", "Check whether the layout or body component owns main before adding routed content."),
                 S("Clear route state", "Ensure breadcrumb and named-section content does not leak after navigating to a page that omits it.")
             ],
             O(
@@ -482,9 +482,9 @@ public static class PlaybookPatternCatalog
                 Q("Lifecycle", "Named-section and breadcrumb content clears after navigation and root initialization does not duplicate across layouts.")
             ],
             "layout-patterns/application",
-            "Open the real MainLayout route",
+            "View the MainLayout example",
             [
-                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Runs MainLayout, RootLayout, HeaderFooterLayout, IdentityLayout, and LandingLayout as real router layouts."),
+                E("Browser", "layout-infrastructure-contracts.spec.mjs", "Covers MainLayout, RootLayout, HeaderFooterLayout, IdentityLayout, and LandingLayout as router layouts."),
                 E("Executable routes", "layout-patterns/application · layout-patterns/identity · layout-patterns/landing · layout-patterns/header-footer", "Expose each layout boundary without a nested Playbook shell.")
             ])
     ];
