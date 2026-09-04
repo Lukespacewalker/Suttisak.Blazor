@@ -51,12 +51,12 @@
                         <span>Open a record from its name, edit from the row, or select rows for batch actions.</span>
                     </Toolbar>
                     <SelectionToolbar>
-                        <AppGridSelectionToolbar SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
+                        <GridSelectionToolbarDemo SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
                             <Actions>
                                 <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => ExportSelected())">Export selected</AppButton>
                                 <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => DeleteSelectedRecords())">Delete selected</AppButton>
                             </Actions>
-                        </AppGridSelectionToolbar>
+                        </GridSelectionToolbarDemo>
                     </SelectionToolbar>
                     <ChildContent>
                     <AppGrid TGridItem="DemoRecord"
@@ -82,9 +82,9 @@
                                 <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Edit {context.Name}")" OnClick="@(_ => EditRecord(context))">
                                     <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Edit" Size="20"  /></IconStartContent>
                                 </AppButton>
-                                <AppActionMenu AriaLabel="@($"More actions for {context.Name}")">
+                                <GridActionMenuDemo AriaLabel="@($"More actions for {context.Name}")">
                                     <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => DeleteRecord(context))">Delete</AppButton>
-                                </AppActionMenu>
+                                </GridActionMenuDemo>
                             </div>
                         </AppGridTemplateColumn>
                     </AppGrid>
