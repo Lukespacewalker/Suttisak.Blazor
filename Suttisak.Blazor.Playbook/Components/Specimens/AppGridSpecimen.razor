@@ -21,13 +21,13 @@
                     <span>Use row actions for one record; select rows for batch work.</span>
                 </Toolbar>
                 <SelectionToolbar>
-                    <AppGridSelectionToolbar SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
+                    <GridSelectionToolbarDemo SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
                         <Actions>
                             <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetBatchAction("Export"))">Export selected</AppButton>
                             <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetBatchAction("Archive"))">Archive selected</AppButton>
                             <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => SetBatchAction("Delete"))">Delete selected</AppButton>
                         </Actions>
-                    </AppGridSelectionToolbar>
+                    </GridSelectionToolbarDemo>
                 </SelectionToolbar>
                 <ChildContent>
                     <AppGrid TGridItem="DemoRecord"
@@ -47,10 +47,10 @@
                             <span>@context.Status</span>
                         </AppGridTemplateColumn>
                         <AppGridTemplateColumn TGridItem="DemoRecord" Title="Actions">
-                            <AppActionMenu AriaLabel="@($"Actions for {context.Name}")">
+                            <GridActionMenuDemo AriaLabel="@($"Actions for {context.Name}")">
                                 <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" OnClick="@(_ => SetRowAction("Edit", context))">Edit</AppButton>
                                 <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => SetRowAction("Delete", context))">Delete</AppButton>
-                            </AppActionMenu>
+                            </GridActionMenuDemo>
                         </AppGridTemplateColumn>
                     </AppGrid>
                 </ChildContent>
