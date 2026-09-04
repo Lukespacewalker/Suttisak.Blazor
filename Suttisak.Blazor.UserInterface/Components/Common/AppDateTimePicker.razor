@@ -1,4 +1,7 @@
 @using System.Globalization
+@using Microsoft.Extensions.DependencyInjection
+@using Suttisak.Blazor.UserInterface.Providers
+@implements IDisposable
 
 <div class="app-form-control @Class"
      data-browser-datetime-control
@@ -65,10 +68,20 @@
 </div>
 
 @code {
+    [Inject]
+    public IServiceProvider Services { get; set; } = null!;
+
     [Parameter] public string? Label { get; set; }
     [Parameter] public string? Description { get; set; }
     [Parameter] public DateTime? Value { get; set; }
     [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>
+    /// A UTC instant displayed and edited in the browser's local time zone.
+    /// Register <see cref="BrowserTimeProvider"/> with <c>AddBlazorUserInterface</c>
+    /// before using this binding.
+    /// </summary>
+    [Parameter] public DateTimeOffset? InstantValue { get; set; }
+    [Parameter] public EventCallback<DateTimeOffset?> InstantValueChanged { get; set; }
     [Parameter] public string? Name { get; set; }
     [Parameter] public string? Id { get; set; }
     [Parameter] public DateTime? Min { get; set; }
@@ -100,7 +113,12 @@
     private string DescriptionIds => string.Join(' ', new[] { TimeZoneDescriptionId, DescriptionId }.Where(value => value is not null));
     private int Step => IncludeSeconds ? Math.Max(1, SecondStep) : Math.Max(1, MinuteStep) * 60;
     private string Pattern => IncludeSeconds ? "yyyy-MM-ddTHH:mm:ss" : "yyyy-MM-ddTHH:mm";
-    private string? FormattedValue => Format(Value);
+    private bool UsesInstantValue => InstantValue is not null || InstantValueChanged.HasDelegate;
+    private TimeProvider BrowserClock => Services.GetRequiredKeyedService<TimeProvider>(nameof(BrowserTimeProvider));
+    private DateTime? LocalValue => UsesInstantValue && InstantValue is { } instant
+        ? BrowserClock.ToLocalDateTime(instant)
+        : Value;
+    private string? FormattedValue => Format(LocalValue);
 
     private string? Format(DateTime? value) => value?.ToString(Pattern, CultureInfo.InvariantCulture);
 
@@ -113,6 +131,37 @@
         var value = DateTime.TryParseExact(text, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? DateTime.SpecifyKind(parsed, DateTimeKind.Unspecified)
             : (DateTime?)null;
-        return ValueChanged.InvokeAsync(value);
+        return UsesInstantValue
+            ? InstantValueChanged.InvokeAsync(value is null ? null : BrowserClock.ToUtcDateTimeOffset(value.Value))
+            : ValueChanged.InvokeAsync(value);
+    }
+
+    private BrowserTimeProvider? _browserTimeProvider;
+
+    protected override void OnParametersSet()
+    {
+        var browserTimeProvider = UsesInstantValue ? BrowserClock as BrowserTimeProvider : null;
+        if (ReferenceEquals(_browserTimeProvider, browserTimeProvider)) return;
+
+        if (_browserTimeProvider is not null)
+        {
+            _browserTimeProvider.LocalTimeZoneChanged -= HandleLocalTimeZoneChanged;
+        }
+
+        _browserTimeProvider = browserTimeProvider;
+        if (_browserTimeProvider is not null)
+        {
+            _browserTimeProvider.LocalTimeZoneChanged += HandleLocalTimeZoneChanged;
+        }
+    }
+
+    private void HandleLocalTimeZoneChanged(object? sender, EventArgs args) => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        if (_browserTimeProvider is not null)
+        {
+            _browserTimeProvider.LocalTimeZoneChanged -= HandleLocalTimeZoneChanged;
+        }
     }
 }

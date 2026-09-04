@@ -176,7 +176,7 @@
       "category": "Forms \u0026 inputs",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Calendar-based date picker with typed binding and keyboard-aware date selection.",
+      "summary": "Calendar-based date picker with typed or UTC-instant binding and keyboard-aware date selection.",
       "tags": [
         "date",
         "picker",
@@ -206,7 +206,7 @@
       "category": "Forms \u0026 inputs",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Combined date-and-time picker for workflows that require one coordinated value.",
+      "summary": "Combined date-and-time picker with browser-local wall-time or UTC-instant binding for workflows that require one coordinated value.",
       "tags": [
         "date",
         "time",

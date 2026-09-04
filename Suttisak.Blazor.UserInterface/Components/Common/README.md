@@ -419,6 +419,22 @@ through the scoped `BrowserTimeProvider` after that provider is initialized.
 Never call `ToUniversalTime()` on this value because that would use the server
 process time zone in Interactive Server applications.
 
+For models that store instants, bind `InstantValue` instead. Both
+`AppDateTimePicker` and `AppCalendarPicker` display this `DateTimeOffset` in
+the browser's time zone through the keyed `BrowserTimeProvider`. The date-time
+picker converts an edited browser-local wall time to a UTC instant; the
+calendar picker changes only the local date and preserves the existing local
+time of day (or uses midnight for an empty value). Both reject invalid and
+ambiguous daylight-saving times through `ToUtcDateTimeOffset`.
+
+```razor
+<AppDateTimePicker Label="Appointment"
+                   @bind-InstantValue="appointment.StartsAt" />
+
+<AppCalendarPicker Label="Checkup date"
+                   @bind-InstantValue="checkup.VisitInstant" />
+```
+
 Use `FeedbackBanner` for contextual or dismissible page feedback and
 `StatusPanel`/`AsyncContent` for states that replace the page's main content.
 Use `FeedbackIntent.Error` for failed operations, `Warning` when work can

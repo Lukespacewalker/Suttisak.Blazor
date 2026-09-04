@@ -1,4 +1,7 @@
 @using System.Globalization
+@using Microsoft.Extensions.DependencyInjection
+@using Suttisak.Blazor.UserInterface.Providers
+@implements IDisposable
 
 <div class="app-form-control @Class"
      data-app-calendar="@(Mode == AppCalendarPickerMode.Popup ? "popup" : "native")"
@@ -44,6 +47,9 @@
 </div>
 
 @code {
+    [Inject]
+    public IServiceProvider Services { get; set; } = null!;
+
     [Parameter] public string? Label { get; set; }
     [Parameter] public string? Description { get; set; }
     [Parameter] public DateOnly? Value { get; set; }
@@ -51,6 +57,12 @@
     /// <summary>DateTime-compatible binding for applications whose model uses DateTime?.</summary>
     [Parameter] public DateTime? DateTimeValue { get; set; }
     [Parameter] public EventCallback<DateTime?> DateTimeValueChanged { get; set; }
+    /// <summary>
+    /// A UTC instant whose browser-local calendar date is edited while preserving
+    /// its browser-local time of day.
+    /// </summary>
+    [Parameter] public DateTimeOffset? InstantValue { get; set; }
+    [Parameter] public EventCallback<DateTimeOffset?> InstantValueChanged { get; set; }
     [Parameter] public string? Name { get; set; }
     [Parameter] public string? Id { get; set; }
     [Parameter] public DateOnly? Min { get; set; }
@@ -73,8 +85,11 @@
     private string InputId => Id ?? _generatedId;
     private string? DescriptionId => string.IsNullOrWhiteSpace(Description) ? null : $"{InputId}-description";
     private string EffectiveOpenCalendarLabel => OpenCalendarLabel ?? Text.OpenCalendarLabel;
-    private bool UsesDateTimeValue => DateTimeValueChanged.HasDelegate;
-    private string? FormattedValue => UsesDateTimeValue ? Format(DateTimeValue) : Format(Value);
+    private bool UsesInstantValue => InstantValue is not null || InstantValueChanged.HasDelegate;
+    private bool UsesDateTimeValue => !UsesInstantValue && DateTimeValueChanged.HasDelegate;
+    private TimeProvider BrowserClock => Services.GetRequiredKeyedService<TimeProvider>(nameof(BrowserTimeProvider));
+    private DateTime? LocalInstantValue => InstantValue is { } instant ? BrowserClock.ToLocalDateTime(instant) : null;
+    private string? FormattedValue => UsesInstantValue ? Format(LocalInstantValue) : UsesDateTimeValue ? Format(DateTimeValue) : Format(Value);
     private string? FormattedMin => UsesDateTimeValue ? Format(DateTimeMin) : Format(Min);
     private string? FormattedMax => UsesDateTimeValue ? Format(DateTimeMax) : Format(Max);
 
@@ -87,12 +102,47 @@
         var value = DateOnly.TryParseExact(text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? parsed
             : (DateOnly?)null;
-        var existingTime = DateTimeValue is { } current
+        var existingTime = LocalInstantValue is { } localInstant
+            ? TimeOnly.FromDateTime(localInstant)
+            : DateTimeValue is { } current
             ? TimeOnly.FromTimeSpan(current.TimeOfDay)
             : TimeOnly.MinValue;
         var kind = DateTimeValue?.Kind ?? DateTimeKind.Unspecified;
-        return UsesDateTimeValue
+        return UsesInstantValue
+            ? InstantValueChanged.InvokeAsync(value is null
+                ? null
+                : BrowserClock.ToUtcDateTimeOffset(value.Value.ToDateTime(existingTime, DateTimeKind.Unspecified)))
+            : UsesDateTimeValue
             ? DateTimeValueChanged.InvokeAsync(value is null ? null : value.Value.ToDateTime(existingTime, kind))
             : ValueChanged.InvokeAsync(value);
+    }
+
+    private BrowserTimeProvider? _browserTimeProvider;
+
+    protected override void OnParametersSet()
+    {
+        var browserTimeProvider = UsesInstantValue ? BrowserClock as BrowserTimeProvider : null;
+        if (ReferenceEquals(_browserTimeProvider, browserTimeProvider)) return;
+
+        if (_browserTimeProvider is not null)
+        {
+            _browserTimeProvider.LocalTimeZoneChanged -= HandleLocalTimeZoneChanged;
+        }
+
+        _browserTimeProvider = browserTimeProvider;
+        if (_browserTimeProvider is not null)
+        {
+            _browserTimeProvider.LocalTimeZoneChanged += HandleLocalTimeZoneChanged;
+        }
+    }
+
+    private void HandleLocalTimeZoneChanged(object? sender, EventArgs args) => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        if (_browserTimeProvider is not null)
+        {
+            _browserTimeProvider.LocalTimeZoneChanged -= HandleLocalTimeZoneChanged;
+        }
     }
 }
