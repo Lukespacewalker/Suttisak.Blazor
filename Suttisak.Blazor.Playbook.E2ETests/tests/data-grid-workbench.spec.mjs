@@ -64,13 +64,13 @@ test('multiple selection replaces the regular toolbar with contextual batch acti
   await expect(page.getByText('Use row actions for one record; select rows for batch work.', { exact: true })).toBeVisible();
   await expect(selectionToolbar).not.toBeVisible();
 
-  const rowCheckboxes = table.getByRole('checkbox').filter({ hasNot: page.locator('[aria-label="Select all visible rows"]') });
+  const rowCheckboxes = table.locator('tbody input.app-grid__checkbox[type="checkbox"]');
   await rowCheckboxes.first().check();
 
   await expect(selectionToolbar).toBeVisible();
   await expect(selectionToolbar.getByText('1 selected', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Export selected', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Delete selected', exact: true })).toBeVisible();
+  await expect(selectionToolbar.getByRole('button', { name: 'Export selected', exact: true })).toBeVisible();
+  await expect(selectionToolbar.getByRole('button', { name: 'Delete selected', exact: true })).toBeVisible();
   await expect(page.getByText('Use row actions for one record; select rows for batch work.', { exact: true })).not.toBeVisible();
 
   const firstRow = table.locator('tbody tr').first();
@@ -80,7 +80,7 @@ test('multiple selection replaces the regular toolbar with contextual batch acti
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await expect(selectionToolbar.getByText('1 selected', { exact: true })).toBeVisible();
 
-  await page.getByRole('button', { name: 'Clear selection' }).click();
+  await selectionToolbar.getByRole('button', { name: 'Clear selection' }).click();
   await expect(selectionToolbar).not.toBeVisible();
   await expect(firstRow).not.toHaveClass(/is-selected/);
 });
