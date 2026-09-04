@@ -55,7 +55,37 @@ test('data grid exposes loading and empty states without rendering stale rows', 
   await expect(page.getByText('Change the search or state controls to bring records back.', { exact: true })).toBeVisible();
 });
 
-test('multiple selection uses native checkbox semantics', async ({ page }) => {
+test('multiple selection replaces the regular toolbar with contextual batch actions', async ({ page }) => {
+  await page.goto('/components/app-grid');
+
+  const table = page.getByRole('table', { name: 'Playbook records table' });
+  const selectionToolbar = page.getByRole('toolbar', { name: 'Actions for selected rows' });
+
+  await expect(page.getByText('Use row actions for one record; select rows for batch work.', { exact: true })).toBeVisible();
+  await expect(selectionToolbar).not.toBeVisible();
+
+  const rowCheckboxes = table.getByRole('checkbox').filter({ hasNot: page.locator('[aria-label="Select all visible rows"]') });
+  await rowCheckboxes.first().check();
+
+  await expect(selectionToolbar).toBeVisible();
+  await expect(selectionToolbar.getByText('1 selected', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Export selected', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Delete selected', exact: true })).toBeVisible();
+  await expect(page.getByText('Use row actions for one record; select rows for batch work.', { exact: true })).not.toBeVisible();
+
+  const firstRow = table.locator('tbody tr').first();
+  await expect(firstRow).toHaveClass(/is-selected/);
+
+  await page.getByLabel('Actions for Annual hearing surveillance').click();
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
+  await expect(selectionToolbar.getByText('1 selected', { exact: true })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Clear selection' }).click();
+  await expect(selectionToolbar).not.toBeVisible();
+  await expect(firstRow).not.toHaveClass(/is-selected/);
+});
+
+test('select all is available for multiple selection', async ({ page }) => {
   await page.goto('/components/app-grid');
 
   const selectAll = page.getByRole('checkbox', { name: 'Select all visible rows' });
@@ -66,6 +96,25 @@ test('multiple selection uses native checkbox semantics', async ({ page }) => {
   await expect(rows.first()).toHaveClass(/is-selected/);
   await expect(rows.nth(1)).toHaveClass(/is-selected/);
   await expect(rows.nth(2)).toHaveClass(/is-selected/);
+  await expect(page.getByRole('toolbar', { name: 'Actions for selected rows' }).getByText('3 selected', { exact: true })).toBeVisible();
+});
+
+test('record workflow keeps single-row and batch actions in separate scopes', async ({ page }) => {
+  await page.goto('/application-shell/records');
+
+  const table = page.getByRole('table', { name: 'Program records' });
+  await expect(table).toBeVisible();
+  await expect(page.getByRole('toolbar', { name: 'Actions for selected rows' })).not.toBeVisible();
+
+  const firstRow = table.locator('tbody tr').first();
+  await firstRow.getByRole('checkbox').check();
+
+  const selectionToolbar = page.getByRole('toolbar', { name: 'Actions for selected rows' });
+  await expect(selectionToolbar).toBeVisible();
+  await expect(selectionToolbar.getByRole('button', { name: 'Delete selected', exact: true })).toBeVisible();
+
+  await firstRow.getByRole('button', { name: /^Edit / }).click();
+  await expect(selectionToolbar).toBeVisible();
 });
 
 for (const path of dataRoutes) {
