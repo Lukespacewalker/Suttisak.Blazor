@@ -22,11 +22,14 @@
             {
                 <TemplateColumn TGridItem="TGridItem" Context="item" Class="app-grid__selection-column">
                     <HeaderTemplate>
-                        <input class="app-grid__checkbox" type="checkbox"
-                               aria-label="@SelectAllLabel"
-                               checked="@AreVisibleRowsSelected"
-                               disabled="@(!CanSelectMultiple || !HasSelectableRows)"
-                               @onchange="SetVisibleRowsSelectedAsync" />
+                        @if (CanSelectMultiple)
+                        {
+                            <input class="app-grid__checkbox" type="checkbox"
+                                   aria-label="@SelectAllLabel"
+                                   checked="@AreVisibleRowsSelected"
+                                   disabled="@(!HasSelectableRows)"
+                                   @onchange="SetVisibleRowsSelectedAsync" />
+                        }
                     </HeaderTemplate>
                     <ChildContent>
                         <input class="app-grid__checkbox" type="checkbox"

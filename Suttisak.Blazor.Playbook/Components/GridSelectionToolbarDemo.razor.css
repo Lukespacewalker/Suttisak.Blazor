@@ -1,0 +1,22 @@
+.grid-selection-toolbar-demo {
+    display: flex;
+    min-width: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .65rem;
+}
+
+.grid-selection-toolbar-demo__summary {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.grid-selection-toolbar-demo__actions {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}

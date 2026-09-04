@@ -3,6 +3,7 @@
         <div class="component-specimen__demo">
             <AppGridShell AriaLabel="Playbook records"
                          State="@_state"
+                         SelectionActive="@(_selectedRecords.Count > 0)"
                          LoadingTitle="Loading playbook records"
                          EmptyTitle="No matching records"
                          EmptyMessage="Change the search or state controls to bring records back.">
@@ -16,11 +17,24 @@
                 <Actions>
                     <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => ClearSearch())">Clear search</AppButton>
                 </Actions>
+                <Toolbar>
+                    <span>Use row actions for one record; select rows for batch work.</span>
+                </Toolbar>
+                <SelectionToolbar>
+                    <GridSelectionToolbarDemo SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
+                        <Actions>
+                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetBatchAction("Export"))">Export selected</AppButton>
+                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetBatchAction("Archive"))">Archive selected</AppButton>
+                            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => SetBatchAction("Delete"))">Delete selected</AppButton>
+                        </Actions>
+                    </GridSelectionToolbarDemo>
+                </SelectionToolbar>
                 <ChildContent>
                     <AppGrid TGridItem="DemoRecord"
                              Items="@FilteredRecords"
                              Pagination="@_pagination"
-                             SelectionMode="@_selectionMode"
+                             SelectionMode="AppGridSelectionMode.Multiple"
+                             @bind-SelectedItems="_selectedRecords"
                              AriaLabel="Playbook records table"
                              ItemKey="@(record => record.Id)">
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="int"
@@ -32,8 +46,17 @@
                         <AppGridTemplateColumn TGridItem="DemoRecord" Title="Status" Sortable="true" SortByExpression="@(record => record.Status)">
                             <span>@context.Status</span>
                         </AppGridTemplateColumn>
+                        <AppGridTemplateColumn TGridItem="DemoRecord" Title="Actions">
+                            <GridActionMenuDemo AriaLabel="@($"Actions for {context.Name}")">
+                                <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" OnClick="@(_ => SetRowAction("Edit", context))">Edit</AppButton>
+                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => SetRowAction("Delete", context))">Delete</AppButton>
+                            </GridActionMenuDemo>
+                        </AppGridTemplateColumn>
                     </AppGrid>
                 </ChildContent>
+                <Footer>
+                    <span role="status">@_lastAction</span>
+                </Footer>
                 <Pagination>
                     <AppGridPaginator State="@_pagination" AriaLabel="Playbook grid pagination" />
                 </Pagination>
@@ -44,14 +67,6 @@
         <label>Content state
             <select @bind="_state">
                 @foreach (var value in Enum.GetValues<AsyncContentState>())
-                {
-                    <option value="@value">@value</option>
-                }
-            </select>
-        </label>
-        <label>Selection
-            <select @bind="_selectionMode">
-                @foreach (var value in Enum.GetValues<AppGridSelectionMode>())
                 {
                     <option value="@value">@value</option>
                 }
@@ -69,7 +84,7 @@
         <article><span>Ready</span><strong>Sortable + paged</strong><small>Default production state</small></article>
         <article><span>Loading</span><strong>Async feedback</strong><small>Uses AsyncContent semantics</small></article>
         <article><span>Empty</span><strong>No records</strong><small>Empty-state message</small></article>
-        <article><span>Selection</span><strong>Keyboard + checkbox</strong><small>Single or multiple row selection</small></article>
+        <article><span>Selection</span><strong>Contextual batch actions</strong><small>Row actions remain separate from multi-row work</small></article>
     </States>
 </ComponentSpecimenLayout>
 
@@ -78,8 +93,9 @@
 
     private readonly PaginationState _pagination = new() { ItemsPerPage = 3 };
     private AsyncContentState _state = AsyncContentState.Ready;
-    private AppGridSelectionMode _selectionMode = AppGridSelectionMode.Multiple;
+    private IReadOnlySet<DemoRecord> _selectedRecords = new HashSet<DemoRecord>();
     private string _search = string.Empty;
+    private string _lastAction = "No action selected.";
 
     private static readonly DemoRecord[] Records =
     [
@@ -107,6 +123,13 @@
     }
 
     private void ClearSearch() => _search = string.Empty;
+    private void ClearSelection() => _selectedRecords = new HashSet<DemoRecord>();
+
+    private void SetBatchAction(string action)
+        => _lastAction = $"{action} requested for {_selectedRecords.Count} selected record(s).";
+
+    private void SetRowAction(string action, DemoRecord record)
+        => _lastAction = $"{action} requested for {record.Name}.";
 
     private async Task ChangePageSizeAsync(ChangeEventArgs args)
     {

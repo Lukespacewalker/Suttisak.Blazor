@@ -25,7 +25,7 @@
             <ChildContent>
             <section class="demo-data-panel" aria-labelledby="record-table-title">
                 <div class="demo-data-panel__heading"><div><span>LIVE DATA</span><h2 id="record-table-title">All records</h2></div></div>
-                <AppGridShell AriaLabel="Program records">
+                <AppGridShell AriaLabel="Program records" SelectionActive="@(_selectedRecords.Count > 0)">
                     <Search>
                         <div class="demo-data-search" role="search">
                             <Suttisak.Blazor.Icons.Icon Name="Search" Size="20" aria-hidden="true"  />
@@ -47,8 +47,25 @@
                             <span>Select a column heading to sort</span>
                         </div>
                     </Filters>
+                    <Toolbar>
+                        <span>Open a record from its name, edit from the row, or select rows for batch actions.</span>
+                    </Toolbar>
+                    <SelectionToolbar>
+                        <GridSelectionToolbarDemo SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
+                            <Actions>
+                                <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => ExportSelected())">Export selected</AppButton>
+                                <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => DeleteSelectedRecords())">Delete selected</AppButton>
+                            </Actions>
+                        </GridSelectionToolbarDemo>
+                    </SelectionToolbar>
                     <ChildContent>
-                    <AppGrid TGridItem="DemoRecord" Items="@FilteredRecords" Pagination="_pagination" AriaLabel="Program records" ItemKey="@(record => record.Id)">
+                    <AppGrid TGridItem="DemoRecord"
+                             Items="@FilteredRecords"
+                             Pagination="_pagination"
+                             SelectionMode="AppGridSelectionMode.Multiple"
+                             @bind-SelectedItems="_selectedRecords"
+                             AriaLabel="Program records"
+                             ItemKey="@(record => record.Id)">
                         <AppGridTemplateColumn TGridItem="DemoRecord" Title="Record" Sortable="true" SortByExpression="@(record => record.Name)">
                             <a class="demo-record-link" href="@($"application-shell/records/{context.Id}")"><strong>@context.Name</strong><small>#@context.Id</small></a>
                         </AppGridTemplateColumn>
@@ -65,13 +82,14 @@
                                 <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Edit {context.Name}")" OnClick="@(_ => EditRecord(context))">
                                     <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Edit" Size="20"  /></IconStartContent>
                                 </AppButton>
-                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" IconOnly="true" AriaLabel="@($"Delete {context.Name}")" OnClick="@(_ => DeleteRecord(context))">
-                                    <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Delete" Size="20"  /></IconStartContent>
-                                </AppButton>
+                                <GridActionMenuDemo AriaLabel="@($"More actions for {context.Name}")">
+                                    <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => DeleteRecord(context))">Delete</AppButton>
+                                </GridActionMenuDemo>
                             </div>
                         </AppGridTemplateColumn>
                     </AppGrid>
                     </ChildContent>
+                    <Footer><span role="status">@_gridActionStatus</span></Footer>
                     <Pagination><AppGridPaginator State="_pagination" /></Pagination>
                 </AppGridShell>
             </section>
@@ -113,13 +131,26 @@
             <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => dialog.CloseAsync(dialog.Value))">Delete record</AppButton>
         </Footer>
     </AppDialog>
+
+    <AppDialog TInput="IReadOnlySet<DemoRecord>" TResult="IReadOnlySet<DemoRecord>" @ref="_bulkDeleteDialog"
+               Title="Delete selected records?" Description="This action permanently removes every selected record from the playbook store."
+               Dangerous="true">
+        <Body Context="dialog"><p><strong>@dialog.Value.Count selected records</strong> will be removed.</p></Body>
+        <Footer Context="dialog">
+            <AppButton OnClick="@(_ => dialog.CancelAsync())">Keep records</AppButton>
+            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => dialog.CloseAsync(dialog.Value))">Delete selected</AppButton>
+        </Footer>
+    </AppDialog>
 </PlaybookShell>
 
 @code {
     private AppDrawer<DemoRecordDraft, DemoRecordDraft>? _recordDrawer;
     private AppDialog<DemoRecord, DemoRecord>? _deleteDialog;
+    private AppDialog<IReadOnlySet<DemoRecord>, IReadOnlySet<DemoRecord>>? _bulkDeleteDialog;
     private const string RecordEditorFormId = "record-editor-form";
     private string _searchText = string.Empty;
+    private string _gridActionStatus = "No batch action requested.";
+    private IReadOnlySet<DemoRecord> _selectedRecords = new HashSet<DemoRecord>();
     private readonly PaginationState _pagination = new() { ItemsPerPage = 4 };
     private static readonly AppSelectOption<string>[] StatusOptions =
     [
@@ -163,15 +194,44 @@
             Owner = record.Owner,
             Status = record.Status
         });
-        if (result is { HasValue: true, Value: not null }) Store.Save(result.Value);
+        if (result is { HasValue: true, Value: not null })
+        {
+            Store.Save(result.Value);
+            _selectedRecords = new HashSet<DemoRecord>();
+        }
     }
 
     private async Task DeleteRecord(DemoRecord record)
     {
         var result = await _deleteDialog!.ShowAsync(record);
-        if (result is { HasValue: true, Value: not null }) Store.Delete(result.Value.Id);
+        if (result is { HasValue: true, Value: not null })
+        {
+            Store.Delete(result.Value.Id);
+            _selectedRecords = _selectedRecords.Where(selected => selected.Id != result.Value.Id).ToHashSet();
+        }
     }
 
+    private async Task DeleteSelectedRecords()
+    {
+        if (_selectedRecords.Count == 0)
+            return;
+
+        var snapshot = _selectedRecords.ToHashSet();
+        var result = await _bulkDeleteDialog!.ShowAsync(snapshot);
+        if (result is not { HasValue: true, Value: not null })
+            return;
+
+        foreach (var record in result.Value)
+            Store.Delete(record.Id);
+
+        _gridActionStatus = $"Deleted {result.Value.Count} selected record(s).";
+        _selectedRecords = new HashSet<DemoRecord>();
+    }
+
+    private void ExportSelected()
+        => _gridActionStatus = $"Export requested for {_selectedRecords.Count} selected record(s).";
+
+    private void ClearSelection() => _selectedRecords = new HashSet<DemoRecord>();
     private void ClearSearch() => _searchText = string.Empty;
 
     private bool MatchesSearch(DemoRecord record)
