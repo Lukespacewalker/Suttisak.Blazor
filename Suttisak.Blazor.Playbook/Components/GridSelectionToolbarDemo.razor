@@ -1,0 +1,18 @@
+<div class="grid-selection-toolbar-demo" role="toolbar" aria-label="@AriaLabel">
+    <span class="grid-selection-toolbar-demo__summary" aria-live="polite">@SelectedCount selected</span>
+    <div class="grid-selection-toolbar-demo__actions">@Actions</div>
+    <AppButton Variant="AppButtonVariant.Subtle"
+               Size="AppButtonSize.Compact"
+               IconOnly="true"
+               AriaLabel="Clear selection"
+               OnClick="@(_ => OnClear.InvokeAsync())">
+        <span aria-hidden="true">×</span>
+    </AppButton>
+</div>
+
+@code {
+    [Parameter] public int SelectedCount { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Actions for selected rows";
+    [Parameter, EditorRequired] public RenderFragment Actions { get; set; } = default!;
+    [Parameter, EditorRequired] public EventCallback OnClear { get; set; }
+}
