@@ -1,0 +1,27 @@
+<div class="app-grid-selection-toolbar" role="toolbar" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    <span class="app-grid-selection-toolbar__summary" aria-live="polite">@SelectionSummary</span>
+    <div class="app-grid-selection-toolbar__actions">@Actions</div>
+    @if (OnClear.HasDelegate)
+    {
+        <AppButton Variant="AppButtonVariant.Subtle"
+                   Size="AppButtonSize.Compact"
+                   IconOnly="true"
+                   AriaLabel="@ClearLabel"
+                   OnClick="@(_ => OnClear.InvokeAsync())">
+            <span aria-hidden="true">×</span>
+        </AppButton>
+    }
+</div>
+
+@code {
+    [Parameter] public int SelectedCount { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Actions for selected rows";
+    [Parameter] public string SelectedLabel { get; set; } = "selected";
+    [Parameter] public string ClearLabel { get; set; } = "Clear selection";
+    [Parameter, EditorRequired] public RenderFragment Actions { get; set; } = default!;
+    [Parameter] public EventCallback OnClear { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string SelectionSummary => $"{SelectedCount} {SelectedLabel}";
+}
