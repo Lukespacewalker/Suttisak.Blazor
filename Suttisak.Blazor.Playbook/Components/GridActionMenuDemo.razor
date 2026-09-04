@@ -1,0 +1,13 @@
+<details class="grid-action-menu-demo">
+    <summary class="grid-action-menu-demo__trigger" aria-label="@AriaLabel">
+        <span aria-hidden="true">⋯</span>
+    </summary>
+    <div class="grid-action-menu-demo__content">
+        @ChildContent
+    </div>
+</details>
+
+@code {
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = "More actions";
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}
