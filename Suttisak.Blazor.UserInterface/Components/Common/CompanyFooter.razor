@@ -2,7 +2,14 @@
     <span>@Prefix</span>
     <a href="@CompanyUrl" target="_blank" rel="noopener noreferrer">@CompanyName</a>
     <span class="company-footer__separator" aria-hidden="true">·</span>
-    <span>@CreatorName</span>
+    @if (string.IsNullOrWhiteSpace(CreatorUrl))
+    {
+        <span>@CreatorName</span>
+    }
+    else
+    {
+        <a href="@CreatorUrl" target="_blank" rel="noopener noreferrer">@CreatorName</a>
+    }
     @if (!string.IsNullOrWhiteSpace(DisplayedApplicationVersion))
     {
         <span class="company-footer__separator" aria-hidden="true">·</span>
@@ -15,6 +22,7 @@
     [Parameter, EditorRequired] public string CompanyName { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string CompanyUrl { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string CreatorName { get; set; } = string.Empty;
+    [Parameter] public string? CreatorUrl { get; set; }
     [Parameter] public string? ApplicationVersion { get; set; }
 
     private string? DisplayedApplicationVersion =>

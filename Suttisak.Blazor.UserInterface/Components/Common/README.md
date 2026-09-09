@@ -455,7 +455,8 @@ visible on landing, authenticated, and identity pages:
 ```razor
 <CompanyFooter CompanyName="Quack and Honk"
                CompanyUrl="https://quackandhonk.com/"
-               CreatorName="Suttisak Denduangchai" />
+               CreatorName="Suttisak Denduangchai"
+               CreatorUrl="https://doctortons.com" />
 ```
 
 The component provides responsive wrapping, keyboard focus styling, and theme-aware

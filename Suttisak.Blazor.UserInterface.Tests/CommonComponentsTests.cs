@@ -43,6 +43,25 @@ public sealed class CardMenuTests
     }
 }
 
+public sealed class CompanyFooterTests
+{
+    [Fact]
+    public void Creator_name_is_a_link_when_creator_url_is_provided()
+    {
+        using var context = new BunitContext();
+        var cut = context.Render<CompanyFooter>(parameters => parameters
+            .Add(component => component.CompanyName, "Northstar Studio")
+            .Add(component => component.CompanyUrl, "https://example.com")
+            .Add(component => component.CreatorName, "Suttisak Denduangchai")
+            .Add(component => component.CreatorUrl, "https://doctortons.com"));
+
+        var creatorLink = cut.FindAll("a").Single(link => link.TextContent == "Suttisak Denduangchai");
+        Assert.Equal("https://doctortons.com", creatorLink.GetAttribute("href"));
+        Assert.Equal("_blank", creatorLink.GetAttribute("target"));
+        Assert.Equal("noopener noreferrer", creatorLink.GetAttribute("rel"));
+    }
+}
+
 public sealed class AppTabsTests
 {
     [Fact]
