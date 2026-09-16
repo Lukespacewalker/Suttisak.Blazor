@@ -74,3 +74,9 @@ Record verification evidence and any release blocker here before completion.
   v3 received PASS for code acceptance; full CI remains a publishing gate.
 - Release work is isolated in codex/reusable-grid-actions; unrelated dirty
   changes in the original checkout and consuming repositories are preserved.
+- First CI run at 44cc2ac: 236 browser tests passed, one existing iframe-readiness
+  test passed on retry, and the new focus test failed before virtualization was
+  visible. Test setup now scrolls the grid into view before waiting for virtual
+  rows and waits for iframe contents before measuring width. All assertions and
+  timeouts are preserved. The affected 32 browser tests passed locally without
+  retries; a successful CI rerun is still required before publishing.

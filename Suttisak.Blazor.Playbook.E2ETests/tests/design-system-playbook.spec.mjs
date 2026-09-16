@@ -32,13 +32,13 @@ test('AppButton detail route exposes controls, states, and runtime API metadata'
   await page.getByRole('button', { name: '375' }).click();
   const host = page.getByTestId('isolated-specimen-frame');
   await expect(host).toBeVisible();
+  const isolated = page.frameLocator('[data-testid="isolated-specimen-frame"]');
+  await expect(isolated.getByRole('button', { name: 'Save changes' }).first()).toBeVisible();
   await expect.poll(
     () => host.evaluate(element => element.contentWindow?.innerWidth ?? 0),
     { timeout: 2_000 }
   ).toBe(375);
 
-  const isolated = page.frameLocator('[data-testid="isolated-specimen-frame"]');
-  await expect(isolated.getByRole('button', { name: 'Save changes' }).first()).toBeVisible();
 });
 
 test('AppTextBox detail route exposes inherited input API and live controls', async ({ page }) => {

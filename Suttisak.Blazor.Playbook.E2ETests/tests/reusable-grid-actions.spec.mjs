@@ -53,6 +53,7 @@ test('virtualized select-all exports a bounded window after scrolling', async ({
   const table = page.getByRole('table', { name: '100000 virtual records' });
   await expect(table).toBeVisible();
   const viewport = page.locator('.app-grid');
+  await viewport.scrollIntoViewIfNeeded();
   await expect.poll(() => viewport.evaluate(element => element.scrollHeight)).toBeGreaterThan(5000);
   await viewport.evaluate(element => { element.scrollTop = 5000; });
   const checkboxes = table.locator('tbody input.app-grid__checkbox');
@@ -108,6 +109,7 @@ test('specimen edits data and confirms batch deletion without mutating on cancel
 test('virtualized keyboard focus stays below the sticky header', async ({ page }) => {
   await page.goto('/grid-performance');
   const viewport = page.locator('.app-grid');
+  await viewport.scrollIntoViewIfNeeded();
   await expect.poll(() => viewport.evaluate(element => element.scrollHeight)).toBeGreaterThan(5000);
   await viewport.evaluate(element => { element.scrollTop = 5000; });
   const checkboxes = viewport.locator('tbody input.app-grid__checkbox');
