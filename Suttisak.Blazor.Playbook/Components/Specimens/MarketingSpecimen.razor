@@ -1,170 +1,144 @@
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Marketing controls">
     <Preview>
         <div class="marketing-specimen" data-testid="marketing-workbench">
-            <MarketingHero Title="@_heroTitle"
-                           TitleId="marketing-specimen-hero-title"
-                           Description="A composed product story that keeps routes, copy, and assets in the consuming application."
-                           data-testid="marketing-hero">
-                <Eyebrow>
-                    <Pill>Shared marketing system</Pill>
-                </Eyebrow>
-                <Actions>
-                    <MarketingActionLink Href="#marketing-specimen-features"
-                                         Variant="@_primaryActionVariant"
-                                         data-testid="marketing-primary-action">
-                        View workflow
-                    </MarketingActionLink>
-                    @if (_showSecondaryAction)
-                    {
-                        <MarketingActionLink Href="#marketing-specimen-proof"
-                                             Variant="MarketingActionVariant.Secondary"
-                                             data-testid="marketing-secondary-action">
-                            View details
-                        </MarketingActionLink>
-                    }
-                </Actions>
-                <Media>
-                    @if (_showProductFrame)
-                    {
-                        <MarketingProductFrame Label="LIVE PRODUCT PREVIEW"
-                                               data-testid="marketing-product-frame">
-                            <section class="marketing-specimen__product" aria-label="Product workspace preview">
-                                <header><span>Assessment workspace</span><strong>Today</strong></header>
-                                <div class="marketing-specimen__product-grid">
-                                    <article><small>Open work</small><strong>18</strong><span>4 need review</span></article>
-                                    <article><small>Completion</small><strong>82%</strong><span>On track</span></article>
-                                    <article><small>Next action</small><strong>Review</strong><span>Airside team</span></article>
-                                </div>
-                            </section>
-                        </MarketingProductFrame>
-                    }
-                </Media>
-            </MarketingHero>
-
-            @if (_showProofStrip)
+            @switch (ComponentName)
             {
-                <MarketingProofStrip AriaLabel="Product details"
-                                     Class="marketing-specimen__proof"
-                                     data-testid="marketing-proof-strip"
-                                     id="marketing-specimen-proof">
-                    <MarketingProofItem Value="AA"
-                                        Title="Accessibility support"
-                                        Description="Focus, contrast, and responsive behavior remain part of the shared contract."
-                                        data-testid="marketing-proof-item" />
-                    <MarketingProofItem Value="01"
-                                        Title="One component language"
-                                        Description="Every product composes the same primitives without inheriting another product's copy." />
-                    <MarketingProofItem Value="24/7"
-                                        Title="Theme support"
-                                        Description="Semantic tokens carry the experience across light, dark, and product themes." />
-                </MarketingProofStrip>
-            }
-
-            <section id="marketing-specimen-features" class="marketing-specimen__section" aria-labelledby="marketing-specimen-features-title">
-                <MarketingContainer data-testid="marketing-container">
-                    <MarketingSectionHeader HeadingId="marketing-specimen-features-title"
-                                            Title="Landing page sections"
-                                            Description="The controls update the component parameters in this example."
-                                            Compact="@_compactHeader"
-                                            data-testid="marketing-section-header">
-                        <Eyebrow><span class="marketing-specimen__eyebrow">Core capabilities</span></Eyebrow>
-                    </MarketingSectionHeader>
-
-                    <MarketingFeatureGrid data-testid="marketing-feature-grid">
-                        <MarketingCard Title="Page heading"
-                                       Featured="@_featuredCard"
-                                       Compact="@_compactCards"
-                                       data-testid="marketing-featured-card">
-                            <Visual><span class="marketing-specimen__card-number">01</span></Visual>
-                            <ChildContent><p>The hero contains the page heading and primary action.</p></ChildContent>
-                        </MarketingCard>
-                        <MarketingCard Title="Product preview"
-                                       Compact="@_compactCards"
-                                       data-testid="marketing-standard-card">
-                            <Visual><span class="marketing-specimen__card-number">02</span></Visual>
-                            <ChildContent><p>Product frames and cards show the interface and supporting details.</p></ChildContent>
-                        </MarketingCard>
-                        <MarketingCard Title="Final action" Compact="@_compactCards">
-                            <Visual><span class="marketing-specimen__card-number">03</span></Visual>
-                            <ChildContent><p>The step list is followed by the final page action.</p></ChildContent>
-                        </MarketingCard>
-                    </MarketingFeatureGrid>
-                </MarketingContainer>
-            </section>
-
-            <section class="marketing-specimen__section marketing-specimen__section--steps" aria-labelledby="marketing-specimen-steps-title">
-                <MarketingContainer>
-                    <MarketingSectionHeader HeadingId="marketing-specimen-steps-title"
-                                            Title="Workflow steps"
-                                            Description="The ordered list keeps the same sequence visually and for assistive technology."
-                                            Compact="true" />
+                case "MarketingHero":
+                    <MarketingHero Title="@_heroTitle" TitleId="marketing-specimen-hero-title" Description="A focused introduction with application-owned content, actions, and media." data-testid="marketing-hero">
+                        <Eyebrow><Pill>Product overview</Pill></Eyebrow>
+                        <Actions>
+                            <MarketingActionLink Href="landing" Variant="@_primaryActionVariant" data-testid="marketing-primary-action">View example</MarketingActionLink>
+                            @if (_showSecondaryAction)
+                            {
+                                <MarketingActionLink Href="patterns" Variant="MarketingActionVariant.Secondary">View patterns</MarketingActionLink>
+                            }
+                        </Actions>
+                        <Media>
+                            @if (_showProductFrame)
+                            {
+                                <MarketingProductFrame Label="PRODUCT PREVIEW" data-testid="marketing-product-frame">@ProductPreview</MarketingProductFrame>
+                            }
+                        </Media>
+                    </MarketingHero>
+                    break;
+                case "MarketingActionLink":
+                    <MarketingActionLink Href="landing" Variant="@_primaryActionVariant" data-testid="marketing-primary-action">View landing example</MarketingActionLink>
+                    break;
+                case "MarketingProductFrame":
+                    <MarketingProductFrame Label="PRODUCT PREVIEW" data-testid="marketing-product-frame">@ProductPreview</MarketingProductFrame>
+                    break;
+                case "MarketingProofStrip":
+                case "MarketingProofItem":
+                    <MarketingProofStrip AriaLabel="Product details" data-testid="marketing-proof-strip">
+                        <MarketingProofItem Value="@_proofValue" Title="@_proofTitle" Description="A metric supplied by the application." data-testid="marketing-proof-item" />
+                        <MarketingProofItem Value="01" Title="One component language" Description="Shared primitives across products." />
+                        <MarketingProofItem Value="24/7" Title="Theme support" Description="Light, dark, and product themes." />
+                    </MarketingProofStrip>
+                    break;
+                case "MarketingStepList":
+                case "MarketingStep":
                     <MarketingStepList data-testid="marketing-step-list">
-                        <MarketingStep Number="01" Title="Write the heading" Description="Name the audience and the task supported by the page." data-testid="marketing-step" />
-                        <MarketingStep Number="02" Title="Add product details" Description="Show the relevant interface states and supporting information." />
+                        <MarketingStep Number="01" Title="@_stepTitle" Description="Name the audience and the task supported by the page." data-testid="marketing-step" />
+                        <MarketingStep Number="02" Title="Add product details" Description="Show relevant interface states and supporting information." />
                         <MarketingStep Number="03" Title="Add the final action" Description="Give the action a specific label and destination." />
                     </MarketingStepList>
-                </MarketingContainer>
-            </section>
-
-            @if (_showCallToAction)
-            {
-                <section class="marketing-specimen__section marketing-specimen__section--cta" aria-label="Closing action">
-                    <MarketingContainer>
-                        <MarketingCallToAction data-testid="marketing-call-to-action">
-                            <Content>
-                                <span class="marketing-specimen__eyebrow">Page action</span>
-                                <h2>Continue to the next page</h2>
-                                <p>The application supplies the label, destination, authorization, and analytics.</p>
-                            </Content>
-                            <Actions>
-                                <MarketingActionLink Href="#marketing-specimen-hero-title">Return to heading</MarketingActionLink>
-                            </Actions>
-                        </MarketingCallToAction>
-                    </MarketingContainer>
-                </section>
+                    break;
+                case "MarketingFeatureGrid":
+                    <MarketingFeatureGrid data-testid="marketing-feature-grid">
+                        @FeatureCard
+                        <MarketingCard Title="Product preview" Compact="@_compactCards" data-testid="marketing-standard-card"><ChildContent><p>Show the interface and supporting details.</p></ChildContent></MarketingCard>
+                        <MarketingCard Title="Next action" Compact="@_compactCards"><ChildContent><p>Give readers a clear next step.</p></ChildContent></MarketingCard>
+                    </MarketingFeatureGrid>
+                    break;
+                case "MarketingCard":
+                    @FeatureCard
+                    break;
+                case "MarketingSectionHeader":
+                    <MarketingSectionHeader HeadingId="marketing-specimen-section-title" Title="@_sectionTitle" Description="Introduce the content in this section." Compact="@_compactHeader" data-testid="marketing-section-header">
+                        <Eyebrow><span class="marketing-specimen__eyebrow">Capabilities</span></Eyebrow>
+                    </MarketingSectionHeader>
+                    break;
+                case "MarketingContainer":
+                    <MarketingContainer data-testid="marketing-container"><AppCard>Content aligned to the shared marketing width and gutters. Resize the preview to check the container.</AppCard></MarketingContainer>
+                    break;
+                case "MarketingCallToAction":
+                    <MarketingCallToAction data-testid="marketing-call-to-action">
+                        <Content><h2>@_actionTitle</h2><p>Give readers a clear destination after the product story.</p></Content>
+                        <Actions><MarketingActionLink Href="landing" Variant="@_primaryActionVariant">View example</MarketingActionLink></Actions>
+                    </MarketingCallToAction>
+                    break;
             }
         </div>
     </Preview>
     <Controls>
-        <label>
-            <span>Hero title</span>
-            <input type="text" @bind="_heroTitle" @bind:event="oninput" />
-        </label>
-        <label>
-            <span>Primary action style</span>
-            <select @bind="_primaryActionVariant">
-                <option value="@MarketingActionVariant.Primary">Primary</option>
-                <option value="@MarketingActionVariant.Secondary">Secondary</option>
-            </select>
-        </label>
-        <label><input type="checkbox" @bind="_showSecondaryAction" /> Secondary action</label>
-        <label><input type="checkbox" @bind="_showProductFrame" /> Product frame</label>
-        <label><input type="checkbox" @bind="_showProofStrip" /> Proof strip</label>
-        <label><input type="checkbox" @bind="_featuredCard" /> Featured card</label>
-        <label><input type="checkbox" @bind="_compactCards" /> Compact cards</label>
-        <label><input type="checkbox" @bind="_compactHeader" /> Compact section header</label>
-        <label><input type="checkbox" @bind="_showCallToAction" /> Closing call to action</label>
+        @if (ComponentName == "MarketingHero")
+        {
+            <label>Hero title<input @bind="_heroTitle" @bind:event="oninput" /></label>
+            <label><input type="checkbox" @bind="_showSecondaryAction" /> Secondary action</label>
+            <label><input type="checkbox" @bind="_showProductFrame" /> Product frame</label>
+        }
+        @if (ComponentName is "MarketingHero" or "MarketingActionLink" or "MarketingCallToAction")
+        {
+            <label>Primary action style<select @bind="_primaryActionVariant"><option value="@MarketingActionVariant.Primary">Primary</option><option value="@MarketingActionVariant.Secondary">Secondary</option></select></label>
+        }
+        @if (ComponentName is "MarketingCard" or "MarketingFeatureGrid")
+        {
+            <label><input type="checkbox" @bind="_featuredCard" /> Featured card</label>
+            <label><input type="checkbox" @bind="_compactCards" /> Compact cards</label>
+        }
+        @if (ComponentName is "MarketingProofStrip" or "MarketingProofItem")
+        {
+            <label>Proof value<input @bind="_proofValue" @bind:event="oninput" /></label>
+            <label>Proof title<input @bind="_proofTitle" @bind:event="oninput" /></label>
+        }
+        @if (ComponentName is "MarketingStepList" or "MarketingStep")
+        {
+            <label>First step title<input @bind="_stepTitle" @bind:event="oninput" /></label>
+        }
+        @if (ComponentName == "MarketingSectionHeader")
+        {
+            <label>Section title<input @bind="_sectionTitle" @bind:event="oninput" /></label>
+            <label><input type="checkbox" @bind="_compactHeader" /> Compact section header</label>
+        }
+        @if (ComponentName == "MarketingCallToAction")
+        {
+            <label>Action title<input @bind="_actionTitle" @bind:event="oninput" /></label>
+        }
+        @if (ComponentName is "MarketingContainer" or "MarketingProductFrame")
+        {
+            <p>Use the preview widths above to inspect the content boundary.</p>
+        }
     </Controls>
     <States>
-        <article><span>Hero</span><strong>Heading, media, and actions</strong><small>The application supplies content for each slot.</small></article>
-        <article><span>Details</span><strong>Product information</strong><small>Proof items contain metrics, credentials, or outcomes supplied by the application.</small></article>
-        <article><span>Feature grid</span><strong>Featured and compact cards</strong><small>Cards vary emphasis while keeping article semantics.</small></article>
-        <article><span>Workflow</span><strong>Ordered steps</strong><small>StepList and Step preserve sequence through native list semantics.</small></article>
-        <article><span>Action</span><strong>Links</strong><small>MarketingActionLink uses anchor semantics with primary and secondary styles.</small></article>
-        <article><span>Page wrapper</span><strong>MarketingPage</strong><small>The landing route documents MarketingPage because it owns the main landmark.</small></article>
+        <article><span>Content</span><strong>@ComponentName</strong><small>Copy, destinations, and media belong to the consuming application.</small></article>
+        <article><span>Composition</span><strong>Complete page example</strong><small><a href="landing">See these components together on the landing page.</a></small></article>
     </States>
 </ComponentSpecimenLayout>
 
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+    [Parameter] public string ComponentName { get; set; } = "MarketingHero";
 
     private string _heroTitle = "Review the result and next steps";
+    private string _proofValue = "AA";
+    private string _proofTitle = "Accessibility support";
+    private string _stepTitle = "Write the heading";
+    private string _sectionTitle = "Product capabilities";
+    private string _actionTitle = "Continue to the next page";
     private MarketingActionVariant _primaryActionVariant = MarketingActionVariant.Primary;
     private bool _showSecondaryAction = true;
     private bool _showProductFrame = true;
-    private bool _showProofStrip = true;
     private bool _featuredCard = true;
     private bool _compactCards;
     private bool _compactHeader;
-    private bool _showCallToAction = true;
+
+    private RenderFragment FeatureCard => @<MarketingCard Title="Page heading" Featured="@_featuredCard" Compact="@_compactCards" data-testid="marketing-featured-card">
+        <Visual><span class="marketing-specimen__card-number">01</span></Visual>
+        <ChildContent><p>The heading introduces the task and its next action.</p></ChildContent>
+    </MarketingCard>;
+
+    private RenderFragment ProductPreview => @<section class="marketing-specimen__product" aria-label="Product workspace preview">
+        <header><span>Assessment workspace</span><strong>Today</strong></header>
+        <div class="marketing-specimen__product-grid"><article><small>Open work</small><strong>18</strong><span>3 need review</span></article><article><small>Completion</small><strong>82%</strong><span>On track</span></article></div>
+    </section>;
 }

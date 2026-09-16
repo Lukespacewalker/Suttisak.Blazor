@@ -2,8 +2,9 @@
 @inject NavigationManager Navigation
 @inject PlaybookState State
 @inject IJSRuntime JsRuntime
+@implements IAsyncDisposable
 
-<PageTitle>@(Component is null ? "Component not found" : $"{Component.Name} · UI Playbook")</PageTitle>
+<PageTitle>@(Component is null ? "Component not found" : $"{DocumentPage!.Name} · UI Playbook")</PageTitle>
 
 <PlaybookShell>
     <main class="component-detail">
@@ -21,15 +22,16 @@
             <div class="component-detail__workspace">
                 <aside class="component-detail__sidebar" aria-label="Component Browser">
                     <a class="component-detail__all-components" href="components">← All components</a>
-                    <nav aria-label="Component groups">
+                    <button type="button" class="component-detail__browse-toggle" aria-expanded="@Pressed(_showBrowser)" aria-controls="component-page-navigation" @onclick="() => _showBrowser = !_showBrowser">Browse component pages</button>
+                    <nav id="component-page-navigation" class="@(_showBrowser ? "is-expanded" : null)" aria-label="Component groups">
                         @foreach (var group in ComponentGroups)
                         {
-                            <details open="@(group.Key == Component.Category)">
+                            <details open="@(group.Key == DocumentPage!.Category)">
                                 <summary><span>@group.Key</span><small>@group.Count()</small></summary>
                                 <div>
                                     @foreach (var candidate in group)
                                     {
-                                        <a class="@ComponentLinkClass(candidate)" href="@candidate.DetailHref" aria-current="@(candidate.Slug == Component.Slug ? "page" : null)">@candidate.Name</a>
+                                        <a class="@(candidate.Slug == DocumentPage!.Slug ? "is-current" : null)" href="@candidate.Href" aria-current="@(candidate.Slug == DocumentPage.Slug ? "page" : null)">@candidate.Name</a>
                                     }
                                 </div>
                             </details>
@@ -39,14 +41,14 @@
 
                 <div class="component-detail__content">
                     <nav class="component-detail__breadcrumbs" aria-label="Breadcrumb">
-                        <a href="components">Components</a><span aria-hidden="true">/</span><span>@Component.Category</span><span aria-hidden="true">/</span><strong>@Component.Name</strong>
+                        <a href="components">Components</a><span aria-hidden="true">/</span><span>@Component.Category</span><span aria-hidden="true">/</span><strong>@DocumentPage!.Name</strong>
                     </nav>
 
                     <header class="component-detail__hero">
                         <div>
                             <span class="playbook-kicker">@Component.Category</span>
-                            <h1>@Component.Name</h1>
-                            <p>@Component.Summary</p>
+                            <h1>@DocumentPage!.Name</h1>
+                            <p>@DocumentPage.Summary</p>
                         </div>
                         <div class="component-detail__meta">
                             <span class="component-detail__status component-detail__status--@Component.Status.ToString().ToLowerInvariant()">@Component.Status</span>
@@ -86,7 +88,7 @@
                 {
                     @if (ActiveViewport == "full")
                     {
-                        <DynamicComponent Type="@SpecimenType" Parameters="@SpecimenParameters" />
+                        <DynamicComponent @key="DocumentPage!.Slug" Type="@SpecimenType" Parameters="@SpecimenParameters" />
                     }
                     else
                     {
@@ -133,7 +135,7 @@
                                     <ul>
                                         @foreach (var related in DocumentationRelatedComponents)
                                         {
-                                            <li><a href="@related.DetailHref">@related.Name</a></li>
+                                            <li><a href="@PlaybookComponentPages.HrefFor(related)">@related.Name</a></li>
                                         }
                                     </ul>
                                 </article>
@@ -143,6 +145,22 @@
                 }
                     </section>
 
+                    @if (DocumentPage!.Members.Count > 1)
+                    {
+                        <nav class="component-detail__members" aria-label="Components on this page">
+                            <span>Component API &amp; usage</span>
+                            @foreach (var member in DocumentPage.Members)
+                            {
+                                <a href="@MemberHref(member)" aria-current="@(member.Slug == Component.Slug ? "location" : null)" @onclick="() => SelectMember(member)" @onclick:preventDefault>@member.Name</a>
+                            }
+                        </nav>
+                    }
+                    <div id="@($"api-{Component.Slug}")" class="component-detail__member-docs" tabindex="-1" data-api-component="@Component.Name">
+                    @if (DocumentPage.Members.Count > 1)
+                    {
+                        <h2 class="component-detail__member-title">@Component.Name</h2>
+                        <p>@Component.Summary</p>
+                    }
                     <section class="component-detail__section" aria-labelledby="usage-title">
                 <header><div><span>03 / Use</span><h2 id="usage-title">@(HasCuratedUsage ? "Focused usage" : "Usage skeleton")</h2></div><p>@UsageGuidance</p></header>
                 <div class="component-detail__usage">
@@ -165,6 +183,8 @@
                 <header><div><span>04 / API</span><h2 id="api-title">Parameters</h2></div><p>The table is generated from the public parameters on the component type.</p></header>
                 <ComponentParameterTable ComponentType="@ResolvedRuntimeType" />
                     </section>
+
+                    </div>
 
                     <section class="component-detail__section" aria-labelledby="accessibility-title">
                 <header><div><span>05 / Quality</span><h2 id="accessibility-title">Accessibility</h2></div><p>Check semantics, focus, keyboard behavior, constrained widths, and reduced motion.</p></header>
@@ -199,7 +219,7 @@
                 <div class="component-detail__related">
                     @foreach (var related in RelatedComponents)
                     {
-                        <a href="@related.DetailHref">
+                        <a href="@PlaybookComponentPages.HrefFor(related)">
                             <strong>@related.Name</strong>
                             <span>@related.Summary</span>
                             <small>@PlaybookComponentCoverage.LabelFor(related)</small>
@@ -225,19 +245,24 @@
     [Parameter, SupplyParameterFromQuery(Name = "viewport")] public string? Viewport { get; set; }
     private string _copyStatus = string.Empty;
 
-    private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
-    private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
+    private PlaybookComponentPage? DocumentPage => PlaybookComponentPages.Find(Slug);
+    private string? _selectedSlug;
+    private bool _showBrowser;
+    private string? _focusMember;
+    private DotNetObjectReference<ComponentDetail>? _fragmentReceiver;
+    private int? _fragmentListener;
+    private PlaybookComponentDefinition? Component => DocumentPage?.Members.FirstOrDefault(member => member.Slug == _selectedSlug) ?? DocumentPage?.Primary;
+    private PlaybookComponentDefinition? PreviewComponent => Component?.Name == "AppGridPaginator" ? Component : DocumentPage?.Primary;
+    private Type? SpecimenType => PreviewComponent is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(PreviewComponent);
     private Type? ResolvedRuntimeType => Component is null ? null : PlaybookSpecimenRegistry.RuntimeTypeFor(Component);
     private bool HasInteractiveSpecimen => SpecimenType is not null;
-    private int MappedComponentCount => SpecimenType is null
-        ? 0
-        : PlaybookSpecimenRegistry.All.Values.Count(registration => registration.SpecimenType == SpecimenType);
+    private int MappedComponentCount => DocumentPage?.Members.Count ?? 0;
     private string SpecimenCoverageLabel => MappedComponentCount <= 1
-        ? "Dedicated specimen"
-        : $"Shared workbench · {MappedComponentCount} components";
+        ? "1 component on this page"
+        : $"{MappedComponentCount} components on this page";
     private PlaybookComponentCoverageKind CoverageKind => Component is null ? PlaybookComponentCoverageKind.Reference : PlaybookComponentCoverage.KindFor(Component);
     private PlaybookCoverageDocumentation? CoverageDocumentation => Component is null ? null : PlaybookComponentCoverage.DocumentationFor(Component);
-    private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = "full" };
+    private IDictionary<string, object> SpecimenParameters => PlaybookSpecimenRegistry.ParametersFor(PreviewComponent!);
 
     private string ActiveViewport => Viewport is "mobile" or "tablet" or "desktop" ? Viewport : "full";
     private string ViewportLabel => ActiveViewport switch
@@ -250,7 +275,7 @@
 
     private string IsolatedSpecimenHref => Component is null
         ? string.Empty
-        : $"specimens/{Component.Slug}?theme={Uri.EscapeDataString(State.Theme)}&mode={Uri.EscapeDataString(State.Mode)}";
+        : $"specimens/{PreviewComponent!.Slug}?theme={Uri.EscapeDataString(State.Theme)}&mode={Uri.EscapeDataString(State.Mode)}";
 
     private string UsageExample => Component is null ? string.Empty : PlaybookUsageExamples.For(Component);
     private bool HasCuratedUsage => Component is not null && PlaybookUsageExamples.HasCuratedExample(Component);
@@ -270,7 +295,7 @@
 
     private IReadOnlyList<PlaybookPatternDefinition> ComponentPatterns => Component is null
         ? []
-        : PlaybookPatternCatalog.PatternsForComponent(Component.Name);
+        : DocumentPage!.Members.SelectMany(member => PlaybookPatternCatalog.PatternsForComponent(member.Name)).DistinctBy(pattern => pattern.Slug).ToArray();
 
     private IEnumerable<PlaybookComponentDefinition> RelatedComponents
     {
@@ -283,20 +308,20 @@
 
             var composed = ComponentPatterns
                 .SelectMany(pattern => pattern.Ingredients)
-                .Where(ingredient => !ingredient.ComponentName.Equals(Component.Name, StringComparison.OrdinalIgnoreCase))
+                .Where(ingredient => !DocumentPage!.Members.Any(member => member.Name == ingredient.ComponentName))
                 .Select(ingredient => PlaybookComponentCatalog.All.FirstOrDefault(candidate =>
                     candidate.Name.Equals(ingredient.ComponentName, StringComparison.OrdinalIgnoreCase)))
                 .Where(candidate => candidate is not null)
                 .Cast<PlaybookComponentDefinition>()
-                .DistinctBy(candidate => candidate.Name)
+                .DistinctBy(candidate => PlaybookComponentPages.Find(candidate.Slug)!.Slug)
                 .Take(6)
                 .ToArray();
 
             return composed.Length > 0
                 ? composed
                 : PlaybookComponentCatalog.All
-                    .Where(candidate => candidate.Category == Component.Category && candidate.Slug != Component.Slug)
-                    .Take(6);
+                    .Where(candidate => candidate.Category == Component.Category && !DocumentPage!.Members.Contains(candidate))
+                    .DistinctBy(candidate => PlaybookComponentPages.Find(candidate.Slug)!.Slug).Take(6);
         }
     }
 
@@ -307,16 +332,84 @@
             .Where(component => component is not null)
             .Cast<PlaybookComponentDefinition>();
 
-    private IReadOnlyList<IGrouping<string, PlaybookComponentDefinition>> ComponentGroups =>
-        PlaybookComponentCatalog.All.GroupBy(component => component.Category).ToArray();
+    private IReadOnlyList<IGrouping<string, PlaybookComponentPage>> ComponentGroups =>
+        PlaybookComponentPages.All.GroupBy(page => page.Category).ToArray();
 
-    private string ComponentLinkClass(PlaybookComponentDefinition candidate) =>
-        candidate.Slug == Component?.Slug ? "is-current" : string.Empty;
+    protected override void OnInitialized() => Navigation.LocationChanged += LocationChanged;
 
-    private void SetViewport(string viewport)
+    protected override void OnParametersSet()
+    {
+        var page = DocumentPage;
+        if (page is null) return;
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        if (!string.Equals(Slug, page.Slug, StringComparison.OrdinalIgnoreCase))
+        {
+            var member = page.Members.Single(member => member.Slug.Equals(Slug, StringComparison.OrdinalIgnoreCase));
+            Navigation.NavigateTo($"{page.Href}{uri.Query}#api-{member.Slug}", replace: true);
+            return;
+        }
+        SelectMemberFromUri();
+    }
+
+    private void SelectMemberFromUri()
+    {
+        ApplyFragment(Navigation.ToAbsoluteUri(Navigation.Uri).Fragment);
+    }
+
+    private void ApplyFragment(string fragment)
+    {
+        var member = DocumentPage?.Members.FirstOrDefault(member => fragment == $"#api-{member.Slug}");
+        _selectedSlug = member?.Slug;
+        _focusMember = member is null ? null : $"api-{member.Slug}";
+        _copyStatus = string.Empty;
+    }
+
+    private void LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs args)
+    {
+        _ = InvokeAsync(() => { SelectMemberFromUri(); StateHasChanged(); });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _fragmentReceiver = DotNetObjectReference.Create(this);
+            _fragmentListener = await JsRuntime.InvokeAsync<int>("playbookComponentNavigation.subscribe", _fragmentReceiver);
+        }
+        if (_focusMember is not { } target) return;
+        _focusMember = null;
+        await JsRuntime.InvokeVoidAsync("playbookFocus.focusById", target);
+    }
+
+    private string MemberHref(PlaybookComponentDefinition member) =>
+        $"{DocumentPage!.Href}{Navigation.ToAbsoluteUri(Navigation.Uri).Query}#api-{member.Slug}";
+
+    private void SelectMember(PlaybookComponentDefinition member)
+    {
+        Navigation.NavigateTo(MemberHref(member));
+        ApplyFragment($"#api-{member.Slug}");
+    }
+
+    [JSInvokable]
+    public Task FragmentChanged(string fragment) => InvokeAsync(() =>
+    {
+        ApplyFragment(fragment);
+        StateHasChanged();
+    });
+
+    public async ValueTask DisposeAsync()
+    {
+        Navigation.LocationChanged -= LocationChanged;
+        if (_fragmentListener is { } listener)
+            await JsRuntime.InvokeVoidAsync("playbookComponentNavigation.unsubscribe", listener);
+        _fragmentReceiver?.Dispose();
+    }
+
+    private async Task SetViewport(string viewport)
     {
         Viewport = viewport == "full" ? null : viewport;
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("viewport", Viewport), replace: true);
+        var fragment = await JsRuntime.InvokeAsync<string>("playbookComponentNavigation.currentFragment");
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameter("viewport", Viewport).Split('#')[0] + fragment, replace: true);
     }
 
     private async Task CopyUsageAsync()

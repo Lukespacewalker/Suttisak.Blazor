@@ -2,6 +2,8 @@
     <Preview>
         <div class="component-specimen__demo">
             <div class="component-specimen__demo-grid">
+                @if (IsNumber)
+                {
                 <section>
                     <h3>Number</h3>
                     <AppNumberInput TValue="int"
@@ -15,7 +17,10 @@
                                     @bind-Value="_capacity" />
                     <p role="status">Capacity: @_capacity</p>
                 </section>
+                }
 
+                @if (IsMultiple)
+                {
                 <section>
                     <h3>Multiple selection</h3>
                     <AppMultiSelect TValue="string"
@@ -27,7 +32,10 @@
                                     @bind-SelectedItems="_selectedRoles" />
                     <p role="status">Roles: @SelectedRolesText</p>
                 </section>
+                }
 
+                @if (IsRadio)
+                {
                 <section>
                     <h3>Exclusive choice</h3>
                     <EditForm Model="@_radioModel">
@@ -46,7 +54,10 @@
                     </EditForm>
                     <p role="status">Channel: @_radioModel.ContactChannel</p>
                 </section>
+                }
 
+                @if (IsDateTime)
+                {
                 <section>
                     <h3>Date</h3>
                     <AppCalendarPicker Label="Appointment date"
@@ -61,7 +72,10 @@
                                        @bind-Value="_appointmentDate" />
                     <p role="status">Date: @(_appointmentDate?.ToString("yyyy-MM-dd") ?? "none")</p>
                 </section>
+                }
 
+                @if (IsDateTime)
+                {
                 <section>
                     <h3>Time</h3>
                     <AppTimePicker Label="Start time"
@@ -75,7 +89,10 @@
                                    @bind-Value="_startTime" />
                     <p role="status">Time: @FormatTime(_startTime)</p>
                 </section>
+                }
 
+                @if (IsDateTime)
+                {
                 <section>
                     <h3>Browser-local date and time</h3>
                     <AppDateTimePicker Label="Follow-up"
@@ -91,10 +108,13 @@
                                        @bind-Value="_followUp" />
                     <p role="status">Follow-up: @FormatDateTime(_followUp)</p>
                 </section>
+                }
             </div>
         </div>
     </Preview>
     <Controls>
+        @if (IsDateTime)
+        {
         <label>Minute step
             <select @bind="_minuteStep">
                 <option value="1">1 minute</option>
@@ -112,21 +132,46 @@
             </select>
         </label>
         <label class="component-detail__check"><input type="checkbox" @bind="_includeSeconds" /> Include seconds</label>
+        }
+        @if (IsRadio)
+        {
         <label class="component-detail__check"><input type="checkbox" @bind="_horizontalRadios" /> Horizontal radios</label>
+        }
+        @if (IsDateTime)
+        {
         <label class="component-detail__check"><input type="checkbox" @bind="_thaiText" /> Thai picker text</label>
+        }
         <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
         <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
     </Controls>
     <States>
+        @if (IsNumber)
+        {
         <article><span>Typed value</span><strong>Number input</strong><small>Culture-aware parsing with native min, max, and step constraints</small></article>
+        }
+        @if (IsMultiple)
+        {
         <article><span>Many choices</span><strong>Multi-select</strong><small>Typed collection binding without collapsing multiple values into one string</small></article>
+        }
+        @if (IsRadio)
+        {
         <article><span>One choice</span><strong>Radio group</strong><small>Native radio exclusivity, fieldset semantics, and keyboard behavior</small></article>
+        }
+        @if (IsDateTime)
+        {
         <article><span>Local time</span><strong>Date and time pickers</strong><small>Invariant transport values with localized progressive-enhancement labels</small></article>
+        }
     </States>
 </ComponentSpecimenLayout>
 
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+
+    [Parameter] public string ComponentName { get; set; } = "AppNumberInput";
+    private bool IsNumber => ComponentName == "AppNumberInput";
+    private bool IsMultiple => ComponentName == "AppMultiSelect";
+    private bool IsRadio => ComponentName is "AppRadioGroup" or "AppRadio";
+    private bool IsDateTime => ComponentName is "AppCalendarPicker" or "AppTimePicker" or "AppDateTimePicker";
 
     private static DateOnly CalendarMin { get; } = new(2026, 1, 1);
     private static DateOnly CalendarMax { get; } = new(2027, 12, 31);

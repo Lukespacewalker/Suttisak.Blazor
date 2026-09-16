@@ -58,6 +58,8 @@ public sealed class PlaybookCatalogContractTests
             Assert.Equal(component.Tags, entry.Tags);
             Assert.Equal(component.SourceArea, entry.SourceArea);
             Assert.Equal(component.RelatedPatternIds, entry.RelatedPatternIds);
+            Assert.Equal(PlaybookComponentPages.HrefFor(component), entry.DocumentationHref);
+            Assert.Equal(PlaybookComponentPages.Find(component.Slug)!.Slug, entry.PageSlug);
         }
 
         var groupedManifestNames = manifest.Groups
@@ -65,6 +67,27 @@ public sealed class PlaybookCatalogContractTests
             .Order(StringComparer.Ordinal)
             .ToArray();
         Assert.Equal(manifestByName.Keys.Order(StringComparer.Ordinal).ToArray(), groupedManifestNames);
+    }
+
+    [Fact]
+    public void Documentation_pages_preserve_every_component_once_and_expose_resolvable_member_links()
+    {
+        var manifest = ReadManifest();
+        Assert.Equal(PlaybookComponentPages.All.Count, manifest.PageCount);
+        var members = PlaybookComponentPages.All.SelectMany(page => page.Members).ToArray();
+        Assert.Equal(PlaybookComponentCatalog.All.Count, members.Length);
+        Assert.Equal(members.Length, members.Select(member => member.Slug).Distinct().Count());
+        foreach (var page in PlaybookComponentPages.All)
+        {
+            var published = Assert.Single(manifest.Pages, candidate => candidate.Slug == page.Slug);
+            Assert.Equal(page.Members.Select(member => member.Name), published.Components);
+            Assert.Equal(page.Href, published.Href);
+            foreach (var member in page.Members)
+            {
+                Assert.Same(page, PlaybookComponentPages.Find(member.Slug));
+                Assert.Equal(page.Href, PlaybookComponentPages.HrefFor(member).Split('#')[0]);
+            }
+        }
     }
 
     [Fact]
@@ -96,7 +119,10 @@ public sealed class PlaybookCatalogContractTests
 
         Assert.Equal(PlaybookSpecimenRegistry.All.Count, PlaybookSpecimenRegistry.InteractiveSpecimenCount);
         Assert.Equal(
-            PlaybookSpecimenRegistry.All.Values.Select(registration => registration.SpecimenType).Distinct().Count(),
+            PlaybookComponentCatalog.All.Where(component => component.HasLiveSpecimen)
+                .Select(component => (PlaybookSpecimenRegistry.SpecimenTypeFor(component),
+                    Parameters: string.Join(";", PlaybookSpecimenRegistry.ParametersFor(component).Select(pair => $"{pair.Key}={pair.Value}"))))
+                .Distinct().Count(),
             PlaybookSpecimenRegistry.DistinctSpecimenCount);
     }
 
@@ -182,6 +208,8 @@ public sealed class PlaybookCatalogContractTests
     private sealed record PlaybookComponentManifest(
         int SchemaVersion,
         int ComponentCount,
+        int PageCount,
+        IReadOnlyList<PlaybookPageManifestEntry> Pages,
         IReadOnlyList<PlaybookComponentManifestEntry> Components,
         IReadOnlyList<PlaybookComponentManifestGroup> Groups,
         IReadOnlyList<PlaybookPatternManifestEntry> Patterns);
@@ -195,7 +223,11 @@ public sealed class PlaybookCatalogContractTests
         string Summary,
         IReadOnlyList<string> Tags,
         string SourceArea,
-        IReadOnlyList<string> RelatedPatternIds);
+        IReadOnlyList<string> RelatedPatternIds,
+        string DocumentationHref,
+        string PageSlug);
+
+    private sealed record PlaybookPageManifestEntry(string Slug, string Href, IReadOnlyList<string> Components);
 
     private sealed record PlaybookComponentManifestGroup(
         string Category,

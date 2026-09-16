@@ -112,20 +112,20 @@
         if (!State.TrySetMode(mode)) return;
 
         await ApplyThemeAsync();
-        ReplaceQueryParameter("mode", State.Mode);
+        await ReplaceQueryParameterAsync("mode", State.Mode);
     }
 
     private async Task ChangeThemeAsync()
     {
         await ApplyThemeAsync();
-        ReplaceQueryParameter("theme", State.Theme);
+        await ReplaceQueryParameterAsync("theme", State.Theme);
     }
 
-    private void ChangeViewport(string viewport)
+    private async Task ChangeViewport(string viewport)
     {
         if (!State.TrySetViewport(viewport)) return;
 
-        ReplaceQueryParameter("globalViewport", State.Viewport);
+        await ReplaceQueryParameterAsync("globalViewport", State.Viewport);
     }
 
     private async Task ApplyThemeAsync()
@@ -166,13 +166,14 @@
         return null;
     }
 
-    private void ReplaceQueryParameter(string name, string value)
+    private async Task ReplaceQueryParameterAsync(string name, string value)
     {
         var uri = Navigation.GetUriWithQueryParameters(new Dictionary<string, object?>
         {
             [name] = value
         });
-        Navigation.NavigateTo(uri, replace: true);
+        var fragment = await JsRuntime.InvokeAsync<string>("playbookComponentNavigation.currentFragment");
+        Navigation.NavigateTo(uri.Split('#')[0] + fragment, replace: true);
     }
 
     private Task FocusMainContentAsync() =>

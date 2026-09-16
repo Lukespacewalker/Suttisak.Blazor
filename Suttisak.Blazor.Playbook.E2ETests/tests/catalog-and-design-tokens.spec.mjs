@@ -13,6 +13,7 @@ async function expectNoSeriousOrCriticalViolations(page) {
 test('Component Browser reports and filters the catalog from the manifest', async ({ page, request }) => {
   const manifest = await (await request.get('/component-manifest.json')).json();
   const interactiveCount = manifest.components.filter(component => component.coverage === 'interactive').length;
+  const interactivePages = manifest.pages.filter(group => group.components.some(name => manifest.components.find(component => component.name === name).coverage === 'interactive')).length;
   await page.goto('/components');
 
   await expect(page.getByRole('heading', { level: 1, name: /Browse components/i })).toBeVisible({ timeout: wasmTimeout });
@@ -21,14 +22,14 @@ test('Component Browser reports and filters the catalog from the manifest', asyn
   await expect(summary).toBeVisible();
   await expect(summary.locator('article').nth(0).locator('strong')).toHaveText(String(manifest.componentCount));
   await expect(summary.locator('article').nth(1).locator('strong')).toHaveText(String(interactiveCount));
-  await expect(page.locator('[data-component-name]')).toHaveCount(manifest.componentCount, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(manifest.pageCount, { timeout: wasmTimeout });
 
   const interactiveFilter = page.locator('.component-browser__coverage-filter button').filter({ hasText: 'Interactive' });
   await expect(interactiveFilter).toHaveCount(1);
   await interactiveFilter.click();
   await expect(interactiveFilter).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(interactiveCount, { timeout: wasmTimeout });
-  await expect(page.locator('[data-component-name]')).toHaveCount(interactiveCount, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-coverage="interactive"]')).toHaveCount(interactivePages, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(interactivePages, { timeout: wasmTimeout });
 
   await page.getByRole('searchbox', { name: 'Find a component' }).fill('AppButton');
   await expect(page.locator('[data-component-name="AppButton"]')).toHaveCount(1);
@@ -40,7 +41,7 @@ test('Component Browser reports and filters the catalog from the manifest', asyn
 test('Component Browser has no serious or critical accessibility violations', async ({ page, request }) => {
   const manifest = await (await request.get('/component-manifest.json')).json();
   await page.goto('/components');
-  await expect(page.locator('[data-component-name]')).toHaveCount(manifest.componentCount, { timeout: wasmTimeout });
+  await expect(page.locator('[data-component-name]')).toHaveCount(manifest.pageCount, { timeout: wasmTimeout });
   await expectNoSeriousOrCriticalViolations(page);
 });
 

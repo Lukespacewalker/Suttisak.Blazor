@@ -134,3 +134,22 @@ window.playbookLoader = (() => {
         }
     };
 })();
+
+// Blazor does not notify NavigationManager for native same-page anchor changes.
+window.playbookComponentNavigation = {
+    currentFragment: () => location.hash,
+    nextId: 0,
+    listeners: new Map(),
+    subscribe(receiver) {
+        const id = ++this.nextId;
+        const handler = () => receiver.invokeMethodAsync('FragmentChanged', location.hash);
+        this.listeners.set(id, handler);
+        window.addEventListener('hashchange', handler);
+        return id;
+    },
+    unsubscribe(id) {
+        const handler = this.listeners.get(id);
+        if (handler) window.removeEventListener('hashchange', handler);
+        this.listeners.delete(id);
+    }
+};

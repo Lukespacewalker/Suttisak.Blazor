@@ -493,3 +493,4 @@
     .component-browser__card:hover,
     .component-browser__card:focus-visible { transform: none; }
 }
+.component-browser__members { color: var(--app-foreground-muted); font-size: .72rem; line-height: 1.6; overflow-wrap: anywhere; }

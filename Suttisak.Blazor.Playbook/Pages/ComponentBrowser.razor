@@ -10,7 +10,7 @@
             <div>
                 <span class="playbook-kicker">Component Browser</span>
                 <h1>Browse components and<br /><em>check their states.</em></h1>
-                <p>Search by name, category, or tag. Each entry links to its parameters, specimens, source, and related page patterns.</p>
+                <p>Search by name, category, or tag. Related components share one page. Search any component name to find its example and API.</p>
                 <div class="component-browser__hero-actions">
                     <a href="patterns">View page patterns →</a>
                     <a href="tokens">View design tokens →</a>
@@ -42,7 +42,7 @@
 
                 <fieldset class="component-browser__coverage-filter">
                     <legend>Coverage</legend>
-                    <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(SelectedCoverage is null)" @onclick="() => SetCoverageFilter(null)">All <small>@Coverage.Total</small></button>
+                    <button type="button" class="@FilterClass(null)" aria-pressed="@Pressed(SelectedCoverage is null)" @onclick="() => SetCoverageFilter(null)">All <small>@PlaybookComponentPages.All.Count</small></button>
                     @foreach (var kind in CoverageKinds)
                     {
                         <button type="button" class="@FilterClass(kind)" aria-pressed="@Pressed(SelectedCoverage == kind)" @onclick="() => SetCoverageFilter(kind)">
@@ -63,7 +63,7 @@
             <div class="component-browser__content">
                 <header class="component-browser__results-header" aria-live="polite" aria-atomic="true">
                     <div class="component-browser__results-copy">
-                        <span>@FilteredComponentCount results</span>
+                        <span>@FilteredComponentCount pages</span>
                         <strong>@ResultsHeading</strong>
                     </div>
                     <div class="component-browser__results-actions">
@@ -97,16 +97,21 @@
                             </header>
 
                             <div class="component-browser__grid component-browser__grid--@ViewMode">
-                                @foreach (var component in group)
+                                @foreach (var documentPage in group)
                                 {
+                                    var component = documentPage.Primary;
                                     var coverageKind = PlaybookComponentCoverage.KindFor(component);
-                                    <a class="component-browser__card" href="@component.DetailHref" data-component-name="@component.Name" data-component-coverage="@PlaybookComponentCoverage.SlugFor(coverageKind)">
+                                    <a class="component-browser__card" href="@PlaybookComponentPages.SearchHref(documentPage, Search)" data-component-name="@component.Name" data-component-coverage="@PlaybookComponentCoverage.SlugFor(coverageKind)">
                                         <div class="component-browser__card-meta">
                                             <span class="component-browser__status component-browser__status--@component.Status.ToString().ToLowerInvariant()">@component.Status</span>
                                             <span class="component-browser__coverage component-browser__coverage--@PlaybookComponentCoverage.SlugFor(coverageKind)">@PlaybookComponentCoverage.LabelFor(coverageKind)</span>
                                         </div>
-                                        <h3>@component.Name</h3>
-                                        <p>@component.Summary</p>
+                                        <h3>@documentPage.Name</h3>
+                                        <p>@documentPage.Summary</p>
+                                        @if (documentPage.Members.Count > 1)
+                                        {
+                                            <span class="component-browser__members">@string.Join(" · ", documentPage.Members.Select(member => member.Name))</span>
+                                        }
                                         <small>@component.SourceArea · @string.Join(" · ", component.Tags.Take(3))</small>
                                         <footer>
                                             <span>@ActionLabel(coverageKind)</span>
@@ -142,10 +147,11 @@
 
     private string ViewMode => View?.Equals("compact", StringComparison.OrdinalIgnoreCase) == true ? "compact" : "cards";
 
-    private IEnumerable<PlaybookComponentDefinition> FilteredComponents =>
-        PlaybookComponentCatalog.All.Where(MatchesSearch).Where(MatchesCoverage);
+    private IEnumerable<PlaybookComponentPage> FilteredComponents =>
+        PlaybookComponentPages.All.Where(page => PlaybookComponentPages.Matches(page, Search))
+            .Where(page => page.Members.Any(MatchesCoverage));
 
-    private IReadOnlyList<IGrouping<string, PlaybookComponentDefinition>> FilteredGroups =>
+    private IReadOnlyList<IGrouping<string, PlaybookComponentPage>> FilteredGroups =>
         FilteredComponents.GroupBy(component => component.Category).ToArray();
 
     private int FilteredComponentCount => FilteredComponents.Count();
@@ -155,21 +161,6 @@
     private string ResultsHeading => SelectedCoverage is null
         ? string.IsNullOrWhiteSpace(Search) ? "All components" : $"Results for \"{Search.Trim()}\""
         : $"{PlaybookComponentCoverage.LabelFor(SelectedCoverage.Value)} coverage";
-
-    private bool MatchesSearch(PlaybookComponentDefinition component)
-    {
-        if (string.IsNullOrWhiteSpace(Search))
-        {
-            return true;
-        }
-
-        var search = Search.Trim();
-        return component.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.Category.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.Summary.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.SourceArea.Contains(search, StringComparison.OrdinalIgnoreCase)
-            || component.Tags.Any(tag => tag.Contains(search, StringComparison.OrdinalIgnoreCase));
-    }
 
     private bool MatchesCoverage(PlaybookComponentDefinition component) =>
         SelectedCoverage is null || PlaybookComponentCoverage.KindFor(component) == SelectedCoverage;
@@ -214,12 +205,8 @@
 
     private static string Pressed(bool value) => value ? "true" : "false";
 
-    private static int CoverageCount(PlaybookComponentCoverageKind kind) => kind switch
-    {
-        PlaybookComponentCoverageKind.Interactive => Coverage.Interactive,
-        PlaybookComponentCoverageKind.Pattern => Coverage.Pattern,
-        _ => Coverage.Reference
-    };
+    private static int CoverageCount(PlaybookComponentCoverageKind kind) =>
+        PlaybookComponentPages.All.Count(page => page.Members.Any(member => member.Coverage == kind));
 
     private static string ActionLabel(PlaybookComponentCoverageKind kind) => kind switch
     {

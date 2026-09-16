@@ -17,7 +17,9 @@ var components = PlaybookComponentCatalog.All
         component.Summary,
         component.Tags,
         component.SourceArea,
-        component.RelatedPatternIds
+        component.RelatedPatternIds,
+        DocumentationHref = PlaybookComponentPages.HrefFor(component),
+        PageSlug = PlaybookComponentPages.Find(component.Slug)!.Slug
     })
     .ToArray();
 
@@ -66,6 +68,15 @@ var manifest = new
 {
     SchemaVersion = 1,
     ComponentCount = components.Length,
+    PageCount = PlaybookComponentPages.All.Count,
+    Pages = PlaybookComponentPages.All.Select(page => new
+    {
+        page.Name,
+        page.Slug,
+        page.Category,
+        page.Href,
+        Components = page.Members.Select(member => member.Name).ToArray()
+    }).ToArray(),
     DetailRouteTemplate = "components/{kebab-case-component-name}",
     StatusPolicy = new Dictionary<string, string>
     {

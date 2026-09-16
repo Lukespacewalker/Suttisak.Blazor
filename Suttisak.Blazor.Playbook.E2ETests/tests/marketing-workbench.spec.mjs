@@ -44,16 +44,19 @@ test('Marketing workbench composes the public primitives and exposes meaningful 
   await page.getByLabel('Product frame').uncheck();
   await expect(page.getByTestId('marketing-product-frame')).toHaveCount(0);
 
+  await page.goto('/components/marketing-feature-grid');
   await expect(page.getByTestId('marketing-featured-card')).toHaveClass(/marketing-card--featured/);
   await page.getByLabel('Featured card').uncheck();
   await expect(page.getByTestId('marketing-featured-card')).not.toHaveClass(/marketing-card--featured/);
 
+  await page.goto('/components/marketing-step-list');
   await expect(page.getByTestId('marketing-step-list')).toHaveJSProperty('tagName', 'OL');
   await expect(page.getByTestId('marketing-step')).toHaveJSProperty('tagName', 'LI');
 
+  await page.goto('/components/marketing-call-to-action');
   await expect(page.getByTestId('marketing-call-to-action')).toBeVisible();
-  await page.getByLabel('Closing call to action').uncheck();
-  await expect(page.getByTestId('marketing-call-to-action')).toHaveCount(0);
+  await page.getByLabel('Action title').fill('Explore the product');
+  await expect(page.getByTestId('marketing-call-to-action').getByRole('heading')).toHaveText('Explore the product');
 });
 
 test('MarketingPage stays pattern-level because its main landmark is exercised by the landing route', async ({ page }) => {

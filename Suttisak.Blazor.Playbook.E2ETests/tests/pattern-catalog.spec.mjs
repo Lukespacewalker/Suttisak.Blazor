@@ -82,7 +82,7 @@ test('Pattern ingredients link to stable component detail routes', async ({ page
   await appGrid.click();
 
   await expect(page).toHaveURL(/\/components\/app-grid$/);
-  await expect(page.getByRole('heading', { level: 1, name: 'AppGrid' }))
+  await expect(page.getByRole('heading', { level: 1, name: 'Data Grid', exact: true }))
     .toBeVisible({ timeout: wasmTimeout });
 });
 

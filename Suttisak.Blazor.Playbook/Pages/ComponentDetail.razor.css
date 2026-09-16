@@ -116,3 +116,19 @@
 @media (max-width: 48rem) { .component-detail__hero, .component-detail__section > header { grid-template-columns: 1fr; display: grid; align-items: start; gap: 1rem; } .component-detail__states, .component-detail__patterns, .component-detail__related, .component-detail__documentation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .component-detail__controls { grid-template-columns: 1fr; } }
 @media (max-width: 34rem) { .component-detail { width: min(100% - 1rem, 94rem); } .component-detail__sidebar nav, .component-detail__states, .component-detail__quality-grid, .component-detail__patterns, .component-detail__related, .component-detail__documentation-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .component-detail__preview-frame { transition: none; } }
+.component-detail__members { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding-block: 1.25rem; border-block: 1px solid var(--app-border); }
+.component-detail__members > span { flex-basis: 100%; color: var(--app-foreground-muted); font-size: .75rem; }
+.component-detail__members a { padding: .6rem .8rem; border: 1px solid var(--app-border); border-radius: .5rem; color: var(--app-foreground); text-decoration: none; font-size: .8rem; overflow-wrap: anywhere; }
+.component-detail__members a[aria-current] { background: var(--app-accent-soft); border-color: var(--app-accent); font-weight: 750; }
+.component-detail__members a:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 3px; }
+.component-detail__member-docs { min-width: 0; scroll-margin-top: 6rem; }
+.component-detail__member-docs:focus { outline: none; }
+.component-detail__member-docs:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 4px; }
+.component-detail__member-title { margin-bottom: .5rem; overflow-wrap: anywhere; }
+.component-detail__member-docs > p { color: var(--app-foreground-muted); line-height: 1.6; }
+.component-detail__browse-toggle { display: none; }
+@media (max-width: 900px) {
+    .component-detail__browse-toggle { display: block; width: 100%; padding: .8rem; border: 1px solid var(--app-border); border-radius: .5rem; background: var(--app-surface); color: var(--app-foreground); font: inherit; font-size: .8rem; text-align: start; cursor: pointer; }
+    .component-detail__browse-toggle:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 3px; }
+    .component-detail__sidebar nav:not(.is-expanded) { display: none; }
+}

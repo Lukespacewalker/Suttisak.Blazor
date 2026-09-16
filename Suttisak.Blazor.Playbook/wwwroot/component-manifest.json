@@ -1,6 +1,720 @@
 {
   "schemaVersion": 1,
   "componentCount": 95,
+  "pageCount": 77,
+  "pages": [
+    {
+      "name": "AppTextBox",
+      "slug": "app-text-box",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-text-box",
+      "components": [
+        "AppTextBox"
+      ]
+    },
+    {
+      "name": "AppTextArea",
+      "slug": "app-text-area",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-text-area",
+      "components": [
+        "AppTextArea"
+      ]
+    },
+    {
+      "name": "AppNumberInput",
+      "slug": "app-number-input",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-number-input",
+      "components": [
+        "AppNumberInput"
+      ]
+    },
+    {
+      "name": "Select",
+      "slug": "app-select",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-select",
+      "components": [
+        "AppSelect",
+        "AppSelectItem"
+      ]
+    },
+    {
+      "name": "AppMultiSelect",
+      "slug": "app-multi-select",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-multi-select",
+      "components": [
+        "AppMultiSelect"
+      ]
+    },
+    {
+      "name": "Radio",
+      "slug": "app-radio-group",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-radio-group",
+      "components": [
+        "AppRadioGroup",
+        "AppRadio"
+      ]
+    },
+    {
+      "name": "AppCheckbox",
+      "slug": "app-checkbox",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-checkbox",
+      "components": [
+        "AppCheckbox"
+      ]
+    },
+    {
+      "name": "AppSwitch",
+      "slug": "app-switch",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-switch",
+      "components": [
+        "AppSwitch"
+      ]
+    },
+    {
+      "name": "Date \u0026 Time Pickers",
+      "slug": "app-calendar-picker",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-calendar-picker",
+      "components": [
+        "AppCalendarPicker",
+        "AppTimePicker",
+        "AppDateTimePicker"
+      ]
+    },
+    {
+      "name": "Form Composition",
+      "slug": "form-section",
+      "category": "Forms \u0026 inputs",
+      "href": "components/form-section",
+      "components": [
+        "FormSection",
+        "FormGrid",
+        "FormField",
+        "FormActions",
+        "FormValidationSummary"
+      ]
+    },
+    {
+      "name": "AppButton",
+      "slug": "app-button",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/app-button",
+      "components": [
+        "AppButton"
+      ]
+    },
+    {
+      "name": "AppCard",
+      "slug": "app-card",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/app-card",
+      "components": [
+        "AppCard"
+      ]
+    },
+    {
+      "name": "AppDivider",
+      "slug": "app-divider",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/app-divider",
+      "components": [
+        "AppDivider"
+      ]
+    },
+    {
+      "name": "AppStack",
+      "slug": "app-stack",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/app-stack",
+      "components": [
+        "AppStack"
+      ]
+    },
+    {
+      "name": "CardMenu",
+      "slug": "card-menu",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/card-menu",
+      "components": [
+        "CardMenu"
+      ]
+    },
+    {
+      "name": "CompanyFooter",
+      "slug": "company-footer",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/company-footer",
+      "components": [
+        "CompanyFooter"
+      ]
+    },
+    {
+      "name": "Hero",
+      "slug": "hero",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/hero",
+      "components": [
+        "Hero"
+      ]
+    },
+    {
+      "name": "Pill",
+      "slug": "pill",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/pill",
+      "components": [
+        "Pill"
+      ]
+    },
+    {
+      "name": "Toolbar",
+      "slug": "toolbar",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/toolbar",
+      "components": [
+        "Toolbar"
+      ]
+    },
+    {
+      "name": "PageActionToolbar",
+      "slug": "page-action-toolbar",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/page-action-toolbar",
+      "components": [
+        "PageActionToolbar"
+      ]
+    },
+    {
+      "name": "PageHeading",
+      "slug": "page-heading",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/page-heading",
+      "components": [
+        "PageHeading"
+      ]
+    },
+    {
+      "name": "AppBreadcrumb",
+      "slug": "app-breadcrumb",
+      "category": "Data \u0026 display",
+      "href": "components/app-breadcrumb",
+      "components": [
+        "AppBreadcrumb"
+      ]
+    },
+    {
+      "name": "Data Grid",
+      "slug": "app-grid",
+      "category": "Data \u0026 display",
+      "href": "components/app-grid",
+      "components": [
+        "AppGrid",
+        "AppGridShell",
+        "AppGridPropertyColumn",
+        "AppGridTemplateColumn",
+        "AppGridPaginator"
+      ]
+    },
+    {
+      "name": "AppActionMenu",
+      "slug": "app-action-menu",
+      "category": "Actions \u0026 surfaces",
+      "href": "components/app-action-menu",
+      "components": [
+        "AppActionMenu"
+      ]
+    },
+    {
+      "name": "AppGridSelectionToolbar",
+      "slug": "app-grid-selection-toolbar",
+      "category": "Data \u0026 display",
+      "href": "components/app-grid-selection-toolbar",
+      "components": [
+        "AppGridSelectionToolbar"
+      ]
+    },
+    {
+      "name": "PageBreadcrumbs",
+      "slug": "page-breadcrumbs",
+      "category": "Data \u0026 display",
+      "href": "components/page-breadcrumbs",
+      "components": [
+        "PageBreadcrumbs"
+      ]
+    },
+    {
+      "name": "AppLoading",
+      "slug": "app-loading",
+      "category": "Feedback \u0026 async",
+      "href": "components/app-loading",
+      "components": [
+        "AppLoading"
+      ]
+    },
+    {
+      "name": "AppProgress",
+      "slug": "app-progress",
+      "category": "Feedback \u0026 async",
+      "href": "components/app-progress",
+      "components": [
+        "AppProgress"
+      ]
+    },
+    {
+      "name": "AppSkeleton",
+      "slug": "app-skeleton",
+      "category": "Feedback \u0026 async",
+      "href": "components/app-skeleton",
+      "components": [
+        "AppSkeleton"
+      ]
+    },
+    {
+      "name": "AsyncContent",
+      "slug": "async-content",
+      "category": "Feedback \u0026 async",
+      "href": "components/async-content",
+      "components": [
+        "AsyncContent"
+      ]
+    },
+    {
+      "name": "FeedbackBanner",
+      "slug": "feedback-banner",
+      "category": "Feedback \u0026 async",
+      "href": "components/feedback-banner",
+      "components": [
+        "FeedbackBanner"
+      ]
+    },
+    {
+      "name": "StatusPanel",
+      "slug": "status-panel",
+      "category": "Feedback \u0026 async",
+      "href": "components/status-panel",
+      "components": [
+        "StatusPanel"
+      ]
+    },
+    {
+      "name": "StatusPage",
+      "slug": "status-page",
+      "category": "Feedback \u0026 async",
+      "href": "components/status-page",
+      "components": [
+        "StatusPage"
+      ]
+    },
+    {
+      "name": "StatusRouteContent",
+      "slug": "status-route-content",
+      "category": "Feedback \u0026 async",
+      "href": "components/status-route-content",
+      "components": [
+        "StatusRouteContent"
+      ]
+    },
+    {
+      "name": "AppDialog",
+      "slug": "app-dialog",
+      "category": "Overlays",
+      "href": "components/app-dialog",
+      "components": [
+        "AppDialog"
+      ]
+    },
+    {
+      "name": "AppDrawer",
+      "slug": "app-drawer",
+      "category": "Overlays",
+      "href": "components/app-drawer",
+      "components": [
+        "AppDrawer"
+      ]
+    },
+    {
+      "name": "AppLogo",
+      "slug": "app-logo",
+      "category": "Navigation",
+      "href": "components/app-logo",
+      "components": [
+        "AppLogo"
+      ]
+    },
+    {
+      "name": "Tabs",
+      "slug": "app-tabs",
+      "category": "Navigation",
+      "href": "components/app-tabs",
+      "components": [
+        "AppTabs",
+        "AppTab"
+      ]
+    },
+    {
+      "name": "Navigation",
+      "slug": "nav",
+      "category": "Navigation",
+      "href": "components/nav",
+      "components": [
+        "Nav",
+        "NavGroup",
+        "NavItem",
+        "NavSubmenu"
+      ]
+    },
+    {
+      "name": "SectionNavigation",
+      "slug": "section-navigation",
+      "category": "Navigation",
+      "href": "components/section-navigation",
+      "components": [
+        "SectionNavigation"
+      ]
+    },
+    {
+      "name": "MobileNavigationAccount",
+      "slug": "mobile-navigation-account",
+      "category": "Navigation",
+      "href": "components/mobile-navigation-account",
+      "components": [
+        "MobileNavigationAccount"
+      ]
+    },
+    {
+      "name": "ProfileMenu",
+      "slug": "profile-menu",
+      "category": "Navigation",
+      "href": "components/profile-menu",
+      "components": [
+        "ProfileMenu"
+      ]
+    },
+    {
+      "name": "HeaderControl",
+      "slug": "header-control",
+      "category": "Navigation",
+      "href": "components/header-control",
+      "components": [
+        "HeaderControl"
+      ]
+    },
+    {
+      "name": "HeaderControlWithUser",
+      "slug": "header-control-with-user",
+      "category": "Navigation",
+      "href": "components/header-control-with-user",
+      "components": [
+        "HeaderControlWithUser"
+      ]
+    },
+    {
+      "name": "ShellProfileControl",
+      "slug": "shell-profile-control",
+      "category": "Navigation",
+      "href": "components/shell-profile-control",
+      "components": [
+        "ShellProfileControl"
+      ]
+    },
+    {
+      "name": "CultureSelector",
+      "slug": "culture-selector",
+      "category": "Preferences \u0026 time",
+      "href": "components/culture-selector",
+      "components": [
+        "CultureSelector"
+      ]
+    },
+    {
+      "name": "PreferencesSelector",
+      "slug": "preferences-selector",
+      "category": "Preferences \u0026 time",
+      "href": "components/preferences-selector",
+      "components": [
+        "PreferencesSelector"
+      ]
+    },
+    {
+      "name": "ThemeSwitcher",
+      "slug": "theme-switcher",
+      "category": "Preferences \u0026 time",
+      "href": "components/theme-switcher",
+      "components": [
+        "ThemeSwitcher"
+      ]
+    },
+    {
+      "name": "InitializeTimeZone",
+      "slug": "initialize-time-zone",
+      "category": "Preferences \u0026 time",
+      "href": "components/initialize-time-zone",
+      "components": [
+        "InitializeTimeZone"
+      ]
+    },
+    {
+      "name": "LocalTime",
+      "slug": "local-time",
+      "category": "Preferences \u0026 time",
+      "href": "components/local-time",
+      "components": [
+        "LocalTime"
+      ]
+    },
+    {
+      "name": "ExperienceCard",
+      "slug": "experience-card",
+      "category": "Experience",
+      "href": "components/experience-card",
+      "components": [
+        "ExperienceCard"
+      ]
+    },
+    {
+      "name": "ExperienceDisclosure",
+      "slug": "experience-disclosure",
+      "category": "Experience",
+      "href": "components/experience-disclosure",
+      "components": [
+        "ExperienceDisclosure"
+      ]
+    },
+    {
+      "name": "ExperienceDisclosureGroup",
+      "slug": "experience-disclosure-group",
+      "category": "Experience",
+      "href": "components/experience-disclosure-group",
+      "components": [
+        "ExperienceDisclosureGroup"
+      ]
+    },
+    {
+      "name": "ExperienceHeading",
+      "slug": "experience-heading",
+      "category": "Experience",
+      "href": "components/experience-heading",
+      "components": [
+        "ExperienceHeading"
+      ]
+    },
+    {
+      "name": "MarketingActionLink",
+      "slug": "marketing-action-link",
+      "category": "Marketing",
+      "href": "components/marketing-action-link",
+      "components": [
+        "MarketingActionLink"
+      ]
+    },
+    {
+      "name": "MarketingCallToAction",
+      "slug": "marketing-call-to-action",
+      "category": "Marketing",
+      "href": "components/marketing-call-to-action",
+      "components": [
+        "MarketingCallToAction"
+      ]
+    },
+    {
+      "name": "MarketingCard",
+      "slug": "marketing-card",
+      "category": "Marketing",
+      "href": "components/marketing-card",
+      "components": [
+        "MarketingCard"
+      ]
+    },
+    {
+      "name": "MarketingContainer",
+      "slug": "marketing-container",
+      "category": "Marketing",
+      "href": "components/marketing-container",
+      "components": [
+        "MarketingContainer"
+      ]
+    },
+    {
+      "name": "MarketingFeatureGrid",
+      "slug": "marketing-feature-grid",
+      "category": "Marketing",
+      "href": "components/marketing-feature-grid",
+      "components": [
+        "MarketingFeatureGrid"
+      ]
+    },
+    {
+      "name": "MarketingHero",
+      "slug": "marketing-hero",
+      "category": "Marketing",
+      "href": "components/marketing-hero",
+      "components": [
+        "MarketingHero"
+      ]
+    },
+    {
+      "name": "MarketingPage",
+      "slug": "marketing-page",
+      "category": "Marketing",
+      "href": "components/marketing-page",
+      "components": [
+        "MarketingPage"
+      ]
+    },
+    {
+      "name": "MarketingProductFrame",
+      "slug": "marketing-product-frame",
+      "category": "Marketing",
+      "href": "components/marketing-product-frame",
+      "components": [
+        "MarketingProductFrame"
+      ]
+    },
+    {
+      "name": "Marketing Proof",
+      "slug": "marketing-proof-strip",
+      "category": "Marketing",
+      "href": "components/marketing-proof-strip",
+      "components": [
+        "MarketingProofStrip",
+        "MarketingProofItem"
+      ]
+    },
+    {
+      "name": "MarketingSectionHeader",
+      "slug": "marketing-section-header",
+      "category": "Marketing",
+      "href": "components/marketing-section-header",
+      "components": [
+        "MarketingSectionHeader"
+      ]
+    },
+    {
+      "name": "Marketing Steps",
+      "slug": "marketing-step-list",
+      "category": "Marketing",
+      "href": "components/marketing-step-list",
+      "components": [
+        "MarketingStepList",
+        "MarketingStep"
+      ]
+    },
+    {
+      "name": "AccessPageLayout",
+      "slug": "access-page-layout",
+      "category": "Application layouts",
+      "href": "components/access-page-layout",
+      "components": [
+        "AccessPageLayout"
+      ]
+    },
+    {
+      "name": "ApplicationShell",
+      "slug": "application-shell",
+      "category": "Application layouts",
+      "href": "components/application-shell",
+      "components": [
+        "ApplicationShell"
+      ]
+    },
+    {
+      "name": "ApplicationPageHeading",
+      "slug": "application-page-heading",
+      "category": "Application layouts",
+      "href": "components/application-page-heading",
+      "components": [
+        "ApplicationPageHeading"
+      ]
+    },
+    {
+      "name": "HeaderFooterLayout",
+      "slug": "header-footer-layout",
+      "category": "Application layouts",
+      "href": "components/header-footer-layout",
+      "components": [
+        "HeaderFooterLayout"
+      ]
+    },
+    {
+      "name": "IdentityLayout",
+      "slug": "identity-layout",
+      "category": "Application layouts",
+      "href": "components/identity-layout",
+      "components": [
+        "IdentityLayout"
+      ]
+    },
+    {
+      "name": "LandingLayout",
+      "slug": "landing-layout",
+      "category": "Application layouts",
+      "href": "components/landing-layout",
+      "components": [
+        "LandingLayout"
+      ]
+    },
+    {
+      "name": "MainLayout",
+      "slug": "main-layout",
+      "category": "Application layouts",
+      "href": "components/main-layout",
+      "components": [
+        "MainLayout"
+      ]
+    },
+    {
+      "name": "RootLayout",
+      "slug": "root-layout",
+      "category": "Application layouts",
+      "href": "components/root-layout",
+      "components": [
+        "RootLayout"
+      ]
+    },
+    {
+      "name": "AppInputSupport",
+      "slug": "app-input-support",
+      "category": "Infrastructure",
+      "href": "components/app-input-support",
+      "components": [
+        "AppInputSupport"
+      ]
+    },
+    {
+      "name": "AppOverlayHost",
+      "slug": "app-overlay-host",
+      "category": "Infrastructure",
+      "href": "components/app-overlay-host",
+      "components": [
+        "AppOverlayHost"
+      ]
+    },
+    {
+      "name": "LayoutMobileMenuButtonWrapper",
+      "slug": "layout-mobile-menu-button-wrapper",
+      "category": "Infrastructure",
+      "href": "components/layout-mobile-menu-button-wrapper",
+      "components": [
+        "LayoutMobileMenuButtonWrapper"
+      ]
+    },
+    {
+      "name": "ParameterizedStatusRouteAdapter",
+      "slug": "parameterized-status-route-adapter",
+      "category": "Infrastructure",
+      "href": "components/parameterized-status-route-adapter",
+      "components": [
+        "ParameterizedStatusRouteAdapter"
+      ]
+    }
+  ],
   "detailRouteTemplate": "components/{kebab-case-component-name}",
   "statusPolicy": {
     "stable": "normal consumption; breaking changes require deliberate migration",
@@ -27,7 +741,9 @@
         "virtualized-data-workspace",
         "secure-access-flow",
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-text-box",
+      "pageSlug": "app-text-box"
     },
     {
       "name": "AppTextArea",
@@ -42,7 +758,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-text-area",
+      "pageSlug": "app-text-area"
     },
     {
       "name": "AppNumberInput",
@@ -57,7 +775,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-number-input",
+      "pageSlug": "app-number-input"
     },
     {
       "name": "AppSelect",
@@ -76,7 +796,9 @@
         "validated-form-workflow",
         "virtualized-data-workspace",
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-select",
+      "pageSlug": "app-select"
     },
     {
       "name": "AppSelectItem",
@@ -91,7 +813,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-select#api-app-select-item",
+      "pageSlug": "app-select"
     },
     {
       "name": "AppMultiSelect",
@@ -106,7 +830,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-multi-select",
+      "pageSlug": "app-multi-select"
     },
     {
       "name": "AppRadioGroup",
@@ -121,7 +847,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-radio-group",
+      "pageSlug": "app-radio-group"
     },
     {
       "name": "AppRadio",
@@ -136,7 +864,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-radio-group#api-app-radio",
+      "pageSlug": "app-radio-group"
     },
     {
       "name": "AppCheckbox",
@@ -153,7 +883,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "secure-access-flow"
-      ]
+      ],
+      "documentationHref": "components/app-checkbox",
+      "pageSlug": "app-checkbox"
     },
     {
       "name": "AppSwitch",
@@ -168,7 +900,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-switch",
+      "pageSlug": "app-switch"
     },
     {
       "name": "AppCalendarPicker",
@@ -183,7 +917,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-calendar-picker",
+      "pageSlug": "app-calendar-picker"
     },
     {
       "name": "AppTimePicker",
@@ -198,7 +934,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-calendar-picker#api-app-time-picker",
+      "pageSlug": "app-calendar-picker"
     },
     {
       "name": "AppDateTimePicker",
@@ -213,7 +951,9 @@
         "picker"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-calendar-picker#api-app-date-time-picker",
+      "pageSlug": "app-calendar-picker"
     },
     {
       "name": "FormSection",
@@ -230,7 +970,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "validated-form-workflow"
-      ]
+      ],
+      "documentationHref": "components/form-section",
+      "pageSlug": "form-section"
     },
     {
       "name": "FormGrid",
@@ -248,7 +990,9 @@
       "relatedPatternIds": [
         "validated-form-workflow",
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/form-section#api-form-grid",
+      "pageSlug": "form-section"
     },
     {
       "name": "FormField",
@@ -265,7 +1009,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "validated-form-workflow"
-      ]
+      ],
+      "documentationHref": "components/form-section#api-form-field",
+      "pageSlug": "form-section"
     },
     {
       "name": "FormActions",
@@ -282,7 +1028,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "validated-form-workflow"
-      ]
+      ],
+      "documentationHref": "components/form-section#api-form-actions",
+      "pageSlug": "form-section"
     },
     {
       "name": "FormValidationSummary",
@@ -299,7 +1047,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "validated-form-workflow"
-      ]
+      ],
+      "documentationHref": "components/form-section#api-form-validation-summary",
+      "pageSlug": "form-section"
     },
     {
       "name": "AppButton",
@@ -320,7 +1070,9 @@
         "secure-access-flow",
         "record-management-workflow",
         "status-route-recovery"
-      ]
+      ],
+      "documentationHref": "components/app-button",
+      "pageSlug": "app-button"
     },
     {
       "name": "AppCard",
@@ -335,7 +1087,9 @@
         "container"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-card",
+      "pageSlug": "app-card"
     },
     {
       "name": "AppDivider",
@@ -349,7 +1103,9 @@
         "separator"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-divider",
+      "pageSlug": "app-divider"
     },
     {
       "name": "AppStack",
@@ -364,7 +1120,9 @@
         "spacing"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-stack",
+      "pageSlug": "app-stack"
     },
     {
       "name": "CardMenu",
@@ -379,7 +1137,9 @@
         "action"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/card-menu",
+      "pageSlug": "card-menu"
     },
     {
       "name": "CompanyFooter",
@@ -394,7 +1154,9 @@
         "layout"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/company-footer",
+      "pageSlug": "company-footer"
     },
     {
       "name": "Hero",
@@ -409,7 +1171,9 @@
         "surface"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/hero",
+      "pageSlug": "hero"
     },
     {
       "name": "Pill",
@@ -424,7 +1188,9 @@
         "status"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/pill",
+      "pageSlug": "pill"
     },
     {
       "name": "Toolbar",
@@ -439,7 +1205,9 @@
         "layout"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/toolbar",
+      "pageSlug": "toolbar"
     },
     {
       "name": "PageActionToolbar",
@@ -456,7 +1224,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/page-action-toolbar",
+      "pageSlug": "page-action-toolbar"
     },
     {
       "name": "PageHeading",
@@ -474,7 +1244,9 @@
       "relatedPatternIds": [
         "application-workspace-shell",
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/page-heading",
+      "pageSlug": "page-heading"
     },
     {
       "name": "AppBreadcrumb",
@@ -488,7 +1260,9 @@
         "navigation"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-breadcrumb",
+      "pageSlug": "app-breadcrumb"
     },
     {
       "name": "AppGridShell",
@@ -506,7 +1280,9 @@
       "relatedPatternIds": [
         "virtualized-data-workspace",
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-grid#api-app-grid-shell",
+      "pageSlug": "app-grid"
     },
     {
       "name": "AppActionMenu",
@@ -523,7 +1299,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-action-menu",
+      "pageSlug": "app-action-menu"
     },
     {
       "name": "AppGridSelectionToolbar",
@@ -540,7 +1318,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-grid-selection-toolbar",
+      "pageSlug": "app-grid-selection-toolbar"
     },
     {
       "name": "AppGrid",
@@ -558,7 +1338,9 @@
       "relatedPatternIds": [
         "virtualized-data-workspace",
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-grid",
+      "pageSlug": "app-grid"
     },
     {
       "name": "AppGridPaginator",
@@ -574,7 +1356,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-grid#api-app-grid-paginator",
+      "pageSlug": "app-grid"
     },
     {
       "name": "AppGridPropertyColumn",
@@ -591,7 +1375,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "virtualized-data-workspace"
-      ]
+      ],
+      "documentationHref": "components/app-grid#api-app-grid-property-column",
+      "pageSlug": "app-grid"
     },
     {
       "name": "AppGridTemplateColumn",
@@ -608,7 +1394,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "virtualized-data-workspace"
-      ]
+      ],
+      "documentationHref": "components/app-grid#api-app-grid-template-column",
+      "pageSlug": "app-grid"
     },
     {
       "name": "PageBreadcrumbs",
@@ -626,7 +1414,9 @@
       "relatedPatternIds": [
         "application-workspace-shell",
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/page-breadcrumbs",
+      "pageSlug": "page-breadcrumbs"
     },
     {
       "name": "AppLoading",
@@ -641,7 +1431,9 @@
         "feedback"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-loading",
+      "pageSlug": "app-loading"
     },
     {
       "name": "AppProgress",
@@ -656,7 +1448,9 @@
         "feedback"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-progress",
+      "pageSlug": "app-progress"
     },
     {
       "name": "AppSkeleton",
@@ -671,7 +1465,9 @@
         "feedback"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-skeleton",
+      "pageSlug": "app-skeleton"
     },
     {
       "name": "AsyncContent",
@@ -686,7 +1482,9 @@
         "content"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/async-content",
+      "pageSlug": "async-content"
     },
     {
       "name": "FeedbackBanner",
@@ -701,7 +1499,9 @@
         "status"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/feedback-banner",
+      "pageSlug": "feedback-banner"
     },
     {
       "name": "StatusPanel",
@@ -716,7 +1516,9 @@
         "panel"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/status-panel",
+      "pageSlug": "status-panel"
     },
     {
       "name": "StatusPage",
@@ -734,7 +1536,9 @@
       "sourceArea": "Routing",
       "relatedPatternIds": [
         "status-route-recovery"
-      ]
+      ],
+      "documentationHref": "components/status-page",
+      "pageSlug": "status-page"
     },
     {
       "name": "StatusRouteContent",
@@ -752,7 +1556,9 @@
       "sourceArea": "Routing",
       "relatedPatternIds": [
         "status-route-recovery"
-      ]
+      ],
+      "documentationHref": "components/status-route-content",
+      "pageSlug": "status-route-content"
     },
     {
       "name": "AppDialog",
@@ -769,7 +1575,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-dialog",
+      "pageSlug": "app-dialog"
     },
     {
       "name": "AppDrawer",
@@ -786,7 +1594,9 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "record-management-workflow"
-      ]
+      ],
+      "documentationHref": "components/app-drawer",
+      "pageSlug": "app-drawer"
     },
     {
       "name": "AppLogo",
@@ -801,7 +1611,9 @@
         "layout"
       ],
       "sourceArea": "Navigation",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-logo",
+      "pageSlug": "app-logo"
     },
     {
       "name": "AppTabs",
@@ -816,7 +1628,9 @@
         "keyboard"
       ],
       "sourceArea": "Navigation",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-tabs",
+      "pageSlug": "app-tabs"
     },
     {
       "name": "AppTab",
@@ -830,7 +1644,9 @@
         "navigation"
       ],
       "sourceArea": "Navigation",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-tabs#api-app-tab",
+      "pageSlug": "app-tabs"
     },
     {
       "name": "Nav",
@@ -847,7 +1663,9 @@
       "relatedPatternIds": [
         "application-workspace-shell",
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/nav",
+      "pageSlug": "nav"
     },
     {
       "name": "NavGroup",
@@ -863,7 +1681,9 @@
       "sourceArea": "Navigation",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/nav#api-nav-group",
+      "pageSlug": "nav"
     },
     {
       "name": "NavItem",
@@ -879,7 +1699,9 @@
       "sourceArea": "Navigation",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/nav#api-nav-item",
+      "pageSlug": "nav"
     },
     {
       "name": "NavSubmenu",
@@ -895,7 +1717,9 @@
       "sourceArea": "Navigation",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/nav#api-nav-submenu",
+      "pageSlug": "nav"
     },
     {
       "name": "SectionNavigation",
@@ -909,7 +1733,9 @@
         "section"
       ],
       "sourceArea": "Navigation",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/section-navigation",
+      "pageSlug": "section-navigation"
     },
     {
       "name": "MobileNavigationAccount",
@@ -924,7 +1750,9 @@
         "account"
       ],
       "sourceArea": "Navigation",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/mobile-navigation-account",
+      "pageSlug": "mobile-navigation-account"
     },
     {
       "name": "ProfileMenu",
@@ -941,7 +1769,9 @@
       "sourceArea": "Navigation",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/profile-menu",
+      "pageSlug": "profile-menu"
     },
     {
       "name": "HeaderControl",
@@ -956,7 +1786,9 @@
         "preferences"
       ],
       "sourceArea": "Region",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/header-control",
+      "pageSlug": "header-control"
     },
     {
       "name": "HeaderControlWithUser",
@@ -973,7 +1805,9 @@
       "sourceArea": "Region",
       "relatedPatternIds": [
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/header-control-with-user",
+      "pageSlug": "header-control-with-user"
     },
     {
       "name": "ShellProfileControl",
@@ -990,7 +1824,9 @@
       "sourceArea": "Region",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/shell-profile-control",
+      "pageSlug": "shell-profile-control"
     },
     {
       "name": "CultureSelector",
@@ -1005,7 +1841,9 @@
         "preferences"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/culture-selector",
+      "pageSlug": "culture-selector"
     },
     {
       "name": "PreferencesSelector",
@@ -1019,7 +1857,9 @@
         "settings"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/preferences-selector",
+      "pageSlug": "preferences-selector"
     },
     {
       "name": "ThemeSwitcher",
@@ -1034,7 +1874,9 @@
         "dark"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/theme-switcher",
+      "pageSlug": "theme-switcher"
     },
     {
       "name": "InitializeTimeZone",
@@ -1048,7 +1890,9 @@
         "initialization"
       ],
       "sourceArea": "Timezone",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/initialize-time-zone",
+      "pageSlug": "initialize-time-zone"
     },
     {
       "name": "LocalTime",
@@ -1063,7 +1907,9 @@
         "display"
       ],
       "sourceArea": "Timezone",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/local-time",
+      "pageSlug": "local-time"
     },
     {
       "name": "ExperienceCard",
@@ -1078,7 +1924,9 @@
         "content"
       ],
       "sourceArea": "Experience",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/experience-card",
+      "pageSlug": "experience-card"
     },
     {
       "name": "ExperienceDisclosure",
@@ -1093,7 +1941,9 @@
         "content"
       ],
       "sourceArea": "Experience",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/experience-disclosure",
+      "pageSlug": "experience-disclosure"
     },
     {
       "name": "ExperienceDisclosureGroup",
@@ -1108,7 +1958,9 @@
         "group"
       ],
       "sourceArea": "Experience",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/experience-disclosure-group",
+      "pageSlug": "experience-disclosure-group"
     },
     {
       "name": "ExperienceHeading",
@@ -1123,7 +1975,9 @@
         "content"
       ],
       "sourceArea": "Experience",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/experience-heading",
+      "pageSlug": "experience-heading"
     },
     {
       "name": "MarketingActionLink",
@@ -1140,7 +1994,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-action-link",
+      "pageSlug": "marketing-action-link"
     },
     {
       "name": "MarketingCallToAction",
@@ -1157,7 +2013,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-call-to-action",
+      "pageSlug": "marketing-call-to-action"
     },
     {
       "name": "MarketingCard",
@@ -1174,7 +2032,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-card",
+      "pageSlug": "marketing-card"
     },
     {
       "name": "MarketingContainer",
@@ -1191,7 +2051,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-container",
+      "pageSlug": "marketing-container"
     },
     {
       "name": "MarketingFeatureGrid",
@@ -1208,7 +2070,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-feature-grid",
+      "pageSlug": "marketing-feature-grid"
     },
     {
       "name": "MarketingHero",
@@ -1225,7 +2089,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-hero",
+      "pageSlug": "marketing-hero"
     },
     {
       "name": "MarketingPage",
@@ -1242,7 +2108,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-page",
+      "pageSlug": "marketing-page"
     },
     {
       "name": "MarketingProductFrame",
@@ -1259,7 +2127,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-product-frame",
+      "pageSlug": "marketing-product-frame"
     },
     {
       "name": "MarketingProofItem",
@@ -1276,7 +2146,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-proof-strip#api-marketing-proof-item",
+      "pageSlug": "marketing-proof-strip"
     },
     {
       "name": "MarketingProofStrip",
@@ -1293,7 +2165,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-proof-strip",
+      "pageSlug": "marketing-proof-strip"
     },
     {
       "name": "MarketingSectionHeader",
@@ -1308,7 +2182,9 @@
         "section"
       ],
       "sourceArea": "Marketing",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/marketing-section-header",
+      "pageSlug": "marketing-section-header"
     },
     {
       "name": "MarketingStep",
@@ -1323,7 +2199,9 @@
         "content"
       ],
       "sourceArea": "Marketing",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/marketing-step-list#api-marketing-step",
+      "pageSlug": "marketing-step-list"
     },
     {
       "name": "MarketingStepList",
@@ -1340,7 +2218,9 @@
       "sourceArea": "Marketing",
       "relatedPatternIds": [
         "product-marketing-landing"
-      ]
+      ],
+      "documentationHref": "components/marketing-step-list",
+      "pageSlug": "marketing-step-list"
     },
     {
       "name": "AccessPageLayout",
@@ -1357,7 +2237,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "secure-access-flow"
-      ]
+      ],
+      "documentationHref": "components/access-page-layout",
+      "pageSlug": "access-page-layout"
     },
     {
       "name": "ApplicationShell",
@@ -1375,7 +2257,9 @@
       "relatedPatternIds": [
         "application-workspace-shell",
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/application-shell",
+      "pageSlug": "application-shell"
     },
     {
       "name": "ApplicationPageHeading",
@@ -1392,7 +2276,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "application-workspace-shell"
-      ]
+      ],
+      "documentationHref": "components/application-page-heading",
+      "pageSlug": "application-page-heading"
     },
     {
       "name": "HeaderFooterLayout",
@@ -1409,7 +2295,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/header-footer-layout",
+      "pageSlug": "header-footer-layout"
     },
     {
       "name": "IdentityLayout",
@@ -1426,7 +2314,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/identity-layout",
+      "pageSlug": "identity-layout"
     },
     {
       "name": "LandingLayout",
@@ -1443,7 +2333,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/landing-layout",
+      "pageSlug": "landing-layout"
     },
     {
       "name": "MainLayout",
@@ -1460,7 +2352,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/main-layout",
+      "pageSlug": "main-layout"
     },
     {
       "name": "RootLayout",
@@ -1477,7 +2371,9 @@
       "sourceArea": "Layouts",
       "relatedPatternIds": [
         "router-level-layout-composition"
-      ]
+      ],
+      "documentationHref": "components/root-layout",
+      "pageSlug": "root-layout"
     },
     {
       "name": "AppInputSupport",
@@ -1492,7 +2388,9 @@
         "form"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-input-support",
+      "pageSlug": "app-input-support"
     },
     {
       "name": "AppOverlayHost",
@@ -1507,7 +2405,9 @@
         "host"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-overlay-host",
+      "pageSlug": "app-overlay-host"
     },
     {
       "name": "LayoutMobileMenuButtonWrapper",
@@ -1522,7 +2422,9 @@
         "layout"
       ],
       "sourceArea": "Layouts",
-      "relatedPatternIds": []
+      "relatedPatternIds": [],
+      "documentationHref": "components/layout-mobile-menu-button-wrapper",
+      "pageSlug": "layout-mobile-menu-button-wrapper"
     },
     {
       "name": "ParameterizedStatusRouteAdapter",
@@ -1539,7 +2441,9 @@
       "sourceArea": "Routing",
       "relatedPatternIds": [
         "status-route-recovery"
-      ]
+      ],
+      "documentationHref": "components/parameterized-status-route-adapter",
+      "pageSlug": "parameterized-status-route-adapter"
     }
   ],
   "groups": [

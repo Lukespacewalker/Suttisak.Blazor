@@ -37,7 +37,7 @@
 
     private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
     private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
-    private IDictionary<string, object> SpecimenParameters => new Dictionary<string, object> { ["Viewport"] = "full" };
+    private IDictionary<string, object> SpecimenParameters => Component is null ? new Dictionary<string, object>() : PlaybookSpecimenRegistry.ParametersFor(Component);
 
     private string ActiveTheme => PlaybookCatalog.Themes.Any(theme => theme.Key == Theme) ? Theme! : State.Theme;
     private string ActiveMode => Mode is "light" or "dark" or "auto" ? Mode : State.Mode;

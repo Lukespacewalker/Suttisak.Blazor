@@ -108,10 +108,24 @@ public static class PlaybookSpecimenRegistry
     public static Type? SpecimenTypeFor(PlaybookComponentDefinition component) =>
         TryGet(component.Name, out var registration) ? registration.SpecimenType : null;
 
+    public static IDictionary<string, object> ParametersFor(PlaybookComponentDefinition component)
+    {
+        var parameters = new Dictionary<string, object> { ["Viewport"] = "full" };
+        var type = SpecimenTypeFor(component);
+        if (type == typeof(AdvancedInputsSpecimen) || type == typeof(MarketingSpecimen))
+        {
+            parameters["ComponentName"] = PlaybookComponentPages.Find(component.Slug)!.Primary.Name;
+        }
+        return parameters;
+    }
+
     public static int InteractiveSpecimenCount => Registrations.Count;
 
-    public static int DistinctSpecimenCount => Registrations.Values
-        .Select(registration => registration.SpecimenType)
+    public static int DistinctSpecimenCount => Registrations
+        .Select(entry => entry.Value.SpecimenType == typeof(AdvancedInputsSpecimen)
+            || entry.Value.SpecimenType == typeof(MarketingSpecimen)
+                ? $"{entry.Value.SpecimenType.FullName}:{PlaybookComponentPages.All.Single(page => page.Members.Any(member => member.Name == entry.Key)).Slug}"
+                : entry.Value.SpecimenType.FullName)
         .Distinct()
         .Count();
 }

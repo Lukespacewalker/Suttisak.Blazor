@@ -38,7 +38,7 @@ test.describe('UI Playbook shared-component contracts', () => {
     const manifest = await (await request.get('/component-manifest.json')).json();
     await page.goto('/components');
 
-    await expect(page.locator('[data-component-name]')).toHaveCount(manifest.componentCount);
+    await expect(page.locator('[data-component-name]')).toHaveCount(manifest.pageCount);
 
     const search = page.getByRole('searchbox', { name: 'Find a component' });
     await search.fill('AppTextBox');
