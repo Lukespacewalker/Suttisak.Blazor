@@ -1,0 +1,29 @@
+<AppDrawer TInput="DemoRecordDraft" TResult="DemoRecordDraft" @ref="_drawer"
+           Title="Record editor" Description="Save changes to this in-memory example. Reload to reset the data.">
+    <Body Context="drawer">
+        <EditForm Model="drawer.Value" id="@_formId" OnValidSubmit="@(_ => drawer.CloseAsync(drawer.Value))">
+            <FormGrid Columns="1">
+                <FormField><AppTextBox Label="Record name" Required="true" @bind-Value="drawer.Value.Name" /></FormField>
+                <FormField><AppTextBox Label="Program" Required="true" @bind-Value="drawer.Value.Program" /></FormField>
+                <FormField><AppTextBox Label="Owner" Required="true" @bind-Value="drawer.Value.Owner" /></FormField>
+            </FormGrid>
+        </EditForm>
+    </Body>
+    <Footer Context="drawer">
+        <AppButton OnClick="@(_ => drawer.CancelAsync())">Cancel</AppButton>
+        <AppButton Variant="AppButtonVariant.Primary" Type="submit" form="@_formId"
+                   Disabled="@(string.IsNullOrWhiteSpace(drawer.Value.Name) || string.IsNullOrWhiteSpace(drawer.Value.Program) || string.IsNullOrWhiteSpace(drawer.Value.Owner))">Save record</AppButton>
+    </Footer>
+</AppDrawer>
+
+@code {
+    private readonly string _formId = $"demo-record-{Guid.NewGuid():N}";
+    private AppDrawer<DemoRecordDraft, DemoRecordDraft>? _drawer;
+
+    public async Task<DemoRecordDraft?> EditAsync(DemoRecord record)
+    {
+        var result = await _drawer!.ShowAsync(new DemoRecordDraft
+        { Id = record.Id, Name = record.Name, Program = record.Program, Owner = record.Owner, Status = record.Status });
+        return result is { HasValue: true, Value: not null } ? result.Value : null;
+    }
+}

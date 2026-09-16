@@ -1,0 +1,22 @@
+<div class="app-action-menu @Class" @attributes="AdditionalAttributes">
+    <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact"
+               IconOnly="true" AriaLabel="@AriaLabel" Disabled="@Disabled"
+               popovertarget="@_popoverId" aria-controls="@_popoverId">
+        <span aria-hidden="true">⋯</span>
+    </AppButton>
+    <div id="@_popoverId" class="app-action-menu__content" popover="auto"
+         role="group" aria-label="@AriaLabel" data-app-action-menu>
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    private readonly string _popoverId = $"app-actions-{Guid.NewGuid():N}";
+
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = "More actions";
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

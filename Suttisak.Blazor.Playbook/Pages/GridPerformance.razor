@@ -1,5 +1,6 @@
 @page "/grid-performance"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@inject Microsoft.JSInterop.IJSRuntime JS
 
 <PageTitle>Data grid · Suttisak.Blazor UI Playbook</PageTitle>
 
@@ -25,7 +26,7 @@
                 <div class="grid-lab__health"><i aria-hidden="true"></i><span>Virtualization active</span></div>
             </header>
 
-            <AppGridShell AriaLabel="Assessment register">
+            <AppGridShell AriaLabel="Assessment register" SelectionActive="@(_selected.Count > 0)">
                 <Search>
                     <AppTextBox Label="Search records" Placeholder="Name, program, or owner" @bind-Value="_search" />
                 </Search>
@@ -33,19 +34,20 @@
                     <AppSelect TValue="string" Label="Status" Options="@StatusOptions" @bind-Value="_status" />
                 </Filters>
                 <Actions>
-                    <AppButton>
+                    <AppButton OnClick="@(_ => ExportAsync(FilteredRecords))">
                         <IconStartContent><Suttisak.Blazor.Icons.Icon Name="ArrowDownload" Size="18" /></IconStartContent>
                         <ChildContent>Export view</ChildContent>
-                    </AppButton>
-                    <AppButton Variant="AppButtonVariant.Primary">
-                        <IconStartContent><Suttisak.Blazor.Icons.Icon Name="Add" Size="18" /></IconStartContent>
-                        <ChildContent>New assessment</ChildContent>
                     </AppButton>
                 </Actions>
                 <Toolbar>
                     <div class="grid-lab__toolbar-summary"><strong>@FilteredCount.ToString("N0")</strong><span>matching records</span></div>
                     <div class="grid-lab__legend" aria-label="Status legend"><span><i class="is-active"></i>Active</span><span><i class="is-review"></i>Needs review</span><span><i class="is-complete"></i>Complete</span></div>
                 </Toolbar>
+                <SelectionToolbar>
+                    <AppGridSelectionToolbar SelectedCount="@_selected.Count" OnClear="@(() => _selected = new HashSet<GridRecord>())">
+                        <Actions><AppButton OnClick="@(_ => ExportAsync(_selected))">Export selected</AppButton></Actions>
+                    </AppGridSelectionToolbar>
+                </SelectionToolbar>
                 <ChildContent>
                     <AppGrid TGridItem="GridRecord"
                                   Items="VisibleRecords"
@@ -53,6 +55,8 @@
                                   ItemSize="40"
                                   OverscanCount="3"
                                   ItemKey="record => record.Id"
+                                  SelectionMode="AppGridSelectionMode.Multiple"
+                                  @bind-SelectedItems="_selected"
                                   RowClass="RecordRowClass"
                                   Style="height: 34rem;"
                                   AriaLabel="100000 virtual records">
@@ -66,11 +70,14 @@
                         </TemplateColumn>
                         <PropertyColumn TGridItem="GridRecord" TProp="DateTime" Property="record => record.UpdatedOn" Title="Updated" Format="yyyy-MM-dd" Sortable="true" />
                         <TemplateColumn TGridItem="GridRecord" Title="" Context="record">
-                            <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" AriaLabel="@($"Open {record.Name}")">Open</AppButton>
+                            <AppActionMenu AriaLabel="@($"Actions for {record.Name}")">
+                                <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact"
+                                           OnClick="@(_ => _details!.ShowAsync(record))">Open details</AppButton>
+                            </AppActionMenu>
                         </TemplateColumn>
                     </AppGrid>
                 </ChildContent>
-                <Footer><span class="grid-lab__footnote"><i aria-hidden="true"></i>Only the viewport and overscan buffer are rendered</span></Footer>
+                <Footer><span class="grid-lab__footnote" role="status">@_actionStatus</span></Footer>
                 <Pagination><code>Virtualize="true" · ItemSize="40" · OverscanCount="3"</code></Pagination>
             </AppGridShell>
         </section>
@@ -97,6 +104,10 @@
             </ol>
         </section>
     </main>
+    <AppDialog TInput="GridRecord" TResult="bool" @ref="_details" Title="Assessment details">
+        <Body Context="dialog"><dl><dt>Name</dt><dd>@dialog.Value.Name</dd><dt>Program</dt><dd>@dialog.Value.Program</dd><dt>Owner</dt><dd>@dialog.Value.Owner</dd><dt>Status</dt><dd>@dialog.Value.Status</dd></dl></Body>
+        <Footer Context="dialog"><AppButton OnClick="@(_ => dialog.CancelAsync())">Close</AppButton></Footer>
+    </AppDialog>
 </PlaybookShell>
 
 @code {
@@ -121,6 +132,17 @@
 
     private string? _search;
     private string _status = "All";
+    private IReadOnlySet<GridRecord> _selected = new HashSet<GridRecord>();
+    private AppDialog<GridRecord, bool>? _details;
+    private string _actionStatus = "Select-all applies to the rendered window, including overscan. Selection persists while filtering.";
+
+    private async Task ExportAsync(IEnumerable<GridRecord> records)
+    {
+        var snapshot = records.ToArray();
+        await DemoCsv.DownloadAsync(JS, "assessments.csv", new[] { new[] { "ID", "Name", "Program", "Owner", "Status" } }
+            .Concat(snapshot.Select(record => new[] { record.Id.ToString(), record.Name, record.Program, record.Owner, record.Status })));
+        _actionStatus = $"Exported {snapshot.Length:N0} records.";
+    }
 
     private IEnumerable<GridRecord> FilteredRecords => Records.Where(record =>
         (_status == "All" || record.Status == _status)

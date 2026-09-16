@@ -43,6 +43,8 @@ public static class PlaybookSpecimenRegistry
             ["AppDialog"] = new(typeof(AppDialog<string, string>), typeof(AppDialogSpecimen)),
             ["AppDrawer"] = new(typeof(AppDrawer<string, string>), typeof(AppDrawerSpecimen)),
             ["AppGridShell"] = new(typeof(AppGridShell), typeof(AppGridSpecimen)),
+            ["AppActionMenu"] = new(typeof(AppActionMenu), typeof(AppGridSpecimen)),
+            ["AppGridSelectionToolbar"] = new(typeof(AppGridSelectionToolbar), typeof(AppGridSpecimen)),
             ["AppGrid"] = new(typeof(AppGrid<DemoRecord>), typeof(AppGridSpecimen)),
             ["AppGridPaginator"] = new(typeof(AppGridPaginator), typeof(PaginationDataSpecimen)),
             ["AppGridPropertyColumn"] = new(typeof(AppGridPropertyColumn<DemoRecord, string>), typeof(AppGridSpecimen)),

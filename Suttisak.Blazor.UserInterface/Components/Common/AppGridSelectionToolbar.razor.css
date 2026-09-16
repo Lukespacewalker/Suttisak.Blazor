@@ -1,0 +1,20 @@
+.app-grid-selection-toolbar {
+    display: flex;
+    min-inline-size: 0;
+    inline-size: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--app-space-3);
+}
+.app-grid-selection-toolbar__summary { font-weight: 700; }
+.app-grid-selection-toolbar__actions {
+    display: flex;
+    min-inline-size: 0;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--app-space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+}

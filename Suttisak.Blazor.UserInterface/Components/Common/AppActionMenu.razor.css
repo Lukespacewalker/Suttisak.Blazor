@@ -1,0 +1,21 @@
+.app-action-menu { display: inline-flex; }
+.app-action-menu__content {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    min-inline-size: min(10rem, calc(100vw - 1rem));
+    max-inline-size: calc(100vw - 1rem);
+    max-block-size: calc(100dvh - 1rem);
+    overflow: auto;
+    padding: var(--app-space-1);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    box-shadow: var(--app-shadow-md);
+}
+.app-action-menu__content:popover-open { display: grid; gap: var(--app-space-1); }
+.app-action-menu__content ::deep .app-button { justify-content: flex-start; inline-size: 100%; }
+@media (forced-colors: active) {
+    .app-action-menu__content { border-color: CanvasText; box-shadow: none; }
+}

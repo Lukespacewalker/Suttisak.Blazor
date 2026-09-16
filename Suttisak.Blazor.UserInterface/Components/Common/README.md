@@ -41,20 +41,21 @@ formatting, fixed-width hints, and the convenient `SortByExpression` parameter.
 ```razor
 <AppGrid TGridItem="Person" Items="@people.AsQueryable()"
          Pagination="@pagination" ItemKey="@(person => person.Id)"
-         SelectionMode="AppGridSelectionMode.Single"
-         @bind-SelectedItem="selectedPerson" AriaLabel="People">
+         AriaLabel="People">
     <AppGridPropertyColumn TGridItem="Person" TProperty="string"
                            Property="@(person => person.Name)" Title="Name"
                            Sortable="true" IsDefaultSortColumn="true" />
     <AppGridTemplateColumn TGridItem="Person" Title="Actions">
-        <AppButton OnClick="@(_ => Edit(context))">Edit</AppButton>
+        <AppActionMenu AriaLabel="@($"Actions for {context.Name}")">
+            <AppButton OnClick="@(_ => Edit(context))">Edit</AppButton>
+            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => ConfirmDelete(context))">Delete</AppButton>
+        </AppActionMenu>
     </AppGridTemplateColumn>
 </AppGrid>
 <AppGridPaginator State="@pagination" />
 
 @code {
     private readonly PaginationState pagination = new() { ItemsPerPage = 25 };
-    private Person? selectedPerson;
 }
 ```
 
@@ -69,6 +70,31 @@ For controlled selection, bind `SelectedItem` only with
 `SelectionMode="AppGridSelectionMode.Multiple"`. Setting the matching bound
 value to `null` clears the current selection. The grid raises only the matching
 change callback for its selection mode.
+
+For batch operations, put `AppGridSelectionToolbar` in
+`AppGridShell.SelectionToolbar`, set `SelectionActive` to `selected.Count > 0`,
+and bind the grid's `SelectedItems` with `SelectionMode.Multiple`. Pass the
+selected count, application-owned `Actions`, and an `OnClear` callback that
+sets the bound selection to an empty set. It replaces the normal toolbar.
+Use `Busy` during asynchronous actions and localize `AriaLabel`, `SelectedLabel`,
+`ClearLabel`, or supply a `SummaryTemplate`.
+
+`AppActionMenu` and `AppGridSelectionToolbar` ship in this package, including
+their isolated CSS and shared JavaScript behavior. No Playbook reference is
+needed. The menu accepts native buttons/links through `ChildContent`; its
+popover is in the top layer so scrolling tables do not clip actions. Escape
+and outside click dismiss it; Tab and arrow keys move between actions. Include
+`_content/Suttisak.Blazor.UserInterface/js/blazor-utilities.js` as for grid
+selection. Use current browsers supporting the native Popover API.
+
+Select-all affects the sorted page or virtualized window (including overscan),
+preserving selections on other pages. `ItemKey` must be a unique stable key.
+Queryable selection uses the registered QuickGrid `IAsyncQueryExecutor` when
+supported; otherwise queries execute synchronously. Prefer `ItemsProvider`
+for remote sources to own cancellation and query translation. Apps own
+authorization, confirmation, persistence, and filter-selection policy.
+See the [grid action policy](../../../Suttisak.Blazor.Playbook/GRID_ACTION_GUIDELINES.md)
+for complete row and batch compositions.
 
 ## Menu cards and tabs
 

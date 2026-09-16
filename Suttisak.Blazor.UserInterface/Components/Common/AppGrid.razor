@@ -1,12 +1,13 @@
 @typeparam TGridItem
 @attribute [CascadingTypeParameter(nameof(TGridItem))]
 @using Microsoft.AspNetCore.Components.QuickGrid
+@inject IServiceProvider Services
 
-<div class="app-grid" style="@Style" tabindex="0">
+<div class="app-grid @(Virtualize ? "app-grid--virtualized" : null)" style="@Style" tabindex="0">
     <CascadingValue Value="this" IsFixed="true">
         <QuickGrid @ref="_grid"
                    TGridItem="TGridItem"
-                   Items="@Items"
+                   Items="@(UsesTrackingProvider ? null : Items)"
                    ItemsProvider="@EffectiveItemsProvider"
                    Pagination="@Pagination"
                    Virtualize="@Virtualize"
@@ -66,6 +67,9 @@
     private bool _hasProviderResult;
     private bool _hasSelectedItemParameter;
     private bool _hasSelectedItemsParameter;
+    private IQueryable<TGridItem>? _previousItems;
+    private GridItemsProvider<TGridItem>? _previousProvider;
+    private bool _previousUsesTrackingProvider;
 
     [Parameter] public IQueryable<TGridItem>? Items { get; set; }
     [Parameter] public GridItemsProvider<TGridItem>? ItemsProvider { get; set; }
@@ -91,13 +95,14 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
+    private bool UsesTrackingProvider => ItemsProvider is not null || SelectionMode != AppGridSelectionMode.None;
     private GridItemsProvider<TGridItem>? EffectiveItemsProvider
-        => ItemsProvider is null ? null : _trackingItemsProvider ??= TrackItemsAsync;
+        => UsesTrackingProvider ? _trackingItemsProvider ??= TrackItemsAsync : null;
 
     private RenderFragment EmptyContent => EmptyTemplate ?? (builder => builder.AddContent(0, EmptyText));
     private string GridClassValue => string.Join(' ', new[] { "app-grid__table", Class }
         .Where(value => !string.IsNullOrWhiteSpace(value)));
-    private bool IsKnownEmpty => ItemsProvider is not null
+    private bool IsKnownEmpty => UsesTrackingProvider
         ? _hasProviderResult && _lastProviderTotalItemCount == 0
         : Items is EnumerableQuery<TGridItem> && !Items.Any();
 
@@ -136,6 +141,17 @@
         if (OverscanCount < 0)
             throw new InvalidOperationException($"{nameof(OverscanCount)} must not be negative.");
 
+        if (!ReferenceEquals(_previousItems, Items) || _previousProvider != ItemsProvider
+            || _previousUsesTrackingProvider != UsesTrackingProvider)
+        {
+            _previousItems = Items;
+            _previousProvider = ItemsProvider;
+            _previousUsesTrackingProvider = UsesTrackingProvider;
+            _trackingItemsProvider = null;
+            _lastProviderRows = [];
+            _hasProviderResult = false;
+        }
+
         SyncExternalSelection();
     }
 
@@ -148,8 +164,8 @@
     private async ValueTask<GridItemsProviderResult<TGridItem>> TrackItemsAsync(
         GridItemsProviderRequest<TGridItem> request)
     {
-        var provider = ItemsProvider
-            ?? throw new InvalidOperationException($"{nameof(ItemsProvider)} is no longer available.");
+        var provider = ItemsProvider;
+        var items = Items;
 
         _activeLoads++;
         _loading = true;
@@ -157,7 +173,9 @@
 
         try
         {
-            var result = await provider(request);
+            var result = provider is not null
+                ? await provider(request)
+                : await QueryItemsAsync(items!, request);
             request.CancellationToken.ThrowIfCancellationRequested();
             _lastProviderRows = result.Items.ToArray();
             _lastProviderTotalItemCount = result.TotalItemCount;
@@ -170,6 +188,20 @@
             _loading = _activeLoads > 0;
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    private async ValueTask<GridItemsProviderResult<TGridItem>> QueryItemsAsync(
+        IQueryable<TGridItem> items, GridItemsProviderRequest<TGridItem> request)
+    {
+        var executor = Services.GetService(typeof(IAsyncQueryExecutor)) as IAsyncQueryExecutor;
+        if (executor?.IsSupported(items) != true) executor = null;
+        request.CancellationToken.ThrowIfCancellationRequested();
+        var count = executor is null ? items.Count() : await executor.CountAsync(items);
+        request.CancellationToken.ThrowIfCancellationRequested();
+        var query = request.ApplySorting(items).Skip(request.StartIndex);
+        if (request.Count is { } take) query = query.Take(take);
+        var rows = executor is null ? query.ToArray() : await executor.ToArrayAsync(query);
+        return GridItemsProviderResult.From(rows, count);
     }
 
     internal object GetItemKey(TGridItem item)
@@ -239,17 +271,9 @@
 
     private IEnumerable<TGridItem> VisibleRows()
     {
-        if (ItemsProvider is not null)
-            return _lastProviderRows;
-
-        if (Items is null)
-            return [];
-
-        return Pagination is null
-            ? Items.AsEnumerable()
-            : Items.Skip(Pagination.CurrentPageIndex * Pagination.ItemsPerPage)
-                .Take(Pagination.ItemsPerPage)
-                .AsEnumerable();
+        // The provider window already includes QuickGrid's sort, page and
+        // virtualization. Re-querying Items here would select a different set.
+        return _lastProviderRows;
     }
 
     private async Task NotifySelectionChangedAsync()

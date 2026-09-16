@@ -76,10 +76,11 @@ test('multiple selection replaces the regular toolbar with contextual batch acti
   const firstRow = table.locator('tbody tr').first();
   await expect(firstRow).toHaveClass(/is-selected/);
 
-  await page.getByLabel('Actions for Annual hearing surveillance').click();
+  await page.getByRole('button', { name: 'Actions for Annual hearing surveillance', exact: true }).click();
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await expect(selectionToolbar.getByText('1 selected', { exact: true })).toBeVisible();
 
+  await page.getByRole('dialog', { name: 'Record editor' }).getByRole('button', { name: 'Cancel', exact: true }).click();
   await selectionToolbar.getByRole('button', { name: 'Clear selection' }).click();
   await expect(selectionToolbar).not.toBeVisible();
   await expect(firstRow).not.toHaveClass(/is-selected/);

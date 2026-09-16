@@ -42,6 +42,30 @@ public static class PlaybookUsageExamples
                     <AppGridPropertyColumn Property="record => record.Name" Title="Name" />
                 </AppGrid>
                 """,
+            ["AppActionMenu"] = """
+                <AppActionMenu AriaLabel="@($"Actions for {record.Name}")">
+                    <AppButton OnClick="@(_ => EditAsync(record))">Edit</AppButton>
+                    <AppButton Variant="AppButtonVariant.Danger"
+                               OnClick="@(_ => ConfirmDeleteAsync(record))">Delete</AppButton>
+                </AppActionMenu>
+                """,
+            ["AppGridSelectionToolbar"] = """
+                <AppGridShell SelectionActive="@(selected.Count > 0)">
+                    <Toolbar><span>@rows.Count records</span></Toolbar>
+                    <SelectionToolbar>
+                        <AppGridSelectionToolbar SelectedCount="@selected.Count" OnClear="ClearSelection">
+                            <Actions><AppButton OnClick="ExportSelectedAsync">Export selected</AppButton></Actions>
+                        </AppGridSelectionToolbar>
+                    </SelectionToolbar>
+                    <ChildContent>
+                        <AppGrid TGridItem="Record" Items="@rows.AsQueryable()"
+                                 ItemKey="record => record.Id" SelectionMode="AppGridSelectionMode.Multiple"
+                                 @bind-SelectedItems="selected">
+                            <AppGridPropertyColumn Property="record => record.Name" Title="Name" />
+                        </AppGrid>
+                    </ChildContent>
+                </AppGridShell>
+                """,
             ["AppDialog"] = """
                 var result = await OverlayService.ShowConfirmationAsync(new AppConfirmationOptions
                 {

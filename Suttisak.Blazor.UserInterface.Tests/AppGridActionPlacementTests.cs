@@ -1,12 +1,53 @@
 using System.Linq.Expressions;
 using Bunit;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
 using Suttisak.Blazor.UserInterface.Components.Common;
 
 namespace Suttisak.Blazor.UserInterface.Tests;
 
 public sealed class AppGridActionPlacementTests
 {
+    [Fact]
+    public async Task Select_all_targets_the_sorted_page_and_preserves_other_pages()
+    {
+        using var context = new BunitContext();
+        context.JSInterop.Mode = JSRuntimeMode.Loose;
+        var rows = new[] { new GridRow(1, "Zulu"), new GridRow(2, "Bravo"), new GridRow(3, "Alpha") };
+        var pagination = new PaginationState { ItemsPerPage = 2 };
+        IReadOnlySet<GridRow> selected = new HashSet<GridRow>();
+        var cut = context.Render<AppGrid<GridRow>>(parameters => parameters
+            .Add(component => component.Items, rows.AsQueryable())
+            .Add(component => component.ItemKey, row => row.Id)
+            .Add(component => component.Pagination, pagination)
+            .Add(component => component.SelectionMode, AppGridSelectionMode.Multiple)
+            .Add(component => component.SelectedItemsChanged, value => selected = value)
+            .Add(component => component.ChildContent, GridColumns()));
+
+        cut.Find("button.col-title").Click();
+        cut.WaitForAssertion(() => Assert.Contains("Alpha", cut.Find("tbody tr").TextContent));
+        cut.Find("thead input[type=checkbox]").Change(true);
+        Assert.Equal(new[] { 2, 3 }, selected.Select(row => row.Id).Order().ToArray());
+        Assert.All(cut.FindAll("tbody tr"), row => Assert.Contains("is-selected", row.ClassList));
+
+        await cut.InvokeAsync(() => pagination.SetCurrentPageIndexAsync(1));
+        cut.WaitForAssertion(() => Assert.Contains("Zulu", cut.Find("tbody tr").TextContent));
+        cut.Find("thead input[type=checkbox]").Change(true);
+        Assert.Equal(3, selected.Count);
+        cut.Find("thead input[type=checkbox]").Change(false);
+        Assert.Equal(new[] { 2, 3 }, selected.Select(row => row.Id).Order().ToArray());
+    }
+
+    [Theory]
+    [InlineData("AppActionMenu")]
+    [InlineData("AppGridSelectionToolbar")]
+    public void Grid_actions_can_be_resolved_from_the_reusable_library(string name)
+    {
+        var component = typeof(AppGrid<>).Assembly.GetType($"Suttisak.Blazor.UserInterface.Components.Common.{name}");
+        Assert.NotNull(component);
+        Assert.True(typeof(IComponent).IsAssignableFrom(component));
+    }
+
     [Fact]
     public void Single_selection_has_row_checkboxes_without_a_select_all_control()
     {
@@ -73,6 +114,7 @@ public sealed class AppGridActionPlacementTests
         builder.OpenComponent<AppGridPropertyColumn<GridRow, string>>(0);
         builder.AddAttribute(1, nameof(AppGridPropertyColumn<GridRow, string>.Property), (Expression<Func<GridRow, string>>)(row => row.Name));
         builder.AddAttribute(2, nameof(AppGridPropertyColumn<GridRow, string>.Title), "Name");
+        builder.AddAttribute(3, nameof(AppGridPropertyColumn<GridRow, string>.Sortable), true);
         builder.CloseComponent();
     };
 

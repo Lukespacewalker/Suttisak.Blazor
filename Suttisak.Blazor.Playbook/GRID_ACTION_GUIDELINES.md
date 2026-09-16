@@ -13,7 +13,12 @@ Use action placement to communicate scope. Row actions and selection actions are
 
 Keep the row surface quiet. Prefer a record link for opening details, at most one frequent inline action, then a compact overflow for secondary actions.
 
-The Playbook uses `GridActionMenuDemo` to demonstrate this composition. It is a Playbook helper, not a public `Suttisak.Blazor.UserInterface` component. Consuming applications may use their own accessible overflow/menu implementation while preserving the same placement rule.
+Use the public `AppActionMenu` component with application-owned `AppButton`
+callbacks or links. Its native popover escapes scrolling table containers,
+supports Escape and outside dismissal, and returns focus to its trigger.
+Contents retain native button/link semantics: Tab moves through actions;
+ArrowUp/ArrowDown and Home/End also move focus. Load the library's standard
+`blazor-utilities.js` asset for placement, focus, and close-on-action behavior.
 
 Do not repeat a bank of `View / Edit / Copy / Delete / Download` buttons in every row.
 
@@ -29,16 +34,14 @@ Enable multiple selection only when the product has meaningful actions that oper
     </Toolbar>
 
     <SelectionToolbar>
-        @* Compose an accessible toolbar here. The Playbook uses
-           GridSelectionToolbarDemo only as an executable example. *@
-        <div role="toolbar" aria-label="Actions for selected rows">
-            <span>@selectedPeople.Count selected</span>
-            <AppButton OnClick="ExportSelected">Export selected</AppButton>
-            <AppButton Variant="AppButtonVariant.Danger"
-                       OnClick="DeleteSelected">
-                Delete selected
-            </AppButton>
-        </div>
+        <AppGridSelectionToolbar SelectedCount="@selectedPeople.Count" OnClear="ClearSelection">
+            <Actions>
+                <AppButton OnClick="ExportSelected">Export selected</AppButton>
+                <AppButton Variant="AppButtonVariant.Danger" OnClick="DeleteSelected">
+                    Delete selected
+                </AppButton>
+            </Actions>
+        </AppGridSelectionToolbar>
     </SelectionToolbar>
 
     <ChildContent>
@@ -54,6 +57,19 @@ Enable multiple selection only when the product has meaningful actions that oper
 ```
 
 Destructive batch actions still require an explicit confirmation before mutation.
+
+The header checkbox selects the current sorted page or virtualized provider
+window, including overscan, not every matching record. Selections from other
+pages remain selected until explicitly cleared. Applications own whether a
+search/filter change clears selection and must explain that policy to users.
+Capture the selected keys before awaiting confirmation so a later selection
+change cannot alter the confirmed operation.
+
+`AppGridSelectionToolbar` exposes `AriaLabel`, `SelectedLabel`, `ClearLabel`,
+and `SummaryTemplate` for application localization. Set `Busy` while awaiting
+a batch operation; it disables the clear button and native form controls in
+the action fieldset. Use buttons for batch mutations; links are not disabled
+by a fieldset and should be disabled by the application when needed.
 
 ## Single selection
 
@@ -84,3 +100,11 @@ Interactive content inside a row (`a`, `button`, `input`, `select`, `textarea`, 
 | Search, filter, refresh, columns | Grid command bar |
 
 The Playbook `AppGrid` specimen and `/application-shell/records` route are the canonical executable examples for this policy.
+
+## Decision history
+
+PR #48 introduced `GridActionMenuDemo` and `GridSelectionToolbarDemo` as local
+Playbook helpers. That reuse restriction is superseded by the public
+`AppActionMenu` and `AppGridSelectionToolbar` contract described above. Both
+examples now consume the library components; their record editing, CSV format,
+and disposable data store remain application code.

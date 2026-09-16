@@ -90,7 +90,8 @@
                     }
                     else
                     {
-                        <div class="component-detail__isolated-stage" data-testid="isolated-specimen-stage">
+                        <div class="component-detail__isolated-stage" data-testid="isolated-specimen-stage"
+                             role="region" aria-label="Component preview viewport" tabindex="0">
                             <iframe class="component-detail__isolated-frame component-detail__isolated-frame--@ActiveViewport"
                                     src="@IsolatedSpecimenHref"
                                     title="@($"{Component.Name} at {ViewportLabel}")"

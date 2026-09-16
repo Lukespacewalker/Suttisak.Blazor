@@ -1,3 +1,5 @@
+@inject Microsoft.JSInterop.IJSRuntime JS
+
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="AppGridShell controls">
     <Preview>
         <div class="component-specimen__demo">
@@ -21,13 +23,13 @@
                     <span>Use row actions for one record; select rows for batch work.</span>
                 </Toolbar>
                 <SelectionToolbar>
-                    <GridSelectionToolbarDemo SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
+                    <AppGridSelectionToolbar SelectedCount="@_selectedRecords.Count" OnClear="ClearSelection">
                         <Actions>
-                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetBatchAction("Export"))">Export selected</AppButton>
-                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => SetBatchAction("Archive"))">Archive selected</AppButton>
-                            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => SetBatchAction("Delete"))">Delete selected</AppButton>
+                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => ExportSelectedAsync())">Export selected</AppButton>
+                            <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => ArchiveSelected())">Archive selected</AppButton>
+                            <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => DeleteAsync(_selectedRecords.ToArray(), true))">Delete selected</AppButton>
                         </Actions>
-                    </GridSelectionToolbarDemo>
+                    </AppGridSelectionToolbar>
                 </SelectionToolbar>
                 <ChildContent>
                     <AppGrid TGridItem="DemoRecord"
@@ -47,10 +49,10 @@
                             <span>@context.Status</span>
                         </AppGridTemplateColumn>
                         <AppGridTemplateColumn TGridItem="DemoRecord" Title="Actions">
-                            <GridActionMenuDemo AriaLabel="@($"Actions for {context.Name}")">
-                                <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" OnClick="@(_ => SetRowAction("Edit", context))">Edit</AppButton>
-                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => SetRowAction("Delete", context))">Delete</AppButton>
-                            </GridActionMenuDemo>
+                            <AppActionMenu AriaLabel="@($"Actions for {context.Name}")">
+                                <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact" OnClick="@(_ => EditAsync(context))">Edit</AppButton>
+                                <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => DeleteAsync([context]))">Delete</AppButton>
+                            </AppActionMenu>
                         </AppGridTemplateColumn>
                     </AppGrid>
                 </ChildContent>
@@ -88,6 +90,19 @@
     </States>
 </ComponentSpecimenLayout>
 
+<DemoRecordEditor @ref="_editor" />
+<AppDialog TInput="DemoRecord[]" TResult="bool" @ref="_deleteDialog" Title="@(_batchDelete ? "Delete selected records?" : "Delete this record?")"
+           Description="Remove these records from this in-memory example. Reload to reset the data." Dangerous="true">
+    <Body Context="dialog">
+        <p>@dialog.Value.Length record(s) will be removed:</p>
+        <ul>@foreach (var record in dialog.Value) { <li>@record.Name</li> }</ul>
+    </Body>
+    <Footer Context="dialog">
+        <AppButton OnClick="@(_ => dialog.CancelAsync())">Keep records</AppButton>
+        <AppButton Variant="AppButtonVariant.Danger" OnClick="@(_ => dialog.CloseAsync(true))">@(_batchDelete ? "Delete selected" : "Delete record")</AppButton>
+    </Footer>
+</AppDialog>
+
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
@@ -96,8 +111,11 @@
     private IReadOnlySet<DemoRecord> _selectedRecords = new HashSet<DemoRecord>();
     private string _search = string.Empty;
     private string _lastAction = "No action selected.";
+    private DemoRecordEditor? _editor;
+    private AppDialog<DemoRecord[], bool>? _deleteDialog;
+    private bool _batchDelete;
 
-    private static readonly DemoRecord[] Records =
+    private readonly List<DemoRecord> Records =
     [
         new(1048, "Annual hearing surveillance", "Audiometry", "Narin P.", "In review", new DateTime(2026, 8, 12)),
         new(1047, "North terminal ergonomics", "Ergonomics", "Mali S.", "Active", new DateTime(2026, 8, 11)),
@@ -125,11 +143,42 @@
     private void ClearSearch() => _search = string.Empty;
     private void ClearSelection() => _selectedRecords = new HashSet<DemoRecord>();
 
-    private void SetBatchAction(string action)
-        => _lastAction = $"{action} requested for {_selectedRecords.Count} selected record(s).";
+    private async Task ExportSelectedAsync()
+    {
+        var snapshot = _selectedRecords.ToArray();
+        await DemoCsv.ExportRecordsAsync(JS, snapshot);
+        _lastAction = $"Exported {snapshot.Length} selected record(s).";
+    }
 
-    private void SetRowAction(string action, DemoRecord record)
-        => _lastAction = $"{action} requested for {record.Name}.";
+    private void ArchiveSelected()
+    {
+        foreach (var record in _selectedRecords) record.Status = "Archived";
+        _lastAction = $"Archived {_selectedRecords.Count} selected record(s).";
+        ClearSelection();
+    }
+
+    private async Task EditAsync(DemoRecord record)
+    {
+        var draft = await _editor!.EditAsync(record);
+        if (draft is null) return;
+        record.Name = draft.Name.Trim();
+        record.Program = draft.Program.Trim();
+        record.Owner = draft.Owner.Trim();
+        _lastAction = $"Saved {record.Name}.";
+    }
+
+    private async Task DeleteAsync(DemoRecord[] snapshot, bool batch = false)
+    {
+        if (snapshot.Length == 0) return;
+        _batchDelete = batch;
+        await InvokeAsync(StateHasChanged);
+        var result = await _deleteDialog!.ShowAsync(snapshot);
+        if (result is not { HasValue: true, Value: true }) return;
+        var ids = snapshot.Select(record => record.Id).ToHashSet();
+        Records.RemoveAll(record => ids.Contains(record.Id));
+        _selectedRecords = _selectedRecords.Where(record => !ids.Contains(record.Id)).ToHashSet();
+        _lastAction = $"Deleted {snapshot.Length} record(s).";
+    }
 
     private async Task ChangePageSizeAsync(ChangeEventArgs args)
     {

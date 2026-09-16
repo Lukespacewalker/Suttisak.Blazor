@@ -337,6 +337,8 @@ public static class PlaybookPatternCatalog
                 I("AppGridShell", "Frames search, record count, grid, and pagination."),
                 I("AppGrid", "Presents sortable records and row actions."),
                 I("AppGridPaginator", "Moves through bounded result windows."),
+                I("AppActionMenu", "Keeps secondary row actions in an accessible popup above the grid."),
+                I("AppGridSelectionToolbar", "Shows selected count, batch actions, and clear selection."),
                 I("AppDrawer", "Keeps list context while creating or editing one record."),
                 I("AppDialog", "Confirms a destructive record operation."),
                 I("FormGrid", "Arranges fields inside the editor."),

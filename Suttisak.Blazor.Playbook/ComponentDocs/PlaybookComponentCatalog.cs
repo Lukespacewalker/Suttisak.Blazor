@@ -75,6 +75,8 @@ public static class PlaybookComponentCatalog
             ["PageHeading"] = "Page title composition with eyebrow, description, metadata, and action slots.",
             ["AppBreadcrumb"] = "Breadcrumb navigation that renders a typed trail with a distinct current location.",
             ["AppGridShell"] = "Grid framing surface that composes data controls, result context, and the table region.",
+            ["AppActionMenu"] = "Compact action disclosure with keyboard focus and a popup above scrolling containers.",
+            ["AppGridSelectionToolbar"] = "Contextual selection summary, application actions, and a clear-selection callback.",
             ["AppGrid"] = "Virtualization-ready typed data grid for scalable application record collections.",
             ["AppGridPaginator"] = "Pagination controls and result context for paged AppGrid data sources.",
             ["AppGridPropertyColumn"] = "Typed AppGrid column that reads and formats one item property.",
@@ -177,6 +179,8 @@ public static class PlaybookComponentCatalog
         // Data & display
         D("AppBreadcrumb", "Data & display", Interactive, "#library-directory", "Common", ["breadcrumb", "navigation"]),
         D("AppGridShell", "Data & display", Interactive, "grid-performance", "Common", ["grid", "shell", "toolbar"]),
+        D("AppActionMenu", "Actions & surfaces", Interactive, "application-shell/records", "Common", ["actions", "menu", "grid"]),
+        D("AppGridSelectionToolbar", "Data & display", Interactive, "application-shell/records", "Common", ["grid", "selection", "toolbar"]),
         D("AppGrid", "Data & display", Interactive, "grid-performance", "Common", ["data", "grid", "table"]),
         D("AppGridPaginator", "Data & display", Interactive, "grid-performance", "Common", ["grid", "pagination"]),
         D("AppGridPropertyColumn", "Data & display", Interactive, "grid-performance", "Common", ["grid", "column", "property"]),

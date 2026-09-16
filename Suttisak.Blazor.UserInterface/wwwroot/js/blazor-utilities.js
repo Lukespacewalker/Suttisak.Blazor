@@ -84,12 +84,87 @@ window.downloadFileFromStream = async (fileName, contentStreamReference) => {
     }
 };
 
+// Native popovers use the top layer, so row actions are not clipped by a
+// scrolling grid. Keep native buttons/links and their normal Tab order.
+const actionMenuSelector = '[data-app-action-menu]';
+const actionMenuControlSelector = 'button:not(:disabled), a[href]:not([aria-disabled="true"])';
+function actionMenuTrigger(menu) {
+    return document.querySelector(`[popovertarget="${CSS.escape(menu.id)}"]`);
+}
+function positionActionMenu(menu) {
+    const trigger = actionMenuTrigger(menu);
+    if (!trigger) return;
+    const anchor = trigger.getBoundingClientRect();
+    const box = menu.getBoundingClientRect();
+    const margin = 8;
+    const rtl = getComputedStyle(trigger).direction === 'rtl';
+    const left = rtl ? anchor.left : anchor.right - box.width;
+    const below = anchor.bottom + 4;
+    menu.style.left = `${Math.max(margin, Math.min(left, innerWidth - box.width - margin))}px`;
+    menu.style.top = `${Math.max(margin, Math.min(below + box.height <= innerHeight - margin
+        ? below : anchor.top - box.height - 4, innerHeight - box.height - margin))}px`;
+}
+document.addEventListener('toggle', event => {
+    const menu = event.target;
+    if (!(menu instanceof HTMLElement) || !menu.matches(actionMenuSelector)) return;
+    if (event.newState === 'open') {
+        positionActionMenu(menu);
+        menu.querySelector(actionMenuControlSelector)?.focus({ preventScroll: true });
+    }
+}, true);
+document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+    const control = event.target.closest(actionMenuControlSelector);
+    const menu = control?.closest(`${actionMenuSelector}:popover-open`);
+    // Close before Blazor invokes the application callback, which may open a
+    // dialog and move focus. Never restore focus after that callback.
+    if (menu) menu.hidePopover();
+}, true);
+document.addEventListener('focusout', event => {
+    const menu = event.target instanceof Element ? event.target.closest(actionMenuSelector) : null;
+    if (!menu) return;
+    // Native focus transfer can run microtasks before activeElement is updated.
+    // Moving between actions must not dismiss the popup before pointerup/click.
+    if (event.relatedTarget instanceof Node && (menu.contains(event.relatedTarget)
+        || event.relatedTarget === actionMenuTrigger(menu))) return;
+    queueMicrotask(() => {
+        if (menu.matches(':popover-open') && !menu.contains(document.activeElement)
+            && document.activeElement !== actionMenuTrigger(menu)) menu.hidePopover();
+    });
+});
+document.addEventListener('keydown', event => {
+    const menu = event.target instanceof Element ? event.target.closest(`${actionMenuSelector}:popover-open`) : null;
+    if (!menu || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    const controls = [...menu.querySelectorAll(actionMenuControlSelector)];
+    if (!controls.length) return;
+    event.preventDefault();
+    const index = controls.indexOf(document.activeElement);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? controls.length - 1
+        : (index + (event.key === 'ArrowDown' ? 1 : -1) + controls.length) % controls.length;
+    controls[next].focus();
+});
+function repositionActionMenus(event) {
+    document.querySelectorAll(`${actionMenuSelector}:popover-open`).forEach(menu => {
+        if (event.target instanceof Node && menu.contains(event.target)) return;
+        // Keyboard focus can smoothly scroll an offscreen trigger into view.
+        // Keep the popup open throughout that scroll and clamp it to the viewport.
+        if (!actionMenuTrigger(menu)) menu.hidePopover();
+        else positionActionMenu(menu);
+    });
+}
+document.addEventListener('scroll', repositionActionMenus, true);
+window.addEventListener('resize', repositionActionMenus);
+
 // QuickGrid intentionally owns row rendering and does not expose row event
 // attributes. AppGrid keeps its selection contract through delegated events so
 // virtualized rows work without a per-row JS registration or retained object URL.
 const appGridInteractiveSelector = 'a, button, input, select, textarea, summary, [role="button"], [contenteditable="true"]';
 
 function synchronizeAppGridSelection(root = document) {
+    root.querySelectorAll('.app-grid--virtualized').forEach(grid => {
+        const header = grid.querySelector('thead');
+        if (header) grid.style.setProperty('--app-grid-header-height', `${header.offsetHeight + 4}px`);
+    });
     root.querySelectorAll('.app-grid tbody tr').forEach(row => {
         const checkbox = row.querySelector('input.app-grid__checkbox[type="checkbox"]');
         if (!checkbox) {
@@ -102,6 +177,8 @@ function synchronizeAppGridSelection(root = document) {
         row.setAttribute('aria-selected', row.classList.contains('is-selected') ? 'true' : 'false');
     });
 }
+
+window.addEventListener('resize', () => synchronizeAppGridSelection());
 
 document.addEventListener('click', event => {
     if (!(event.target instanceof Element) || event.target.closest(appGridInteractiveSelector)) return;

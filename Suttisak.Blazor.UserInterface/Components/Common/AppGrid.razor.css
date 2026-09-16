@@ -1,6 +1,8 @@
 .app-grid { position: relative; min-width: 0; overflow: auto; color: var(--app-foreground); }
+.app-grid--virtualized { scroll-padding-block-start: var(--app-grid-header-height, 3.5rem); }
 .app-grid ::deep table { width: 100%; min-width: 42rem; border-spacing: 0; background: var(--app-surface); }
 .app-grid ::deep th { position: relative; padding: .7rem .85rem; border-block-end: 1px solid var(--app-border); background: var(--app-surface-muted); color: var(--app-foreground-muted); font-size: .78rem; font-weight: 700; letter-spacing: .035em; text-align: start; text-transform: uppercase; }
+.app-grid--virtualized ::deep th { position: sticky; inset-block-start: 0; z-index: 1; }
 .app-grid ::deep td { padding: .75rem .85rem; border-block-end: 1px solid var(--app-grid-line); color: var(--app-foreground); vertical-align: middle; }
 .app-grid ::deep tbody tr { transition: background-color 120ms ease; }
 .app-grid ::deep tbody tr:hover { background: var(--app-surface-hover); }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentCount": 93,
+  "componentCount": 95,
   "detailRouteTemplate": "components/{kebab-case-component-name}",
   "statusPolicy": {
     "stable": "normal consumption; breaking changes require deliberate migration",
@@ -505,6 +505,40 @@
       "sourceArea": "Common",
       "relatedPatternIds": [
         "virtualized-data-workspace",
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppActionMenu",
+      "slug": "app-action-menu",
+      "category": "Actions \u0026 surfaces",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Compact action disclosure with keyboard focus and a popup above scrolling containers.",
+      "tags": [
+        "actions",
+        "menu",
+        "grid"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
+        "record-management-workflow"
+      ]
+    },
+    {
+      "name": "AppGridSelectionToolbar",
+      "slug": "app-grid-selection-toolbar",
+      "category": "Data \u0026 display",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Contextual selection summary, application actions, and a clear-selection callback.",
+      "tags": [
+        "grid",
+        "selection",
+        "toolbar"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [
         "record-management-workflow"
       ]
     },
@@ -1547,7 +1581,8 @@
         "Pill",
         "Toolbar",
         "PageActionToolbar",
-        "PageHeading"
+        "PageHeading",
+        "AppActionMenu"
       ]
     },
     {
@@ -1556,6 +1591,7 @@
       "components": [
         "AppBreadcrumb",
         "AppGridShell",
+        "AppGridSelectionToolbar",
         "AppGrid",
         "AppGridPaginator",
         "AppGridPropertyColumn",
@@ -2289,6 +2325,16 @@
           "componentId": "app-grid-paginator",
           "componentName": "AppGridPaginator",
           "role": "Moves through bounded result windows."
+        },
+        {
+          "componentId": "app-action-menu",
+          "componentName": "AppActionMenu",
+          "role": "Keeps secondary row actions in an accessible popup above the grid."
+        },
+        {
+          "componentId": "app-grid-selection-toolbar",
+          "componentName": "AppGridSelectionToolbar",
+          "role": "Shows selected count, batch actions, and clear selection."
         },
         {
           "componentId": "app-drawer",
