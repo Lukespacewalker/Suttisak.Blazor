@@ -33,7 +33,7 @@ The existing row/grid/batch action placement policy remains current.
   observe failures, implement shared components and selection correction.
 - [x] Replace Playbook-local helpers; make exemplar actions executable; register
   public API, focused usage, patterns and regenerate component-manifest.json.
-- [ ] Verify bUnit contracts, complete Release solution build/test, full Playbook
+- [x] Verify bUnit contracts, complete Release solution build/test, full Playbook
   E2E, actual desktop/constrained/light/dark/keyboard/reduced-motion states.
 - [x] Obtain independent read-only review of a frozen target for selection and
   destructive-action safety; resolve findings and rerun affected checks.
@@ -80,3 +80,31 @@ Record verification evidence and any release blocker here before completion.
   rows and waits for iframe contents before measuring width. All assertions and
   timeouts are preserved. The affected 32 browser tests passed locally without
   retries; a successful CI rerun is still required before publishing.
+- Documentation integration 6335fab contains 63b647f and preserves the reusable
+  library source and grid-action regressions unchanged. Its new push superseded
+  the in-progress CI for 63b647f. Root fast-forwarded this isolated checkout and
+  reran the Release build (one existing Identity BL0008 warning) and shared tests
+  (71 passed). The documentation task records a full 245/245 local browser run
+  against this integration. Publishing now waits for CI on 6335fab.
+- CI 35043329890 on 6335fabb662711886fe87fd9601880abc8112c97 passed: 71 shared
+  tests, 245 browser tests with no retries, and NuGet package production checks.
+  Release workflow 35044052713 was explicitly dispatched for this exact SHA and
+  only Suttisak.Blazor.UserInterface. This supersedes the pending CI notes above.
+- Playbook deployment 35044030051 succeeded. Root used BrowserOS on the deployed
+  AppActionMenu route: public API metadata and the shared specimen were present;
+  the second row's Delete action opened a dialog naming only that record, and
+  cancelling preserved the row. These were executed interactions on disposable
+  in-memory example data, separate from the source review.
+- Release 35044052713 stopped before publishing: 244 browser tests passed but
+  the virtual export test's five-second table-startup assertion failed twice.
+  Investigation found the established 100k-row tests in playbook.spec.mjs already
+  allow 20 seconds for WebAssembly startup and initial rows. A temporary CPU4x
+  diagnostic reproduced the five-second failure without page errors; the table
+  became ready after 11.0 seconds. The two new virtual-grid tests now share that
+  existing 20-second startup budget, while keeping their five-second interaction
+  assertions, exact export/focus criteria, and 30-second overall test deadlines.
+  Exact copies of both revised tests passed under CPU4x in 14.8 and 12.8 seconds.
+  The temporary diagnostic test was removed; CI and package publication must
+  succeed on the corrected test revision before consumer updates.
+- Startup-budget delta received independent read-only PASS; all eight normal
+  grid browser tests also passed in 11.7 seconds without retries.

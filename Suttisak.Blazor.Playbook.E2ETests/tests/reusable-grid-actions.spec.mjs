@@ -2,6 +2,18 @@ import { expect, test } from '@playwright/test';
 import fs from 'node:fs/promises';
 import AxeBuilder from '@axe-core/playwright';
 
+async function openVirtualGrid(page) {
+  await page.goto('/grid-performance');
+  const table = page.getByRole('table', { name: '100000 virtual records' });
+  // Match the existing 100k-row contract's WebAssembly startup budget on
+  // hosted runners. Interaction assertions keep their normal deadlines.
+  await expect(table).toBeVisible({ timeout: 20_000 });
+  const viewport = page.locator('.app-grid');
+  await viewport.scrollIntoViewIfNeeded();
+  await expect(table.locator('tbody input.app-grid__checkbox').first()).toBeVisible({ timeout: 20_000 });
+  return { table, viewport };
+}
+
 test('row actions are a keyboard-operable popup above the scrolling grid', async ({ page }) => {
   await page.goto('/components/app-grid');
   const trigger = page.getByRole('button', { name: 'Actions for Annual hearing surveillance', exact: true });
@@ -49,11 +61,7 @@ for (const theme of ['light', 'dark']) {
 }
 
 test('virtualized select-all exports a bounded window after scrolling', async ({ page }) => {
-  await page.goto('/grid-performance');
-  const table = page.getByRole('table', { name: '100000 virtual records' });
-  await expect(table).toBeVisible();
-  const viewport = page.locator('.app-grid');
-  await viewport.scrollIntoViewIfNeeded();
+  const { table, viewport } = await openVirtualGrid(page);
   await expect.poll(() => viewport.evaluate(element => element.scrollHeight)).toBeGreaterThan(5000);
   await viewport.evaluate(element => { element.scrollTop = 5000; });
   const checkboxes = table.locator('tbody input.app-grid__checkbox');
@@ -107,9 +115,7 @@ test('specimen edits data and confirms batch deletion without mutating on cancel
 });
 
 test('virtualized keyboard focus stays below the sticky header', async ({ page }) => {
-  await page.goto('/grid-performance');
-  const viewport = page.locator('.app-grid');
-  await viewport.scrollIntoViewIfNeeded();
+  const { viewport } = await openVirtualGrid(page);
   await expect.poll(() => viewport.evaluate(element => element.scrollHeight)).toBeGreaterThan(5000);
   await viewport.evaluate(element => { element.scrollTop = 5000; });
   const checkboxes = viewport.locator('tbody input.app-grid__checkbox');
