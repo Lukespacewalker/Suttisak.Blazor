@@ -5,7 +5,10 @@
 .app-grid--virtualized ::deep th { position: sticky; inset-block-start: 0; z-index: 1; }
 .app-grid ::deep td { padding: .75rem .85rem; border-block-end: 1px solid var(--app-grid-line); color: var(--app-foreground); vertical-align: middle; }
 .app-grid ::deep tbody tr { transition: background-color 120ms ease; }
-.app-grid ::deep tbody tr:hover { background: var(--app-surface-hover); }
+.app-grid ::deep tbody tr.app-grid__data-row:hover { background: var(--app-surface-hover); }
+/* QuickGrid pads paged results. Keep that space, without suggesting more records.
+   Mark real rows rather than testing cell text: valid records can have empty cells. */
+.app-grid:not(.app-grid--virtualized) ::deep tbody tr:not(.app-grid__data-row) > td { border: 0; }
 .app-grid ::deep tbody tr.is-selected { background: var(--app-accent-soft); }
 .app-grid ::deep tbody tr:last-child td { border-block-end: 0; }
 .app-grid ::deep .col-header-content { display: flex; align-items: center; gap: .35rem; }

@@ -1,14 +1,16 @@
 .app-grid-paginator { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: .65rem; color: var(--app-foreground-muted); font-size: .88rem; }
 .app-grid-paginator button,
 .app-grid-paginator input { min-height: 2.25rem; border: 1px solid var(--app-border); border-radius: .45rem; background: var(--app-surface); color: inherit; }
-.app-grid-paginator button { padding-inline: .7rem; cursor: pointer; }
+.app-grid-paginator button { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; min-height: 2.5rem; padding: 0; color: var(--app-foreground); cursor: pointer; }
 .app-grid-paginator button:disabled { cursor: default; opacity: .5; }
 .app-grid-paginator button:not(:disabled):hover { background: var(--app-surface-hover); }
 .app-grid-paginator button:focus-visible,
 .app-grid-paginator input:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
 .app-grid-paginator input { padding-inline: .4rem; }
 .app-grid-paginator__summary { margin-inline-end: auto; }
-.app-grid-paginator__page-label { display: inline-flex; align-items: center; gap: .35rem; margin-inline-start: auto; }
+.app-grid-paginator__page-label { display: inline-flex; align-items: center; gap: .5rem; font-variant-numeric: tabular-nums; }
+.app-grid-paginator input { text-align: center; font: inherit; font-variant-numeric: tabular-nums; }
+.app-grid-paginator button:dir(rtl) ::deep svg { transform: rotate(180deg); }
 
 @media (max-width: 30rem) {
     .app-grid-paginator { justify-content: center; overflow-x: auto; }

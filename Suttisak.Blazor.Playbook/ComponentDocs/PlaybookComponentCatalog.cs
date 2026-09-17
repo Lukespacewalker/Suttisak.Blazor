@@ -78,7 +78,7 @@ public static class PlaybookComponentCatalog
             ["AppActionMenu"] = "Compact action disclosure with keyboard focus and a popup above scrolling containers.",
             ["AppGridSelectionToolbar"] = "Contextual selection summary, application actions, and a clear-selection callback.",
             ["AppGrid"] = "Virtualization-ready typed data grid for scalable application record collections.",
-            ["AppGridPaginator"] = "Pagination controls and result context for paged AppGrid data sources.",
+            ["AppGridPaginator"] = "Accessible icon navigation and result context, always shown for paged AppGrid data sources; omit for virtual scrolling.",
             ["AppGridPropertyColumn"] = "Typed AppGrid column that reads and formats one item property.",
             ["AppGridTemplateColumn"] = "Typed AppGrid column that delegates each cell to application-owned markup.",
             ["PageBreadcrumbs"] = "Page-level breadcrumb state provider used by application shell compositions.",

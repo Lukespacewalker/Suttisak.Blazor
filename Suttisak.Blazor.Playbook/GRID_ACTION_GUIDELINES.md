@@ -103,6 +103,29 @@ The Playbook `AppGrid` specimen and `/application-shell/records` route are the c
 
 ## Decision history
 
+### Space and navigation (2026-09-17)
+
+- Paged grids may retain filler space to stabilize the control height. That
+  space is plain surface: no row separators, hover feedback or action controls.
+  Real records are identified explicitly, never inferred from non-empty cells.
+  Virtualization spacer rows retain their geometry.
+- Paged mode always shows `AppGridPaginator`, including a single page or zero
+  results, with unavailable directions disabled. Use labelled chevron icons,
+  visible keyboard focus, a page entry and a result summary.
+- Virtual scrolling has a bounded scroll viewport, constant row height matching
+  `ItemSize`, stable `ItemKey`, and no paginator. Show a localized result count.
+  For remote data, query `StartIndex`/`Count` at the source. Virtualizing a local
+  collection alone does not reduce database or network loading.
+- Choose the mode for the application's task. Both modes remain supported;
+  ErgoTrack uses virtual scrolling for its four administration grids.
+
+This replaces the earlier proposal to collapse filler space and hide single-page
+pagination. Microsoft documents intentional filler rows and customizable styling:
+https://learn.microsoft.com/en-us/aspnet/core/blazor/components/quickgrid?view=aspnetcore-10.0#apply-row-styles
+Carbon recommends matching pagination sizing to the connected table:
+https://carbondesignsystem.com/components/pagination/usage/
+Plain filler space is our convention, not a universal requirement from these sources.
+
 PR #48 introduced `GridActionMenuDemo` and `GridSelectionToolbarDemo` as local
 Playbook helpers. That reuse restriction is superseded by the public
 `AppActionMenu` and `AppGridSelectionToolbar` contract described above. Both

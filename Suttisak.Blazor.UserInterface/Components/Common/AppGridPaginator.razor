@@ -12,14 +12,18 @@
             @Summary
         }
     </span>
-    <button type="button" disabled="@(State.CurrentPageIndex == 0)" @onclick="PreviousAsync">@PreviousLabel</button>
+    <button type="button" aria-label="@PreviousLabel" title="@PreviousLabel" disabled="@(State.CurrentPageIndex == 0)" @onclick="PreviousAsync">
+        <Suttisak.Blazor.Icons.Icon Name="ChevronLeft" Size="20" aria-hidden="true" />
+    </button>
     <label class="app-grid-paginator__page-label">
         <span>@PageLabel</span>
         <input type="number" min="1" max="@MaximumPage" style="@NumberFieldStyle"
                value="@(State.CurrentPageIndex + 1)" @onchange="SetPageAsync" />
         <span>@OfLabel <strong>@MaximumPage</strong></span>
     </label>
-    <button type="button" disabled="@(State.LastPageIndex is null || State.CurrentPageIndex >= State.LastPageIndex)" @onclick="NextAsync">@NextLabel</button>
+    <button type="button" aria-label="@NextLabel" title="@NextLabel" disabled="@(State.LastPageIndex is null || State.CurrentPageIndex >= State.LastPageIndex)" @onclick="NextAsync">
+        <Suttisak.Blazor.Icons.Icon Name="ChevronRight" Size="20" aria-hidden="true" />
+    </button>
 </nav>
 
 @code {

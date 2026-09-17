@@ -344,6 +344,6 @@
     }
 
     private string? RowClassValue(TGridItem item)
-        => string.Join(' ', new[] { RowClass?.Invoke(item), IsItemSelected(item) ? "is-selected" : null }
+        => string.Join(' ', new[] { "app-grid__data-row", RowClass?.Invoke(item), IsItemSelected(item) ? "is-selected" : null }
             .Where(value => !string.IsNullOrWhiteSpace(value)));
 }
