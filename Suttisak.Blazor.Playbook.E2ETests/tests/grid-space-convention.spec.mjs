@@ -33,7 +33,8 @@ test('virtual scrolling has no paginator and retains a bounded row window', asyn
   const firstRecord = await rows.first().innerText();
   await expect(page.locator('.app-grid-paginator')).toHaveCount(0);
   expect(await rows.count()).toBeLessThan(200);
-  await viewport.evaluate(el => { el.scrollTop = 4000; });
+  await expect.poll(() => viewport.evaluate(el => el.scrollHeight)).toBeGreaterThan(5000);
+  await viewport.evaluate(el => { el.scrollTop = 5000; });
   await expect(rows.first()).not.toHaveText(firstRecord);
   expect(await rows.count()).toBeLessThan(200);
 });
