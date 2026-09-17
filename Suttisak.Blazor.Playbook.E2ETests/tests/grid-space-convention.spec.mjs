@@ -24,9 +24,16 @@ test('paged filler preserves space without borders or hover and keeps one-page n
 test('virtual scrolling has no paginator and retains a bounded row window', async ({ page }) => {
   await page.goto('/grid-performance');
   const table = page.getByRole('table', { name: '100000 virtual records' });
-  await expect(table).toBeVisible();
+  // Match this 100k-record WASM example's established hosted-runner startup budget.
+  await expect(table).toBeVisible({ timeout: 20_000 });
+  const viewport = page.locator('.app-grid');
+  await viewport.scrollIntoViewIfNeeded();
+  const rows = table.locator('tbody tr.app-grid__data-row');
+  await expect(rows.first()).toBeVisible({ timeout: 20_000 });
+  const firstRecord = await rows.first().innerText();
   await expect(page.locator('.app-grid-paginator')).toHaveCount(0);
-  expect(await table.locator('tbody tr').count()).toBeLessThan(200);
-  await table.locator('..').evaluate(el => { el.scrollTop = 4000; });
-  await expect(table.locator('tbody')).not.toContainText('Assessment 00001');
+  expect(await rows.count()).toBeLessThan(200);
+  await viewport.evaluate(el => { el.scrollTop = 4000; });
+  await expect(rows.first()).not.toHaveText(firstRecord);
+  expect(await rows.count()).toBeLessThan(200);
 });
