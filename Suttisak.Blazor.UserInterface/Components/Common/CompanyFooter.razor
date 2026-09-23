@@ -1,3 +1,5 @@
+@using System.Reflection
+
 <footer class="company-footer">
     <span>@Prefix</span>
     <a href="@CompanyUrl" target="_blank" rel="noopener noreferrer">@CompanyName</a>
@@ -22,9 +24,15 @@
     [Parameter, EditorRequired] public string CompanyName { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string CompanyUrl { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string CreatorName { get; set; } = string.Empty;
-    [Parameter] public string? CreatorUrl { get; set; }
+    [Parameter] public string? CreatorUrl { get; set; } = "https://doctortons.com/";
     [Parameter] public string? ApplicationVersion { get; set; }
 
-    private string? DisplayedApplicationVersion =>
-        ApplicationVersion ?? System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3);
+    private string? DisplayedApplicationVersion => ApplicationVersion ?? GetEntryVersion();
+
+    private static string? GetEntryVersion()
+    {
+        var assembly = Assembly.GetEntryAssembly();
+        return assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion.Split('+')[0] ?? assembly?.GetName().Version?.ToString(3);
+    }
 }

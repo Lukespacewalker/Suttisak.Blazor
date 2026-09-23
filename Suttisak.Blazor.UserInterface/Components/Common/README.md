@@ -481,12 +481,15 @@ visible on landing, authenticated, and identity pages:
 ```razor
 <CompanyFooter CompanyName="Quack and Honk"
                CompanyUrl="https://quackandhonk.com/"
-               CreatorName="Suttisak Denduangchai"
-               CreatorUrl="https://doctortons.com" />
+               CreatorName="Suttisak Denduangchai" />
 ```
 
 The component provides responsive wrapping, keyboard focus styling, and theme-aware
 colors. Applications own the company name, URL, creator name, and localized prefix.
+The creator name links to `https://doctortons.com/` by default; pass `CreatorUrl`
+to use another destination or an empty value to render plain text. The footer
+shows the entry application's informational version unless `ApplicationVersion`
+is supplied.
 
 ## Theme bootstrap
 

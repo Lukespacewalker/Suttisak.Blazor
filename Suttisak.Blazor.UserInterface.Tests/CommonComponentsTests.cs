@@ -46,6 +46,19 @@ public sealed class CardMenuTests
 public sealed class CompanyFooterTests
 {
     [Fact]
+    public void Creator_name_links_to_doctortons_by_default()
+    {
+        using var context = new BunitContext();
+        var cut = context.Render<CompanyFooter>(parameters => parameters
+            .Add(component => component.CompanyName, "Northstar Studio")
+            .Add(component => component.CompanyUrl, "https://example.com")
+            .Add(component => component.CreatorName, "Suttisak Denduangchai"));
+
+        var creatorLink = cut.FindAll("a").Single(link => link.TextContent == "Suttisak Denduangchai");
+        Assert.Equal("https://doctortons.com/", creatorLink.GetAttribute("href"));
+    }
+
+    [Fact]
     public void Creator_name_is_a_link_when_creator_url_is_provided()
     {
         using var context = new BunitContext();
