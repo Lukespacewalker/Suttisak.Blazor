@@ -10,6 +10,7 @@
 .app-grid-shell__actions { display: flex; margin-inline-start: auto; flex-wrap: wrap; gap: .45rem; }
 .app-grid-shell__viewport { min-width: 0; min-height: 0; overflow: auto; }
 .app-grid-shell__viewport ::deep .app-grid { width: 100%; min-width: 42rem; }
+.app-grid-shell__viewport ::deep .app-grid--adaptive { min-width: 0; }
 .app-grid-shell__footer { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; padding: .7rem .85rem; border-top: 1px solid var(--app-border); background: var(--app-surface-muted); }
 
 @container (max-width: 32rem) {

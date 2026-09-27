@@ -38,9 +38,19 @@ public static class PlaybookUsageExamples
                 </FormSection>
                 """,
             ["AppGrid"] = """
-                <AppGrid TGridItem="Record" Items="Records" Virtualize="true" ItemSize="40">
-                    <AppGridPropertyColumn Property="record => record.Name" Title="Name" />
+                @* Table is the default. Cards require Pagination and cannot use Virtualize. *@
+                <AppGrid TGridItem="Record" Items="Records" Pagination="pagination"
+                         CompactLayout="AppGridCompactLayout.Cards" CompactBreakpoint="640"
+                         ItemKey="record => record.Id">
+                    <ChildContent>
+                        <AppGridPropertyColumn Property="record => record.Name" Title="Name" Sortable="true" />
+                    </ChildContent>
+                    <CardTemplate Context="record">
+                        <strong>@record.Name</strong>
+                        <AppButton OnClick="@(_ => OpenDetailsAsync(record))">View details</AppButton>
+                    </CardTemplate>
                 </AppGrid>
+                <AppGridPaginator State="pagination" />
                 """,
             ["AppActionMenu"] = """
                 <AppActionMenu AriaLabel="@($"Actions for {record.Name}")">

@@ -1,0 +1,3 @@
+.grid-card-fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--app-space-2); margin-block: var(--app-space-3); }
+.grid-card-fields dt { color: var(--app-foreground-muted); }
+.grid-card-fields dd { margin: 0; overflow-wrap: anywhere; }

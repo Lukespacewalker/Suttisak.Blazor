@@ -35,10 +35,13 @@
                     <AppGrid TGridItem="DemoRecord"
                              Items="@FilteredRecords"
                              Pagination="@_pagination"
+                             CompactLayout="@(_pattern == "Table" ? AppGridCompactLayout.Table : AppGridCompactLayout.Cards)"
+                             CompactBreakpoint="640"
                              SelectionMode="AppGridSelectionMode.Multiple"
                              @bind-SelectedItems="_selectedRecords"
                              AriaLabel="Playbook records table"
                              ItemKey="@(record => record.Id)">
+                        <ChildContent>
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="int"
                                                Property="@(record => record.Id)" Title="ID" Sortable="true" />
                         <AppGridPropertyColumn TGridItem="DemoRecord" TProperty="string"
@@ -54,6 +57,26 @@
                                 <AppButton Variant="AppButtonVariant.Danger" Size="AppButtonSize.Compact" OnClick="@(_ => DeleteAsync([context]))">Delete</AppButton>
                             </AppActionMenu>
                         </AppGridTemplateColumn>
+                        </ChildContent>
+                        <CardTemplate Context="record">
+                            <strong>@record.Name</strong>
+                            <dl class="grid-card-fields">
+                                <dt>Status</dt><dd>@record.Status</dd>
+                                @if (_pattern == "Cards")
+                                {
+                                    <dt>Program</dt><dd>@record.Program</dd>
+                                    <dt>Owner</dt><dd>@record.Owner</dd>
+                                }
+                            </dl>
+                            @if (_pattern == "Summary")
+                            {
+                                <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => _details!.ShowAsync(record))">View details</AppButton>
+                            }
+                            else
+                            {
+                                <AppButton Variant="AppButtonVariant.Subtle" OnClick="@(_ => EditAsync(record))">Edit record</AppButton>
+                            }
+                        </CardTemplate>
                     </AppGrid>
                 </ChildContent>
                 <Footer>
@@ -66,6 +89,15 @@
         </div>
     </Preview>
     <Controls>
+        <label>Responsive pattern
+            <select @bind="_pattern">
+                <option value="Table">Comparison table</option>
+                <option value="Cards">Record cards</option>
+                <option value="Summary">Summary + details</option>
+            </select>
+        </label>
+        <p>@PatternDescription</p>
+        <p>Use the compact preview to try a narrow container. Cards share sorting, selection and pagination with the table.</p>
         <label>Content state
             <select @bind="_state">
                 @foreach (var value in Enum.GetValues<AsyncContentState>())
@@ -91,6 +123,17 @@
 </ComponentSpecimenLayout>
 
 <DemoRecordEditor @ref="_editor" />
+<AppDialog TInput="DemoRecord" TResult="bool" @ref="_details" Title="Record details">
+    <Body Context="dialog">
+        <strong>@dialog.Value.Name</strong>
+        <dl class="grid-card-fields">
+            <dt>Program</dt><dd>@dialog.Value.Program</dd>
+            <dt>Owner</dt><dd>@dialog.Value.Owner</dd>
+            <dt>Status</dt><dd>@dialog.Value.Status</dd>
+        </dl>
+    </Body>
+    <Footer Context="dialog"><AppButton OnClick="@(_ => dialog.CancelAsync())">Close</AppButton></Footer>
+</AppDialog>
 <AppDialog TInput="DemoRecord[]" TResult="bool" @ref="_deleteDialog" Title="@(_batchDelete ? "Delete selected records?" : "Delete this record?")"
            Description="Remove these records from this in-memory example. Reload to reset the data." Dangerous="true">
     <Body Context="dialog">
@@ -112,6 +155,14 @@
     private string _search = string.Empty;
     private string _lastAction = "No action selected.";
     private DemoRecordEditor? _editor;
+    private AppDialog<DemoRecord, bool>? _details;
+    private string _pattern = "Table";
+    private string PatternDescription => _pattern switch
+    {
+        "Cards" => "Record cards: read and act on one record at a time. Show the name and a few labeled fields.",
+        "Summary" => "Summary + details: keep the card short and open the complete record in a dialog.",
+        _ => "Comparison table: keep columns aligned and scroll within the table when space is limited."
+    };
     private AppDialog<DemoRecord[], bool>? _deleteDialog;
     private bool _batchDelete;
 

@@ -2,8 +2,11 @@
 @attribute [CascadingTypeParameter(nameof(TGridItem))]
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject IServiceProvider Services
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
 
-<div class="app-grid @(Virtualize ? "app-grid--virtualized" : null)" style="@Style" tabindex="0">
+<div @ref="_element" class="app-grid @(Virtualize ? "app-grid--virtualized" : null) @(CompactLayout == AppGridCompactLayout.Cards ? "app-grid--adaptive" : null)" style="@Style" tabindex="0" aria-label="@AriaLabel">
+    <div class="app-grid__table-view">
     <CascadingValue Value="this" IsFixed="true">
         <QuickGrid @ref="_grid"
                    TGridItem="TGridItem"
@@ -44,6 +47,52 @@
             @ChildContent
         </QuickGrid>
     </CascadingValue>
+    </div>
+
+    @if (CompactLayout == AppGridCompactLayout.Cards)
+    {
+        <div class="app-grid__cards-view">
+            <div class="app-grid__card-controls">
+                @if (SortableColumns.Any())
+                {
+                    <label>@SortLabel
+                        <select class="app-grid__sort-column" value="@SortColumnIndex" @onchange="ChangeCardSortAsync">
+                            <option value="-1" disabled>@SortLabel</option>
+                            @foreach (var column in SortableColumns)
+                            {
+                                <option value="@_columns.IndexOf(column)">@(column.Title ?? column.AriaLabel)</option>
+                            }
+                        </select>
+                    </label>
+                    <label>@SortDirectionLabel
+                        <select class="app-grid__sort-direction" value="@(_sortAscending ? "ascending" : "descending")"
+                                disabled="@(_sortColumn is null)" @onchange="ChangeCardDirectionAsync">
+                            <option value="ascending">@AscendingLabel</option>
+                            <option value="descending">@DescendingLabel</option>
+                        </select>
+                    </label>
+                }
+                @if (CanSelectMultiple)
+                {
+                    <label><input class="app-grid__checkbox" type="checkbox" checked="@AreVisibleRowsSelected"
+                                  disabled="@(!HasSelectableRows)" @onchange="SetVisibleRowsSelectedAsync" /> @SelectAllLabel</label>
+                }
+            </div>
+            <ul class="app-grid__cards" aria-label="@AriaLabel">
+                @foreach (var item in _lastProviderRows)
+                {
+                    <li @key="GetItemKey(item)" class="app-grid__card @(IsItemSelected(item) ? "is-selected" : null)">
+                        @if (SelectionMode != AppGridSelectionMode.None)
+                        {
+                            <input class="app-grid__checkbox" type="checkbox" aria-label="@SelectRowLabel(item)"
+                                   checked="@IsItemSelected(item)" @onchange="() => ToggleSelectionAsync(item)" />
+                        }
+                        <div class="app-grid__card-content">@CardTemplate!(item)</div>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 
     @if (_loading)
     {
@@ -95,7 +144,7 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private bool UsesTrackingProvider => ItemsProvider is not null || SelectionMode != AppGridSelectionMode.None;
+    private bool UsesTrackingProvider => ItemsProvider is not null || SelectionMode != AppGridSelectionMode.None || CompactLayout == AppGridCompactLayout.Cards;
     private GridItemsProvider<TGridItem>? EffectiveItemsProvider
         => UsesTrackingProvider ? _trackingItemsProvider ??= TrackItemsAsync : null;
 
@@ -126,6 +175,7 @@
 
     protected override void OnParametersSet()
     {
+        ValidateCompactLayout();
         if ((Items is null) == (ItemsProvider is null))
         {
             throw new InvalidOperationException(
@@ -148,7 +198,9 @@
             _previousProvider = ItemsProvider;
             _previousUsesTrackingProvider = UsesTrackingProvider;
             _trackingItemsProvider = null;
-            _lastProviderRows = [];
+            // Like QuickGrid, keep the previous keyed rows mounted until the
+            // replacement page arrives. Clearing here destroys focused card controls
+            // when a parent recreates an equivalent IQueryable during an action.
             _hasProviderResult = false;
         }
 
@@ -167,6 +219,9 @@
         var provider = ItemsProvider;
         var items = Items;
 
+        // Controls reflect the newest request even while a remote page is pending.
+        _sortColumn = request.SortByColumn;
+        _sortAscending = request.SortByColumn is null || request.SortByAscending;
         _activeLoads++;
         _loading = true;
         await InvokeAsync(StateHasChanged);

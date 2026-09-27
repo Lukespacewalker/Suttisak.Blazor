@@ -59,7 +59,7 @@ public static class PlaybookComponentPages
             Group("Radio", "An exclusive choice using a labelled group and its individual radio options.", "AppRadioGroup", "AppRadio"),
             Group("Tabs", "Tab selection, panel content, and keyboard navigation in one composition.", "AppTabs", "AppTab"),
             Group("Navigation", "Compose application destinations with groups, items, and expandable branches.", "Nav", "NavGroup", "NavItem", "NavSubmenu"),
-            Group("Data Grid", "Build a searchable, sortable table with columns, pagination, and shared grid framing.", "AppGrid", "AppGridShell", "AppGridPropertyColumn", "AppGridTemplateColumn", "AppGridPaginator"),
+            Group("Data Grid", "Compare columns in a table, read record cards, or open details from summary cards. Responsive cards retain sorting, selection and pagination.", "AppGrid", "AppGridShell", "AppGridPropertyColumn", "AppGridTemplateColumn", "AppGridPaginator"),
             Group("Form Composition", "Compose field layouts, validation feedback, and form actions around an EditForm.", "FormSection", "FormGrid", "FormField", "FormActions", "FormValidationSummary"),
             Group("Date & Time Pickers", "Compare date, time, and combined date-time inputs with shared localization and precision controls.", "AppCalendarPicker", "AppTimePicker", "AppDateTimePicker"),
             Group("Marketing Proof", "Compose a strip of application-owned metrics, credentials, or outcomes.", "MarketingProofStrip", "MarketingProofItem"),

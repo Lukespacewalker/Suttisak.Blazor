@@ -1,4 +1,15 @@
 .app-grid { position: relative; min-width: 0; overflow: auto; color: var(--app-foreground); }
+.app-grid__cards-view { display: none; }
+.app-grid[data-compact="true"] > .app-grid__table-view { display: none; }
+.app-grid[data-compact="true"] > .app-grid__cards-view { display: block; }
+.app-grid__cards { list-style: none; margin: 0; padding: var(--app-space-3, .75rem); display: grid; gap: var(--app-space-3, .75rem); }
+.app-grid__card { display: flex; align-items: start; gap: var(--app-space-3, .75rem); padding: var(--app-space-4, 1rem); border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface); }
+.app-grid__card.is-selected { background: var(--app-accent-soft); }
+.app-grid__card-content { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.app-grid__card-controls { display: flex; flex-wrap: wrap; align-items: end; gap: var(--app-space-3, .75rem); padding: var(--app-space-3, .75rem); }
+.app-grid__card-controls label { display: flex; flex-wrap: wrap; align-items: center; gap: var(--app-space-2, .5rem); max-width: 100%; }
+.app-grid__card-controls select { max-width: 100%; min-height: 2.75rem; padding: .5rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-sm); background: var(--app-surface); color: var(--app-foreground); font: inherit; }
+.app-grid__card-controls select:focus-visible, .app-grid:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: -2px; }
 .app-grid--virtualized { scroll-padding-block-start: var(--app-grid-header-height, 3.5rem); }
 .app-grid ::deep table { width: 100%; min-width: 42rem; border-spacing: 0; background: var(--app-surface); }
 .app-grid ::deep th { position: relative; padding: .7rem .85rem; border-block-end: 1px solid var(--app-border); background: var(--app-surface-muted); color: var(--app-foreground-muted); font-size: .78rem; font-weight: 700; letter-spacing: .035em; text-align: start; text-transform: uppercase; }

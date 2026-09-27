@@ -1328,11 +1328,13 @@
       "category": "Data \u0026 display",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Virtualization-ready typed data grid for scalable application record collections.",
+      "summary": "Typed data grid with virtualized tables or opt-in paged cards in narrow containers. Includes comparison, record-card, and summary-detail examples.",
       "tags": [
         "data",
         "grid",
-        "table"
+        "table",
+        "cards",
+        "responsive"
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [

@@ -154,6 +154,32 @@ The status family has shared defaults because success, warning, and danger must 
 
 ## Component playbook
 
+### Responsive data grids (1.0.24)
+
+`AppGrid` keeps its scrollable table by default. For record lists, set
+`CompactLayout="AppGridCompactLayout.Cards"` and provide `CardTemplate` alongside
+the existing `ChildContent` columns. Below `CompactBreakpoint` (default 640 CSS
+pixels of the grid container), the grid shows a labeled card list. Use
+`AppGridPropertyColumn` / `AppGridTemplateColumn` for compact sorting; raw
+QuickGrid columns remain supported in table mode.
+
+Cards require `Pagination` and do not support `Virtualize="true"`. They reuse
+QuickGrid's current page and sort, and keep selection across resize. Supply a
+stable `ItemKey` and compose `AppGridPaginator` with the same `PaginationState`.
+Select-all applies to the current page. Both render trees remain mounted, but
+only the active view is exposed to keyboard navigation and assistive technology;
+templates must use distinct IDs and avoid side effects or fetching their own data.
+Focus returns to the labeled grid container when resize hides the focused view.
+
+The application owns card content, field labels and detail navigation. The grid
+owns selection checkboxes and compact sort controls. Localize `SortLabel`,
+`SortDirectionLabel`, `AscendingLabel`, `DescendingLabel`, and the existing
+selection labels as needed. Column `Title` supplies each sort option's name.
+
+Try all three recipes on `components/app-grid`: Comparison table, Record cards,
+and Summary + details. For a summary card, put a normal button in `CardTemplate`
+and open an existing `AppDialog`, drawer, or application route.
+
 Run the live component and theme matrix locally:
 
 ```powershell
@@ -174,4 +200,3 @@ Both pages use a project reference and share controls for AudiogramIQ, BafsWorko
 Use `Components/Experience/ExperienceHeading` for result, report, education, and guidance pages. It accepts application-owned details, visual content, and watermark text. Continue to use `PageHeading` for compact CRUD and administration workflows.
 
 For application pages, compose `PageHeading`, `PageActionToolbar`, `AppButton`, `AppCard`, `AppGridShell`, `AppGrid`, `AppGridPaginator`, `FormSection`, `FormGrid`, `FormField`, `FormActions`, `FeedbackBanner`, `AppLoading`, and `StatusPanel`. Landing pages use the Marketing components below; account flows use `IdentityLayout`.
-

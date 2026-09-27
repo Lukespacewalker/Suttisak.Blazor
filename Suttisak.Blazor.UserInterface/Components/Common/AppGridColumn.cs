@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Components.Rendering;
 namespace Suttisak.Blazor.UserInterface.Components.Common;
 
 /// <summary>Base class for application columns rendered by QuickGrid.</summary>
-public abstract class AppGridColumn<TGridItem> : ColumnBase<TGridItem>
+public abstract class AppGridColumn<TGridItem> : ColumnBase<TGridItem>, IDisposable
 {
+    [CascadingParameter] private AppGrid<TGridItem>? Owner { get; set; }
+    internal bool SupportsSorting => Sortable ?? IsSortableByDefault();
+    public void Dispose() => Owner?.UnregisterColumn(this);
     /// <summary>
     /// Optional preferred column width. Fixed CSS lengths are applied to cell
     /// content; legacy <c>fr</c> values remain accepted but defer to the table.
@@ -42,6 +45,7 @@ public abstract class AppGridColumn<TGridItem> : ColumnBase<TGridItem>
         }
 
         base.OnParametersSet();
+        Owner?.RegisterColumn(this);
     }
 
     protected void OpenCellContent(RenderTreeBuilder builder)
