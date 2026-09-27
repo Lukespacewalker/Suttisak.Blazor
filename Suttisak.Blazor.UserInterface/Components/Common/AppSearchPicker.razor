@@ -77,8 +77,15 @@
 
     void UpdateVisible()
     {
+        var previousOptions = VisibleOptions;
+        var previousElements = OptionElements;
         VisibleOptions = Options.Where(o => !FilterLocally || o.Label.Contains(QueryValue, StringComparison.OrdinalIgnoreCase)).ToList();
-        OptionElements = new ElementReference[VisibleOptions.Count];
+        // Keyed buttons survive parent updates. Keep their captured references by stable value.
+        OptionElements = VisibleOptions.Select(option =>
+        {
+            var previousIndex = previousOptions.FindIndex(previous => EqualityComparer<TValue>.Default.Equals(previous.Value, option.Value));
+            return previousIndex < 0 ? default : previousElements[previousIndex];
+        }).ToArray();
     }
 
     async Task Search(string value)

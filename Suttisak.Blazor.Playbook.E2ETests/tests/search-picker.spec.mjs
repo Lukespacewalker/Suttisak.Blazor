@@ -31,3 +31,29 @@ test('complete print composition retains records beyond screen page', async ({ p
   await expect(page.locator('.report-print-example__print')).toBeVisible();
   await expect(page.getByText('Frozen source reference 12')).toBeVisible();
 });
+
+test('picker keyboard references survive filtering and parent selection removal', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto('/components/app-search-picker');
+  const preview = page.locator('.component-detail__preview-frame').first();
+  await page.getByLabel('Reject selection changes').check();
+  await preview.getByLabel('Search options').fill('Beta');
+  const beta = preview.locator('[data-picker-option=beta]');
+  await beta.focus();
+  await beta.press('Enter');
+  await page.getByLabel('Reject selection changes').uncheck();
+  await page.getByLabel('Multiple selection').check();
+  await preview.getByLabel('Search options').fill('');
+  await beta.click();
+  await preview.locator('[data-picker-remove=alpha]').click();
+  await beta.focus();
+  await beta.press('ArrowDown');
+  await expect(preview.locator('[data-picker-option=long]')).toBeFocused();
+  await preview.locator('[data-picker-option=long]').press('Home');
+  await expect(preview.locator('[data-picker-option=alpha]')).toBeFocused();
+  await preview.locator('[data-picker-option=alpha]').press('End');
+  await expect(preview.locator('[data-picker-option=long]')).toBeFocused();
+  expect(errors).toEqual([]);
+});
