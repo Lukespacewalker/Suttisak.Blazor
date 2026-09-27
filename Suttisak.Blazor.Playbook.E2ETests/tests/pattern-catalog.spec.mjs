@@ -86,12 +86,23 @@ test('Pattern ingredients link to stable component detail routes', async ({ page
     .toBeVisible({ timeout: wasmTimeout });
 });
 
+test('Loading decoration stays inside the narrow viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route('**/_framework/**', route => route.abort());
+  await page.goto('/patterns');
+  await expect(page.getByRole('heading', { name: 'Loading UI Playbook' })).toBeVisible();
+  await page.addStyleTag({
+    content: '.playbook-loading::before { animation: none !important; transform: rotate(45deg) !important; }'
+  });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
 test('Pattern pages contain wide recipes without creating narrow document overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
 
   for (const path of ['/patterns', '/patterns/validated-form-workflow']) {
     await page.goto(path);
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: wasmTimeout });
+    await expect(page.locator('main').getByRole('heading', { level: 1 })).toBeVisible({ timeout: wasmTimeout });
 
     const dimensions = await page.evaluate(() => ({
       viewport: window.innerWidth,
