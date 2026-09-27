@@ -65,7 +65,9 @@ test('virtualized select-all exports a bounded window after scrolling', async ({
   await expect.poll(() => viewport.evaluate(element => element.scrollHeight)).toBeGreaterThan(5000);
   await viewport.evaluate(element => { element.scrollTop = 5000; });
   const checkboxes = table.locator('tbody input.app-grid__checkbox');
-  await expect(checkboxes.first()).not.toHaveAttribute('aria-label', 'Select row 1');
+  // A negative assertion also passes while virtualization has no rows mounted.
+  // Require a real row from the newly loaded window before reading its IDs.
+  await expect(checkboxes.first()).toHaveAttribute('aria-label', /^Select row (?!1$)\d+$/);
   const visibleIds = await checkboxes.evaluateAll(inputs => inputs.map(input => Number(input.getAttribute('aria-label').replace('Select row ', ''))));
   await page.getByRole('checkbox', { name: 'Select all visible rows' }).check();
   const downloadPromise = page.waitForEvent('download');
@@ -119,7 +121,7 @@ test('virtualized keyboard focus stays below the sticky header', async ({ page }
   await expect.poll(() => viewport.evaluate(element => element.scrollHeight)).toBeGreaterThan(5000);
   await viewport.evaluate(element => { element.scrollTop = 5000; });
   const checkboxes = viewport.locator('tbody input.app-grid__checkbox');
-  await expect(checkboxes.first()).not.toHaveAttribute('aria-label', 'Select row 1');
+  await expect(checkboxes.first()).toHaveAttribute('aria-label', /^Select row (?!1$)\d+$/);
   const focusedId = await viewport.evaluate(grid => {
     const headerBottom = grid.querySelector('th').getBoundingClientRect().bottom;
     const candidates = [...grid.querySelectorAll('tbody input.app-grid__checkbox')];
