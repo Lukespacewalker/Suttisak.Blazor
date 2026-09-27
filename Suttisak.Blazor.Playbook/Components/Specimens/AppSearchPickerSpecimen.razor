@@ -1,0 +1,34 @@
+<ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Search picker controls">
+    <Preview>
+        <AppSearchPicker TValue="string" Label="Choose records" Options="Options" SelectedValues="Selected" SelectedValuesChanged="Select"
+                         Multiple="Multiple" Disabled="Disabled" Loading="Loading" Query="@Query" QueryChanged="value => Query = value" SelectedValueLabel="LabelFor" />
+        <p role="status">Selected: @string.Join(", ", Selected.Select(LabelFor))</p>
+    </Preview>
+    <Controls>
+        <label><input type="checkbox" @bind="Reject" /> Reject selection changes</label>
+        <label><input type="checkbox" @bind="Multiple" /> Multiple selection</label>
+        <label><input type="checkbox" @bind="Disabled" /> Disabled</label>
+        <label><input type="checkbox" @bind="Loading" /> Loading</label>
+        <AppButton OnClick="_ => SetBeta()">Set Beta externally</AppButton>
+        <p>When rejected, selection and query remain visible and the option keeps focus. Arrow keys move among available options; Enter/Space selects.</p>
+        <AppButton Href="report-print">Report / print composition</AppButton>
+    </Controls>
+    <States>
+        <article><span>Empty</span><AppSearchPicker TValue="string" Label="No records" /></article>
+        <article><span>Loading</span><AppSearchPicker TValue="string" Label="Remote records" Loading="true" /></article>
+        <article><span>Disabled</span><AppSearchPicker TValue="string" Label="Read-only" Options="Options" SelectedValues="Alpha" Disabled="true" /></article>
+    </States>
+</ComponentSpecimenLayout>
+
+@code {
+    [Parameter] public string Viewport { get; set; } = "desktop";
+    static readonly IReadOnlyList<AppSelectOption<string>> Options = [new("alpha", "Alpha record"), new("beta", "Beta record"), new("long", "A long record label that must wrap inside constrained containers"), new("disabled", "Unavailable record", true)];
+    static readonly IReadOnlyList<string> Alpha = ["alpha"];
+    void SetBeta() => Selected = ["beta"];
+    IReadOnlyList<string> Selected = ["alpha"];
+    string Query = "";
+    bool Reject, Multiple, Disabled, Loading;
+    void Select(IReadOnlyList<string> values) { if (!Reject) Selected = values; }
+    static string LabelFor(string value) => Options.Single(o => o.Value == value).Label;
+}
+

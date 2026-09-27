@@ -779,3 +779,12 @@ select { font: inherit; }
     .playbook-loading__mark { animation: none; }
     .playbook-loading__progress span { transition: none; }
 }
+
+@media print {
+    body:has(.report-print-example) { background: white !important; color: black; }
+    body:has(.report-print-example) .app-shell__header,
+    body:has(.report-print-example) .app-shell__sidebar,
+    body:has(.report-print-example) .app-shell__skip-link,
+    body:has(.report-print-example) .layout-footer { display: none !important; }
+    body:has(.report-print-example) .app-shell { display: block; background: white; }
+}

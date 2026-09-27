@@ -22,6 +22,7 @@ public static class PlaybookSpecimenRegistry
             ["AppTextBox"] = new(typeof(AppTextBox), typeof(AppTextBoxSpecimen)),
             ["AppTextArea"] = new(typeof(AppTextArea), typeof(AppTextAreaSpecimen)),
             ["AppNumberInput"] = new(typeof(AppNumberInput<int>), typeof(AdvancedInputsSpecimen)),
+            ["AppSearchPicker"] = new(typeof(AppSearchPicker<string>), typeof(AppSearchPickerSpecimen)),
             ["AppSelect"] = new(typeof(AppSelect<string>), typeof(AppSelectSpecimen)),
             ["AppSelectItem"] = new(typeof(AppSelectItem<string>), typeof(AppSelectSpecimen)),
             ["AppMultiSelect"] = new(typeof(AppMultiSelect<string>), typeof(AdvancedInputsSpecimen)),

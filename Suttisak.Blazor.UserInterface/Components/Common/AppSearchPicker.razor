@@ -1,0 +1,118 @@
+@typeparam TValue
+
+<fieldset class="app-search-picker" disabled="@Disabled" aria-describedby="@DescriptionId">
+    <legend>@Label</legend>
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <p id="@DescriptionId" class="app-search-picker__description">@Description</p>
+    }
+    <AppTextBox Label="@SearchLabel" Value="@QueryValue" ValueChanged="Search" Disabled="Disabled" />
+    <div class="app-search-picker__selected" aria-label="@SelectedLabel">
+        @foreach (var selected in SelectedValues)
+        {
+            <button type="button" @key="selected" data-picker-remove="@selected" disabled="@(Disabled || Loading)" @onclick="() => Remove(selected)">
+                @LabelFor(selected) <span aria-hidden="true">×</span><span class="app-search-picker__sr"> @RemoveLabel</span>
+            </button>
+        }
+        @if (SelectedValues.Count == 0) { <span>@NoSelectionText</span> }
+    </div>
+    @if (Loading)
+    {
+        <p role="status">@LoadingText</p>
+    }
+    else if (VisibleOptions.Count == 0)
+    {
+        <p role="status">@EmptyText</p>
+    }
+    else
+    {
+        <div class="app-search-picker__options" role="group" aria-label="@OptionsLabel">
+            @for (var index = 0; index < VisibleOptions.Count; index++)
+            {
+                var option = VisibleOptions[index];
+                var optionIndex = index;
+                <button type="button" @key="option.Value" @ref="OptionElements[optionIndex]" data-picker-option="@option.Value"
+                        aria-pressed="@(SelectedValues.Contains(option.Value) ? "true" : "false")" disabled="@(Disabled || option.Disabled)"
+                        @onclick="() => Choose(option.Value)" @onkeydown="e => MoveFocus(e, optionIndex)">
+                    <span aria-hidden="true">@(SelectedValues.Contains(option.Value) ? "✓" : "+")</span> @option.Label
+                </button>
+            }
+        </div>
+    }
+</fieldset>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public IReadOnlyList<AppSelectOption<TValue>> Options { get; set; } = [];
+    [Parameter] public IReadOnlyList<TValue> SelectedValues { get; set; } = [];
+    [Parameter] public EventCallback<IReadOnlyList<TValue>> SelectedValuesChanged { get; set; }
+    [Parameter] public bool Multiple { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public bool FilterLocally { get; set; } = true;
+    [Parameter] public string Query { get; set; } = "";
+    [Parameter] public EventCallback<string> QueryChanged { get; set; }
+    [Parameter] public Func<TValue, string>? SelectedValueLabel { get; set; }
+    [Parameter] public string Description { get; set; } = "";
+    [Parameter] public string SearchLabel { get; set; } = "Search options";
+    [Parameter] public string OptionsLabel { get; set; } = "Available options";
+    [Parameter] public string SelectedLabel { get; set; } = "Selected options";
+    [Parameter] public string RemoveLabel { get; set; } = "Remove";
+    [Parameter] public string NoSelectionText { get; set; } = "Nothing selected";
+    [Parameter] public string EmptyText { get; set; } = "No matching options";
+    [Parameter] public string LoadingText { get; set; } = "Loading options…";
+
+    readonly string DescriptionId = "picker-description-" + Guid.NewGuid().ToString("N");
+    string QueryValue = "";
+    string LastExternalQuery = "";
+    List<AppSelectOption<TValue>> VisibleOptions = [];
+    ElementReference[] OptionElements = [];
+
+    protected override void OnParametersSet()
+    {
+        if (Query != LastExternalQuery) QueryValue = Query;
+        LastExternalQuery = Query;
+        UpdateVisible();
+    }
+
+    void UpdateVisible()
+    {
+        VisibleOptions = Options.Where(o => !FilterLocally || o.Label.Contains(QueryValue, StringComparison.OrdinalIgnoreCase)).ToList();
+        OptionElements = new ElementReference[VisibleOptions.Count];
+    }
+
+    async Task Search(string value)
+    {
+        QueryValue = value;
+        UpdateVisible();
+        await QueryChanged.InvokeAsync(value);
+    }
+
+    string LabelFor(TValue value) => SelectedValueLabel?.Invoke(value) ?? Options.FirstOrDefault(o => EqualityComparer<TValue>.Default.Equals(o.Value, value))?.Label ?? value?.ToString() ?? "";
+
+    async Task Choose(TValue value)
+    {
+        if (Disabled || Loading || Options.Any(o => EqualityComparer<TValue>.Default.Equals(o.Value, value) && o.Disabled)) return;
+        IReadOnlyList<TValue> next = Multiple
+            ? SelectedValues.Contains(value) ? SelectedValues.Where(v => !EqualityComparer<TValue>.Default.Equals(v, value)).ToArray() : SelectedValues.Append(value).ToArray()
+            : [value];
+        // Parent owns selection. A rejected callback keeps the same focused DOM control and displayed values.
+        await SelectedValuesChanged.InvokeAsync(next);
+    }
+
+    async Task Remove(TValue value)
+    {
+        if (!Disabled && !Loading) await SelectedValuesChanged.InvokeAsync(SelectedValues.Where(v => !EqualityComparer<TValue>.Default.Equals(v, value)).ToArray());
+    }
+
+    async Task MoveFocus(KeyboardEventArgs e, int index)
+    {
+        if (Disabled || e.Key is not ("ArrowDown" or "ArrowUp" or "Home" or "End")) return;
+        var enabled = Enumerable.Range(0, VisibleOptions.Count).Where(i => !VisibleOptions[i].Disabled).ToList();
+        if (enabled.Count == 0) return;
+        var position = enabled.IndexOf(index);
+        var next = e.Key switch { "Home" => enabled[0], "End" => enabled[^1], "ArrowDown" => enabled[(position + 1) % enabled.Count], _ => enabled[(position - 1 + enabled.Count) % enabled.Count] };
+        await OptionElements[next].FocusAsync();
+    }
+}
+

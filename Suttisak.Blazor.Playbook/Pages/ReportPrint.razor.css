@@ -1,0 +1,9 @@
+.report-print-example__print { display: none; }
+@media print {
+    .report-print-example__screen { display: none !important; }
+    .report-print-example__print { display: block; }
+    .report-print-example table { width: 100%; border-collapse: collapse; }
+    .report-print-example th, .report-print-example td { border: 1px solid currentColor; padding: .6rem; text-align: start; }
+    .report-print-example thead { display: table-header-group; }
+    .report-print-example tr { break-inside: avoid; }
+}

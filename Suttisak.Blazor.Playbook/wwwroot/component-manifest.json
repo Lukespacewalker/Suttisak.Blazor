@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "componentCount": 95,
-  "pageCount": 77,
+  "componentCount": 96,
+  "pageCount": 78,
   "pages": [
     {
       "name": "AppTextBox",
@@ -28,6 +28,15 @@
       "href": "components/app-number-input",
       "components": [
         "AppNumberInput"
+      ]
+    },
+    {
+      "name": "AppSearchPicker",
+      "slug": "app-search-picker",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-search-picker",
+      "components": [
+        "AppSearchPicker"
       ]
     },
     {
@@ -780,6 +789,24 @@
       "pageSlug": "app-number-input"
     },
     {
+      "name": "AppSearchPicker",
+      "slug": "app-search-picker",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Searchable parent-owned single or multiple selection with explicit query, loading, and rejection behavior.",
+      "tags": [
+        "search",
+        "picker",
+        "controlled",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-search-picker",
+      "pageSlug": "app-search-picker"
+    },
+    {
       "name": "AppSelect",
       "slug": "app-select",
       "category": "Forms \u0026 inputs",
@@ -969,6 +996,7 @@
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [
+        "complete-report-print",
         "validated-form-workflow"
       ],
       "documentationHref": "components/form-section",
@@ -1065,6 +1093,7 @@
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [
+        "complete-report-print",
         "validated-form-workflow",
         "virtualized-data-workspace",
         "secure-access-flow",
@@ -1242,6 +1271,7 @@
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [
+        "complete-report-print",
         "application-workspace-shell",
         "router-level-layout-composition"
       ],
@@ -2454,6 +2484,7 @@
         "AppTextBox",
         "AppTextArea",
         "AppNumberInput",
+        "AppSearchPicker",
         "AppSelect",
         "AppSelectItem",
         "AppMultiSelect",
@@ -2611,6 +2642,74 @@
   ],
   "patterns": [
     {
+      "name": "Complete report and print",
+      "slug": "complete-report-print",
+      "category": "Reporting",
+      "maturity": "beta",
+      "summary": "A complete printable document composed separately from paged screen content.",
+      "intent": "Reports whose print output must retain every filtered record and source detail.",
+      "tags": [
+        "report",
+        "print",
+        "pagination"
+      ],
+      "ingredients": [
+        {
+          "componentId": "page-heading",
+          "componentName": "PageHeading",
+          "role": "Names the report context."
+        },
+        {
+          "componentId": "form-section",
+          "componentName": "FormSection",
+          "role": "Groups record sections."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Provides screen paging and browser print actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Freeze application data",
+          "detail": "Use the same filtered record set for screen and complete print content."
+        },
+        {
+          "title": "Render all print records",
+          "detail": "Print does not depend on visible screen pages or virtual rows."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Shared headings, sections and action presentation"
+        ],
+        "applicationResponsibilities": [
+          "Record scope, report status, source data, full print layout and export semantics"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CFormSection Title=\u0022Report\u0022\u003EApplication-owned complete records\u003C/FormSection\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Print",
+          "requirement": "All filtered records are present with repeated headings and visible status."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "Screen content remains readable in constrained containers."
+        }
+      ],
+      "liveHref": "report-print",
+      "liveLabel": "View report / print example",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "search-picker.spec.mjs",
+          "guarantee": "Checks complete print content independent of screen paging."
+        }
+      ]
+    },
+    {
       "name": "Validated form workflow",
       "slug": "validated-form-workflow",
       "category": "Data entry",
@@ -2695,7 +2794,7 @@
           "Product copy, defaults, and cancellation behavior"
         ]
       },
-      "minimalRazorRecipe": "\u003CEditForm Model=\u0022@Profile\u0022 OnValidSubmit=\u0022SaveAsync\u0022\u003E\n    \u003CDataAnnotationsValidator /\u003E\n    \u003CFormSection Title=\u0022Profile\u0022\u003E\n        \u003CFormValidationSummary /\u003E\n        \u003CFormGrid Columns=\u00222\u0022\u003E\n            \u003CFormField\u003E\u003CAppTextBox Label=\u0022Name\u0022 @bind-Value=\u0022Profile.Name\u0022 /\u003E\u003C/FormField\u003E\n            \u003CFormField\u003E\u003CAppSelect Label=\u0022Team\u0022 Options=\u0022@Teams\u0022 @bind-Value=\u0022Profile.Team\u0022 /\u003E\u003C/FormField\u003E\n        \u003C/FormGrid\u003E\n        \u003CFormActions\u003E\u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESave\u003C/AppButton\u003E\u003C/FormActions\u003E\n    \u003C/FormSection\u003E\n\u003C/EditForm\u003E",
+      "minimalRazorRecipe": "\u003CEditForm Model=\u0022@Profile\u0022 OnValidSubmit=\u0022SaveAsync\u0022\u003E\r\n    \u003CDataAnnotationsValidator /\u003E\r\n    \u003CFormSection Title=\u0022Profile\u0022\u003E\r\n        \u003CFormValidationSummary /\u003E\r\n        \u003CFormGrid Columns=\u00222\u0022\u003E\r\n            \u003CFormField\u003E\u003CAppTextBox Label=\u0022Name\u0022 @bind-Value=\u0022Profile.Name\u0022 /\u003E\u003C/FormField\u003E\r\n            \u003CFormField\u003E\u003CAppSelect Label=\u0022Team\u0022 Options=\u0022@Teams\u0022 @bind-Value=\u0022Profile.Team\u0022 /\u003E\u003C/FormField\u003E\r\n        \u003C/FormGrid\u003E\r\n        \u003CFormActions\u003E\u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESave\u003C/AppButton\u003E\u003C/FormActions\u003E\r\n    \u003C/FormSection\u003E\r\n\u003C/EditForm\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -2805,7 +2904,7 @@
           "Export jobs, mutations, telemetry, and empty-state copy"
         ]
       },
-      "minimalRazorRecipe": "\u003CAppGridShell AriaLabel=\u0022Assessment register\u0022\u003E\n    \u003CSearch\u003E\u003CAppTextBox Label=\u0022Search records\u0022 @bind-Value=\u0022Search\u0022 /\u003E\u003C/Search\u003E\n    \u003CChildContent\u003E\n        \u003CAppGrid TGridItem=\u0022Assessment\u0022 Items=\u0022@Rows\u0022 Virtualize=\u0022true\u0022\n                 ItemSize=\u002240\u0022 OverscanCount=\u00223\u0022 ItemKey=\u0022row =\u003E row.Id\u0022\u003E\n            \u003CAppGridPropertyColumn Property=\u0022row =\u003E row.Owner\u0022 Title=\u0022Owner\u0022 Sortable=\u0022true\u0022 /\u003E\n            \u003CAppGridTemplateColumn Title=\u0022Status\u0022\u003E@context.Status\u003C/AppGridTemplateColumn\u003E\n        \u003C/AppGrid\u003E\n    \u003C/ChildContent\u003E\n\u003C/AppGridShell\u003E",
+      "minimalRazorRecipe": "\u003CAppGridShell AriaLabel=\u0022Assessment register\u0022\u003E\r\n    \u003CSearch\u003E\u003CAppTextBox Label=\u0022Search records\u0022 @bind-Value=\u0022Search\u0022 /\u003E\u003C/Search\u003E\r\n    \u003CChildContent\u003E\r\n        \u003CAppGrid TGridItem=\u0022Assessment\u0022 Items=\u0022@Rows\u0022 Virtualize=\u0022true\u0022\r\n                 ItemSize=\u002240\u0022 OverscanCount=\u00223\u0022 ItemKey=\u0022row =\u003E row.Id\u0022\u003E\r\n            \u003CAppGridPropertyColumn Property=\u0022row =\u003E row.Owner\u0022 Title=\u0022Owner\u0022 Sortable=\u0022true\u0022 /\u003E\r\n            \u003CAppGridTemplateColumn Title=\u0022Status\u0022\u003E@context.Status\u003C/AppGridTemplateColumn\u003E\r\n        \u003C/AppGrid\u003E\r\n    \u003C/ChildContent\u003E\r\n\u003C/AppGridShell\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -2940,7 +3039,7 @@
           "Product preview contents and conversion behavior"
         ]
       },
-      "minimalRazorRecipe": "\u003CMarketingPage Id=\u0022product\u0022 SkipTarget=\u0022benefits\u0022\u003E\n    \u003CMarketingHero Title=\u0022Understand the signal. Act with confidence.\u0022\n                   Description=\u0022A summary of the result and the available next step.\u0022\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022#benefits\u0022\u003EView benefits\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingHero\u003E\n    \u003CMarketingProofStrip AriaLabel=\u0022Product proof\u0022\u003E\n        \u003CMarketingProofItem Value=\u0022AA\u0022 Title=\u0022Accessible\u0022 Description=\u0022Built on a tested foundation.\u0022 /\u003E\n    \u003C/MarketingProofStrip\u003E\n    \u003CMarketingFeatureGrid id=\u0022benefits\u0022\u003E\n        \u003CMarketingCard Title=\u0022One clear benefit\u0022\u003E...\u003C/MarketingCard\u003E\n    \u003C/MarketingFeatureGrid\u003E\n    \u003CMarketingCallToAction\u003E\n        \u003CContent\u003E\u003Ch2\u003ENext step\u003C/h2\u003E\u003C/Content\u003E\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022/start\u0022\u003EGet started\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\n    \u003C/MarketingCallToAction\u003E\n\u003C/MarketingPage\u003E",
+      "minimalRazorRecipe": "\u003CMarketingPage Id=\u0022product\u0022 SkipTarget=\u0022benefits\u0022\u003E\r\n    \u003CMarketingHero Title=\u0022Understand the signal. Act with confidence.\u0022\r\n                   Description=\u0022A summary of the result and the available next step.\u0022\u003E\r\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022#benefits\u0022\u003EView benefits\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\r\n    \u003C/MarketingHero\u003E\r\n    \u003CMarketingProofStrip AriaLabel=\u0022Product proof\u0022\u003E\r\n        \u003CMarketingProofItem Value=\u0022AA\u0022 Title=\u0022Accessible\u0022 Description=\u0022Built on a tested foundation.\u0022 /\u003E\r\n    \u003C/MarketingProofStrip\u003E\r\n    \u003CMarketingFeatureGrid id=\u0022benefits\u0022\u003E\r\n        \u003CMarketingCard Title=\u0022One clear benefit\u0022\u003E...\u003C/MarketingCard\u003E\r\n    \u003C/MarketingFeatureGrid\u003E\r\n    \u003CMarketingCallToAction\u003E\r\n        \u003CContent\u003E\u003Ch2\u003ENext step\u003C/h2\u003E\u003C/Content\u003E\r\n        \u003CActions\u003E\u003CMarketingActionLink Href=\u0022/start\u0022\u003EGet started\u003C/MarketingActionLink\u003E\u003C/Actions\u003E\r\n    \u003C/MarketingCallToAction\u003E\r\n\u003C/MarketingPage\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -3035,7 +3134,7 @@
           "Server validation, redirects, and account-recovery workflows"
         ]
       },
-      "minimalRazorRecipe": "\u003CAccessPageLayout HeadingId=\u0022sign-in-title\u0022 ShowcaseLabel=\u0022Product message\u0022\u003E\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\n    \u003CTitle\u003ESign in to continue\u003C/Title\u003E\n    \u003CChildContent\u003E\n        \u003CEditForm Model=\u0022@Credentials\u0022 OnValidSubmit=\u0022SignInAsync\u0022\u003E\n            \u003CAppTextBox Label=\u0022Email\u0022 Type=\u0022email\u0022 Autocomplete=\u0022username\u0022 @bind-Value=\u0022Credentials.Email\u0022 /\u003E\n            \u003CAppTextBox Label=\u0022Password\u0022 Type=\u0022password\u0022 Autocomplete=\u0022current-password\u0022 @bind-Value=\u0022Credentials.Password\u0022 /\u003E\n            \u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESign in\u003C/AppButton\u003E\n        \u003C/EditForm\u003E\n    \u003C/ChildContent\u003E\n\u003C/AccessPageLayout\u003E",
+      "minimalRazorRecipe": "\u003CAccessPageLayout HeadingId=\u0022sign-in-title\u0022 ShowcaseLabel=\u0022Product message\u0022\u003E\r\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\r\n    \u003CTitle\u003ESign in to continue\u003C/Title\u003E\r\n    \u003CChildContent\u003E\r\n        \u003CEditForm Model=\u0022@Credentials\u0022 OnValidSubmit=\u0022SignInAsync\u0022\u003E\r\n            \u003CAppTextBox Label=\u0022Email\u0022 Type=\u0022email\u0022 Autocomplete=\u0022username\u0022 @bind-Value=\u0022Credentials.Email\u0022 /\u003E\r\n            \u003CAppTextBox Label=\u0022Password\u0022 Type=\u0022password\u0022 Autocomplete=\u0022current-password\u0022 @bind-Value=\u0022Credentials.Password\u0022 /\u003E\r\n            \u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESign in\u003C/AppButton\u003E\r\n        \u003C/EditForm\u003E\r\n    \u003C/ChildContent\u003E\r\n\u003C/AccessPageLayout\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -3165,7 +3264,7 @@
           "Page content, contextual actions, breadcrumbs, and mutation behavior"
         ]
       },
-      "minimalRazorRecipe": "\u003CApplicationShell MainContentId=\u0022workspace-main\u0022\u003E\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\n    \u003CNavigation\u003E\n        \u003CNav Embedded=\u0022true\u0022\u003E\n            \u003CNavGroup Label=\u0022Workspace\u0022\u003E\n                \u003CNavItem Href=\u0022records\u0022 IconRestName=\u0022Table\u0022\u003ERecords\u003C/NavItem\u003E\n            \u003C/NavGroup\u003E\n        \u003C/Nav\u003E\n    \u003C/Navigation\u003E\n    \u003CHeading\u003E\u003CApplicationPageHeading Breadcrumbs=\u0022@Breadcrumbs\u0022\u003E@Heading\u003C/ApplicationPageHeading\u003E\u003C/Heading\u003E\n    \u003CChildContent\u003E@Body\u003C/ChildContent\u003E\n\u003C/ApplicationShell\u003E",
+      "minimalRazorRecipe": "\u003CApplicationShell MainContentId=\u0022workspace-main\u0022\u003E\r\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\r\n    \u003CNavigation\u003E\r\n        \u003CNav Embedded=\u0022true\u0022\u003E\r\n            \u003CNavGroup Label=\u0022Workspace\u0022\u003E\r\n                \u003CNavItem Href=\u0022records\u0022 IconRestName=\u0022Table\u0022\u003ERecords\u003C/NavItem\u003E\r\n            \u003C/NavGroup\u003E\r\n        \u003C/Nav\u003E\r\n    \u003C/Navigation\u003E\r\n    \u003CHeading\u003E\u003CApplicationPageHeading Breadcrumbs=\u0022@Breadcrumbs\u0022\u003E@Heading\u003C/ApplicationPageHeading\u003E\u003C/Heading\u003E\r\n    \u003CChildContent\u003E@Body\u003C/ChildContent\u003E\r\n\u003C/ApplicationShell\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -3301,7 +3400,7 @@
           "Column definitions, product terminology, and post-save navigation"
         ]
       },
-      "minimalRazorRecipe": "\u003CAppGridShell AriaLabel=\u0022Program records\u0022\u003E\n    \u003CSearch\u003E\u003CAppTextBox Label=\u0022Search records\u0022 @bind-Value=\u0022Search\u0022 /\u003E\u003C/Search\u003E\n    \u003CChildContent\u003E\u003CAppGrid TGridItem=\u0022Record\u0022 Items=\u0022@FilteredRecords\u0022\u003E...\u003C/AppGrid\u003E\u003C/ChildContent\u003E\n    \u003CPagination\u003E\u003CAppGridPaginator State=\u0022@Pagination\u0022 /\u003E\u003C/Pagination\u003E\n\u003C/AppGridShell\u003E\n\n@code {\n    private Task\u003CAppOverlayResult\u003CRecord\u003E\u003E EditAsync() =\u003E\n        OverlayService.ShowDrawerAsync\u003CRecordEditor, Record\u003E(\n            new AppOverlayOptions { Title = \u0022Record editor\u0022, DrawerPosition = AppDrawerPosition.End });\n\n    private Task\u003CAppOverlayResult\u003Cbool\u003E\u003E DeleteAsync() =\u003E\n        OverlayService.ShowConfirmationAsync(new AppConfirmationOptions\n        {\n            Title = \u0022Delete this record?\u0022,\n            Message = \u0022This action cannot be undone.\u0022,\n            Dangerous = true\n        });\n}",
+      "minimalRazorRecipe": "\u003CAppGridShell AriaLabel=\u0022Program records\u0022\u003E\r\n    \u003CSearch\u003E\u003CAppTextBox Label=\u0022Search records\u0022 @bind-Value=\u0022Search\u0022 /\u003E\u003C/Search\u003E\r\n    \u003CChildContent\u003E\u003CAppGrid TGridItem=\u0022Record\u0022 Items=\u0022@FilteredRecords\u0022\u003E...\u003C/AppGrid\u003E\u003C/ChildContent\u003E\r\n    \u003CPagination\u003E\u003CAppGridPaginator State=\u0022@Pagination\u0022 /\u003E\u003C/Pagination\u003E\r\n\u003C/AppGridShell\u003E\r\n\r\n@code {\r\n    private Task\u003CAppOverlayResult\u003CRecord\u003E\u003E EditAsync() =\u003E\r\n        OverlayService.ShowDrawerAsync\u003CRecordEditor, Record\u003E(\r\n            new AppOverlayOptions { Title = \u0022Record editor\u0022, DrawerPosition = AppDrawerPosition.End });\r\n\r\n    private Task\u003CAppOverlayResult\u003Cbool\u003E\u003E DeleteAsync() =\u003E\r\n        OverlayService.ShowConfirmationAsync(new AppConfirmationOptions\r\n        {\r\n            Title = \u0022Delete this record?\u0022,\r\n            Message = \u0022This action cannot be undone.\u0022,\r\n            Dangerous = true\r\n        });\r\n}",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -3401,7 +3500,7 @@
           "Which incident details are safe to reveal to the current user"
         ]
       },
-      "minimalRazorRecipe": "builder.Services.AddSuttisakStatusRoutes(options =\u003E\n{\n    options.BrandName = \u0022Product\u0022;\n    options.HomeHref = \u0022/workspace\u0022;\n    options.Error.PrimaryActionLabel = \u0022Try again\u0022;\n});\n\n\u003CStatusRouteContent StatusCode=\u0022@StatusCode\u0022 RequestId=\u0022@RequestId\u0022 /\u003E",
+      "minimalRazorRecipe": "builder.Services.AddSuttisakStatusRoutes(options =\u003E\r\n{\r\n    options.BrandName = \u0022Product\u0022;\r\n    options.HomeHref = \u0022/workspace\u0022;\r\n    options.Error.PrimaryActionLabel = \u0022Try again\u0022;\r\n});\r\n\r\n\u003CStatusRouteContent StatusCode=\u0022@StatusCode\u0022 RequestId=\u0022@RequestId\u0022 /\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -3531,7 +3630,7 @@
           "Routed body, application state, initialization policy, and error telemetry"
         ]
       },
-      "minimalRazorRecipe": "@page \u0022/workspace\u0022\n@layout MainLayout\n\n\u003CSectionContent SectionId=\u0022@MainLayout.NavigationSection\u0022\u003E\n    \u003CNav Embedded=\u0022true\u0022\u003E...\u003C/Nav\u003E\n\u003C/SectionContent\u003E\n\u003CSectionContent SectionName=\u0022@CommonSections.PageHeading\u0022\u003E\n    \u003CPageHeading Title=\u0022Workspace\u0022 /\u003E\n\u003C/SectionContent\u003E\n\n\u003CPageBreadcrumbs Items=\u0022@Breadcrumbs\u0022 /\u003E\n\u003Csection aria-labelledby=\u0022workspace-title\u0022\u003E...\u003C/section\u003E",
+      "minimalRazorRecipe": "@page \u0022/workspace\u0022\r\n@layout MainLayout\r\n\r\n\u003CSectionContent SectionId=\u0022@MainLayout.NavigationSection\u0022\u003E\r\n    \u003CNav Embedded=\u0022true\u0022\u003E...\u003C/Nav\u003E\r\n\u003C/SectionContent\u003E\r\n\u003CSectionContent SectionName=\u0022@CommonSections.PageHeading\u0022\u003E\r\n    \u003CPageHeading Title=\u0022Workspace\u0022 /\u003E\r\n\u003C/SectionContent\u003E\r\n\r\n\u003CPageBreadcrumbs Items=\u0022@Breadcrumbs\u0022 /\u003E\r\n\u003Csection aria-labelledby=\u0022workspace-title\u0022\u003E...\u003C/section\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",

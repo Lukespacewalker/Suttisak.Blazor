@@ -58,6 +58,21 @@ public static class PlaybookPatternCatalog
     public static IReadOnlyList<PlaybookPatternDefinition> All { get; } =
     [
         new(
+            "Complete report and print",
+            "complete-report-print",
+            "Reporting",
+            PlaybookPatternMaturity.Beta,
+            "A complete printable document composed separately from paged screen content.",
+            "Reports whose print output must retain every filtered record and source detail.",
+            ["report", "print", "pagination"],
+            [I("PageHeading", "Names the report context."), I("FormSection", "Groups record sections."), I("AppButton", "Provides screen paging and browser print actions.")],
+            [S("Freeze application data", "Use the same filtered record set for screen and complete print content."), S("Render all print records", "Print does not depend on visible screen pages or virtual rows.")],
+            O(["Shared headings, sections and action presentation"], ["Record scope, report status, source data, full print layout and export semantics"]),
+            "<FormSection Title=\"Report\">Application-owned complete records</FormSection>",
+            [Q("Print", "All filtered records are present with repeated headings and visible status."), Q("Responsive", "Screen content remains readable in constrained containers.")],
+            "report-print", "View report / print example",
+            [E("Browser", "search-picker.spec.mjs", "Checks complete print content independent of screen paging.")]),
+        new(
             "Validated form workflow",
             "validated-form-workflow",
             "Data entry",

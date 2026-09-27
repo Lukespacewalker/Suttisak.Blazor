@@ -3,6 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const wasmTimeout = 20_000;
 const canonicalPatternSlugs = [
+  'complete-report-print',
   'validated-form-workflow',
   'virtualized-data-workspace',
   'product-marketing-landing',
