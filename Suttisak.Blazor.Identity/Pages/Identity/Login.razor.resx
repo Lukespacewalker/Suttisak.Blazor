@@ -121,7 +121,7 @@
     <value>Error</value>
   </data>
   <data name="InvalidLoginAttempt" xml:space="preserve">
-    <value>Invalid sign-in attempt.</value>
+    <value>Incorrect username or password. Please try again.</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Sign in to continue</value>
@@ -142,7 +142,7 @@
     <value>Forgot password</value>
   </data>
   <data name="KeepMeSignedInOnThisDevice" xml:space="preserve">
-    <value>Keep me signed in on this device</value>
+    <value>Remember me on this device</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -157,7 +157,7 @@
     <value>Or sign in with username and password</value>
   </data>
   <data name="SignInIntro" xml:space="preserve">
-    <value>Sign in with your username and password, passkey, or another option provided by your organization.</value>
+    <value>Sign in with your credentials or your organization’s sign-in method.</value>
   </data>
   <data name="WelcomeBack" xml:space="preserve">
     <value>Welcome back</value>

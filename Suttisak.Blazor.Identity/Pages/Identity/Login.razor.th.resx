@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -121,10 +121,10 @@
     <value>ข้อผิดพลาด</value>
   </data>
   <data name="InvalidLoginAttempt" xml:space="preserve">
-    <value>การพยายามเข้าสู่ระบบไม่ถูกต้อง</value>
+    <value>ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>เข้าสู่ระบบเพื่อดำเนินการต่อ</value>
+    <value>เข้าสู่ระบบ</value>
   </data>
   <data name="Passkey" xml:space="preserve">
     <value>พาสคีย์</value>
@@ -142,13 +142,13 @@
     <value>ลืมรหัสผ่าน</value>
   </data>
   <data name="KeepMeSignedInOnThisDevice" xml:space="preserve">
-    <value>ให้ฉันลงชื่อเข้าใช้ค้างไว้บนอุปกรณ์นี้</value>
+    <value>จดจำการเข้าสู่ระบบในอุปกรณ์นี้</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>รหัสผ่าน</value>
   </data>
   <data name="SignIn" xml:space="preserve">
-    <value>ลงชื่อเข้าใช้</value>
+    <value>เข้าสู่ระบบ</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>ชื่อผู้ใช้</value>
@@ -157,9 +157,9 @@
     <value>หรือเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน</value>
   </data>
   <data name="SignInIntro" xml:space="preserve">
-    <value>เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน พาสคีย์ หรือวิธีอื่นที่องค์กรของคุณเปิดใช้</value>
+    <value>กรอกชื่อผู้ใช้และรหัสผ่านเพื่อเริ่มต้นใช้งาน หรือเลือกวิธีเข้าสู่ระบบอื่นขององค์กร</value>
   </data>
   <data name="WelcomeBack" xml:space="preserve">
-    <value>ยินดีต้อนรับกลับ</value>
+    <value>ยินดีต้อนรับ</value>
   </data>
 </root>
