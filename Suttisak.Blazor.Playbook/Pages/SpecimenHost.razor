@@ -2,10 +2,12 @@
 @inject PlaybookState State
 @inject IThemeService ThemeService
 @inject IJSRuntime JsRuntime
+@implements IAsyncDisposable
 
 <PageTitle>@(Component?.Name ?? "Unknown component") isolated specimen · UI Playbook</PageTitle>
 
-<main class="playbook specimen-host theme-@ActiveTheme"
+<main class="playbook specimen-host app-appearance-scope theme-@ActiveTheme"
+      data-appearance="@State.Appearance"
       data-viewport="wide"
       data-color-mode="@ActiveMode"
       style="color-scheme: @ColorSchemeValue;"
@@ -34,6 +36,7 @@
     [Parameter] public string? Slug { get; set; }
     [Parameter, SupplyParameterFromQuery(Name = "theme")] public string? Theme { get; set; }
     [Parameter, SupplyParameterFromQuery(Name = "mode")] public string? Mode { get; set; }
+    [Parameter, SupplyParameterFromQuery(Name = "appearance")] public string? Appearance { get; set; }
 
     private PlaybookComponentDefinition? Component => PlaybookComponentCatalog.Find(Slug);
     private Type? SpecimenType => Component is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(Component);
@@ -47,6 +50,7 @@
     {
         State.Theme = ActiveTheme;
         State.Mode = ActiveMode;
+        State.TrySetAppearance(Appearance);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -57,6 +61,9 @@
         }
 
         var theme = PlaybookCatalog.Themes.First(value => value.Key == ActiveTheme);
+        await JsRuntime.InvokeVoidAsync("suttisakAppearance.set", State.Appearance, false);
+        _appearanceReference = DotNetObjectReference.Create(this);
+        await JsRuntime.InvokeVoidAsync("playbookAppearance.watch", _appearanceReference);
         var isDark = ActiveMode == "dark"
             || ActiveMode == "auto" && await JsRuntime.InvokeAsync<bool>("playbookTheme.prefersDark");
         ThemeService.ThemeConfiguration = ActiveMode switch
@@ -67,5 +74,20 @@
         };
         ThemeService.CurrentThemeMode = isDark ? ThemeMode.Dark : ThemeMode.Light;
         await JsRuntime.InvokeVoidAsync("playbookTheme.setPrimaryColor", theme.PrimaryColor);
+    }
+    private DotNetObjectReference<SpecimenHost>? _appearanceReference;
+
+    [JSInvokable]
+    public Task OnAppearanceChanged(string appearance)
+    {
+        State.TrySetAppearance(appearance);
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try { await JsRuntime.InvokeVoidAsync("playbookAppearance.unwatch"); }
+        catch (JSDisconnectedException) { }
+        _appearanceReference?.Dispose();
     }
 }

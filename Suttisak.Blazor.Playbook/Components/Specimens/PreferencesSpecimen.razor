@@ -4,11 +4,11 @@
             <header>
                 <div>
                     <span>Application preferences</span>
-                    <strong>Language and color scheme</strong>
+                    <strong>Appearance, language, and color scheme</strong>
                 </div>
                 <PreferencesSelector />
             </header>
-            <p>Culture is handled by the host application. Theme preference is stored by the shared browser module.</p>
+            <p>Culture is handled by the host application. Appearance and color mode are independent preferences stored by the shared browser module.</p>
         </div>
     </Preview>
     <Controls>
@@ -24,7 +24,8 @@
     <States>
         <article><span>Culture</span><strong>Host-owned redirect and persistence</strong><small>CultureSelector stores the requested culture, then lets the application apply it and return to the current route.</small></article>
         <article><span>Theme</span><strong>Light, dark, and system</strong><small>ThemeSwitcher synchronizes every mounted selector and reacts to system-scheme changes.</small></article>
-        <article><span>Responsive</span><strong>One native disclosure on mobile</strong><small>PreferencesSelector keeps the two controls together without duplicating a parallel interaction contract.</small></article>
+        <article><span>Appearance</span><strong>Standard, Essential, and Quiet Luxury</strong><small>AppearanceSelector remembers the choice without changing color mode.</small></article>
+        <article><span>Responsive</span><strong>One native disclosure on mobile</strong><small>PreferencesSelector keeps the controls together without duplicating a parallel interaction contract.</small></article>
     </States>
 </ComponentSpecimenLayout>
 

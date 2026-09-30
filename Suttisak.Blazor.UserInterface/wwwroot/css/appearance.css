@@ -1,0 +1,237 @@
+/* Three opt-in appearances. Application identity is supplied by the host. */
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] {
+    /* Appearance owns surfaces and rhythm; each application owns its palette.
+       Explicit light/dark values keep emphasis readable on neutral surfaces. */
+    --app-brand: var(--app-quiet-brand, light-dark(#393630, #d7c3a1));
+    --app-on-brand: light-dark(#fffdf8, #1c1b18);
+    --app-brand-secondary: var(--app-quiet-brand, light-dark(#393630, #d7c3a1));
+    --app-accent: var(--app-quiet-brand, light-dark(#393630, #d7c3a1));
+    --app-accent-soft: var(--app-quiet-brand-soft, light-dark(#ebe7de, #353027));
+    --app-accent-border: var(--app-quiet-brand-border, light-dark(#b9a687, #8d7959));
+    --app-brand-soft: var(--app-quiet-brand-soft, light-dark(#ebe7de, #353027));
+    --app-brand-secondary-soft: var(--app-quiet-brand-soft, light-dark(#ebe7de, #353027));
+
+    --app-background: light-dark(#f5f2eb, #1c1b18);
+    --app-surface: light-dark(#fffdf8, #25231f);
+    --app-surface-muted: light-dark(#eeeae1, #302d27);
+    --app-surface-hover: light-dark(#e7e1d6, #3b362e);
+    --app-glass-surface: var(--app-surface-muted);
+    --app-glass-surface-strong: var(--app-surface);
+    --app-glass-border: var(--app-border);
+    --app-glass-shadow: light-dark(rgb(57 48 32 / .045), rgb(0 0 0 / .16));
+
+    --app-foreground: light-dark(#302e29, #eee9df);
+    --app-foreground-muted: light-dark(#6c665b, #beb5a6);
+    --app-border: light-dark(#d9d1c3, #4b4439);
+    --app-grid-line: light-dark(rgb(57 48 32 / .05), rgb(238 233 223 / .05));
+    --app-shadow-color: light-dark(rgb(57 48 32 / .045), rgb(0 0 0 / .18));
+    --app-focus-ring: var(--app-accent);
+
+    /* Functional text keeps the existing Latin/Thai sans-serif pairing. */
+    --quiet-display-font: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Sarabun", serif;
+    --app-font-heading: var(--quiet-display-font);
+    --app-radius-sm: .25rem;
+    --app-radius-md: .375rem;
+    --app-radius-lg: .5rem;
+    --app-radius-xl: .75rem;
+    --app-shadow-sm: 0 1px 3px var(--app-shadow-color);
+    --app-shadow-md: 0 4px 18px var(--app-shadow-color);
+    --app-shadow-lg: 0 12px 32px var(--app-shadow-color);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-shell {
+    background: var(--app-background);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-shell__header) {
+    background: var(--app-surface);
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.page-heading, .app-page__intro) {
+    border-color: var(--app-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .page-heading::after {
+    content: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .application-page-heading__breadcrumbs {
+    border-color: var(--app-border);
+    border-start-start-radius: var(--app-radius-md);
+    border-start-end-radius: var(--app-radius-md);
+    background: var(--app-surface-muted);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .page-heading h1 {
+    font-family: var(--quiet-display-font);
+    font-size: clamp(1.65rem, 2.4vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-card, .app-grid-shell, .glass-card) {
+    border-radius: var(--app-radius-lg);
+    box-shadow: var(--app-shadow-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-button) {
+    border-radius: var(--app-radius-sm);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-button:hover {
+    transform: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-button--primary:hover {
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.marketing-hero__copy h1) {
+    font-family: var(--quiet-display-font);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -.035em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] {
+    --app-accent: var(--app-brand);
+    --app-accent-soft: var(--app-brand-soft);
+    --app-accent-border: var(--app-brand);
+    --app-brand-secondary: var(--app-brand);
+    --app-brand-secondary-soft: var(--app-brand-soft);
+
+    --app-background: light-dark(#f5f6f8, #14171b);
+    --app-surface: light-dark(#ffffff, #1d2127);
+    --app-surface-muted: light-dark(#eef0f3, #272d35);
+    --app-surface-hover: light-dark(#e5e9ee, #343c47);
+    --app-foreground: light-dark(#20252c, #edf0f4);
+    --app-foreground-muted: light-dark(#59616d, #b5becb);
+    --app-border: light-dark(#ccd2da, #495360);
+    --app-grid-line: light-dark(#e7eaef, #343c47);
+    --app-glass-surface: var(--app-surface-muted);
+    --app-glass-surface-strong: var(--app-surface);
+    --app-glass-border: var(--app-border);
+    --app-glass-shadow: transparent;
+    --app-shadow-color: light-dark(rgb(20 28 40 / .05), rgb(0 0 0 / .18));
+    --app-focus-ring: var(--app-brand);
+    --essential-input-border: light-dark(#87929f, #7c8796);
+
+    --app-radius-sm: .25rem;
+    --app-radius-md: .375rem;
+    --app-radius-lg: .5rem;
+    --app-radius-xl: .5rem;
+    --app-shadow-sm: 0 1px 2px var(--app-shadow-color);
+    --app-shadow-md: 0 4px 12px var(--app-shadow-color);
+    --app-shadow-lg: 0 8px 24px var(--app-shadow-color);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-shell {
+    background: var(--app-background);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.app-shell__header, .page-heading, .app-page__intro) {
+    background: var(--app-surface);
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.page-heading, .app-card, .app-grid-shell, .glass-card) {
+    border-color: var(--app-border);
+    border-radius: var(--app-radius-lg);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.app-calendar-popup, .app-picker-popup) {
+    border-radius: var(--app-radius-lg);
+    box-shadow: var(--app-shadow-md);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-calendar-popup__period-select {
+    padding-inline: .5rem;
+    border-radius: var(--app-radius-sm);
+    font-weight: 600;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .application-page-heading__breadcrumbs {
+    border-color: var(--app-border);
+    border-start-start-radius: var(--app-radius-lg);
+    border-start-end-radius: var(--app-radius-lg);
+    background: var(--app-surface-muted);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.app-button) {
+    border-radius: var(--app-radius-sm);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.app-button:hover, .app-button:active, .app-card--interactive:hover) {
+    transform: none;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-card.is-active {
+    border-color: var(--app-brand);
+    box-shadow: inset 0 0 0 1px var(--app-brand);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-form-control__input-wrap {
+    border-color: var(--essential-input-border);
+    border-radius: var(--app-radius-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-form-control__input {
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-form-control:not(.has-error):not(:has(.modified.valid, :invalid)) .app-form-control__input-wrap {
+    background: var(--app-surface);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-form-control__input-wrap:focus-within {
+    border-color: var(--app-focus-ring);
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-form-control.has-error .app-form-control__input-wrap {
+    border-color: var(--app-danger);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] .app-form-control__label {
+    font-weight: 600;
+    letter-spacing: normal;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.page-heading h1) {
+    font-family: var(--app-font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="essential"] :is(.marketing-hero__copy h1) {
+    font-family: var(--app-font-heading);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -.035em;
+}
+
+@media (forced-colors: active) {
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"],
+    :is(:root, .app-appearance-scope)[data-appearance="essential"] { --app-focus-ring: Highlight; }
+}

@@ -1,3 +1,15 @@
+window.playbookAppearance = {
+    watch(receiver) {
+        this.unwatch();
+        this.listener = event => receiver.invokeMethodAsync("OnAppearanceChanged", event.detail);
+        document.addEventListener("suttisak-appearance-change", this.listener);
+    },
+    unwatch() {
+        if (this.listener) document.removeEventListener("suttisak-appearance-change", this.listener);
+        this.listener = null;
+    }
+};
+
 window.playbookTheme = {
     setPrimaryColor(color) {
         document.querySelector('meta[name="theme-color"]')?.setAttribute("content", color);

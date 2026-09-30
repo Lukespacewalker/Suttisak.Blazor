@@ -9,8 +9,9 @@
     <AccessPageLayout>
         <Brand><SectionOutlet SectionId="CardEyebrowSection" /></Brand>
         <Controls>
-            <CultureSelector @rendermode="HeaderRenderMode" />
-            <ThemeSwitcher @rendermode="HeaderRenderMode" />
+            <div class="identity-layout__preferences">
+                <PreferencesSelector @rendermode="HeaderRenderMode" />
+            </div>
         </Controls>
         <Kicker><SectionOutlet SectionId="CardKickerSection" /></Kicker>
         <Title><SectionOutlet SectionId="CardTitleSection" /></Title>

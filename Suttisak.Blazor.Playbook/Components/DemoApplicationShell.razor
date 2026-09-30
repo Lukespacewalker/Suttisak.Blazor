@@ -15,6 +15,9 @@
     <HeaderActions>
         <span class="demo-app-environment">Playbook</span>
     </HeaderActions>
+    <AppearanceSwitcher>
+        <Suttisak.Blazor.UserInterface.Components.AppearanceSelector Label="Application appearance" />
+    </AppearanceSwitcher>
     <ThemeSwitcher>
         <div class="theme-selector" aria-label="Theme">
             <button class="@(State.Mode == "light" ? "active" : null)" type="button" aria-label="Use light theme" aria-pressed="@(State.Mode == "light" ? "true" : "false")" @onclick='() => ChangeModeAsync("light")'>☼</button>

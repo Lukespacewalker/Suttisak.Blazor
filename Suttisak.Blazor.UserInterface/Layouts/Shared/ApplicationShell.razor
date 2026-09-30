@@ -33,6 +33,10 @@
             <div class="app-shell__header-actions">@HeaderActions</div>
         }
         <div class="app-shell__preferences">
+            @if (AppearanceSwitcher is not null)
+            {
+                <div class="app-shell__preference app-shell__preference--appearance">@AppearanceSwitcher</div>
+            }
             @if (ThemeSwitcher is not null)
             {
                 <div class="app-shell__preference app-shell__preference--theme">@ThemeSwitcher</div>
@@ -54,6 +58,13 @@
                aria-label="@NavigationLabel">
             <div class="app-shell__navigation-scroll">
                 <div class="app-shell__navigation-preferences" aria-label="@MobilePreferencesLabel">
+                    @if (AppearanceSwitcher is not null)
+                    {
+                        <div>
+                            <span>@MobileAppearanceLabel</span>
+                            @AppearanceSwitcher
+                        </div>
+                    }
                     <div>
                         <span>@MobileThemeLabel</span>
                         @ThemeSwitcher
@@ -92,6 +103,7 @@
     [Parameter, EditorRequired] public RenderFragment Brand { get; set; } = default!;
     [Parameter, EditorRequired] public RenderFragment Navigation { get; set; } = default!;
     [Parameter] public RenderFragment? HeaderActions { get; set; }
+    [Parameter] public RenderFragment? AppearanceSwitcher { get; set; }
     [Parameter, EditorRequired] public RenderFragment ThemeSwitcher { get; set; } = default!;
     [Parameter, EditorRequired] public RenderFragment LanguageSwitcher { get; set; } = default!;
     [Parameter, EditorRequired] public RenderFragment Profile { get; set; } = default!;
@@ -108,6 +120,7 @@
     [Parameter] public string ExpandNavigationLabel { get; set; } = "Expand navigation";
     [Parameter] public string MobilePreferencesLabel { get; set; } = "Application preferences";
     [Parameter] public string MobileThemeLabel { get; set; } = "Theme";
+    [Parameter] public string MobileAppearanceLabel { get; set; } = "Appearance";
     [Parameter] public string MobileLanguageLabel { get; set; } = "Language";
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]

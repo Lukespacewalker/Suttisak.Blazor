@@ -92,6 +92,7 @@ public static class PlaybookSpecimenRegistry
             ["ProfileMenu"] = new(typeof(ProfileMenu), typeof(AccountNavigationSpecimen)),
             ["CultureSelector"] = new(typeof(CultureSelector), typeof(PreferencesSpecimen)),
             ["PreferencesSelector"] = new(typeof(PreferencesSelector), typeof(PreferencesSpecimen)),
+            ["AppearanceSelector"] = new(typeof(AppearanceSelector), typeof(PreferencesSpecimen)),
             ["ThemeSwitcher"] = new(typeof(ThemeSwitcher), typeof(PreferencesSpecimen)),
             ["CompanyFooter"] = new(typeof(CompanyFooter), typeof(SharedSurfacesSpecimen)),
             ["Hero"] = new(typeof(Hero), typeof(SharedSurfacesSpecimen))

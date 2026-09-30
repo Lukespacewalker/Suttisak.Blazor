@@ -1,13 +1,20 @@
 (() => {
     const storageKey = "suttisak-blazor:theme-settings";
+    const appearances = ["standard", "essential", "quiet-luxury"];
+    const defaultAppearance = appearances.includes(document.documentElement.dataset.defaultAppearance)
+        ? document.documentElement.dataset.defaultAppearance : "standard";
     let preference = "system";
+    let appearance = defaultAppearance;
 
     try {
-        const mode = JSON.parse(localStorage.getItem(storageKey) ?? "{}")?.mode;
+        const settings = JSON.parse(localStorage.getItem(storageKey) ?? "{}");
+        const mode = settings?.mode;
         if (mode === "light" || mode === "dark") preference = mode;
+        if (appearances.includes(settings?.appearance)) appearance = settings.appearance;
     } catch {
         // Storage can be unavailable in private browsing; use the system scheme instead.
     }
+    let savedAppearance = appearance;
 
     const scheme = preference === "dark"
         || (preference === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
@@ -15,8 +22,19 @@
         : "light";
 
     document.documentElement.setAttribute("data-theme", scheme);
+    document.documentElement.setAttribute("data-appearance", appearance);
+
+    const saveSettings = () => {
+        try {
+            localStorage.setItem(storageKey, JSON.stringify({ mode: preference, appearance: savedAppearance }));
+        } catch {
+            // Preferences still work in memory when browser storage is unavailable.
+        }
+    };
 
     const synchronizeThemeSelectors = (root = document) => {
+        if (document.documentElement.dataset.appearance !== appearance)
+            document.documentElement.dataset.appearance = appearance;
         root.querySelectorAll("[data-theme-selector]").forEach(selector => {
             selector.querySelectorAll("[data-theme-preference]").forEach(button => {
                 const selected = button.dataset.themePreference === preference;
@@ -24,15 +42,33 @@
                 button.setAttribute("aria-pressed", String(selected));
             });
         });
+        root.querySelectorAll("[data-appearance-selector]").forEach(selector => {
+            if (selector.value !== appearance) selector.value = appearance;
+        });
     };
+
+    const setAppearance = (value, persist = true) => {
+        if (!appearances.includes(value)) return;
+        appearance = value;
+        document.documentElement.setAttribute("data-appearance", appearance);
+        if (persist) {
+            savedAppearance = appearance;
+            saveSettings();
+        }
+        synchronizeThemeSelectors();
+        document.dispatchEvent(new CustomEvent("suttisak-appearance-change", { detail: appearance }));
+    };
+
+    window.suttisakAppearance = { get: () => appearance, set: setAppearance };
+    document.addEventListener("change", event => {
+        if (event.target instanceof HTMLSelectElement && event.target.matches("[data-appearance-selector]")) {
+            setAppearance(event.target.value);
+        }
+    });
 
     const setTheme = (nextPreference) => {
         preference = nextPreference === "light" || nextPreference === "dark" ? nextPreference : "system";
-        try {
-            localStorage.setItem(storageKey, JSON.stringify({ mode: preference }));
-        } catch {
-            // Applying the choice still works when persistent storage is unavailable.
-        }
+        saveSettings();
 
         const nextScheme = preference === "dark"
             || (preference === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
@@ -104,12 +140,19 @@
     addEventListener("storage", event => {
         if (event.key !== storageKey) return;
         try {
-            const stored = JSON.parse(event.newValue ?? "{}")?.mode;
-            preference = stored === "light" || stored === "dark" ? stored : "system";
+            const settings = JSON.parse(event.newValue ?? "{}");
+            preference = settings?.mode === "light" || settings?.mode === "dark" ? settings.mode : "system";
+            appearance = appearances.includes(settings?.appearance) ? settings.appearance : defaultAppearance;
         } catch {
             preference = "system";
+            appearance = defaultAppearance;
         }
-        setTheme(preference);
+        savedAppearance = appearance;
+        // Do not write storage in response to a storage event: other tabs must
+        // observe the same change without an event feedback loop.
+        document.documentElement.setAttribute("data-theme", preference === "dark"
+            || preference === "system" && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        setAppearance(appearance, false);
     });
 
     if (document.readyState === "loading") {

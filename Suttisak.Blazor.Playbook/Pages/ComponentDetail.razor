@@ -275,7 +275,7 @@
 
     private string IsolatedSpecimenHref => Component is null
         ? string.Empty
-        : $"specimens/{PreviewComponent!.Slug}?theme={Uri.EscapeDataString(State.Theme)}&mode={Uri.EscapeDataString(State.Mode)}";
+        : $"specimens/{PreviewComponent!.Slug}?theme={Uri.EscapeDataString(State.Theme)}&mode={Uri.EscapeDataString(State.Mode)}&appearance={Uri.EscapeDataString(State.Appearance)}";
 
     private string UsageExample => Component is null ? string.Empty : PlaybookUsageExamples.For(Component);
     private bool HasCuratedUsage => Component is not null && PlaybookUsageExamples.HasCuratedExample(Component);

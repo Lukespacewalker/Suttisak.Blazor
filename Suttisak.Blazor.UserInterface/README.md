@@ -13,6 +13,42 @@ See [`Components/Marketing/README.md`](Components/Marketing/README.md) for the M
 
 Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 
+## Appearance
+
+The package includes **Standard**, **Essential**, and **Quiet Luxury**. Appearance
+is independent of Light/Dark/System and is remembered per browser origin. Shared
+MainLayout, IdentityLayout, and PreferencesSelector include AppearanceSelector;
+custom layouts can compose `<AppearanceSelector />` themselves.
+
+Set a first-visit default on the host's `html` element before loading the early
+bootstrap. A valid saved choice takes precedence. Without a default, Standard is
+used. Load appearance CSS after application and isolated styles:
+
+```razor
+<html data-default-appearance="quiet-luxury" data-appearance="quiet-luxury">
+<head>
+    <script src="@Assets["_content/Suttisak.Blazor.UserInterface/js/theme-bootstrap.js"]"></script>
+    <link rel="stylesheet" href="@Assets["_content/Suttisak.Blazor.UserInterface/css/main.css"]" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["MyApplication.styles.css"]" />
+    <link rel="stylesheet" href="@Assets["_content/Suttisak.Blazor.UserInterface/css/appearance.css"]" />
+</head>
+```
+
+Quiet Luxury uses neutral emphasis by default. Applications can author
+`--app-quiet-brand`, `--app-quiet-brand-soft`, and `--app-quiet-brand-border` with
+explicit `light-dark(...)` values for muted brand colors. Standard and Essential
+continue using the application's original brand tokens. Shared semantic status
+colors retain their roles.
+
+`AppearanceSelector` accepts optional `Id` and `Label`. The browser API
+`window.suttisakAppearance.get()` / `.set("essential")` supports application-owned
+settings pages; `.set(value, false)` applies a temporary preview. Invalid values
+are ignored, and choices remain usable when storage is unavailable.
+
+The earlier Playbook-only appearance study is superseded by this package
+contract. Playbook retains its application palettes and gallery presentation.
+
 ## Global CSS bundling
 
 The package ships an opt-in MSBuild target that concatenates application global CSS into one static-web-asset file. It needs no Node.js or `package.json`. Keep the entry file and partials as source-only files, then declare their intended order in the consuming project's `.csproj`:

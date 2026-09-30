@@ -1,0 +1,132 @@
+/* Application palettes and Playbook presentation only. Shared appearances live in the UI library. */
+.playbook.theme-audiogramiq[data-appearance="quiet-luxury"] {
+    --app-quiet-brand: light-dark(#245e61, #9dbfbb);
+    --app-quiet-brand-soft: light-dark(#e6efec, #293734);
+    --app-quiet-brand-border: light-dark(#a5bdb7, #627f79);
+}
+
+.playbook.theme-bafsworkout[data-appearance="quiet-luxury"] {
+    --app-quiet-brand: light-dark(#59446b, #bca9cb);
+    --app-quiet-brand-soft: light-dark(#eee8ef, #352e3c);
+    --app-quiet-brand-border: light-dark(#b9a9c0, #7d6b8b);
+}
+
+.playbook.theme-coekpi[data-appearance="quiet-luxury"] {
+    --app-quiet-brand: light-dark(#355b79, #a5bed1);
+    --app-quiet-brand-soft: light-dark(#e7edf1, #2b343c);
+    --app-quiet-brand-border: light-dark(#a9bcc9, #657e91);
+}
+
+.playbook.theme-ergotrack[data-appearance="quiet-luxury"] {
+    --app-quiet-brand: light-dark(#504b70, #b3afd0);
+    --app-quiet-brand-soft: light-dark(#eceaf1, #32303e);
+    --app-quiet-brand-border: light-dark(#b1adc5, #77728e);
+}
+
+.playbook.theme-mentalinsight[data-appearance="quiet-luxury"] {
+    --app-quiet-brand: light-dark(#80465b, #cda7b5);
+    --app-quiet-brand-soft: light-dark(#f1e7e9, #3e2e34);
+    --app-quiet-brand-border: light-dark(#c4a8b1, #936c7b);
+}
+
+.playbook.theme-healthinsight[data-appearance="quiet-luxury"] {
+    --app-quiet-brand: light-dark(#306779, #9abfcb);
+    --app-quiet-brand-soft: light-dark(#e5eef0, #29373d);
+    --app-quiet-brand-border: light-dark(#a2bdc4, #5e818c);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__lab {
+    border-radius: var(--app-radius-xl);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__preview-frame {
+    background: var(--app-surface);
+    border-color: var(--app-border);
+    border-radius: var(--app-radius-lg);
+    box-shadow: var(--app-shadow-sm);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__controls {
+    border-radius: var(--app-radius-lg);
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-bar, .app-shell__header) {
+    background: var(--app-surface);
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.app-card, .app-grid-shell, .glass-card, .demo-overview-card, .playbook-stack) {
+    border-radius: var(--app-radius-lg);
+    box-shadow: var(--app-shadow-sm);
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.app-button, .playbook-home__actions a, .playbook-brand span) {
+    border-radius: var(--app-radius-sm);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-control label, .playbook-kicker, .demo-overview-card__index) {
+    font-weight: 600;
+    letter-spacing: .14em;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-nav a, .playbook-nav-group > summary) {
+    font-weight: 600;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__hero h1, .playbook-intro h1, .marketing-hero__copy h1, .demo-overview-card--feature h2) {
+    font-family: var(--quiet-display-font);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -.035em;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__hero h1 {
+    max-width: 16ch;
+    font-size: clamp(3rem, 6.2vw, 6.5rem);
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__hero h1 em {
+    font-style: italic;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__hero::before {
+    content: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__signal {
+    border-radius: var(--app-radius-lg);
+    background: var(--app-surface);
+    box-shadow: var(--app-shadow-md);
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__signal-orbit {
+    border-radius: 0;
+    border-color: var(--app-border);
+    outline-style: solid;
+    outline-offset: .5rem;
+    background: transparent;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__signal-orbit strong {
+    width: auto;
+    border-radius: 0;
+    background: transparent;
+    color: var(--app-accent);
+    font-family: var(--quiet-display-font);
+    font-size: 3.5rem;
+    font-weight: 400;
+    transform: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] .demo-overview-card--feature {
+    background: var(--app-brand);
+}
+
+.playbook[data-appearance="quiet-luxury"] .demo-overview-metric {
+    font-family: var(--quiet-display-font);
+    font-weight: 400;
+    letter-spacing: -.025em;
+}

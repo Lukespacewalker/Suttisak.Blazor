@@ -2,9 +2,9 @@
 @inject IThemeService ThemeService
 @inject IJSRuntime JsRuntime
 @inject NavigationManager Navigation
-@implements IDisposable
+@implements IAsyncDisposable
 
-<div class="playbook theme-@State.Theme" data-viewport="@State.Viewport" data-color-mode="@State.Mode" style="color-scheme: @ColorSchemeValue;">
+<div class="playbook app-appearance-scope theme-@State.Theme" data-appearance="@State.Appearance" data-viewport="@State.Viewport" data-color-mode="@State.Mode" style="color-scheme: @ColorSchemeValue;">
     <a class="playbook-skip-link" href="#playbook-main-content" @onclick="FocusMainContentAsync" @onclick:preventDefault>Skip to main content</a>
 
     <header class="playbook-bar">
@@ -17,7 +17,7 @@
             <NavLink href="" Match="NavLinkMatch.All">Home</NavLink>
             <NavLink href="foundations">Foundations</NavLink>
             <details class="playbook-nav-group">
-                <summary class="@(IsComponentsActive ? "active" : null)">Components <span aria-hidden="true">⌄</span></summary>
+                <summary class="@(IsComponentsActive ? "active" : null)">Components <Suttisak.Blazor.Icons.Icon Name="ChevronDown" Size="16" Class="playbook-nav-chevron" /></summary>
                 <div class="playbook-nav-group__menu">
                     <a class="playbook-nav-group__lead" href="components"><strong>Component browser</strong><span>Search components and view their API</span></a>
                     <span class="playbook-nav-group__label">Browse categories</span>
@@ -28,7 +28,7 @@
                 </div>
             </details>
             <details class="playbook-nav-group">
-                <summary class="@(IsPatternsActive ? "active" : null)">Patterns <span aria-hidden="true">⌄</span></summary>
+                <summary class="@(IsPatternsActive ? "active" : null)">Patterns <Suttisak.Blazor.Icons.Icon Name="ChevronDown" Size="16" Class="playbook-nav-chevron" /></summary>
                 <div class="playbook-nav-group__menu">
                     <a class="playbook-nav-group__lead" href="patterns"><strong>Pattern browser</strong><span>Examples that combine components into pages</span></a>
                     <span class="playbook-nav-group__label">Page patterns</span>
@@ -41,10 +41,17 @@
             <NavLink href="guidelines">Guidelines</NavLink>
         </nav>
 
-        <div class="playbook-control">
-            <label for="theme-select">Application</label>
-            <AppSelect TValue="string" Id="theme-select" Options="@ThemeOptions"
-                       @bind-Value="State.Theme" @bind-Value:after="ChangeThemeAsync" />
+        <div class="playbook-controls">
+            <div class="playbook-control">
+                <label for="theme-select">Application</label>
+                <AppSelect TValue="string" Id="theme-select" Options="@ThemeOptions"
+                           @bind-Value="State.Theme" @bind-Value:after="ChangeThemeAsync" />
+            </div>
+            <div class="playbook-control">
+                <label for="appearance-select">Appearance</label>
+                <AppSelect TValue="string" Id="appearance-select" Options="@AppearanceOptions"
+                           @bind-Value="State.Appearance" @bind-Value:after="ChangeAppearanceAsync" />
+            </div>
         </div>
 
         <div class="playbook-segment playbook-segment--theme" role="group" aria-label="Color scheme">
@@ -92,6 +99,12 @@
     private string ColorSchemeValue => State.Mode == "auto" ? "light dark" : State.Mode;
     private static AppSelectOption<string>[] ThemeOptions =>
         PlaybookCatalog.Themes.Select(theme => new AppSelectOption<string>(theme.Key, theme.Name)).ToArray();
+    private static readonly AppSelectOption<string>[] AppearanceOptions =
+    [
+        new("standard", "Standard"),
+        new("quiet-luxury", "Quiet Luxury"),
+        new("essential", "Essential")
+    ];
 
     protected override void OnInitialized()
     {
@@ -103,6 +116,11 @@
     {
         if (firstRender)
         {
+            if (QueryValue(Navigation.ToAbsoluteUri(Navigation.Uri), "appearance") is null)
+                State.TrySetAppearance(await JsRuntime.InvokeAsync<string>("suttisakAppearance.get"));
+            await JsRuntime.InvokeVoidAsync("suttisakAppearance.set", State.Appearance, false);
+            _appearanceReference = DotNetObjectReference.Create(this);
+            await JsRuntime.InvokeVoidAsync("playbookAppearance.watch", _appearanceReference);
             await ApplyThemeAsync();
         }
     }
@@ -128,6 +146,21 @@
         await ReplaceQueryParameterAsync("globalViewport", State.Viewport);
     }
 
+    private async Task ChangeAppearanceAsync()
+    {
+        await JsRuntime.InvokeVoidAsync("suttisakAppearance.set", State.Appearance);
+        await ReplaceQueryParameterAsync("appearance", State.Appearance);
+    }
+
+    private DotNetObjectReference<PlaybookShell>? _appearanceReference;
+
+    [JSInvokable]
+    public async Task OnAppearanceChanged(string appearance)
+    {
+        if (State.Appearance == appearance || !State.TrySetAppearance(appearance)) return;
+        await ReplaceQueryParameterAsync("appearance", State.Appearance);
+    }
+
     private async Task ApplyThemeAsync()
     {
         var theme = PlaybookCatalog.Themes.First(value => value.Key == State.Theme);
@@ -149,6 +182,7 @@
         State.TrySetTheme(QueryValue(uri, "theme"));
         State.TrySetMode(QueryValue(uri, "mode"));
         State.TrySetViewport(QueryValue(uri, "globalViewport"));
+        State.TrySetAppearance(QueryValue(uri, "appearance"));
     }
 
     private static string? QueryValue(Uri uri, string name)
@@ -181,5 +215,11 @@
 
     private void HandleStateChanged() => _ = InvokeAsync(StateHasChanged);
 
-    public void Dispose() => State.Changed -= HandleStateChanged;
+    public async ValueTask DisposeAsync()
+    {
+        State.Changed -= HandleStateChanged;
+        try { await JsRuntime.InvokeVoidAsync("playbookAppearance.unwatch"); }
+        catch (JSDisconnectedException) { }
+        _appearanceReference?.Dispose();
+    }
 }

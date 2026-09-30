@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "componentCount": 95,
-  "pageCount": 77,
+  "componentCount": 96,
+  "pageCount": 78,
   "pages": [
     {
       "name": "AppTextBox",
@@ -422,6 +422,15 @@
       "href": "components/shell-profile-control",
       "components": [
         "ShellProfileControl"
+      ]
+    },
+    {
+      "name": "AppearanceSelector",
+      "slug": "appearance-selector",
+      "category": "Preferences \u0026 time",
+      "href": "components/appearance-selector",
+      "components": [
+        "AppearanceSelector"
       ]
     },
     {
@@ -1831,6 +1840,24 @@
       "pageSlug": "shell-profile-control"
     },
     {
+      "name": "AppearanceSelector",
+      "slug": "appearance-selector",
+      "category": "Preferences \u0026 time",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Persistent selection of Standard, Essential, or Quiet Luxury, independent of color mode.",
+      "tags": [
+        "appearance",
+        "essential",
+        "quiet-luxury",
+        "preferences"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [],
+      "documentationHref": "components/appearance-selector",
+      "pageSlug": "appearance-selector"
+    },
+    {
       "name": "CultureSelector",
       "slug": "culture-selector",
       "category": "Preferences \u0026 time",
@@ -2550,6 +2577,7 @@
       "category": "Preferences \u0026 time",
       "status": "stable",
       "components": [
+        "AppearanceSelector",
         "CultureSelector",
         "PreferencesSelector",
         "ThemeSwitcher",

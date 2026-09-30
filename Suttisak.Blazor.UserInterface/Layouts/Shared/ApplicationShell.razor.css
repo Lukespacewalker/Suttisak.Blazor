@@ -64,6 +64,7 @@
 .app-shell__profile { display: flex; min-width: 0; align-items: center; }
 
 .app-shell__preferences { margin-inline-start: auto; gap: .35rem; }
+.app-shell__preference--appearance { min-width: 0; }
 
 .app-shell__menu-button {
     display: grid;
@@ -183,6 +184,7 @@
     .app-shell__navigation-scroll { padding-top: .65rem; }
     .app-shell__navigation-preferences { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-bottom: 1rem; padding: .65rem; border: 1px solid var(--app-border); border-radius: .2rem .8rem .2rem .8rem; background: var(--app-surface-muted); }
     .app-shell__navigation-preferences > div { display: grid; align-content: start; gap: .38rem; }
+    .app-shell__navigation-preferences:has([data-appearance-selector]) > div:first-child { grid-column: 1 / -1; }
     .app-shell__navigation-preferences > div > span { color: var(--app-foreground-muted); font-size: .58rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 }
 

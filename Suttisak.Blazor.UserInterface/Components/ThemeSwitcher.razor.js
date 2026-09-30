@@ -79,7 +79,8 @@ export function unsubscribeTheme(subscriptionId) {
 export function setTheme(preference) {
     const normalizedPreference = normalizePreference(preference);
     try {
-        localStorage.setItem(storageKey, JSON.stringify({ mode: normalizedPreference }));
+        const settings = JSON.parse(localStorage.getItem(storageKey) ?? "{}");
+        localStorage.setItem(storageKey, JSON.stringify({ ...settings, mode: normalizedPreference }));
     } catch {
         // Applying the choice still works when persistent storage is unavailable.
     }

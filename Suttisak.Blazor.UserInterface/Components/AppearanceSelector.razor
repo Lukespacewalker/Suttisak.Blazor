@@ -1,0 +1,21 @@
+@using System.Globalization
+@using Suttisak.Blazor.UserInterface.Components.Common
+
+<div class="appearance-selector">
+    <AppSelect TValue="string" Id="@InputId" Label="@AccessibleLabel" Options="@Options"
+               Value='@("standard")' data-appearance-selector />
+</div>
+
+@code {
+    private readonly string _generatedId = $"appearance-{Guid.NewGuid():N}";
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    private string InputId => Id ?? _generatedId;
+    private string AccessibleLabel => Label ?? (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "th" ? "รูปแบบหน้าตา" : "Appearance");
+    private static readonly AppSelectOption<string>[] Options =
+    [
+        new("standard", "Standard"),
+        new("essential", "Essential"),
+        new("quiet-luxury", "Quiet Luxury")
+    ];
+}

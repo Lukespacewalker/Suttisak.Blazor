@@ -1,0 +1,94 @@
+/* Application palettes and Playbook presentation only. Shared appearances live in the UI library. */
+.playbook[data-appearance="essential"] :is(.playbook-bar, .app-shell__header, .page-heading, .app-page__intro,
+    .component-detail__preview-frame, .playbook-home__signal, .playbook-stack) {
+    background: var(--app-surface);
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.playbook[data-appearance="essential"] :is(.page-heading, .component-detail__lab, .component-detail__preview-frame,
+    .component-detail__controls, .component-detail__isolated-stage, .component-detail__isolated-frame,
+    .component-detail__documentation, .app-card, .app-grid-shell, .glass-card, .demo-overview-card,
+    .demo-data-panel, .playbook-home__signal, .playbook-stack) {
+    border-color: var(--app-border);
+    border-radius: var(--app-radius-lg);
+    box-shadow: none;
+}
+
+.playbook[data-appearance="essential"] :is(.component-detail__isolated-stage, .component-detail__documentation) {
+    background: var(--app-surface-muted);
+}
+
+.playbook[data-appearance="essential"] .page-heading::after,
+.playbook[data-appearance="essential"] .playbook-home__hero::before {
+    content: none;
+}
+
+.playbook[data-appearance="essential"] :is(.app-button, .playbook-home__actions a, .playbook-brand span) {
+    border-radius: var(--app-radius-sm);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+.playbook[data-appearance="essential"] .demo-data-search {
+    height: auto;
+    border-color: var(--essential-input-border);
+    border-radius: var(--app-radius-sm);
+    background: var(--app-surface);
+}
+
+.playbook[data-appearance="essential"] .demo-data-search .app-form-control__input-wrap {
+    border: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.playbook[data-appearance="essential"] .demo-data-search:focus-within {
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+.playbook[data-appearance="essential"] :is(.page-heading h1, .component-detail__hero h1, .demo-overview-card h2) {
+    font-family: var(--app-font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+}
+
+.playbook[data-appearance="essential"] :is(.playbook-nav a, .playbook-nav-group > summary, .playbook-control label) {
+    font-weight: 600;
+}
+
+.playbook[data-appearance="essential"] :is(.playbook-home__hero h1, .playbook-intro h1, .marketing-hero__copy h1) {
+    font-family: var(--app-font-heading);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -.035em;
+}
+
+.playbook[data-appearance="essential"] .playbook-home__hero h1 {
+    max-width: 16ch;
+    font-size: clamp(2.75rem, 5.5vw, 5.5rem);
+}
+
+.playbook[data-appearance="essential"] .playbook-home__signal-orbit {
+    border-radius: var(--app-radius-lg);
+    outline: none;
+    background: var(--app-surface-muted);
+}
+
+.playbook[data-appearance="essential"] .playbook-home__signal-orbit strong {
+    border-radius: var(--app-radius-sm);
+    transform: none;
+}
+
+.playbook[data-appearance="essential"] .demo-overview-card--feature {
+    background: var(--app-brand);
+}
+
+.playbook[data-appearance="essential"] .demo-overview-metric {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.025em;
+}

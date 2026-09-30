@@ -31,7 +31,7 @@
 | `Suttisak.Blazor.UserInterface.Tests` | Fast bUnit contract tests |
 | `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage |
 
-The Playbook maintains a metadata-driven catalog of **93 public components**, each with a stable detail route. **76 components have interactive mappings across 26 distinct executable workbenches**, and a separate library teaches **8 first-class composition patterns**. Components that cannot be exercised honestly in isolation remain explicit **Pattern** or **Reference** coverage instead of receiving decorative fake demos.
+The Playbook maintains a metadata-driven catalog of **96 public components**, each with a stable detail route. **79 components have interactive mappings across 26 distinct executable workbenches**, and a separate library teaches **8 first-class composition patterns**. Components that cannot be exercised honestly in isolation remain explicit **Pattern** or **Reference** coverage instead of receiving decorative fake demos.
 
 ### Design principles
 
@@ -68,6 +68,34 @@ The Playbook exposes:
 - `/tokens` and `/foundations` for the manifest-driven design-token explorer
 - `/guidelines` for accessibility, theming, responsive behavior, and maturity rules
 - `/component-manifest.json` for agents and tooling
+
+The **Appearance** selector offers **Standard**, **Quiet Luxury**, and **Essential**.
+Quiet Luxury provides
+warm ivory or charcoal surfaces, restrained application-colored accents, subtle elevation,
+and serif typography for all headings, including component previews, with the
+existing Latin/Thai fonts for functional text. Heading typography follows the
+shared `--app-font-heading` token; this supersedes the earlier selective
+page-title overrides. Thai glyphs retain the Sarabun fallback.
+Try `/application-shell?appearance=quiet-luxury` or `/?appearance=quiet-luxury`.
+Appearance is independent of the six application identities, supports light,
+dark, and system mode, and follows constrained component previews. The earlier
+Playbook-only study is superseded by the shared appearance contract in UI 1.0.25:
+consumers can offer all three choices through `AppearanceSelector` or the shared
+layouts. See [consumer appearance setup](Suttisak.Blazor.UserInterface/README.md#appearance).
+The earlier uniform bronze palette is superseded by explicit light/dark palettes
+for each application in `Suttisak.Blazor.Playbook/wwwroot/quiet-luxury.css`.
+Appearance controls neutral surfaces, typography, radius, and elevation; the
+application controls brand emphasis. Quiet Luxury uses muted teal, plum, blue,
+violet, rose, or blue-teal accents while preserving each application's logo.
+
+**Essential** uses neutral white/slate surfaces, the existing Latin/Thai sans-serif
+fonts, clear input borders, small corner radii, and flat panels for everyday form
+and table work. It retains each application's primary color and semantic feedback
+colors. Try `/application-shell/records?appearance=essential` or
+`/components/app-calendar-picker?appearance=essential`. Shared neutral overrides
+live in `Suttisak.Blazor.UserInterface/wwwroot/css/appearance.css`; the Playbook
+styles retain gallery-specific presentation. The same light/dark/system and
+isolated-preview controls apply to all three appearances.
 
 ### Consume a package
 

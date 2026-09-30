@@ -4,11 +4,13 @@ public sealed class PlaybookState
 {
     private static readonly string[] Modes = ["light", "dark", "auto"];
     private static readonly string[] Viewports = ["wide", "narrow"];
+    private static readonly string[] Appearances = ["standard", "quiet-luxury", "essential"];
 
     private string _theme = "audiogramiq";
     private string _mode = "light";
     private string _viewport = "wide";
     private string _language = "en";
+    private string _appearance = "standard";
 
     public event Action? Changed;
 
@@ -16,6 +18,7 @@ public sealed class PlaybookState
     public string Mode { get => _mode; set => Set(ref _mode, value); }
     public string Viewport { get => _viewport; set => Set(ref _viewport, value); }
     public string Language { get => _language; set => Set(ref _language, value); }
+    public string Appearance { get => _appearance; set => Set(ref _appearance, value); }
 
     public bool TrySetTheme(string? value)
     {
@@ -30,6 +33,8 @@ public sealed class PlaybookState
     public bool TrySetMode(string? value) => TrySetKnownValue(value, Modes, mode => Mode = mode);
 
     public bool TrySetViewport(string? value) => TrySetKnownValue(value, Viewports, viewport => Viewport = viewport);
+
+    public bool TrySetAppearance(string? value) => TrySetKnownValue(value, Appearances, appearance => Appearance = appearance);
 
     private void Set(ref string field, string value)
     {

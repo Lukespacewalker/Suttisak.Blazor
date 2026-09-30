@@ -1,0 +1,2 @@
+.identity-layout__preferences ::deep .preferences-selector__desktop { display: none; }
+.identity-layout__preferences ::deep .preferences-selector__mobile { display: block; }
