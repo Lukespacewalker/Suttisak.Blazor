@@ -4,6 +4,11 @@ import AxeBuilder from '@axe-core/playwright';
 for (const route of ['/', '/components', '/components/app-card', '/patterns', '/foundations', '/guidelines', '/grid-performance', '/landing']) {
   test(`quiet luxury applies display typography to all headings on ${route}`, async ({ page }) => {
     await page.goto(`${route}?appearance=quiet-luxury`);
+    if (route === '/grid-performance') {
+      // This page initializes 100,000 records before mounting its shell.
+      // Use the existing grid tests' startup budget; appearance checks stay at 5s.
+      await expect(page.getByRole('table', { name: '100000 virtual records' })).toBeVisible({ timeout: 20_000 });
+    }
     await expect(page.locator('.playbook').first()).toHaveAttribute('data-appearance', 'quiet-luxury');
     const headings = page.locator('.playbook :is(h1, h2, h3, h4, h5, h6, [role="heading"], .app-heading)');
     await expect(headings.first()).toBeVisible();
