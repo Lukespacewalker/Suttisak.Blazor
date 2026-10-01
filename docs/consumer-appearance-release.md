@@ -49,9 +49,9 @@ metadata, and Quiet Luxury Playbook presentation refinements. Existing native
 checkbox specimens and unrelated workbench changes remain outside this release.
 
 - [x] Verify the isolated release build, unit/browser tests, and NuGet package.
-- [ ] Commit/push the library release and wait for `ci` success.
-- [ ] Dispatch publication for UI 1.0.26 only and confirm package availability.
-- [ ] Restore/build and commit/push every consumer's Release package references,
+- [x] Commit/push the library release and wait for `ci` success.
+- [x] Dispatch publication for UI 1.0.26 only and confirm package availability.
+- [x] Restore/build and commit/push every consumer's Release package references,
       including the previously prepared HealthInsight/AudiogramIQ theme changes.
 
 The isolated checkout passed the Release solution build, all 77 shared unit
@@ -61,9 +61,49 @@ contains appearance CSS, theme bootstrap, and scoped CardMenu content/subtitle
 styles. The earlier MentalInsight Debug build exercises the same shared component
 source. Existing Identity `BL0008` remains outside this correction.
 
-## Remaining release sequence
+Library release commit:
+[`64239dc2e9e348f7c45e0b2205d38fbd0e157c2e`](https://github.com/Lukespacewalker/Suttisak.Blazor/commit/64239dc2e9e348f7c45e0b2205d38fbd0e157c2e).
+[CI run 36808802643](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/36808802643)
+passed, including 285 Chromium tests and NuGet package validation. Publication
+was dispatched for the UI package only through
+[release run 36809937125](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/36809937125).
 
-The repository [agent guide](../AGENTS.md) requires publication before consumers change Release PackageReferences or commit/push the update. Version 1.0.25 is available; 1.0.26 publication is pending this follow-up.
+## Publication and consumer evidence
+
+Release run 36809937125 passed, including 77 shared unit tests and 285 Chromium
+tests. GitHub Packages exposes UI 1.0.26 (version ID 1319509470). The downloaded
+package's NuSpec repository commit is `64239dc2e9e348f7c45e0b2205d38fbd0e157c2e`.
+
+All six consumers restored and built in Release using the published package.
+Their 11 UI PackageReferences are 1.0.26; Debug ProjectReferences are unchanged.
+The committed Release assets were checked for package entries rather than sibling
+project entries. The following consumer checks passed before commit/push:
+
+| Consumer | Published commit | Verification |
+| --- | --- | --- |
+| AudiogramIQ | [b032634](https://github.com/Lukespacewalker/AudiogramIQ/commit/b0326340398c677fffd35726fcbbf45df079e193) | Release build; 21 presentation and 11 architecture tests |
+| BafsWorkout | [7623fcb](https://github.com/Lukespacewalker/BafsWorkout/commit/7623fcb6fc501b4e7643da575afa80677f73c4d0) | Release build; 41 web and 23 client tests |
+| HealthInsight | [082f1bb1](https://github.com/Lukespacewalker/HealthInsight/commit/082f1bb1592af2faf4b00cb3bae6fe185819cac3) | Release build; 18 architecture and 7 summary render tests |
+| CoeKPI | [fec3e1f](https://github.com/Lukespacewalker/CoeKPI/commit/fec3e1f5b499ba407406ee9c7f75c139f5c33d5a) | Release solution build; all 73 solution tests, including disposable PostgreSQL integration |
+| ErgoTrack | [e6530e6](https://github.com/Lukespacewalker/ErgoTrack/commit/e6530e6526a9349b72580524036f80cef9d953fd) | Release build; 24 component, 222 unit, 32 architecture, and 77 integration tests |
+| MentalInsight | [1c9b3d9](https://github.com/Lukespacewalker/MentalInsight/commit/1c9b3d9036635f41927bc280984da1f80afb0084) | Release build; 60 client and 36 architecture tests |
+
+ErgoTrack's initial integration run selected the first native select, which now
+belongs to appearance preferences. Its test now targets `name="Input.CompanyId"`
+and checks the persisted company options within that field. No registration or
+authorization implementation changed; all 77 integration tests passed afterward.
+
+Release commits used clean existing checkouts to preserve unrelated work.
+AudiogramIQ and HealthInsight primary checkouts retain their dirty/staged work
+and have matching UI package references. The primary library checkout also
+retains unrelated Playbook work and its earlier branch position. Package builds
+and consumer checks above cover the published snapshots, not those unrelated
+dirty deltas. Existing compiler warnings were retained. Consumer application
+image publication was not dispatched by this package release.
+
+## Release sequence (completed)
+
+The repository [agent guide](../AGENTS.md) requires publication before consumers change Release PackageReferences or commit/push the update. All steps below are completed for 1.0.26; the evidence above supersedes the earlier pending-publication status.
 
 1. Push the prepared library commit and wait for its `ci` workflow to pass.
 2. Dispatch and watch publication for the bumped package only:
@@ -77,4 +117,4 @@ The repository [agent guide](../AGENTS.md) requires publication before consumers
 4. Restore then build each consumer in Release sequentially, with matching configuration. Include only the theme files and package-reference hunks owned by this release; preserve unrelated dirty changes, including existing AudiogramIQ import work and HealthInsight Titmus work.
 5. Commit and push the verified consumer updates. Only HealthInsight and AudiogramIQ change their default appearance; the other four receive the package update.
 
-Consumer Release builds remain pending publication; Debug validation does not prove package restoration. Do not push consumers with their current older package references: those packages lack the new appearance asset and selector.
+Consumer Release builds now verify the package-reference path after publication.

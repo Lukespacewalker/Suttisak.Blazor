@@ -62,7 +62,18 @@ and keeps unrelated Playbook work out of the release. Consumer verification must
 cover the exact release changes while preserving unrelated dirty/staged work.
 
 - [x] Verify the isolated shared release snapshot and its package assets.
-- [ ] Commit/push, wait for library CI, then dispatch and confirm publication.
-- [ ] Update all six consumers after package availability, restore/build Release
+- [x] Commit/push, wait for library CI, then dispatch and confirm publication.
+- [x] Update all six consumers after package availability, restore/build Release
       sequentially, run affected checks, and commit/push only owned release changes.
-- [ ] Record workflow/consumer evidence and reconcile the local release changes.
+- [x] Record workflow/consumer evidence and reconcile the local release changes.
+
+**Publication evidence:** Shared release commit `64239dc` passed CI run
+36808802643, including 285 Chromium tests and package validation. Release run
+36809937125 passed and published UI 1.0.26; the downloaded NuSpec confirms the
+same full release SHA. All 11 consumer Release PackageReferences were updated,
+all six consumers restored/built in Release and passed their affected checks,
+and all six release commits were pushed. ErgoTrack's test selector was corrected
+to target the company field after appearance preferences added another select;
+all 77 integration tests passed afterward. See the current
+[release handoff](../../consumer-appearance-release.md) for commit links and
+verification scopes. Unrelated dirty/staged work remains preserved.
