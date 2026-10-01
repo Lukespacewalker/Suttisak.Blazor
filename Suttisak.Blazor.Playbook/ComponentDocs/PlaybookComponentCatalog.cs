@@ -66,7 +66,7 @@ public static class PlaybookComponentCatalog
             ["AppCard"] = "General content surface with consistent border, radius, padding, and theme behavior.",
             ["AppDivider"] = "Semantic visual separator for dividing related regions without application-specific styling.",
             ["AppStack"] = "Flow layout primitive that applies consistent spacing between composed children.",
-            ["CardMenu"] = "Compact action menu surface intended for contextual operations associated with a card.",
+            ["CardMenu"] = "Compact action menu with a stacked title and muted subtitle that wrap within constrained containers.",
             ["CompanyFooter"] = "Reusable company-footer composition for organization identity and supporting links.",
             ["Hero"] = "Application hero surface for a prominent heading, explanation, and supporting content.",
             ["Pill"] = "Compact badge-like label for status, metadata, or short categorical information.",

@@ -104,6 +104,10 @@ provided for backward compatibility. `Disabled` prevents either action. Its
 `Title` and `Subtitle` are rendered as text, so use `ChildContent` for trusted,
 application-owned rich markup.
 
+The title and muted subtitle occupy separate rows with token-based spacing.
+Long text wraps within constrained containers; the optional leading icon and
+trailing chevron remain visible.
+
 `AppTabs` supports ArrowLeft, ArrowRight, Home, and End from a tab. Provide an
 `Id` for each `AppTab` and bind `ActiveId` when a parent needs to own the active
 tab; without that binding, the first tab is selected by default.

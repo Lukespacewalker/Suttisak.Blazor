@@ -58,42 +58,24 @@ else
     private string ClassValue => string.Join(' ', new[] { "card-menu", Class }.Where(value => !string.IsNullOrWhiteSpace(value)));
     private string? StyleValue => Style;
 
-    private RenderFragment MenuContent => builder =>
-    {
-        var sequence = 0;
-        if (!string.IsNullOrWhiteSpace(IconName))
+    private RenderFragment MenuContent => @<text>
+        @if (!string.IsNullOrWhiteSpace(IconName))
         {
-            builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(sequence++);
-            builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Name), IconName);
-            builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Size), IconSize);
-            builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Style), "flex:0 0 auto");
-            builder.CloseComponent();
+            <Suttisak.Blazor.Icons.Icon Name="@IconName" Size="@IconSize" Style="flex:0 0 auto" />
         }
-
-        builder.OpenElement(sequence++, "div");
-        builder.AddAttribute(sequence++, "style", "flex:1 1 auto;");
-        if (Title is not null)
-        {
-            builder.OpenElement(sequence++, "span");
-            builder.AddContent(sequence++, Title);
-            builder.CloseElement();
-        }
-        if (Subtitle is not null)
-        {
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "subtitle");
-            builder.AddContent(sequence++, Subtitle);
-            builder.CloseElement();
-        }
-        builder.AddContent(sequence++, ChildContent);
-        builder.CloseElement();
-
-        builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(sequence++);
-        builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Name), "ChevronRight");
-        builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Size), 20);
-        builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Style), "flex:0 0 auto");
-        builder.CloseComponent();
-    };
+        <div class="card-menu__content">
+            @if (Title is not null)
+            {
+                <span class="card-menu__title">@Title</span>
+            }
+            @if (Subtitle is not null)
+            {
+                <span class="card-menu__subtitle subtitle">@Subtitle</span>
+            }
+            @ChildContent
+        </div>
+        <Suttisak.Blazor.Icons.Icon Name="ChevronRight" Size="20" Style="flex:0 0 auto" />
+    </text>;
 
     /// <summary />
     internal async Task ClickHandlerAsync(MouseEventArgs args)

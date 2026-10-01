@@ -1139,7 +1139,7 @@
       "category": "Actions \u0026 surfaces",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Compact action menu surface intended for contextual operations associated with a card.",
+      "summary": "Compact action menu with a stacked title and muted subtitle that wrap within constrained containers.",
       "tags": [
         "card",
         "menu",

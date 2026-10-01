@@ -38,8 +38,8 @@
 
                 <AppDivider Vertical="@_verticalDivider" data-testid="layout-divider" />
 
-                <CardMenu Title="Participant settings"
-                          Subtitle="Profile, preferences, and access"
+                <CardMenu Title="@_menuTitle"
+                          Subtitle="@_menuSubtitle"
                           AriaLabel="Open participant settings"
                           Disabled="@_menuDisabled"
                           OnClick="HandleMenuClick"
@@ -68,6 +68,12 @@
         <label><input type="checkbox" @bind="_showInteractiveCard" /> Interactive card</label>
         <label><input type="checkbox" @bind="_cardActive" /> Active card</label>
         <label><input type="checkbox" @bind="_menuDisabled" /> Disabled card menu</label>
+        <label>Menu title
+            <input @bind="_menuTitle" @bind:event="oninput" />
+        </label>
+        <label>Menu subtitle
+            <input @bind="_menuSubtitle" @bind:event="oninput" />
+        </label>
     </Controls>
     <States>
         <article><span>Composition</span><strong>Stack → card → toolbar</strong><small>Layout primitives compose without owning application-specific behavior</small></article>
@@ -87,6 +93,8 @@
     private bool _showInteractiveCard = true;
     private bool _cardActive;
     private bool _menuDisabled;
+    private string _menuTitle = "Participant settings";
+    private string _menuSubtitle = "Profile, preferences, and access";
     private string _status = "No action yet.";
 
     private Task HandleCardClick(MouseEventArgs _)

@@ -31,6 +31,19 @@
 .card-menu[disabled],
 .card-menu[aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
 
-    .card-menu .subtitle {
-        color: var(--app-foreground-muted);
-    }
+.card-menu__content {
+    display: grid;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    gap: var(--app-space-1);
+    overflow-wrap: anywhere;
+}
+
+.card-menu__title {
+    font-weight: 600;
+}
+
+.card-menu__subtitle {
+    color: var(--app-foreground-muted);
+    font-size: var(--app-type-sm);
+}

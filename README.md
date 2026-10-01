@@ -88,6 +88,14 @@ Appearance controls neutral surfaces, typography, radius, and elevation; the
 application controls brand emphasis. Quiet Luxury uses muted teal, plum, blue,
 violet, rose, or blue-teal accents while preserving each application's logo.
 
+Playbook documentation uses a quieter editorial hierarchy and open, ruled
+sections around the specimens. Its canvas and tools are presentation for inspecting
+the library; Quiet Luxury component appearance comes from the shared UI styles.
+Application patterns demonstrate host-owned composition, styling, and interaction
+with local sample data, without depending on a consuming application's business
+logic or application layer. On narrow screens, the Playbook toolbar scrolls with
+the document so it does not cover the UI under inspection.
+
 **Essential** uses neutral white/slate surfaces, the existing Latin/Thai sans-serif
 fonts, clear input borders, small corner radii, and flat panels for everyday form
 and table work. It retains each application's primary color and semantic feedback

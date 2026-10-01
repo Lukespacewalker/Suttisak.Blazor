@@ -1,4 +1,6 @@
-/* Application palettes and Playbook presentation only. Shared appearances live in the UI library. */
+/* Application palettes and Playbook presentation only. Shared appearances live in the UI library.
+   Keep specimen components on that shared contract; selectors below style documentation, its canvas,
+   and the example host's presentation. */
 .playbook.theme-audiogramiq[data-appearance="quiet-luxury"] {
     --app-quiet-brand: light-dark(#245e61, #9dbfbb);
     --app-quiet-brand-soft: light-dark(#e6efec, #293734);
@@ -36,32 +38,41 @@
 }
 
 .playbook[data-appearance="quiet-luxury"] .component-detail__lab {
-    border-radius: var(--app-radius-xl);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
 }
 
 .playbook[data-appearance="quiet-luxury"] .component-detail__preview-frame {
-    background: var(--app-surface);
+    padding: clamp(var(--app-space-4), 2vw, var(--app-space-6));
+    background: var(--app-background);
     border-color: var(--app-border);
     border-radius: var(--app-radius-lg);
-    box-shadow: var(--app-shadow-sm);
+    box-shadow: none;
 }
 
 .playbook[data-appearance="quiet-luxury"] .component-detail__controls {
-    border-radius: var(--app-radius-lg);
+    border: 0;
+    border-inline-start: 1px solid var(--app-border);
+    border-radius: 0;
+    background: transparent;
 }
 
-.playbook[data-appearance="quiet-luxury"] :is(.playbook-bar, .app-shell__header) {
+.playbook[data-appearance="quiet-luxury"] .playbook-bar {
+    gap: var(--app-space-3);
+    padding-block: var(--app-space-2);
     background: var(--app-surface);
     box-shadow: none;
     backdrop-filter: none;
 }
 
-.playbook[data-appearance="quiet-luxury"] :is(.app-card, .app-grid-shell, .glass-card, .demo-overview-card, .playbook-stack) {
+.playbook[data-appearance="quiet-luxury"] :is(.demo-overview-card, .playbook-stack) {
     border-radius: var(--app-radius-lg);
     box-shadow: var(--app-shadow-sm);
 }
 
-.playbook[data-appearance="quiet-luxury"] :is(.app-button, .playbook-home__actions a, .playbook-brand span) {
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__actions a, .playbook-brand span) {
     border-radius: var(--app-radius-sm);
     font-weight: 600;
     box-shadow: none;
@@ -76,11 +87,82 @@
     font-weight: 600;
 }
 
-.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__hero h1, .playbook-intro h1, .marketing-hero__copy h1, .demo-overview-card--feature h2) {
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__hero h1, .playbook-intro h1, .demo-overview-card--feature h2,
+    .component-detail__hero h1, .component-browser__hero h1, .pattern-browser__hero h1,
+    .pattern-detail__hero h1, .foundations-page__hero h1, .guidelines-page__hero h1) {
     font-family: var(--quiet-display-font);
     font-weight: 400;
     line-height: 1.08;
     letter-spacing: -.035em;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.component-browser__hero h1, .pattern-browser__hero h1,
+    .pattern-detail__hero h1, .foundations-page__hero h1, .guidelines-page__hero h1) {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__hero h1 {
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__dashboard h2, .playbook-home__start h2,
+    .playbook-home__contract h2, .playbook-home__path h3, .component-detail__section > header h2,
+    .component-specimen__states > header h2, .component-browser__group h2, .pattern-browser__card h2,
+    .foundations-page__section > header h2, .guidelines-page__section h2, .pattern-detail__section-heading h2,
+    .pattern-detail__ingredient-panel h2) {
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.component-detail__section > header h2,
+    .component-specimen__states > header h2) {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__breadcrumbs {
+    margin-bottom: var(--app-space-4);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__hero {
+    gap: var(--app-space-6);
+    padding-bottom: var(--app-space-6);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__meta {
+    display: flex;
+    max-width: 17rem;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--app-space-2);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__meta > :is(span:nth-child(n + 3), a) {
+    flex-basis: 100%;
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__section {
+    padding-block: var(--app-space-8);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__section > header {
+    flex-wrap: wrap;
+    gap: var(--app-space-3) var(--app-space-6);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__section > header p {
+    flex: 1 1 16rem;
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__isolated-stage {
+    border-radius: var(--app-radius-lg);
+    background: var(--app-background);
+}
+
+.playbook[data-appearance="quiet-luxury"] .component-detail__isolated-frame {
+    border-radius: var(--app-radius-sm);
+    box-shadow: none;
 }
 
 .playbook[data-appearance="quiet-luxury"] .playbook-home__hero h1 {
@@ -97,9 +179,59 @@
 }
 
 .playbook[data-appearance="quiet-luxury"] .playbook-home__signal {
-    border-radius: var(--app-radius-lg);
+    min-height: auto;
+    padding: var(--app-space-6) 0;
+    border: 0;
+    border-block: 1px solid var(--app-border);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__preferences {
+    padding-inline: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__metrics article, .playbook-home__dashboard-links a,
+    .playbook-home__path) {
+    border: 0;
+    border-block-start: 1px solid var(--app-border);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__path {
+    min-height: 17rem;
+    padding-inline: var(--app-space-4);
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-home__path:hover, .playbook-home__path:focus-visible) {
     background: var(--app-surface);
-    box-shadow: var(--app-shadow-md);
+    transform: none;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__path:focus-visible {
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-home__dashboard-links a:focus-visible {
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+}
+
+.playbook[data-appearance="quiet-luxury"] :is(.playbook-segment, .component-detail__viewport) {
+    border-radius: var(--app-radius-lg);
+    background: transparent;
+}
+
+.playbook[data-appearance="quiet-luxury"] .playbook-segment button.is-active {
+    background: var(--app-accent-soft);
+    box-shadow: none;
 }
 
 .playbook[data-appearance="quiet-luxury"] .playbook-home__signal-orbit {
@@ -129,4 +261,48 @@
     font-family: var(--quiet-display-font);
     font-weight: 400;
     letter-spacing: -.025em;
+}
+
+@media (max-width: 64rem) {
+    .playbook[data-appearance="quiet-luxury"] .component-detail__controls {
+        border-inline-start: 0;
+        border-block-start: 1px solid var(--app-border);
+    }
+}
+
+@media (max-width: 50rem) {
+    .playbook[data-appearance="quiet-luxury"] .playbook-bar {
+        position: static;
+    }
+
+    .playbook[data-appearance="quiet-luxury"] .component-detail {
+        padding-top: var(--app-space-4);
+    }
+
+    .playbook[data-appearance="quiet-luxury"] .component-detail__section > header p {
+        flex-basis: auto;
+    }
+}
+
+@media (max-width: 34rem) {
+    .playbook[data-appearance="quiet-luxury"] .playbook-bar {
+        gap: var(--app-space-2);
+    }
+
+    .playbook[data-appearance="quiet-luxury"] .playbook-control {
+        gap: var(--app-space-1);
+    }
+
+    .playbook[data-appearance="quiet-luxury"] .playbook-control label {
+        font-size: .625rem;
+        letter-spacing: .1em;
+    }
+
+    .playbook[data-appearance="quiet-luxury"] .component-detail__meta {
+        max-width: none;
+    }
+
+    .playbook[data-appearance="quiet-luxury"] .component-detail__meta > :is(span:nth-child(n + 3), a) {
+        flex-basis: auto;
+    }
 }
