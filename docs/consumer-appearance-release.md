@@ -19,6 +19,9 @@ Version 1.0.25 was subsequently published successfully by
 
 ## Current source verification: 1.0.26
 
+This is historical 1.0.26 evidence. The current decision and completed release are
+[Quiet Luxury access and forms 1.0.27](#quiet-luxury-access-and-forms-1027).
+
 The shared CardMenu now stacks its title and muted subtitle, applies isolated
 styles through Razor markup, and wraps long English/Thai text in narrow parents.
 Playbook adds editable mock text controls without application-layer dependencies.
@@ -150,6 +153,40 @@ validation, forced-colors, reduced-motion, and Standard/Essential regressions
 were checked. Optional existing Standard Playbook chrome/inactive-control
 contrast findings outside this diff remain; Quiet Luxury and Essential were clean.
 
-The source release is ready for CI and explicit UI-only package publication.
-Consumer package references will be updated only after publication succeeds.
+Source release:
+[`6f82291c590246581a36f13019099d74461915ad`](https://github.com/Lukespacewalker/Suttisak.Blazor/commit/6f82291c590246581a36f13019099d74461915ad).
+[CI 36997568011](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/36997568011)
+passed the Release build, 77 shared tests, and NuGet validation. Chromium reported
+292 passed plus one existing grid overscan test that passed on retry. The eight
+Quiet Luxury access tests passed; grid source and its test were unchanged.
+
+UI-only publication passed in
+[release 36999142685](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/36999142685),
+including 77 shared tests and all 293 Chromium tests without retries. GitHub
+Packages exposes UI 1.0.27 (version ID 1326620444). The downloaded package's NuSpec
+repository commit is `6f82291c590246581a36f13019099d74461915ad`; its appearance
+asset matches the reviewed source.
+
+All six consumers restored and built against the published Release package before
+commit/push. All 11 UI PackageReferences are 1.0.27, and their Release asset entries
+use the package. Each consumer commit changes only package versions; Debug
+ProjectReferences are unchanged.
+
+| Consumer | Published commit | Verification |
+| --- | --- | --- |
+| AudiogramIQ | [034ed2a](https://github.com/Lukespacewalker/AudiogramIQ/commit/034ed2a043aaa68cb239ef8325f113fe7d8ffcb1) | Release build; 21 presentation and 11 architecture tests |
+| BafsWorkout | [4b611aa](https://github.com/Lukespacewalker/BafsWorkout/commit/4b611aa76cfa2405df649e6ba8e267d47a5d4eae) | Release build; 41 web and 23 client tests |
+| HealthInsight | [a6b8fe4](https://github.com/Lukespacewalker/HealthInsight/commit/a6b8fe4128a90123ac7515160cddab7475d85452) | Release build; 18 architecture and 8 summary render tests |
+| CoeKPI | [94b9b4f](https://github.com/Lukespacewalker/CoeKPI/commit/94b9b4ff61fb2a0a7506e256fdc5970599bc58eb) | Release solution build; all 73 solution tests, including disposable PostgreSQL integration |
+| ErgoTrack | [d41eb77](https://github.com/Lukespacewalker/ErgoTrack/commit/d41eb77696b795f22c2d2cd692fe0bc19b27cf86) | Release build; 24 component, 222 unit, 32 architecture, and 77 integration tests |
+| MentalInsight | [91b7bb7](https://github.com/Lukespacewalker/MentalInsight/commit/91b7bb7e7da2d4a98781a1b6432c60384aaf5ae6) | Release build; 84 client and 36 architecture tests |
+
+Existing checkouts were reused. HealthInsight's release checkout first integrated
+its already-published upstream changes; those changes are not part of this
+package-update commit. Primary package references were synchronized while
+preserving dirty AudiogramIQ/HealthInsight work. The primary library retains
+unrelated Playbook work and its earlier branch position; published verification
+covers the isolated source snapshot. Existing compiler warnings remain.
 Runtime consumer deployment is outside this package update.
+
+Acceptance and the required package release sequence are complete for UI 1.0.27.

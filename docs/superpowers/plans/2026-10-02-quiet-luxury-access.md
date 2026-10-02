@@ -52,3 +52,12 @@ findings outside this diff remain an optional follow-up.
 
 Publication and consumer evidence is tracked in
 [the release ledger](../../consumer-appearance-release.md#quiet-luxury-access-and-forms-1027).
+
+## Acceptance complete (2026-10-02)
+
+UI 1.0.27 source, CI, explicit publication, and all six consumer Release
+restore/build/test and package-reference commits are complete. The published
+package's repository commit and appearance asset match the reviewed source.
+All 11 Release references were verified; Debug ProjectReferences and unrelated
+primary-workspace changes were preserved. Publication and consumer commit links
+are in [the release ledger](../../consumer-appearance-release.md#quiet-luxury-access-and-forms-1027).
