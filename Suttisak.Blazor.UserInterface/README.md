@@ -49,6 +49,25 @@ are ignored, and choices remain usable when storage is unavailable.
 The earlier Playbook-only appearance study is superseded by this package
 contract. Playbook retains its application palettes and gallery presentation.
 
+### Quiet Luxury access and forms (1.0.27)
+
+`AccessPageLayout` keeps the form primary beside an Editorial introduction. At
+constrained widths, the introduction moves between the page heading and form.
+Each fragment is rendered once; the main landmark covers the complete page.
+The same presentation is used by `IdentityLayout` without Playbook styles.
+
+Keep the existing `Showcase` / `LoginShowcase` slots: applications supply service
+and organization identity, a short heading and description, and any supporting
+copy. Prefer an `h2` for the introduction beneath the layout's page `h1`.
+Organization logos remain application-owned. Place account help and privacy
+links after the form in `ChildContent` or the existing Identity `LoginFooter`.
+The library does not supply security claims, routes, policy, or authentication.
+
+Quiet Luxury native fields use smaller token-based corners, visible boundaries,
+lighter labels, and an outline for focus. Native input behavior, descriptions,
+error/valid states, keyboard operation, forced colors, and reduced motion retain
+the shared contracts. Standard and Essential keep their existing appearances.
+
 ## Global CSS bundling
 
 The package ships an opt-in MSBuild target that concatenates application global CSS into one static-web-asset file. It needs no Node.js or `package.json`. Keep the entry file and partials as source-only files, then declare their intended order in the consuming project's `.csproj`:

@@ -2257,7 +2257,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Complete access-page structure for brand, identity controls, form content, and showcase.",
+      "summary": "Access-page structure with application-owned content and a compact Editorial introduction in Quiet Luxury.",
       "tags": [
         "layout",
         "access",
@@ -2334,7 +2334,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Router layout that maps identity sections into the shared AccessPageLayout contract.",
+      "summary": "Router layout that maps identity sections into AccessPageLayout while the application owns copy and authentication.",
       "tags": [
         "layout",
         "identity",

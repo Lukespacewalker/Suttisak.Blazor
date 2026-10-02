@@ -118,3 +118,38 @@ The repository [agent guide](../AGENTS.md) requires publication before consumers
 5. Commit and push the verified consumer updates. Only HealthInsight and AudiogramIQ change their default appearance; the other four receive the package update.
 
 Consumer Release builds now verify the package-reference path after publication.
+
+## Quiet Luxury access and forms: 1.0.27
+
+This is the current access/form decision and supersedes the earlier grid/orb
+Quiet Luxury login presentation. The approved scope and acceptance are recorded
+in [the current plan](superpowers/plans/2026-10-02-quiet-luxury-access.md).
+Applications retain their copy, organization assets, routes, and behavior through
+the existing fragments. Playbook uses mock content and stays independent of
+application/business layers.
+
+- The shared access layout gives the form 55% of the desktop frame beside a
+  calm Editorial introduction. Constrained parents place the compact introduction
+  above inputs without duplicating fragments, including long organization text.
+- Quiet Luxury native fields use token corners, readable boundaries, lighter
+  labels, visible focus, and existing semantic validation states.
+- Playbook's legacy raw-input styles no longer repaint the shared icon input.
+  Computed styles for both the input and primary button match library-only CSS.
+- Final isolated Release build, all 77 shared unit tests, and all 293 Playbook
+  Chromium tests passed. MentalInsight Debug restore/build passed against the
+  matching sibling source; UI 1.0.27 pack and static appearance asset checks passed.
+- Actual renders covered MentalInsight, HealthInsight, and AudiogramIQ palettes
+  in light/dark at 1440/320, alongside constrained parents and form/focus states.
+
+Independent review: PASS against base
+`73d00011140c5437d0efafb4765fcfb26b442905` plus 12 exact SHA-256 file hashes.
+The reviewer used a fresh registered session without maker history and made no
+product/test/config edits. The checkout and local server were shared, and Root
+supplied observations, so review was not blind. Actual keyboard, theme choice,
+validation, forced-colors, reduced-motion, and Standard/Essential regressions
+were checked. Optional existing Standard Playbook chrome/inactive-control
+contrast findings outside this diff remain; Quiet Luxury and Essential were clean.
+
+The source release is ready for CI and explicit UI-only package publication.
+Consumer package references will be updated only after publication succeeds.
+Runtime consumer deployment is outside this package update.

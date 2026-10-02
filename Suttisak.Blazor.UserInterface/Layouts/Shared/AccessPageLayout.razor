@@ -1,7 +1,7 @@
 <section class="access-page-layout">
     <div class="access-page-layout__background" aria-hidden="true"></div>
-    <div class="access-page-layout__grid">
-        <main class="access-page-layout__card">
+    <main class="access-page-layout__grid">
+        <div class="access-page-layout__card">
             @if (Controls is not null)
             {
                 <div class="access-page-layout__controls" aria-label="Display preferences">@Controls</div>
@@ -20,7 +20,7 @@
             </header>
 
             <div class="access-page-layout__body">@ChildContent</div>
-        </main>
+        </div>
 
         <aside class="access-page-layout__showcase" aria-label="@ShowcaseLabel">
             <div class="access-page-layout__showcase-grid" aria-hidden="true"></div>
@@ -28,7 +28,7 @@
             <div class="access-page-layout__showcase-orb access-page-layout__showcase-orb--secondary" aria-hidden="true"></div>
             <div class="access-page-layout__showcase-content">@Showcase</div>
         </aside>
-    </div>
+    </main>
 </section>
 
 @code {

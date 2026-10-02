@@ -26,6 +26,7 @@
     --app-grid-line: light-dark(rgb(57 48 32 / .05), rgb(238 233 223 / .05));
     --app-shadow-color: light-dark(rgb(57 48 32 / .045), rgb(0 0 0 / .18));
     --app-focus-ring: var(--app-accent);
+    --quiet-input-border: light-dark(#928674, #8f8472);
 
     /* Functional text keeps the existing Latin/Thai sans-serif pairing. */
     --quiet-display-font: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Sarabun", serif;
@@ -100,6 +101,240 @@
     font-weight: 400;
     line-height: 1.08;
     letter-spacing: -.035em;
+}
+
+/* Access content remains application-owned. These rules also apply when the
+   layout is rendered without Playbook or inside a constrained parent. */
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout {
+    container-type: inline-size;
+    background: var(--app-background);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.access-page-layout__background, .access-page-layout__showcase-grid, .access-page-layout__showcase-orb) {
+    display: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__grid {
+    width: min(78rem, 100%);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    border-radius: var(--app-radius-lg);
+    box-shadow: var(--app-shadow-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.access-page-layout__card, .access-page-layout__showcase) {
+    min-height: clamp(38rem, calc(100dvh - 3rem), 52rem);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__card {
+    padding: clamp(1.5rem, 3cqi, 3rem);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__header {
+    min-height: 0;
+    margin-bottom: var(--app-space-5);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__heading {
+    width: min(100%, 28rem);
+    margin: clamp(3rem, 6vh, 5rem) auto 0;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__heading h1 {
+    font-size: clamp(1.8rem, 2.5cqi, 2.4rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__kicker {
+    color: var(--app-foreground-muted);
+    font-weight: 600;
+    letter-spacing: .06em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__body {
+    width: min(100%, 28rem);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase {
+    border-inline-start: 1px solid var(--app-border);
+    background: var(--app-surface-muted);
+    color: var(--app-foreground);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase-content {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: var(--app-space-5);
+    padding: clamp(1.5rem, 3cqi, 3rem);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase .identity-showcase-copy {
+    margin-block: auto;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase :is(h1, h2, blockquote) {
+    max-width: 18ch;
+    font-family: var(--app-font-heading);
+    font-size: clamp(2rem, 3.2cqi, 3rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+    overflow-wrap: anywhere;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase p {
+    color: var(--app-foreground-muted);
+    font-size: var(--app-type-body);
+    line-height: 1.65;
+    opacity: 1;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.identity-showcase-kicker, .access-story__index) {
+    color: var(--app-foreground-muted);
+    font-weight: 600;
+    letter-spacing: .06em;
+    opacity: 1;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.identity-showcase-status, .access-story__status) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-color: var(--app-border);
+    color: var(--app-foreground-muted);
+    font-size: var(--app-type-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.identity-showcase-status, .access-story__status) i {
+    display: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.identity-showcase-status, .access-story__status) b {
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+@container (max-width: 60rem) {
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* The plain card wrapper has no semantic role. Its children can join the
+       main grid while the introduction and form each remain mounted once. */
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__card {
+        display: contents;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__controls {
+        position: static;
+        grid-row: 1;
+        justify-content: flex-end;
+        margin: 0;
+        padding: var(--app-space-4) var(--app-space-5) 0;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__header {
+        grid-row: 2;
+        margin: 0;
+        padding: var(--app-space-4) var(--app-space-5);
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__brand {
+        padding-right: 0;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__heading {
+        margin: var(--app-space-5) auto 0;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__heading h1 {
+        font-size: 1.75rem;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase {
+        grid-row: 3;
+        min-height: 0;
+        border-inline-start: 0;
+        border-block: 1px solid var(--app-border);
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase-content {
+        min-height: 0;
+        gap: var(--app-space-2);
+        padding: var(--app-space-4) var(--app-space-5);
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase .identity-showcase-copy {
+        margin-block: 0;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase :is(h1, h2, blockquote) {
+        max-width: none;
+        font-size: 1.15rem;
+        line-height: 1.4;
+        letter-spacing: 0;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__showcase p {
+        font-size: var(--app-type-sm);
+        line-height: 1.5;
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.identity-showcase-copy, .identity-showcase-status, .access-story__status) {
+        gap: var(--app-space-2);
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .access-page-layout__body {
+        grid-row: 4;
+        width: min(28rem, calc(100% - 2.5rem));
+        padding-block: var(--app-space-5);
+    }
+}
+
+/* Native input semantics and validation stay unchanged across appearances. */
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control__label {
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control__input-wrap {
+    border-color: var(--quiet-input-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control__input {
+    font-weight: 400;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control__input-wrap:focus-within {
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:invalid)) .app-form-control__input-wrap {
+    border-color: var(--app-danger);
+    background: var(--app-danger-soft);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control:has(.modified.valid) .app-form-control__input-wrap {
+    border-color: var(--app-success);
+    background: var(--app-surface);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-calendar-popup, .app-picker-popup) {
+    border-radius: var(--app-radius-md);
+    box-shadow: var(--app-shadow-md);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-calendar-popup__period-select, .app-picker-popup__button, .app-choice) {
+    border-radius: var(--app-radius-md);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="essential"] {

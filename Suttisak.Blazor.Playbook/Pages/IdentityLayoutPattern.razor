@@ -6,17 +6,18 @@
 <SectionContent SectionId="@IdentityLayout.CardEyebrowSection">
     <a class="layout-pattern-brand" href="components/identity-layout">UI Playbook</a>
 </SectionContent>
-<SectionContent SectionId="@IdentityLayout.CardKickerSection">ROUTER-LEVEL IDENTITY</SectionContent>
-<SectionContent SectionId="@IdentityLayout.CardTitleSection">Access your layout workspace</SectionContent>
+<SectionContent SectionId="@IdentityLayout.CardKickerSection">Welcome back</SectionContent>
+<SectionContent SectionId="@IdentityLayout.CardTitleSection">Sign in to your workspace</SectionContent>
 <SectionContent SectionId="@IdentityLayout.CardIntroSection">
-    <p>The consuming application supplies identity copy and form behavior through named sections and the routed body.</p>
+    <p>Use your example account to continue.</p>
 </SectionContent>
 <SectionContent SectionId="@IdentityLayout.ShowcaseSection">
-    <div class="layout-pattern-showcase" data-testid="identity-layout-showcase">
-        <span>Identity composition</span>
-        <blockquote>Access page layout with application-owned authentication.</blockquote>
-        <p>IdentityLayout maps section outlets into AccessPageLayout. Routes, resources, and sign-in policy stay in the application.</p>
+    <span class="identity-showcase-kicker">Example care workspace</span>
+    <div class="identity-showcase-copy" data-testid="identity-layout-showcase">
+        <h2>A clear view of your work.</h2>
+        <p>Review information and continue working with your team.</p>
     </div>
+    <div class="identity-showcase-status"><span>Example care organization</span></div>
 </SectionContent>
 
 <form class="layout-contract-form" data-testid="identity-layout-pattern" @onsubmit="PreventSubmit" @onsubmit:preventDefault>

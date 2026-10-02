@@ -47,12 +47,12 @@
                     <p class="access-demo-note">@T("Authentication is disabled in this preview.", "ตัวอย่างนี้ปิดการยืนยันตัวตนไว้")</p>
             </ChildContent>
             <Showcase>
-                <span class="access-story__index">@(IsThai ? "การเข้าถึงที่ปลอดภัย" : "SECURE ACCESS")</span>
-                <div>
-                    <blockquote>@(IsThai ? "ลงชื่อเข้าใช้เพื่อเปิดพื้นที่ทำงานของคุณ" : "Sign in to access your workspace.")</blockquote>
-                    <p>@(IsThai ? $"เข้าสู่ระบบอย่างปลอดภัยเพื่อทำงานต่อใน {CurrentTheme.Name}" : $"Sign in securely to continue your work in {CurrentTheme.Name}.")</p>
+                <span class="access-story__index">@CurrentTheme.Name</span>
+                <div class="identity-showcase-copy">
+                    <h2>@(IsThai ? "ข้อมูลที่ชัดเจน เพื่อการดูแลที่ต่อเนื่อง" : "Clear information. Considered care.")</h2>
+                    <p>@(IsThai ? "พื้นที่สำหรับทบทวนข้อมูลและทำงานร่วมกับทีมของคุณ" : "A workspace for reviewing information and working with your team.")</p>
                 </div>
-                <div class="access-story__status"><i></i><span>@(IsThai ? "การเข้าถึงส่วนบุคคลที่ได้รับการปกป้อง" : "Private, protected access")</span><b>@CurrentTheme.Name.ToUpperInvariant()</b></div>
+                <div class="access-story__status"><span>@(IsThai ? "หน่วยงานตัวอย่าง" : "Example care organization")</span></div>
             </Showcase>
         </AccessPageLayout>
     </AccessPageFrame>

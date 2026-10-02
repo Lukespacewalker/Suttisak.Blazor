@@ -352,9 +352,9 @@ select { font: inherit; }
 .access-form { display: grid; gap: .9rem; }
 .access-form > label:not(.access-check),
 .access-form__row > label { display: grid; gap: .42rem; color: var(--app-foreground); font-size: .72rem; font-weight: 780; }
-.access-form input:not([type="checkbox"]) { width: 100%; min-height: 2.85rem; box-sizing: border-box; padding: .72rem .8rem; border: 1px solid var(--app-border); border-radius: .6rem; outline: 0; background: var(--app-background); color: var(--app-foreground); font: inherit; font-size: .78rem; transition: border-color .16s ease, box-shadow .16s ease; }
-.access-form input::placeholder { color: var(--app-foreground-muted); opacity: .72; }
-.access-form input:focus { border-color: var(--app-accent); box-shadow: 0 0 0 .2rem var(--app-accent-soft); }
+.access-form input:not([type="checkbox"]):not(.app-form-control__input) { width: 100%; min-height: 2.85rem; box-sizing: border-box; padding: .72rem .8rem; border: 1px solid var(--app-border); border-radius: .6rem; outline: 0; background: var(--app-background); color: var(--app-foreground); font: inherit; font-size: .78rem; transition: border-color .16s ease, box-shadow .16s ease; }
+.access-form input:not(.app-form-control__input)::placeholder { color: var(--app-foreground-muted); opacity: .72; }
+.access-form input:not(.app-form-control__input):focus { border-color: var(--app-accent); box-shadow: 0 0 0 .2rem var(--app-accent-soft); }
 .access-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
 .access-form__options { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .access-check { display: inline-flex; align-items: flex-start; gap: .48rem; color: var(--app-foreground-muted); font-size: .7rem; line-height: 1.4; }
@@ -382,7 +382,7 @@ select { font: inherit; }
 .access-story__steps b { opacity: .62; }
 .access-secondary-link { display: inline-flex; min-height: 2.9rem; align-items: center; padding-inline: 1rem; color: var(--app-accent); font-size: .76rem; font-weight: 800; text-decoration: none; }
 .access-link-button { border: 0; background: transparent; font-family: inherit; cursor: pointer; }
-.access-preview :is(a, button, input):focus-visible { outline: 3px solid var(--app-accent); outline-offset: 3px; }
+.access-preview :is(a:not(.app-button), button:not(.app-button), input:not(.app-form-control__input):not(.app-choice__native)):focus-visible { outline: 3px solid var(--app-accent); outline-offset: 3px; }
 
 .custom-error-workbench { display: grid; min-width: 0; grid-template-columns: minmax(18rem, 25rem) minmax(0, 1fr); background: var(--app-background); }
 .custom-error-editor { position: relative; z-index: 2; display: flex; min-width: 0; max-height: 52rem; box-sizing: border-box; flex-direction: column; gap: .85rem; padding: clamp(1rem, 2vw, 1.5rem); overflow-y: auto; border-right: 1px solid var(--app-border); background: var(--app-surface); }
