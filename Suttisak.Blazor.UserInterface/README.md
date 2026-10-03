@@ -105,7 +105,10 @@ From 1.0.30, Nexora uses compact `PageHeading` typography and content-driven
 supplied meaningful visuals wrap beneath the copy in constrained parents.
 Titles use the available copy width, and eyebrow/emphasis follow the host
 accent. Use PageHeading for task pages and ExperienceHeading for reader-facing
-results or guidance. Other appearances retain their existing heading geometry.
+results or guidance. Nexora PageHeading sits directly on the page background,
+without a surrounding border, card surface, or shadow; actions and navigation
+keep their accessible controls. The legacy `app-page__intro` surface retains
+its card treatment. Other appearances retain their existing heading geometry.
 
 The first-visit appearance and color mode are independent:
 

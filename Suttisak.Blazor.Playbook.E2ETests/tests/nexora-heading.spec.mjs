@@ -1,13 +1,28 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-async function headingHost(page, { mode = 'light', appearance = 'nexora', visual = false, width = 390, constrained = false, accent = false } = {}) {
+async function headingHost(page, { mode = 'light', appearance = 'nexora', visual = false, width = 390, constrained = false, accent = false, kind = 'experience' } = {}) {
   await page.setViewportSize({ width, height: 844 });
-  await page.goto(`/specimens/experience-heading?appearance=${appearance}&mode=${mode}`);
-  await expect(page.getByTestId('experience-visual')).toBeVisible();
-  if (!visual) await page.getByLabel('Include visual', { exact: true }).uncheck();
-  const heading = await page.getByTestId('experience-heading').evaluate(element => element.outerHTML);
-  const task = await page.getByRole('button', { name: 'Open result details', exact: true }).evaluate(element => element.outerHTML);
+  await page.goto(`/specimens/${kind}-heading?appearance=${appearance}&mode=${mode}`);
+  if (kind === 'experience') {
+    await expect(page.getByTestId('experience-visual')).toBeVisible();
+    if (!visual) await page.getByLabel('Include visual', { exact: true }).uncheck();
+  }
+  const heading = await page.locator(`.${kind}-heading`).evaluate(element => {
+    const copy = element.cloneNode(true);
+    // A static consumer starts in SSR fallback, not the previous viewport's
+    // completed ResizeObserver state from the interactive Playbook specimen.
+    copy.querySelectorAll('[data-adaptive-overflow]').forEach(toolbar => {
+      toolbar.removeAttribute('data-overflow-ready');
+      toolbar.removeAttribute('data-overflowing');
+    });
+    return copy.outerHTML;
+  });
+  const task = await page.getByRole('button', { name: kind === 'experience' ? 'Open result details' : 'Save assessment', exact: true }).evaluate(element => {
+    const copy = element.cloneNode(true);
+    if (element.textContent.trim() === 'Save assessment') copy.querySelector('.app-button__label').textContent = 'Continue task';
+    return copy.outerHTML;
+  });
   await page.route('**/heading-consumer', route => route.fulfill({ contentType: 'text/html', body: `<!doctype html>
     <html lang="en" data-appearance="${appearance}" data-theme="${mode}" style="color-scheme:${mode}">
     <head><meta charset="utf-8"><title>Example result workspace</title><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -17,10 +32,40 @@ async function headingHost(page, { mode = 'light', appearance = 'nexora', visual
     <style>body{margin:0}main{box-sizing:border-box;width:${constrained ? '320px' : 'min(64rem,100%)'};padding:1rem;margin:auto;display:grid;gap:1rem}section{padding:1rem;border:1px solid var(--app-border);border-radius:var(--app-radius-lg);background:var(--app-surface)}h2{margin:0 0 .5rem}section p{margin:.5rem 0 1rem}${accent ? ':root{--app-nexora-accent:light-dark(#176a65,#83cec5);--app-nexora-on-accent:light-dark(#fff,#132824);--app-font-heading:Sarabun,serif}' : ''}</style>
     </head><body><main>${heading}<section aria-labelledby="task-title"><h2 id="task-title">Result details</h2><p>Read the current result and its next steps.</p>${task}</section></main></body></html>` }));
   await page.goto('/heading-consumer');
-  await page.locator('.experience-heading').evaluate(element => Promise.all(element.getAnimations({ subtree: true }).filter(animation => animation.effect.getTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {}))));
+  await page.locator(`.${kind}-heading`).evaluate(element => Promise.all(element.getAnimations({ subtree: true }).filter(animation => animation.effect.getTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {}))));
 }
 
 for (const mode of ['light', 'dark']) {
+  test(`Nexora ${mode} PageHeading stays unframed above the first-viewport task`, async ({ page }, testInfo) => {
+    for (const size of [{ width: 320 }, { width: 390 }, { width: 1440 }, { width: 1440, constrained: true }]) {
+      await headingHost(page, { ...size, mode, kind: 'page' });
+      const heading = page.locator('.page-heading');
+      await expect(heading).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+      await expect(heading).toHaveCSS('background-image', 'none');
+      await expect(heading).toHaveCSS('border-top-width', '0px');
+      await expect(heading).toHaveCSS('border-radius', '0px');
+      await expect(heading).toHaveCSS('box-shadow', 'none');
+      const followingTask = page.getByRole('button', { name: 'Continue task', exact: true });
+      const taskBox = await followingTask.boundingBox();
+      expect(taskBox.y + taskBox.height, 'following primary task inside first viewport').toBeLessThanOrEqual(844);
+      await expect.poll(() => heading.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+      const primary = heading.getByRole('button', { name: 'Save assessment', exact: true });
+      await primary.focus();
+      await expect(primary).toHaveCSS('outline-width', '2px');
+      expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
+      await page.locator('main').screenshot({ path: testInfo.outputPath(`unframed-${mode}-${size.width}${size.constrained ? '-parent320' : ''}.png`) });
+      // The existing global legacy introduction contract remains a card.
+      await page.locator('main').evaluate(element => {
+        const intro = document.createElement('div');
+        intro.className = 'app-page__intro';
+        intro.textContent = 'Application-owned introduction';
+        element.append(intro);
+      });
+      await expect(page.locator('.app-page__intro')).toHaveCSS('background-color', mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(35, 36, 38)');
+      await expect(page.locator('.app-page__intro')).toHaveCSS('border-radius', '16px');
+      await expect(page.locator('.app-page__intro')).not.toHaveCSS('box-shadow', 'none');
+    }
+  });
   for (const size of [{ width: 320 }, { width: 390 }, { width: 1440 }, { width: 1440, constrained: true }]) {
     test(`Nexora ${mode} heading preserves the following task at ${size.width}${size.constrained ? ' with 320px parent' : ''}`, async ({ page }, testInfo) => {
       for (const visual of [false, true]) {
@@ -81,13 +126,13 @@ for (const mode of ['light', 'dark']) {
       await expect(primary).toHaveCSS('outline-width', '2px');
       await primary.press('Enter');
       await expect(page.getByRole('status').filter({ hasText: 'Assessment saved.' })).toBeVisible();
-      expect(await heading.evaluate(element => element.scrollWidth)).toBeLessThanOrEqual(await heading.evaluate(element => element.clientWidth));
+      await expect.poll(() => heading.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
       await heading.screenshot({ path: testInfo.outputPath(`page-heading-${mode}-${width}.png`) });
     }
     await page.setViewportSize({ width: 1440, height: 844 });
     await page.getByTestId('page-composition-workbench').evaluate(element => { element.style.width = '320px'; });
     await expect(heading.getByRole('button', { name: 'Save assessment', exact: true })).toBeVisible();
-    expect(await heading.evaluate(element => element.scrollWidth)).toBeLessThanOrEqual(await heading.evaluate(element => element.clientWidth));
+    await expect.poll(() => heading.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
     await heading.screenshot({ path: testInfo.outputPath(`page-heading-${mode}-constrained.png`) });
   });
 }
@@ -112,5 +157,12 @@ for (const appearance of ['standard', 'essential', 'quiet-luxury']) {
     await expect(page.locator('.experience-heading')).toHaveCSS('min-height', '330px');
     await expect(page.locator('.experience-heading h1')).toHaveCSS('font-size', '80px');
     await expect(page.locator('.experience-heading__visual')).toBeVisible();
+  });
+  test(`${appearance} retains its framed PageHeading surface`, async ({ page }) => {
+    await headingHost(page, { appearance, kind: 'page', width: 1440 });
+    await expect(page.locator('.page-heading')).toHaveCSS('border-top-width', '1px');
+    await expect(page.locator('.page-heading')).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    if (appearance === 'standard') await expect(page.locator('.page-heading')).not.toHaveCSS('box-shadow', 'none');
+    else await expect(page.locator('.page-heading')).toHaveCSS('box-shadow', 'none');
   });
 }

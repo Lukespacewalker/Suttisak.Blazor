@@ -72,7 +72,7 @@ public static class PlaybookComponentCatalog
             ["Pill"] = "Compact badge-like label for status, metadata, or short categorical information.",
             ["Toolbar"] = "Semantic toolbar that groups a coordinated set of page or content actions.",
             ["PageActionToolbar"] = "Page-heading action region that keeps primary and secondary operations aligned.",
-            ["PageHeading"] = "Compact page title with description, section context, navigation, and action slots; Nexora uses restrained host typography.",
+            ["PageHeading"] = "Compact page title with description, section context, navigation, and action slots; Nexora places restrained host typography directly on the page background.",
             ["AppBreadcrumb"] = "Breadcrumb navigation that renders a typed trail with a distinct current location.",
             ["AppGridShell"] = "Grid framing surface that composes data controls, result context, and the table region.",
             ["AppActionMenu"] = "Compact action disclosure with keyboard focus and a popup above scrolling containers.",

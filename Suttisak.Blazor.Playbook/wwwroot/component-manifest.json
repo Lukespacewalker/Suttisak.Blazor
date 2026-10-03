@@ -1243,7 +1243,7 @@
       "category": "Actions \u0026 surfaces",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Compact page title with description, section context, navigation, and action slots; Nexora uses restrained host typography.",
+      "summary": "Compact page title with description, section context, navigation, and action slots; Nexora places restrained host typography directly on the page background.",
       "tags": [
         "heading",
         "page",
