@@ -100,7 +100,9 @@
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary, .marketing-action--primary) {
-    background: linear-gradient(110deg, var(--app-brand), var(--nexora-primary-highlight));
+    /* Keep an opaque accent beneath the gradient during hover transitions. */
+    background-color: var(--app-brand);
+    background-image: linear-gradient(110deg, var(--app-brand), var(--nexora-primary-highlight));
     color: var(--app-on-brand);
     border-color: var(--app-brand);
     box-shadow: var(--app-shadow-sm);

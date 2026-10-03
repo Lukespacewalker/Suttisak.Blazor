@@ -137,6 +137,7 @@ for (const mode of ['light', 'dark']) {
     const accent = mode === 'light' ? 'rgb(23, 106, 101)' : 'rgb(131, 206, 197)';
     const action = page.getByRole('button', { name: 'New record', exact: true });
     await expect(action).toHaveCSS('border-color', accent);
+    await expect(action).toHaveCSS('background-color', accent);
     await expect(action).toHaveCSS('color', mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(19, 40, 36)');
     await expect(page.locator('.app-shell .nav-item--active').first()).toHaveCSS('color', accent);
     await action.click();
@@ -144,6 +145,10 @@ for (const mode of ['light', 'dark']) {
     await input.focus();
     await expect(input.locator('..')).toHaveCSS('outline-color', accent);
     await page.keyboard.press('Escape');
+    const selection = page.locator('.app-shell tbody .app-grid__checkbox').first();
+    await selection.check();
+    await expect(selection).toHaveCSS('accent-color', accent);
+    await expect(page.locator('.app-shell tbody tr.is-selected').first()).toBeVisible();
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
   });
 }
