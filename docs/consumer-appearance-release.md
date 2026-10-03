@@ -1,4 +1,54 @@
-# UI 1.0.26 appearance release handoff
+# Consumer appearance release handoff
+
+## Nexora surfaces and access: 1.0.28 (prepared locally)
+
+The current Nexora contract is documented in
+[the UI setup guide](../Suttisak.Blazor.UserInterface/README.md#nexora-surfaces-and-access-1028).
+Nexora adds ivory/white and charcoal surfaces, restrained shadows, rectangular
+cards, and a desktop introduction/photo panel beside the form. Constrained
+parents place the form first. Existing Standard, Essential, and Quiet Luxury
+remain selectable. Application copy, logos, photographs, routes, and account
+behavior remain application-owned.
+
+Hosts may set `--app-nexora-accent` and `--app-nexora-on-accent`, plus the optional
+soft, border, and highlight tokens. Shared Nexora defaults to warm gold; a
+consumer may choose copper, teal, or another accessible palette. Executed browser
+checks apply a teal override in both modes and verify the primary action, active
+navigation, focus outline, and selection. The opt-in `data-default-theme="light"`
+bootstrap retains saved Light, Dark, and System preferences; consumers without
+that attribute retain their existing default.
+
+The isolated source is based on `999ce3f99ccc6133cb71d3e2573979ac489b1dbc`.
+Product and browser-test changes are frozen at
+`2d171597201506a7fef84d6a71bd4a012f41d138`. Local executed verification:
+
+- Release solution build passed with zero errors and the existing Identity
+  `BL0008` warning. All 77 shared unit tests passed.
+- The full Playbook Chromium suite passed all 307 tests at `61fbb38`. After the
+  final contrast fixes, all 28 affected browser tests passed, including six new
+  checkbox/radio and placeholder checks. The final full suite was not repeated.
+- The new checks reproduced unchecked boundaries below 3:1 and dark placeholder
+  text below 4.5:1 before their fixes. Normal/hovered checkbox and radio boundaries
+  now meet 3:1 against both adjacent surfaces; placeholder text meets 4.5:1.
+  Scoped host error borders, keyboard selection, pristine required fields,
+  invalid-submit focus, forced colors, and reduced motion were exercised.
+- UI 1.0.28 packs successfully. Its static assets include `nexora.css`, the
+  importing appearance entry, theme bootstrap, and theme module. No package was
+  published by this preparation work.
+
+Actual screenshots cover light/dark shell desktop and mobile navigation, login
+at 1440/390/320 px, and the shared photo slot inside a 320 px parent. Captures and
+test output are in
+`C:/Users/Sutti/.codex/artifacts/nexora-library-20261003/acceptance` and
+`C:/Users/Sutti/.codex/artifacts/nexora-library-20261003/review-fixes`.
+The Playbook uses demo interactions; production authentication is not exercised
+by these library tests. Root owns consumer integration, acceptance, and the
+publication sequence in [the repository guide](../AGENTS.md).
+
+The published 1.0.26 and 1.0.27 records below are historical evidence for those
+snapshots. Their publication status does not imply publication of 1.0.28.
+
+## Historical UI 1.0.26 handoff
 
 Standard, Essential, and Quiet Luxury are selectable through the shared browser preferences. Appearance remains independent of light/dark/system and persists per origin. Hosts load `appearance.css` after application/isolated styles; see [setup and API](../Suttisak.Blazor.UserInterface/README.md#appearance).
 
@@ -124,7 +174,7 @@ Consumer Release builds now verify the package-reference path after publication.
 
 ## Quiet Luxury access and forms: 1.0.27
 
-This is the current access/form decision and supersedes the earlier grid/orb
+This records the 1.0.27 Quiet Luxury access/form decision and supersedes the earlier grid/orb
 Quiet Luxury login presentation. The approved scope and acceptance are recorded
 in [the current plan](superpowers/plans/2026-10-02-quiet-luxury-access.md).
 Applications retain their copy, organization assets, routes, and behavior through
