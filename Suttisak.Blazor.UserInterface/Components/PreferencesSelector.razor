@@ -2,7 +2,6 @@
 
 <div class="preferences-selector">
     <div class="preferences-selector__desktop">
-        <AppearanceSelector />
         <CultureSelector />
         <ThemeSwitcher />
     </div>
@@ -12,10 +11,6 @@
             <Suttisak.Blazor.Icons.Icon Name="Settings" Size="20" />
         </summary>
         <div class="preferences-selector__popover">
-            <div class="preferences-selector__section">
-                <span class="preferences-selector__label">@AppearanceLabel</span>
-                <AppearanceSelector />
-            </div>
             <div class="preferences-selector__section">
                 <span class="preferences-selector__label">@LanguageLabel</span>
                 <CultureSelector />
@@ -33,5 +28,4 @@
     private string PreferencesLabel => IsThai ? "การตั้งค่าภาษาและธีม" : "Language and theme preferences";
     private string LanguageLabel => IsThai ? "ภาษา" : "Language";
     private string ThemeLabel => IsThai ? "ธีม" : "Theme";
-    private string AppearanceLabel => IsThai ? "รูปแบบหน้าตา" : "Appearance";
 }

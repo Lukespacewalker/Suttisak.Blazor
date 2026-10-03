@@ -97,7 +97,7 @@ public static class PlaybookComponentCoverage
             ["HeaderControlWithUser"] = Pattern(
                 "HeaderControlWithUser composes preferences and identity actions whose authenticated and anonymous states require an application header context.",
                 "layout-patterns/header-footer",
-                ["Place preference controls beside the signed-in profile menu or anonymous login action.", "Optionally hide the full control group at mobile breakpoints."],
+                ["Place language and color-scheme buttons beside the signed-in profile menu or anonymous login action, without an appearance dropdown.", "Optionally hide the full control group at mobile breakpoints."],
                 ["Login endpoint, localized labels, profile image, authentication state, and responsive placement."],
                 ["The header/footer layout route renders the control through HeaderFooterLayout."],
                 ["HeaderFooterLayout", "PreferencesSelector", "ProfileMenu"]),
@@ -119,7 +119,7 @@ public static class PlaybookComponentCoverage
                 "HeaderControl is a minimal region adapter that renders PreferencesSelector. Its useful behavior is the parent preference component rather than a separate visual contract.",
                 "components/preferences-selector",
                 "View preference example",
-                ["Place the shared preference selector in legacy header regions."],
+                ["Place language and color-scheme controls in legacy header regions, without an appearance dropdown."],
                 ["The consuming header owns placement, landmark structure, and account controls."],
                 ["The PreferencesSelector workbench covers the preference controls."],
                 ["PreferencesSelector", "HeaderControlWithUser", "HeaderFooterLayout"]),

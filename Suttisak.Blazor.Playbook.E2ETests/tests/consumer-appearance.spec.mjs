@@ -64,25 +64,30 @@ test('temporary appearance previews stay temporary when the color mode changes',
   await expect(page.locator('html')).toHaveAttribute('data-appearance', 'standard');
 });
 
-test('the shared selector switches all appearances in desktop and mobile preferences', async ({ page }) => {
+test('the standalone appearance setting switches every appearance and persists across desktop and mobile', async ({ page }) => {
   await page.goto('/components/appearance-selector');
   const workbench = page.getByTestId('preferences-workbench');
-  const desktop = workbench.locator('.preferences-selector__desktop [data-appearance-selector]');
-  await expect(desktop.locator('option')).toHaveText(['Standard', 'Essential', 'Quiet Luxury', 'Nexora']);
+  const selector = workbench.getByLabel('Saved appearance', { exact: true });
+  await expect(selector.locator('option')).toHaveText(['Standard', 'Essential', 'Quiet Luxury', 'Nexora']);
+  await expect(workbench.locator('header select')).toHaveCount(0);
   for (const appearance of ['quiet-luxury', 'essential', 'nexora', 'standard']) {
-    await desktop.selectOption(appearance);
+    await selector.selectOption(appearance);
     await expect(page.locator('.playbook').first()).toHaveAttribute('data-appearance', appearance);
     await expect(page.locator('#appearance-select')).toHaveValue(appearance);
-    await desktop.focus();
-    await expect(desktop.locator('..')).toHaveCSS('outline-style', 'solid');
-    await expect(desktop.locator('..')).toHaveCSS('outline-width', '2px');
+    await selector.focus();
+    await expect(selector.locator('..')).toHaveCSS('outline-style', 'solid');
+    await expect(selector.locator('..')).toHaveCSS('outline-width', '2px');
   }
   await page.setViewportSize({ width: 390, height: 844 });
   const disclosure = workbench.locator('.preferences-selector__mobile');
   await disclosure.locator('summary').focus();
   await disclosure.locator('summary').press('Enter');
-  await disclosure.locator('[data-appearance-selector]').selectOption('quiet-luxury');
+  await expect(disclosure.locator('select')).toHaveCount(0);
+  await disclosure.getByRole('button', { name: 'Use dark theme' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await selector.selectOption('quiet-luxury');
   await expect(page.locator('html')).toHaveAttribute('data-appearance', 'quiet-luxury');
+  await disclosure.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {}))));
   expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
   await page.reload();
   await expect(page.locator('#appearance-select')).toHaveValue('quiet-luxury');
@@ -93,18 +98,21 @@ test('identity preferences stay contained and keyboard operable at login card wi
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/layout-patterns/identity');
     const preferences = page.locator('.identity-layout__preferences');
+    await expect(preferences.locator('select')).toHaveCount(0);
     const summary = preferences.locator('summary');
     await summary.focus();
     await summary.press('Enter');
-    const selector = preferences.locator('.preferences-selector__mobile [data-appearance-selector]');
-    await selector.selectOption('quiet-luxury');
-    await expect(page.locator('html')).toHaveAttribute('data-appearance', 'quiet-luxury');
-    const box = await selector.boundingBox();
+    const controls = preferences.locator('.preferences-selector__mobile');
+    await controls.getByRole('button', { name: 'Use dark theme' }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(controls.getByRole('button', { name: 'ใช้ภาษาไทย' })).toBeVisible();
+    const box = await controls.locator('.preferences-selector__popover').boundingBox();
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(width);
     const trigger = await summary.boundingBox();
     const brand = await page.locator('.layout-pattern-brand').boundingBox();
     expect(trigger.x >= brand.x + brand.width || trigger.y + trigger.height <= brand.y).toBe(true);
+    await controls.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => {}))));
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
   }
 });

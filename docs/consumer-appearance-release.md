@@ -2,6 +2,41 @@
 
 ## Nexora surfaces and access: 1.0.28 (prepared locally)
 
+### Header preference revision (2026-10-03)
+
+The current header decision supersedes the earlier default placement of
+AppearanceSelector in shared preferences and MainLayout. Shared HeaderControl,
+HeaderControlWithUser, Identity preferences, and MainLayout now expose language
+and Light/Dark/System buttons without appearance dropdowns in either desktop or
+mobile surfaces. Playbook's application-shell example follows the same contract.
+The public standalone AppearanceSelector, saved settings, and bootstrap/browser
+API remain compatible. The Playbook exposes the standalone setting outside the
+header and retains its explicit catalog preview chooser.
+
+UI remains 1.0.28 because this version has not been published. The cancelled
+publication target at `88202ad` and its package below are superseded by this
+revision. The verification below records that earlier snapshot; it does not
+verify this later change. Root owns integration, independent review, and the new
+CI/publication target.
+
+Current revision verification:
+
+- Release solution build passed with zero warnings and errors. All 80 UI unit
+  tests passed, including rendered anonymous/authenticated header contracts.
+- All 11 final focused browser tests passed. They exercise HeaderControl and
+  HeaderControlWithUser at 1440 and 320 px, opened MainLayout mobile navigation,
+  keyboard disclosure, language redirects, saved mode/appearance compatibility,
+  standalone appearance settings, and identity preference accessibility.
+- The earlier affected browser run passed 84 tests and failed six changed
+  fixture checks. Corrections removed a test-only repeated preference seed and
+  pinned preview mode, waited for real color transitions before axe sampling,
+  and used the isolated HeaderControl specimen to avoid the documentation page's
+  unrelated long heading. The final focused run supersedes those six failures;
+  no product CSS was changed to accommodate them. The full suite will run in CI.
+- Commands, completed output, and four header captures are retained under
+  `C:/Users/Sutti/.codex/artifacts/nexora-library-20261003/header-*`; the exact
+  local record is `header-verification-record.md` in that artifact directory.
+
 The current Nexora contract is documented in
 [the UI setup guide](../Suttisak.Blazor.UserInterface/README.md#nexora-surfaces-and-access-1028).
 Nexora adds ivory/white and charcoal surfaces, restrained shadows, rectangular
@@ -19,7 +54,7 @@ bootstrap retains saved Light, Dark, and System preferences; consumers without
 that attribute retain their existing default.
 
 The isolated source is based on `999ce3f99ccc6133cb71d3e2573979ac489b1dbc`.
-Product and browser-test changes are frozen at
+Earlier product and browser-test changes were frozen at
 `2d171597201506a7fef84d6a71bd4a012f41d138`. Local executed verification:
 
 - Release solution build passed with zero errors and the existing Identity

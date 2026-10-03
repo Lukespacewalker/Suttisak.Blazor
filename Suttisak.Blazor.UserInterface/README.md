@@ -16,9 +16,12 @@ Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 ## Appearance
 
 The package includes **Standard**, **Essential**, **Quiet Luxury**, and **Nexora**. Appearance
-is independent of Light/Dark/System and is remembered per browser origin. Shared
-MainLayout, IdentityLayout, and PreferencesSelector include AppearanceSelector;
-custom layouts can compose `<AppearanceSelector />` themselves.
+is independent of Light/Dark/System and is remembered per browser origin.
+Shared headers, MainLayout, IdentityLayout, and PreferencesSelector expose
+language and Light/Dark/System controls without appearance dropdowns, including
+mobile navigation and disclosures. Applications may compose the standalone
+`<AppearanceSelector />` on an explicit settings page or preview surface.
+Existing saved appearance choices and the browser API remain supported.
 
 Set a first-visit default on the host's `html` element before loading the early
 bootstrap. A valid saved choice takes precedence. Without a default, Standard is

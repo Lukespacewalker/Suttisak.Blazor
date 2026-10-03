@@ -4,11 +4,15 @@
             <header>
                 <div>
                     <span>Application preferences</span>
-                    <strong>Appearance, language, and color scheme</strong>
+                    <strong>Language and color scheme</strong>
                 </div>
-                <PreferencesSelector />
+                <Suttisak.Blazor.UserInterface.Region.HeaderControl />
             </header>
-            <p>Culture is handled by the host application. Appearance and color mode are independent preferences stored by the shared browser module.</p>
+            <p>Header controls expose language and color scheme. Culture is handled by the host application; the shared browser module remembers color mode.</p>
+            <section aria-label="Explicit appearance settings">
+                <AppearanceSelector Label="Saved appearance" />
+                <p>Applications may place AppearanceSelector on a dedicated settings page. Appearance remains independent of color mode.</p>
+            </section>
         </div>
     </Preview>
     <Controls>
@@ -24,7 +28,7 @@
     <States>
         <article><span>Culture</span><strong>Host-owned redirect and persistence</strong><small>CultureSelector stores the requested culture, then lets the application apply it and return to the current route.</small></article>
         <article><span>Theme</span><strong>Light, dark, and system</strong><small>ThemeSwitcher synchronizes every mounted selector and reacts to system-scheme changes.</small></article>
-        <article><span>Appearance</span><strong>Standard, Essential, Quiet Luxury, and Nexora</strong><small>AppearanceSelector remembers the choice without changing color mode.</small></article>
+        <article><span>Appearance settings</span><strong>Standard, Essential, Quiet Luxury, and Nexora</strong><small>The standalone AppearanceSelector remembers an explicitly requested setting without adding a dropdown to shared headers.</small></article>
         <article><span>Responsive</span><strong>One native disclosure on mobile</strong><small>PreferencesSelector keeps the controls together without duplicating a parallel interaction contract.</small></article>
     </States>
 </ComponentSpecimenLayout>
