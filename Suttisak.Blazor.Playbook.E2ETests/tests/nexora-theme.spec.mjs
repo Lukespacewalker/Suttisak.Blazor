@@ -58,6 +58,7 @@ for (const mode of ['light', 'dark']) {
     const menu = page.locator('.app-shell__menu-button--mobile');
     await menu.click();
     await expect(page.locator('.app-shell__navigation')).toHaveClass(/is-open/);
+    await expect(page.locator('.app-shell__navigation')).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)');
     const navigation = await page.locator('.app-shell__navigation').boundingBox();
     expect(navigation.x).toBeGreaterThanOrEqual(0);
     expect(navigation.x + navigation.width).toBeLessThanOrEqual(390);
