@@ -1,6 +1,6 @@
 # Consumer appearance release handoff
 
-## Current decision: Nexora default, UI 1.0.29
+## Current release: Nexora default, UI 1.0.29
 
 The user requested Nexora as the primary appearance and authorized publication
 and consumer integration on 2026-10-03. This supersedes Standard as the library
@@ -9,7 +9,68 @@ choices and explicit host overrides continue to win; color-mode defaults remain
 independent. Gold is the library accent fallback. Hosts own accent/on-accent;
 MentalInsight retains its existing copper palette.
 
-Current plan and acceptance:
+UI 1.0.29 is published from
+[`f8793d28c547fe61e9630f4dfdcb37178515a01f`](https://github.com/Lukespacewalker/Suttisak.Blazor/commit/f8793d28c547fe61e9630f4dfdcb37178515a01f).
+[CI 37114439258](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/37114439258)
+and [UI-only publication 37115443924](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/37115443924)
+both passed. GitHub Packages lists version ID 1330816737. The restored package's
+repository metadata identifies that exact release commit.
+
+The default applies to new visitors without a saved appearance. Shared controls
+consume the Nexora semantic palette; this release also corrects the footer's
+muted text, signed-out profile hover text, and legacy Hero/HeaderFooter
+backgrounds that bypassed it. The setup and host accent contract are in
+[the UI guide](../Suttisak.Blazor.UserInterface/README.md#appearance).
+
+Completed verification:
+
+- Release solution build passed. All 80 shared unit tests and all 327 Playbook
+  Chromium tests passed locally and in the release workflow. AudiogramIQ also
+  restored/built in Debug against the matching sibling library source.
+- Independent library review passed against the base commit plus 17 exact file
+  hashes. Actual desktop/320 px light/dark renders exercised saved choices,
+  direct-specimen hydration, keyboard sign-in navigation, focus, and forced
+  colors. Catalog metadata and package assets match the released source.
+- After successful publication, all eleven consumer Release references were
+  updated to 1.0.29. All six consumers restored/built in Release sequentially;
+  their affected test suites passed all 671 tests. Debug project references and
+  existing Identity versions were preserved.
+- Independent consumer review passed against six frozen bases plus 22 exact
+  file hashes. Source-derived browser fixtures used the published package and
+  each host's CSS order at 1280/320 px in light/dark. They showed visible
+  keyboard focus and no horizontal overflow. Primary-action text passed both
+  gradient endpoints in every palette; the minimum was AudiogramIQ light at
+  4.58:1. MentalInsight copper passed at 5.81:1 and 4.73:1 in light mode.
+
+All six consumer commits were pushed and their remote `master` heads verified:
+
+| Consumer | Release commit | Accent | Passed tests |
+|---|---|---|---:|
+| AudiogramIQ | [`f676e68`](https://github.com/Lukespacewalker/AudiogramIQ/commit/f676e68be14376ae06d461f1349d50614cfccd9e) | Teal | 32 |
+| BafsWorkout | [`671e577`](https://github.com/Lukespacewalker/BafsWorkout/commit/671e577130edc2537c9f1a018f34621c1e0096c9) | Purple | 64 |
+| HealthInsight | [`d86de3b9`](https://github.com/Lukespacewalker/HealthInsight/commit/d86de3b90ddb0811b289724b47ac8d1d37330b49) | Blue | 26 |
+| CoeKPI | [`31b1488`](https://github.com/Lukespacewalker/CoeKPI/commit/31b148816b729eaf225854ba1edf3b056394eeea) | Blue | 73 |
+| ErgoTrack | [`a0080f9`](https://github.com/Lukespacewalker/ErgoTrack/commit/a0080f917d0d80acc19298b83d54c31961c51d1e) | Purple | 355 |
+| MentalInsight | [`6cda49c`](https://github.com/Lukespacewalker/MentalInsight/commit/6cda49cbe624cf7df91372058828379457b28497) | Copper | 121 |
+
+HealthInsight's landing layout now inherits the host appearance. Its summary
+render tests were filtered to the eight affected render checks; the 18
+architecture tests also passed. CoeKPI and ErgoTrack integration tests used
+disposable PostgreSQL containers. Existing compiler warnings were retained.
+
+Root authored the release and integrations. Reviewers were read-only and used
+frozen source with shared build outputs. Local commands, hashes, completed logs,
+and screenshots are retained under
+`C:/Users/Sutti/.codex/artifacts/nexora-library-20261003/`; the evidence record is
+`primary-release-verification.md`. Intended release hunks were also synchronized
+to the primary checkouts while preserving unrelated pending work. That pending
+work is outside the verified release snapshots.
+
+Package publication and source integration are complete. Production host,
+authentication, and clinical/business workflows were not executed; consumer
+browser evidence is fixture-based. Runtime application deployment is separate.
+
+### Preparation sequence (completed)
 
 1. Audit the shared control palette and correct concrete theme bypasses. Make
    Nexora the bootstrap fallback and initial Playbook appearance.
@@ -25,9 +86,9 @@ Current plan and acceptance:
 5. Restore/build each consumer in Release sequentially, run affected tests,
    review exact integration changes, then commit/push and record evidence.
 
-Changes are prepared in the existing isolated library checkout. Root owns all
-edits and integration. Read-only workers audited control coverage and consumers.
-Primary checkout changes unrelated to this release are preserved.
+This sequence was completed in isolated checkouts. The preparation statuses in
+the historical sections below describe their earlier snapshots and are
+superseded by [the current release evidence](#current-release-nexora-default-ui-1029).
 
 ## Nexora surfaces and access: 1.0.28 (published; historical preparation below)
 
