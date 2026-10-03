@@ -1243,7 +1243,7 @@
       "category": "Actions \u0026 surfaces",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Page title composition with eyebrow, description, metadata, and action slots.",
+      "summary": "Compact page title with description, section context, navigation, and action slots; Nexora uses restrained host typography.",
       "tags": [
         "heading",
         "page",
@@ -1998,7 +1998,7 @@
       "category": "Experience",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Experience-section heading with consistent hierarchy and supporting explanation.",
+      "summary": "Reader-facing heading with details and optional decorative or meaningful visuals; Nexora adapts to content and parent width without hero space.",
       "tags": [
         "experience",
         "heading",

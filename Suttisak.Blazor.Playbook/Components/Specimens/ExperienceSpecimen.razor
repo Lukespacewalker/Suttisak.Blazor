@@ -6,6 +6,7 @@
                                Emphasis="is ready"
                                Description="A reader-facing summary that keeps product wording in the consuming application."
                                Watermark="RESULT"
+                               Visual="@(_includeVisual ? ScoreVisual : null)"
                                VisualIsDecorative="@_visualIsDecorative"
                                HeadingId="experience-demo-heading"
                                data-testid="experience-heading">
@@ -14,13 +15,6 @@
                     <span aria-hidden="true"> · </span>
                     <span>Annual review</span>
                 </Details>
-                <Visual>
-                    <div role="@(_visualIsDecorative ? null : "img")"
-                         aria-label="@(_visualIsDecorative ? null : "Overall result score 82 out of 100")"
-                         data-testid="experience-visual">
-                        <strong>82</strong><span aria-hidden="true">/100</span>
-                    </div>
-                </Visual>
             </ExperienceHeading>
 
             <ExperienceCard Elevated="@_elevated"
@@ -29,6 +23,8 @@
                             data-testid="experience-card">
                 <h2>Result summary</h2>
                 <p>The shared component owns the surface treatment while the application owns this explanation.</p>
+                <AppButton Variant="AppButtonVariant.Primary" OnClick="@(_ => _taskStatus = "Result details opened.")">Open result details</AppButton>
+                <p role="status">@_taskStatus</p>
             </ExperienceCard>
 
             <ExperienceDisclosureGroup data-testid="experience-disclosure-group">
@@ -47,6 +43,7 @@
         </div>
     </Preview>
     <Controls>
+        <label><input type="checkbox" @bind="_includeVisual" /> Include visual</label>
         <label><input type="checkbox" @bind="_visualIsDecorative" /> Decorative visual</label>
         <label><input type="checkbox" @bind="_accent" /> Card accent</label>
         <label><input type="checkbox" @bind="_elevated" /> Elevated card</label>
@@ -54,8 +51,8 @@
         <label><input type="checkbox" @bind="_recommended" /> Recommended disclosure</label>
     </Controls>
     <States>
-        <article><span>Heading</span><strong>Reader-facing hero</strong><small>Use for results, reports, education, and guidance rather than CRUD task headings.</small></article>
-        <article><span>Visual</span><strong>Decorative or meaningful</strong><small>Meaningful visuals reserve content space and stay exposed to assistive technology.</small></article>
+        <article><span>Heading</span><strong>Content-driven in Nexora</strong><small>Nexora keeps result and guidance introductions compact so the following task stays visible. Other appearances retain their existing hero treatment; use PageHeading for task pages.</small></article>
+        <article><span>Visual</span><strong>Absent, decorative, or meaningful</strong><small>Nexora removes unused visual space when no fragment is supplied. Supplied visuals keep content space and their decorative or accessible treatment.</small></article>
         <article><span>Card</span><strong>Composable surface</strong><small>Accent, elevation, and interactive treatments change presentation without owning copy.</small></article>
         <article><span>Disclosure</span><strong>Native details/summary</strong><small>Progressive guidance works with keyboard and browser semantics without JavaScript.</small></article>
     </States>
@@ -65,6 +62,11 @@
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
     private bool _visualIsDecorative;
+    private bool _includeVisual = true;
+    private string _taskStatus = "Ready to read the result.";
+    private RenderFragment ScoreVisual => @<div role="@(_visualIsDecorative ? null : "img")"
+        aria-label="@(_visualIsDecorative ? null : "Overall result score 82 out of 100")"
+        data-testid="experience-visual"><strong>82</strong><span aria-hidden="true">/100</span></div>;
     private bool _accent = true;
     private bool _elevated = true;
     private bool _interactive;

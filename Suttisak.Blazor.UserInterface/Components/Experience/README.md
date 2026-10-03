@@ -6,7 +6,7 @@ CRUD and administration screens.
 
 ## `ExperienceHeading`
 
-`ExperienceHeading` owns the responsive reader-facing hero treatment. The
+`ExperienceHeading` owns the responsive reader-facing heading treatment. The
 application owns its wording, watermark, result details, and product visual.
 
 ```razor
@@ -29,6 +29,15 @@ content cannot overlap details or body copy.
 Use `PageHeading` for task-oriented CRUD/admin pages. Use `ExperienceHeading`
 when the page's primary job is helping a person understand results, guidance,
 or a narrative report.
+
+In Nexora (UI 1.0.30), both headings use restrained host-provided typography.
+ExperienceHeading is content-driven: there is no hero minimum height, its title
+uses the copy width, and omitted Visual fragments reserve no visual column.
+Supplied visuals wrap below the copy when the parent is narrow, including a
+320px parent on a desktop page. Meaningful visuals retain their content and
+accessibility treatment. Eyebrow and emphasis use the host accent; descriptions
+and details use semantic muted text. Other appearances retain their existing
+geometry and artwork. No public parameters or application content change.
 
 ## `ExperienceCard`
 

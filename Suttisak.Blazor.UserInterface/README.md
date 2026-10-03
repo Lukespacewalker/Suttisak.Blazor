@@ -100,6 +100,13 @@ derived selection surface, boundary, and subtle primary-button gradient.
 Use explicit light/dark values and check text and control contrast when choosing
 a palette. Typography continues using the shared or host-provided Latin/Thai fonts.
 
+From 1.0.30, Nexora uses compact `PageHeading` typography and content-driven
+`ExperienceHeading` spacing. Omit `Visual` to avoid an unused visual column;
+supplied meaningful visuals wrap beneath the copy in constrained parents.
+Titles use the available copy width, and eyebrow/emphasis follow the host
+accent. Use PageHeading for task pages and ExperienceHeading for reader-facing
+results or guidance. Other appearances retain their existing heading geometry.
+
 The first-visit appearance and color mode are independent:
 
 ```html
