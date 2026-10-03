@@ -17,6 +17,9 @@ Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 
 The package includes **Standard**, **Essential**, **Quiet Luxury**, and **Nexora**. Appearance
 is independent of Light/Dark/System and is remembered per browser origin.
+Nexora is the default from 1.0.29 when a host does not specify a valid default.
+Explicit host defaults and saved appearance choices still take precedence. Load
+the appearance stylesheet below to apply the default surfaces and controls.
 Shared headers, MainLayout, IdentityLayout, and PreferencesSelector expose
 language and Light/Dark/System controls without appearance dropdowns, including
 mobile navigation and disclosures. Applications may compose the standalone
@@ -24,11 +27,11 @@ mobile navigation and disclosures. Applications may compose the standalone
 Existing saved appearance choices and the browser API remain supported.
 
 Set a first-visit default on the host's `html` element before loading the early
-bootstrap. A valid saved choice takes precedence. Without a default, Standard is
+bootstrap. A valid saved choice takes precedence. Without a default, Nexora is
 used. Load appearance CSS after application and isolated styles:
 
 ```razor
-<html data-default-appearance="quiet-luxury" data-appearance="quiet-luxury">
+<html data-default-appearance="nexora" data-appearance="nexora">
 <head>
     <script src="@Assets["_content/Suttisak.Blazor.UserInterface/js/theme-bootstrap.js"]"></script>
     <link rel="stylesheet" href="@Assets["_content/Suttisak.Blazor.UserInterface/css/main.css"]" />

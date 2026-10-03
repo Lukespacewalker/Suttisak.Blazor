@@ -10,7 +10,7 @@ public sealed class PlaybookState
     private string _mode = "light";
     private string _viewport = "wide";
     private string _language = "en";
-    private string _appearance = "standard";
+    private string _appearance = "nexora";
 
     public event Action? Changed;
 

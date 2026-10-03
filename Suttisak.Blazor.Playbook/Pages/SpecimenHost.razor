@@ -61,6 +61,12 @@
         }
 
         var theme = PlaybookCatalog.Themes.First(value => value.Key == ActiveTheme);
+        if (!State.TrySetAppearance(Appearance))
+        {
+            var savedAppearance = await JsRuntime.InvokeAsync<string>("suttisakAppearance.get");
+            if (savedAppearance != State.Appearance && State.TrySetAppearance(savedAppearance))
+                await InvokeAsync(StateHasChanged);
+        }
         await JsRuntime.InvokeVoidAsync("suttisakAppearance.set", State.Appearance, false);
         _appearanceReference = DotNetObjectReference.Create(this);
         await JsRuntime.InvokeVoidAsync("playbookAppearance.watch", _appearanceReference);

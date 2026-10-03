@@ -1,6 +1,16 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using Suttisak.Blazor.UserInterface.Region
+
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Account navigation controls">
     <Preview>
         <div class="account-navigation-specimen" data-testid="account-navigation-workbench">
+            <section aria-labelledby="shell-access-specimen-title">
+                <h2 id="shell-access-specimen-title">Signed-out shell access</h2>
+                <CascadingValue Value="@AnonymousState">
+                    <ShellProfileControl LoginText="Sign in" LoginUrl="access/login" />
+                </CascadingValue>
+            </section>
             <section aria-labelledby="profile-menu-specimen-title">
                 <div>
                     <span>Desktop account control</span>
@@ -37,6 +47,8 @@
 
 @code {
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
+    private static readonly Task<AuthenticationState> AnonymousState = Task.FromResult(
+        new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
 
     private string _note = "authenticated";
     private string NoteText => _note switch

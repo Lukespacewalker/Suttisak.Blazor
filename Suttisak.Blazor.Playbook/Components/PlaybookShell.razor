@@ -117,7 +117,7 @@
     {
         if (firstRender)
         {
-            if (QueryValue(Navigation.ToAbsoluteUri(Navigation.Uri), "appearance") is null)
+            if (!State.TrySetAppearance(QueryValue(Navigation.ToAbsoluteUri(Navigation.Uri), "appearance")))
                 State.TrySetAppearance(await JsRuntime.InvokeAsync<string>("suttisakAppearance.get"));
             await JsRuntime.InvokeVoidAsync("suttisakAppearance.set", State.Appearance, false);
             _appearanceReference = DotNetObjectReference.Create(this);

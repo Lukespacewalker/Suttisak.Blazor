@@ -6,6 +6,30 @@ import path from 'node:path';
 const bootstrap = fs.readFileSync(path.resolve('../Suttisak.Blazor.UserInterface/wwwroot/js/theme-bootstrap.js'), 'utf8');
 const storageKey = 'suttisak-blazor:theme-settings';
 
+for (const mode of ['light', 'dark']) {
+  test(`Nexora ${mode} signed-out shell access keeps readable hover and keyboard focus`, async ({ page }) => {
+    await page.goto(`/specimens/profile-menu?appearance=nexora&mode=${mode}`);
+    const login = page.locator('.shell-profile-login');
+    await login.hover();
+    await expect(login).toHaveCSS('color', mode === 'light' ? 'rgb(255, 253, 248)' : 'rgb(36, 30, 22)');
+    await page.mouse.move(0, 0);
+    await page.keyboard.press('Tab');
+    await login.focus();
+    await expect(login).toBeFocused();
+    await expect(login).toHaveCSS('outline-style', 'solid');
+  });
+
+  test(`Nexora ${mode} shared footer and legacy backgrounds use semantic surfaces`, async ({ page }) => {
+    await page.goto(`/specimens/company-footer?appearance=nexora&mode=${mode}`);
+    const footer = page.locator('.company-footer');
+    await expect(footer).toHaveCSS('color', mode === 'light' ? 'rgb(104, 99, 92)' : 'rgb(190, 185, 175)');
+    await expect(page.locator('.hero.background')).toHaveCSS('background-image', 'none');
+    await expect(page.locator('.hero.background')).toHaveCSS('background-color', mode === 'light' ? 'rgb(242, 239, 233)' : 'rgb(44, 45, 47)');
+    await page.goto('/layout-patterns/header-footer');
+    await expect(page.locator('.header-footer-content')).toHaveCSS('background-image', 'none');
+  });
+}
+
 for (const savedMode of [undefined, 'dark', 'system']) {
   test(`Nexora light default honors ${savedMode ?? 'first visit'} through theme module hydration`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'dark' });

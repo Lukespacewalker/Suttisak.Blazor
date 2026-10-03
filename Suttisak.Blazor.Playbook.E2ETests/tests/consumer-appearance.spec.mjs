@@ -13,7 +13,7 @@ async function consumer(page, { saved, defaultAppearance = 'quiet-luxury', defau
   }, { saved, blocked, storageKey });
   await page.route('**/consumer-appearance-fixture', route => route.fulfill({
     contentType: 'text/html',
-    body: `<!doctype html><html lang="en" data-default-appearance="${defaultAppearance}" ${defaultTheme ? `data-default-theme="${defaultTheme}"` : ''}><head><script>${bootstrap}</script></head><body>
+    body: `<!doctype html><html lang="en" ${defaultAppearance === null ? '' : `data-default-appearance="${defaultAppearance}"`} ${defaultTheme ? `data-default-theme="${defaultTheme}"` : ''}><head><script>${bootstrap}</script></head><body>
       <label for="appearance">Appearance</label><select id="appearance" data-appearance-selector><option value="standard">Standard</option><option value="essential">Essential</option><option value="quiet-luxury">Quiet Luxury</option><option value="nexora">Nexora</option></select>
       <label for="other">Other selector</label><select id="other" data-appearance-selector><option value="standard">Standard</option><option value="essential">Essential</option><option value="quiet-luxury">Quiet Luxury</option><option value="nexora">Nexora</option></select>
       <button data-theme-preference="dark">Dark</button><button data-theme-preference="system">System</button>
@@ -21,6 +21,45 @@ async function consumer(page, { saved, defaultAppearance = 'quiet-luxury', defau
   }));
   await page.goto('/consumer-appearance-fixture');
 }
+
+for (const defaultAppearance of [null, 'unknown']) {
+  test(`Nexora fallback hydrates settings without a valid host appearance (${defaultAppearance ?? 'absent'})`, async ({ page }) => {
+    await consumer(page, { defaultAppearance, saved: { mode: 'system' } });
+    await expect(page.locator('html')).toHaveAttribute('data-appearance', 'nexora');
+    await expect(page.getByLabel('Appearance', { exact: true })).toHaveValue('nexora');
+    await page.getByRole('button', { name: 'Dark', exact: true }).click();
+    await page.reload();
+    await expect(page.locator('html')).toHaveAttribute('data-appearance', 'nexora');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  });
+}
+
+test('Nexora fallback keeps explicit saved appearances and works without storage', async ({ page }) => {
+  await consumer(page, { defaultAppearance: null, saved: { mode: 'light', appearance: 'standard' } });
+  await expect(page.locator('html')).toHaveAttribute('data-appearance', 'standard');
+  await consumer(page, { defaultAppearance: null, blocked: true });
+  await expect(page.locator('html')).toHaveAttribute('data-appearance', 'nexora');
+  await page.getByLabel('Appearance', { exact: true }).selectOption('essential');
+  await expect(page.locator('html')).toHaveAttribute('data-appearance', 'essential');
+});
+
+test('Playbook opens controls in Nexora for a first visit and retains explicit previews', async ({ page }) => {
+  await page.goto('/components/app-text-box');
+  await expect(page.locator('#appearance-select')).toHaveValue('nexora');
+  await expect(page.locator('.playbook').first()).toHaveAttribute('data-appearance', 'nexora');
+  await page.goto('/specimens/app-text-box');
+  await expect(page.locator('.specimen-host')).toHaveAttribute('data-appearance', 'nexora');
+  await page.goto('/components/app-text-box?appearance=standard');
+  await expect(page.locator('#appearance-select')).toHaveValue('standard');
+});
+
+test('direct specimens and invalid preview queries retain a saved appearance', async ({ page }) => {
+  await page.addInitScript(key => localStorage.setItem(key, JSON.stringify({ mode: 'light', appearance: 'essential' })), storageKey);
+  await page.goto('/specimens/app-text-box');
+  await expect(page.locator('.specimen-host')).toHaveAttribute('data-appearance', 'essential');
+  await page.goto('/components/app-text-box?appearance=unknown');
+  await expect(page.locator('#appearance-select')).toHaveValue('essential');
+});
 
 test('consumer default and saved appearance hydrate every selector and survive color mode changes', async ({ page }) => {
   await consumer(page, { saved: { mode: 'light', appearance: 'essential' } });

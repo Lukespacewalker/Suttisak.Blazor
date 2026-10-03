@@ -1156,7 +1156,7 @@
       "category": "Actions \u0026 surfaces",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Reusable company-footer composition for organization identity and supporting links.",
+      "summary": "Reusable company-footer composition for organization identity and supporting links, with semantic light/dark text colors.",
       "tags": [
         "footer",
         "company",
@@ -1826,7 +1826,7 @@
       "category": "Navigation",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Compact shell account control that switches between profile disclosure and login link.",
+      "summary": "Compact shell account control that switches between profile disclosure and login link, with readable accent hover and keyboard focus.",
       "tags": [
         "navigation",
         "profile",

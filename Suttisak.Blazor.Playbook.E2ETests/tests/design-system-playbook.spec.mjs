@@ -54,8 +54,8 @@ test('AppTextBox detail route exposes inherited input API and live controls', as
   await expect(page.getByRole('textbox', { name: 'Full name' }).first()).toHaveValue('Grace Hopper');
 });
 
-test('AppTextBox uses an outline-free filled surface with a visible soft focus state', async ({ page }) => {
-  await page.goto('/components/app-text-box');
+test('Standard AppTextBox uses an outline-free filled surface with a visible soft focus state', async ({ page }) => {
+  await page.goto('/components/app-text-box?appearance=standard');
 
   const preview = page.locator('.component-detail__preview-frame').first();
   const input = preview.getByRole('textbox', { name: 'Full name' });

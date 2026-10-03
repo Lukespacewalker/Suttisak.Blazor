@@ -2,7 +2,7 @@
     const storageKey = "suttisak-blazor:theme-settings";
     const appearances = ["standard", "essential", "quiet-luxury", "nexora"];
     const defaultAppearance = appearances.includes(document.documentElement.dataset.defaultAppearance)
-        ? document.documentElement.dataset.defaultAppearance : "standard";
+        ? document.documentElement.dataset.defaultAppearance : "nexora";
     const modes = ["light", "dark", "system"];
     const defaultTheme = modes.includes(document.documentElement.dataset.defaultTheme)
         ? document.documentElement.dataset.defaultTheme : "system";

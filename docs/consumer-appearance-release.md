@@ -1,6 +1,42 @@
 # Consumer appearance release handoff
 
-## Nexora surfaces and access: 1.0.28 (prepared locally)
+## Current decision: Nexora default, UI 1.0.29
+
+The user requested Nexora as the primary appearance and authorized publication
+and consumer integration on 2026-10-03. This supersedes Standard as the library
+fallback and the earlier Quiet Luxury consumer defaults. Saved valid appearance
+choices and explicit host overrides continue to win; color-mode defaults remain
+independent. Gold is the library accent fallback. Hosts own accent/on-accent;
+MentalInsight retains its existing copper palette.
+
+Current plan and acceptance:
+
+1. Audit the shared control palette and correct concrete theme bypasses. Make
+   Nexora the bootstrap fallback and initial Playbook appearance.
+2. Verify the Release solution, shared unit tests, full Playbook browser suite,
+   package assets, and a consumer using the matching Debug project references.
+   Check first visits, saved choices, light/dark, keyboard focus, and narrow UI.
+3. Review the frozen library snapshot independently, then commit/push and wait
+   for CI. Dispatch publication for UI 1.0.29 only and confirm availability.
+4. Update all eleven Release references in the six consumers only after
+   publication. Load appearance.css after app/isolated styles, use Nexora as
+   host default, preserve each product accent and Debug references, and remove
+   HealthInsight's nested Quiet Luxury override.
+5. Restore/build each consumer in Release sequentially, run affected tests,
+   review exact integration changes, then commit/push and record evidence.
+
+Changes are prepared in the existing isolated library checkout. Root owns all
+edits and integration. Read-only workers audited control coverage and consumers.
+Primary checkout changes unrelated to this release are preserved.
+
+## Nexora surfaces and access: 1.0.28 (published; historical preparation below)
+
+The earlier local-only status below is superseded: commit
+`a77de91323516c2698a4d02b1712c0e42e9f3bb0` passed
+[CI 37106167196](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/37106167196)
+and [publication 37107172242](https://github.com/Lukespacewalker/Suttisak.Blazor/actions/runs/37107172242).
+GitHub Packages lists 1.0.28 (version ID 1330477866). These results were checked
+fresh before preparing 1.0.29; the following preparation record is historical.
 
 ### Header preference revision (2026-10-03)
 

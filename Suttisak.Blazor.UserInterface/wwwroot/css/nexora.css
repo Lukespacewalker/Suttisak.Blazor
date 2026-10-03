@@ -37,8 +37,12 @@
     --app-shadow-lg: 0 16px 40px var(--app-shadow-color);
 }
 
-:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell {
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-shell, .header-footer-content) {
     background: var(--app-background);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .hero.background {
+    background: var(--app-surface-muted);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-shell__header, .nav-shell, .app-shell__navigation) {
