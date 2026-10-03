@@ -164,6 +164,63 @@ for (const mode of ['light', 'dark']) {
 }
 
 for (const mode of ['light', 'dark']) {
+  for (const kind of ['checkbox', 'radio']) {
+    test(`Nexora ${mode} unchecked ${kind} has a visible boundary and keeps keyboard selection`, async ({ page }, testInfo) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.goto(`/components/app-${kind === 'checkbox' ? 'checkbox' : 'radio-group'}?appearance=nexora&mode=${mode}`);
+      const preview = page.locator('.component-detail__preview-frame').first();
+      const input = kind === 'checkbox' ? preview.getByRole('checkbox') : preview.getByRole('radio', { name: 'Phone', exact: true });
+      if (kind === 'checkbox') {
+        await input.focus();
+        await input.press('Space');
+      }
+      await expect(input).not.toBeChecked();
+      const control = input.locator('+ .app-choice__control');
+      await expect(control).toHaveCSS('background-color', mode === 'light' ? 'rgb(247, 245, 240)' : 'rgb(23, 24, 26)');
+      const readContrast = () => control.evaluate(el => {
+        const luminance = color => {
+          const channels = color.match(/[\d.]+/g).slice(0, 3).map(value => Number(value) / 255)
+            .map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4);
+          return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
+        };
+        const style = getComputedStyle(el);
+        const border = luminance(style.borderTopColor);
+        const ratio = background => {
+          const adjacent = luminance(background);
+          return (Math.max(border, adjacent) + .05) / (Math.min(border, adjacent) + .05);
+        };
+        return { fill: ratio(style.backgroundColor), card: ratio(getComputedStyle(el.closest('.app-choice')).backgroundColor) };
+      });
+      const contrast = await readContrast();
+      expect(contrast.fill, 'unchecked boundary against its inner fill').toBeGreaterThanOrEqual(3);
+      expect(contrast.card, 'unchecked boundary against its surrounding choice card').toBeGreaterThanOrEqual(3);
+      await input.locator('..').hover();
+      await expect(input.locator('..')).toHaveCSS('background-color', mode === 'light' ? 'rgb(238, 233, 225)' : 'rgb(54, 55, 57)');
+      const hovered = await readContrast();
+      expect(hovered.fill, 'hovered unchecked boundary against its inner fill').toBeGreaterThanOrEqual(3);
+      expect(hovered.card, 'hovered unchecked boundary against its surrounding choice card').toBeGreaterThanOrEqual(3);
+      await testInfo.attach('choice-boundary-contrast', { body: JSON.stringify({ neutral: contrast, hovered }), contentType: 'application/json' });
+      await preview.screenshot({ path: testInfo.outputPath(`nexora-${kind}-${mode}-unchecked.png`) });
+      // A host's scoped validation rule must retain its semantic error border.
+      await page.addStyleTag({ content: '.host-choice-error[data-consent] .app-choice__control { border-color: var(--app-danger); }' });
+      await input.evaluate(el => {
+        el.setAttribute('aria-invalid', 'true');
+        el.parentElement.classList.add('host-choice-error');
+        el.parentElement.dataset.consent = '';
+      });
+      await expect(control).toHaveCSS('border-color', mode === 'light' ? 'rgb(180, 35, 24)' : 'rgb(255, 139, 131)');
+      await input.evaluate(el => {
+        el.setAttribute('aria-invalid', 'false');
+        el.parentElement.classList.remove('host-choice-error');
+      });
+      await input.focus();
+      await input.press('Space');
+      await expect(input).toBeChecked();
+      await expect(control).toHaveCSS('border-color', mode === 'light' ? 'rgb(139, 100, 41)' : 'rgb(214, 184, 124)');
+      await expect(input.locator('..')).toHaveCSS('outline-width', '2px');
+    });
+  }
+
   test(`Nexora ${mode} required fields stay neutral until invalid interaction and preserve explicit errors`, async ({ page }) => {
     await page.goto(`/access/login?appearance=nexora&mode=${mode}`);
     const html = await page.locator('.access-page-layout').evaluate(el => {
@@ -218,3 +275,27 @@ test('Nexora shared previews preserve query context and forced color focus', asy
   await expect(preview.locator('.specimen-host')).toHaveAttribute('data-appearance', 'standard');
   expect(new URL(page.url()).searchParams.get('keep')).toBe('example');
 });
+
+for (const mode of ['light', 'dark']) {
+  test(`Nexora ${mode} placeholder remains readable on the actual input surface`, async ({ page }, testInfo) => {
+    await page.goto(`/components/app-text-box?appearance=nexora&mode=${mode}`);
+    const preview = page.locator('.component-detail__preview-frame').first();
+    const input = preview.getByRole('textbox');
+    await input.fill('');
+    await expect(input).toHaveAttribute('placeholder', 'Enter a name');
+    const contrast = await input.evaluate(el => {
+      const luminance = color => {
+        const channels = color.match(/[\d.]+/g).slice(0, 3).map(value => Number(value) / 255)
+          .map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4);
+        return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
+      };
+      const placeholder = getComputedStyle(el, '::placeholder');
+      const text = luminance(placeholder.color);
+      const surface = luminance(getComputedStyle(el.closest('.app-form-control__input-wrap')).backgroundColor);
+      return { color: placeholder.color, opacity: placeholder.opacity, ratio: (Math.max(text, surface) + .05) / (Math.min(text, surface) + .05) };
+    });
+    expect(contrast.opacity).toBe('1');
+    expect(contrast.ratio, 'placeholder text against its input background').toBeGreaterThanOrEqual(4.5);
+    await testInfo.attach('placeholder-contrast', { body: JSON.stringify(contrast), contentType: 'application/json' });
+  });
+}

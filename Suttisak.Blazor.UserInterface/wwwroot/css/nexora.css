@@ -135,6 +135,11 @@
     box-shadow: none;
 }
 
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__input::placeholder {
+    color: var(--app-foreground-muted);
+    opacity: 1;
+}
+
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__input-wrap:focus-within {
     border-color: var(--app-focus-ring);
     outline: 2px solid var(--app-focus-ring);
@@ -172,6 +177,14 @@
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-choice:hover {
     transform: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :where(.app-choice:not(.has-error):not(.app-choice--indeterminate) > .app-choice__native:not(:checked):not(:disabled):not([aria-invalid="true"]) + .app-choice__control) {
+    border-color: var(--nexora-input-border);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :where(.app-choice:not(.has-error):not(.app-choice--indeterminate):hover > .app-choice__native:not(:checked):not(:disabled):not([aria-invalid="true"]) + .app-choice__control) {
+    border-color: var(--app-foreground-muted);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-grid th {
