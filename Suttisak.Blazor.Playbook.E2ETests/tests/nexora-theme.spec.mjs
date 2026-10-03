@@ -55,6 +55,15 @@ for (const mode of ['light', 'dark']) {
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog', { name: 'Record editor' })).not.toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`nexora-shell-${mode}-mobile.png`) });
+    const menu = page.locator('.app-shell__menu-button--mobile');
+    await menu.click();
+    await expect(page.locator('.app-shell__navigation')).toHaveClass(/is-open/);
+    const navigation = await page.locator('.app-shell__navigation').boundingBox();
+    expect(navigation.x).toBeGreaterThanOrEqual(0);
+    expect(navigation.x + navigation.width).toBeLessThanOrEqual(390);
+    await page.screenshot({ path: testInfo.outputPath(`nexora-shell-${mode}-mobile-navigation.png`) });
+    await menu.click();
+    await expect(page.locator('.app-shell__navigation')).not.toHaveClass(/is-open/);
   });
 
   test(`Nexora ${mode} access places introduction left and prioritizes form on mobile`, async ({ page }, testInfo) => {
@@ -150,6 +159,47 @@ for (const mode of ['light', 'dark']) {
     await expect(selection).toHaveCSS('accent-color', accent);
     await expect(page.locator('.app-shell tbody tr.is-selected').first()).toBeVisible();
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);
+  });
+}
+
+for (const mode of ['light', 'dark']) {
+  test(`Nexora ${mode} required fields stay neutral until invalid interaction and preserve explicit errors`, async ({ page }) => {
+    await page.goto(`/access/login?appearance=nexora&mode=${mode}`);
+    const html = await page.locator('.access-page-layout').evaluate(el => {
+      const copy = el.cloneNode(true);
+      copy.querySelector('.access-page-layout__controls').remove();
+      copy.querySelectorAll('.access-form input.app-form-control__input').forEach(input => input.required = true);
+      return copy.outerHTML;
+    });
+    await page.route('**/nexora-required-consumer', route => route.fulfill({
+      contentType: 'text/html',
+      body: `<!doctype html><html lang="en" data-theme="${mode}" data-appearance="nexora"><head>
+        <title>Required account fields</title><meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="/_content/Suttisak.Blazor.UserInterface/css/main.css">
+        <link rel="stylesheet" href="/_content/Suttisak.Blazor.UserInterface/Suttisak.Blazor.UserInterface.bundle.scp.css">
+        <link rel="stylesheet" href="/_content/Suttisak.Blazor.UserInterface/css/appearance.css">
+        </head><body>${html}</body></html>`
+    }));
+    await page.goto('/nexora-required-consumer');
+    const username = page.getByLabel('Username', { exact: true });
+    const password = page.getByLabel('Password', { exact: true });
+    expect(await username.evaluate(el => el.matches(':invalid') && !el.matches(':user-invalid'))).toBe(true);
+    for (const input of [username, password]) {
+      await expect(input.locator('..')).toHaveCSS('background-color', mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(35, 36, 38)');
+      await expect(input.locator('..')).toHaveCSS('border-color', mode === 'light' ? 'rgb(148, 139, 125)' : 'rgb(136, 131, 121)');
+      await expect(input.locator('..')).toHaveCSS('box-shadow', 'none');
+    }
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    expect(await username.evaluate(el => el.matches(':user-invalid'))).toBe(true);
+    await expect(username).toBeFocused();
+    const danger = mode === 'light' ? 'rgb(180, 35, 24)' : 'rgb(255, 139, 131)';
+    await expect(username.locator('..')).toHaveCSS('border-color', danger);
+    await expect(username.locator('..')).toHaveCSS('outline-color', danger);
+    await expect(username.locator('..')).toHaveCSS('outline-width', '2px');
+    await password.fill('valid native value');
+    await password.evaluate(el => el.closest('.app-form-control').classList.add('has-error'));
+    expect(await password.evaluate(el => el.validity.valid)).toBe(true);
+    await expect(password.locator('..')).toHaveCSS('border-color', danger);
   });
 }
 

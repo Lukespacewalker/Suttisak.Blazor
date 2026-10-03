@@ -142,10 +142,22 @@
     box-shadow: none;
 }
 
-:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:invalid)) .app-form-control__input-wrap {
+/* Native :invalid already matches an untouched required field. Override the
+   baseline rule until the browser reports user interaction or explicit errors. */
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control:has(.app-form-control__input:invalid):not(.has-error):not(:has(.app-form-control__input:user-invalid, [aria-invalid="true"])) .app-form-control__input-wrap {
+    border-color: var(--nexora-input-border);
+    background: var(--app-surface);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:user-invalid, [aria-invalid="true"])) .app-form-control__input-wrap {
     border-color: var(--app-danger);
     background: var(--app-danger-soft);
     box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:user-invalid, [aria-invalid="true"])) .app-form-control__input-wrap:focus-within {
+    outline-color: var(--app-danger);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control:has(.modified.valid) .app-form-control__input-wrap {
