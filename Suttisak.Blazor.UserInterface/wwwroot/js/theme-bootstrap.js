@@ -1,18 +1,21 @@
 (() => {
     const storageKey = "suttisak-blazor:theme-settings";
-    const appearances = ["standard", "essential", "quiet-luxury"];
+    const appearances = ["standard", "essential", "quiet-luxury", "nexora"];
     const defaultAppearance = appearances.includes(document.documentElement.dataset.defaultAppearance)
         ? document.documentElement.dataset.defaultAppearance : "standard";
-    let preference = "system";
+    const modes = ["light", "dark", "system"];
+    const defaultTheme = modes.includes(document.documentElement.dataset.defaultTheme)
+        ? document.documentElement.dataset.defaultTheme : "system";
+    let preference = defaultTheme;
     let appearance = defaultAppearance;
 
     try {
         const settings = JSON.parse(localStorage.getItem(storageKey) ?? "{}");
         const mode = settings?.mode;
-        if (mode === "light" || mode === "dark") preference = mode;
+        if (modes.includes(mode)) preference = mode;
         if (appearances.includes(settings?.appearance)) appearance = settings.appearance;
     } catch {
-        // Storage can be unavailable in private browsing; use the system scheme instead.
+        // Storage can be unavailable in private browsing; use the host default.
     }
     let savedAppearance = appearance;
 
@@ -141,10 +144,10 @@
         if (event.key !== storageKey) return;
         try {
             const settings = JSON.parse(event.newValue ?? "{}");
-            preference = settings?.mode === "light" || settings?.mode === "dark" ? settings.mode : "system";
+            preference = modes.includes(settings?.mode) ? settings.mode : defaultTheme;
             appearance = appearances.includes(settings?.appearance) ? settings.appearance : defaultAppearance;
         } catch {
-            preference = "system";
+            preference = defaultTheme;
             appearance = defaultAppearance;
         }
         savedAppearance = appearance;

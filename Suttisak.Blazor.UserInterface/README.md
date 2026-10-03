@@ -15,7 +15,7 @@ Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 
 ## Appearance
 
-The package includes **Standard**, **Essential**, and **Quiet Luxury**. Appearance
+The package includes **Standard**, **Essential**, **Quiet Luxury**, and **Nexora**. Appearance
 is independent of Light/Dark/System and is remembered per browser origin. Shared
 MainLayout, IdentityLayout, and PreferencesSelector include AppearanceSelector;
 custom layouts can compose `<AppearanceSelector />` themselves.
@@ -67,6 +67,51 @@ Quiet Luxury native fields use smaller token-based corners, visible boundaries,
 lighter labels, and an outline for focus. Native input behavior, descriptions,
 error/valid states, keyboard operation, forced colors, and reduced motion retain
 the shared contracts. Standard and Essential keep their existing appearances.
+
+### Nexora surfaces and access (1.0.28)
+
+Nexora uses warm ivory and white surfaces, charcoal text, soft rectangular cards,
+restrained shadows, and a charcoal dark variant. `appearance.css` imports the
+separate `nexora.css` asset; keep that entry after application and isolated styles.
+Existing shell, navigation, grid, forms, Experience, and Marketing components
+consume the same semantic roles. Success, warning, and error retain their colors.
+
+Accent belongs to the host. The default is warm gold; applications can replace it
+without changing the appearance. Set the following on `:root` or the same
+`.app-appearance-scope` element that carries `data-appearance`:
+
+```css
+:root {
+    --app-nexora-accent: light-dark(#96502e, #e2ad8c);
+    --app-nexora-on-accent: light-dark(#fffaf6, #241b16);
+}
+```
+
+The example is a copper application palette. Primary actions, navigation,
+selection, links, and focus follow it. Optional `--app-nexora-accent-soft`,
+`--app-nexora-accent-border`, and `--app-nexora-accent-highlight` override the
+derived selection surface, boundary, and subtle primary-button gradient.
+Use explicit light/dark values and check text and control contrast when choosing
+a palette. Typography continues using the shared or host-provided Latin/Thai fonts.
+
+The first-visit appearance and color mode are independent:
+
+```html
+<html data-default-appearance="nexora" data-appearance="nexora" data-default-theme="light">
+```
+
+`data-default-theme` accepts `light`, `dark`, or `system`. Missing/invalid values
+keep the existing System default. A saved valid Light/Dark/System choice wins,
+including an explicit System choice. The early bootstrap and interactive
+ThemeSwitcher use the same default, including when storage is unavailable.
+
+`AccessPageLayout` places the existing Showcase on the left and the form card on
+the right. At constrained widths the form comes first. For a photo, put an
+application-owned `<picture><img alt="" ... /></picture>` directly in Showcase
+before its copy; Nexora fills the introduction panel and adds an overlay for
+legible content in both modes. Use empty alt only for decorative imagery. Logos,
+image selection, organization content, account actions, and routes stay in the
+application. The same slot is available through IdentityLayout.ShowcaseSection.
 
 ## Global CSS bundling
 

@@ -10,10 +10,12 @@ function normalizePreference(value) {
 }
 
 function getPreference() {
+    const defaultPreference = normalizePreference(document.documentElement.dataset.defaultTheme);
     try {
-        return normalizePreference(JSON.parse(localStorage.getItem(storageKey) ?? "{}")?.mode);
+        const mode = JSON.parse(localStorage.getItem(storageKey) ?? "{}")?.mode;
+        return ["light", "dark", "system"].includes(mode) ? mode : defaultPreference;
     } catch {
-        return "system";
+        return defaultPreference;
     }
 }
 

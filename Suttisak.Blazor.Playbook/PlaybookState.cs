@@ -4,7 +4,7 @@ public sealed class PlaybookState
 {
     private static readonly string[] Modes = ["light", "dark", "auto"];
     private static readonly string[] Viewports = ["wide", "narrow"];
-    private static readonly string[] Appearances = ["standard", "quiet-luxury", "essential"];
+    private static readonly string[] Appearances = ["standard", "quiet-luxury", "essential", "nexora"];
 
     private string _theme = "audiogramiq";
     private string _mode = "light";

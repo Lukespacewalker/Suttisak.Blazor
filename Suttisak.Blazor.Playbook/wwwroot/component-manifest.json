@@ -1845,11 +1845,12 @@
       "category": "Preferences \u0026 time",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Persistent selection of Standard, Essential, or Quiet Luxury, independent of color mode.",
+      "summary": "Persistent selection of Standard, Essential, Quiet Luxury, or Nexora, independent of color mode.",
       "tags": [
         "appearance",
         "essential",
         "quiet-luxury",
+        "nexora",
         "preferences"
       ],
       "sourceArea": "Common",
@@ -2257,7 +2258,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Access-page structure with application-owned content and a compact Editorial introduction in Quiet Luxury.",
+      "summary": "Access-page structure with application-owned content, a compact introduction in Quiet Luxury, and a photo-led split in Nexora.",
       "tags": [
         "layout",
         "access",

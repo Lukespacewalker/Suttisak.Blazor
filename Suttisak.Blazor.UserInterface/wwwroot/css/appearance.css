@@ -1,4 +1,6 @@
-/* Three opt-in appearances. Application identity is supplied by the host. */
+@import url("nexora.css");
+
+/* Opt-in appearances. Application identity is supplied by the host. */
 :is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] {
     /* Appearance owns surfaces and rhythm; each application owns its palette.
        Explicit light/dark values keep emphasis readable on neutral surfaces. */

@@ -1,0 +1,321 @@
+/* Nexora owns calm surfaces and rhythm. Hosts own accent, imagery, and copy.
+   Imported by appearance.css, which must follow application/isolated styles. */
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] {
+    --app-brand: var(--app-nexora-accent, light-dark(#8b6429, #d6b87c));
+    --app-on-brand: var(--app-nexora-on-accent, light-dark(#fffdf8, #241e16));
+    --app-brand-secondary: var(--app-brand);
+    --app-accent: var(--app-brand);
+    --app-accent-soft: var(--app-nexora-accent-soft, color-mix(in srgb, var(--app-brand) 10%, var(--app-surface)));
+    --app-accent-border: var(--app-nexora-accent-border, color-mix(in srgb, var(--app-brand) 50%, var(--app-surface)));
+    --app-brand-soft: var(--app-accent-soft);
+    --app-brand-secondary-soft: var(--app-accent-soft);
+    --nexora-primary-highlight: var(--app-nexora-accent-highlight, color-mix(in srgb, var(--app-brand) 92%, var(--app-surface)));
+
+    --app-background: light-dark(#f7f5f0, #17181a);
+    --app-surface: light-dark(#ffffff, #232426);
+    --app-surface-muted: light-dark(#f2efe9, #2c2d2f);
+    --app-surface-hover: light-dark(#eee9e1, #363739);
+    --app-foreground: light-dark(#292b2e, #f3f0e9);
+    --app-foreground-muted: light-dark(#68635c, #beb9af);
+    --app-border: light-dark(#ded8ce, #454443);
+    --app-grid-line: light-dark(rgb(41 43 46 / .04), rgb(243 240 233 / .04));
+    --app-glass-surface: var(--app-surface);
+    --app-glass-surface-strong: var(--app-surface);
+    --app-glass-border: var(--app-border);
+    --app-glass-shadow: var(--app-shadow-color);
+    --app-shadow-color: light-dark(rgb(48 38 23 / .055), rgb(0 0 0 / .22));
+    --app-focus-ring: var(--app-accent);
+    --nexora-input-border: light-dark(#948b7d, #888379);
+
+    /* Preserve the shared functional typography and the host's Thai pairing. */
+    --app-radius-sm: .5rem;
+    --app-radius-md: .75rem;
+    --app-radius-lg: 1rem;
+    --app-radius-xl: 1.25rem;
+    --app-shadow-sm: 0 2px 6px var(--app-shadow-color);
+    --app-shadow-md: 0 8px 24px var(--app-shadow-color);
+    --app-shadow-lg: 0 16px 40px var(--app-shadow-color);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell {
+    background: var(--app-background);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-shell__header, .nav-shell, .app-shell__navigation) {
+    background: var(--app-surface);
+    backdrop-filter: none;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .nav-item {
+    border-radius: var(--app-radius-md);
+    font-weight: 600;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .nav-item--active {
+    background: var(--app-accent-soft);
+    color: var(--app-accent);
+    box-shadow: inset 3px 0 0 var(--app-accent);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.page-heading, .app-page__intro) {
+    border-color: var(--app-border);
+    border-radius: var(--app-radius-lg);
+    background: var(--app-surface);
+    box-shadow: var(--app-shadow-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .page-heading::after {
+    content: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .application-page-heading__breadcrumbs {
+    border-color: var(--app-border);
+    background: var(--app-surface-muted);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.page-heading h1, .experience-heading h1, .marketing-hero__copy h1) {
+    font-family: var(--app-font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-card, .glass-card, .card-menu, .app-grid-shell, .experience-card, .marketing-card, .marketing-product-frame, .app-dialog, .app-drawer, .app-calendar-popup, .app-picker-popup) {
+    border-radius: var(--app-radius-lg);
+    box-shadow: var(--app-shadow-sm);
+    backdrop-filter: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-card--interactive:hover, .card-menu:hover, .experience-card--interactive:hover) {
+    box-shadow: var(--app-shadow-md);
+    transform: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button, .marketing-action) {
+    border-radius: var(--app-radius-md);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary, .marketing-action--primary) {
+    background: linear-gradient(110deg, var(--app-brand), var(--nexora-primary-highlight));
+    color: var(--app-on-brand);
+    border-color: var(--app-brand);
+    box-shadow: var(--app-shadow-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button:hover, .app-button:active, .marketing-action:hover) {
+    transform: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary:hover, .marketing-action--primary:hover) {
+    background: var(--app-brand);
+    box-shadow: var(--app-shadow-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__label {
+    color: var(--app-foreground);
+    font-weight: 600;
+    letter-spacing: normal;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__input-wrap {
+    border: 1px solid var(--nexora-input-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__input {
+    background: transparent;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__input-wrap:focus-within {
+    border-color: var(--app-focus-ring);
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:invalid)) .app-form-control__input-wrap {
+    border-color: var(--app-danger);
+    background: var(--app-danger-soft);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control:has(.modified.valid) .app-form-control__input-wrap {
+    border-color: var(--app-success);
+    background: var(--app-success-soft);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-choice {
+    border-radius: var(--app-radius-md);
+    box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-choice:hover {
+    transform: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-grid th {
+    background: var(--app-surface-muted);
+    color: var(--app-foreground-muted);
+    font-weight: 600;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.experience-heading, .marketing-call-to-action) {
+    border-radius: var(--app-radius-xl);
+    background: var(--app-surface-muted);
+    color: var(--app-foreground);
+    border-color: var(--app-border);
+    box-shadow: var(--app-shadow-sm);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .experience-heading__eyebrow {
+    color: var(--app-accent);
+    opacity: 1;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .experience-heading__lead {
+    color: var(--app-foreground-muted);
+    opacity: 1;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.experience-heading::before, .experience-heading__orbit, .experience-heading__watermark) {
+    display: none;
+}
+
+/* The existing Showcase fragment accepts an application-owned picture. It is
+   decorative behind the introduction; brand imagery in other slots is untouched. */
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout {
+    container-type: inline-size;
+    background: var(--app-background);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.access-page-layout__background, .access-page-layout__showcase-grid, .access-page-layout__showcase-orb) {
+    display: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__grid {
+    width: min(84rem, 100%);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    border-radius: var(--app-radius-xl);
+    box-shadow: var(--app-shadow-md);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__card {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: clamp(38rem, calc(100dvh - 3rem), 52rem);
+    padding: clamp(1.5rem, 3.5cqi, 3.5rem);
+    background: var(--app-surface);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__header {
+    min-height: 11rem;
+    margin-bottom: 1.5rem;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__heading h1 {
+    font-family: var(--app-font-heading);
+    font-size: clamp(1.65rem, 3cqi, 2.5rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__kicker {
+    color: var(--app-accent);
+    font-weight: 600;
+    letter-spacing: .08em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: clamp(38rem, calc(100dvh - 3rem), 52rem);
+    background: var(--app-surface-muted);
+    color: var(--app-foreground);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase-content {
+    padding: clamp(1.5rem, 4cqi, 4rem);
+    gap: 2rem;
+    overflow-wrap: anywhere;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase-content > picture {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase-content > picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase-content:has(> picture)::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--app-surface-muted) 90%, transparent), color-mix(in srgb, var(--app-surface-muted) 76%, transparent) 55%, color-mix(in srgb, var(--app-surface-muted) 92%, transparent));
+    pointer-events: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase :is(h1, h2, blockquote) {
+    max-width: 18ch;
+    color: var(--app-foreground);
+    font-family: var(--app-font-heading);
+    font-size: clamp(2rem, 3.5cqi, 3rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase p {
+    color: var(--app-foreground);
+    opacity: 1;
+    line-height: 1.7;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.identity-showcase-kicker, .access-story__index) {
+    color: var(--app-accent);
+    opacity: 1;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.identity-showcase-status, .access-story__status) {
+    border-color: var(--app-border);
+    color: var(--app-foreground-muted);
+    overflow-wrap: anywhere;
+}
+
+@container (max-width: 60rem) {
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__grid { grid-template-columns: minmax(0, 1fr); }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__card { grid-column: 1; grid-row: 1; min-height: auto; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase { grid-column: 1; grid-row: 2; min-height: 18rem; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__controls { position: static; justify-content: flex-end; margin-bottom: 1.25rem; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__brand { padding-right: 0; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__header { min-height: 0; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__heading { margin-top: 1.75rem; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase :is(h1, h2, blockquote) { font-size: 1.65rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button, .app-card, .card-menu, .app-choice, .app-form-control__input-wrap, .experience-heading__copy, .experience-heading__visual) { animation: none; transition: none; }
+}
+
+@media (forced-colors: active) {
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] { --app-focus-ring: Highlight; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary, .marketing-action--primary) { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.experience-heading, .marketing-call-to-action, .access-page-layout__showcase) { background: Canvas; color: CanvasText; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .access-page-layout__showcase-content > picture { display: none; }
+}

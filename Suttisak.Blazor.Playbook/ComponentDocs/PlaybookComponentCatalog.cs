@@ -107,7 +107,7 @@ public static class PlaybookComponentCatalog
             ["ShellProfileControl"] = "Compact shell account control that switches between profile disclosure and login link.",
             ["CultureSelector"] = "Culture chooser that lets an application expose its supported locales consistently.",
             ["PreferencesSelector"] = "Combined preference surface for theme, culture, and related user settings.",
-            ["AppearanceSelector"] = "Persistent selection of Standard, Essential, or Quiet Luxury, independent of color mode.",
+            ["AppearanceSelector"] = "Persistent selection of Standard, Essential, Quiet Luxury, or Nexora, independent of color mode.",
             ["ThemeSwitcher"] = "Theme-mode selector for applying the shared light, dark, or system preference contract.",
             ["InitializeTimeZone"] = "Bootstrap component that discovers and initializes the browser time-zone context.",
             ["LocalTime"] = "Time display that converts an instant through the active local time-zone provider.",
@@ -128,7 +128,7 @@ public static class PlaybookComponentCatalog
             ["MarketingSectionHeader"] = "Marketing section introduction with eyebrow, heading, and supporting copy.",
             ["MarketingStep"] = "One numbered or sequenced step in an application-owned marketing explanation.",
             ["MarketingStepList"] = "Responsive sequence that composes multiple MarketingStep instructions.",
-            ["AccessPageLayout"] = "Access-page structure with application-owned content and a compact Editorial introduction in Quiet Luxury.",
+            ["AccessPageLayout"] = "Access-page structure with application-owned content, a compact introduction in Quiet Luxury, and a photo-led split in Nexora.",
             ["ApplicationShell"] = "Responsive application frame owning skip navigation, header, primary navigation, and main content.",
             ["ApplicationPageHeading"] = "Shell heading region that combines optional breadcrumbs with application-owned heading content.",
             ["HeaderFooterLayout"] = "Router layout that composes a sticky header, section outlets, and the page main region.",
@@ -218,7 +218,7 @@ public static class PlaybookComponentCatalog
         D("ShellProfileControl", "Navigation", Pattern, "application-shell", "Region", ["navigation", "profile", "identity"], typeof(ShellProfileControl)),
 
         // Preferences & time
-        D("AppearanceSelector", "Preferences & time", Interactive, "components/preferences-selector", "Common", ["appearance", "essential", "quiet-luxury", "preferences"]),
+        D("AppearanceSelector", "Preferences & time", Interactive, "components/preferences-selector", "Common", ["appearance", "essential", "quiet-luxury", "nexora", "preferences"]),
         D("CultureSelector", "Preferences & time", Interactive, "#library-directory", "Common", ["culture", "locale", "preferences"]),
         D("PreferencesSelector", "Preferences & time", Interactive, "#library-directory", "Common", ["preferences", "settings"]),
         D("ThemeSwitcher", "Preferences & time", Interactive, "/", "Common", ["theme", "light", "dark"]),

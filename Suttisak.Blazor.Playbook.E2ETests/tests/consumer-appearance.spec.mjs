@@ -6,16 +6,16 @@ import AxeBuilder from '@axe-core/playwright';
 const bootstrap = fs.readFileSync(path.resolve('../Suttisak.Blazor.UserInterface/wwwroot/js/theme-bootstrap.js'), 'utf8');
 const storageKey = 'suttisak-blazor:theme-settings';
 
-async function consumer(page, { saved, defaultAppearance = 'quiet-luxury', blocked = false } = {}) {
+async function consumer(page, { saved, defaultAppearance = 'quiet-luxury', defaultTheme, blocked = false } = {}) {
   await page.addInitScript(({ saved, blocked, storageKey }) => {
     if (saved !== undefined && localStorage.getItem(storageKey) === null) localStorage.setItem(storageKey, JSON.stringify(saved));
     if (blocked) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
   }, { saved, blocked, storageKey });
   await page.route('**/consumer-appearance-fixture', route => route.fulfill({
     contentType: 'text/html',
-    body: `<!doctype html><html lang="en" data-default-appearance="${defaultAppearance}"><head><script>${bootstrap}</script></head><body>
-      <label for="appearance">Appearance</label><select id="appearance" data-appearance-selector><option value="standard">Standard</option><option value="essential">Essential</option><option value="quiet-luxury">Quiet Luxury</option></select>
-      <label for="other">Other selector</label><select id="other" data-appearance-selector><option value="standard">Standard</option><option value="essential">Essential</option><option value="quiet-luxury">Quiet Luxury</option></select>
+    body: `<!doctype html><html lang="en" data-default-appearance="${defaultAppearance}" ${defaultTheme ? `data-default-theme="${defaultTheme}"` : ''}><head><script>${bootstrap}</script></head><body>
+      <label for="appearance">Appearance</label><select id="appearance" data-appearance-selector><option value="standard">Standard</option><option value="essential">Essential</option><option value="quiet-luxury">Quiet Luxury</option><option value="nexora">Nexora</option></select>
+      <label for="other">Other selector</label><select id="other" data-appearance-selector><option value="standard">Standard</option><option value="essential">Essential</option><option value="quiet-luxury">Quiet Luxury</option><option value="nexora">Nexora</option></select>
       <button data-theme-preference="dark">Dark</button><button data-theme-preference="system">System</button>
     </body></html>`
   }));
@@ -26,7 +26,7 @@ test('consumer default and saved appearance hydrate every selector and survive c
   await consumer(page, { saved: { mode: 'light', appearance: 'essential' } });
   await expect(page.locator('html')).toHaveAttribute('data-appearance', 'essential');
   await expect(page.getByLabel('Appearance', { exact: true })).toHaveValue('essential');
-  for (const appearance of ['standard', 'quiet-luxury', 'essential']) {
+  for (const appearance of ['standard', 'quiet-luxury', 'nexora', 'essential']) {
     await page.getByLabel('Appearance', { exact: true }).selectOption(appearance);
     await expect(page.locator('html')).toHaveAttribute('data-appearance', appearance);
     await expect(page.getByLabel('Other selector')).toHaveValue(appearance);
@@ -68,8 +68,8 @@ test('the shared selector switches all appearances in desktop and mobile prefere
   await page.goto('/components/appearance-selector');
   const workbench = page.getByTestId('preferences-workbench');
   const desktop = workbench.locator('.preferences-selector__desktop [data-appearance-selector]');
-  await expect(desktop.locator('option')).toHaveText(['Standard', 'Essential', 'Quiet Luxury']);
-  for (const appearance of ['quiet-luxury', 'essential', 'standard']) {
+  await expect(desktop.locator('option')).toHaveText(['Standard', 'Essential', 'Quiet Luxury', 'Nexora']);
+  for (const appearance of ['quiet-luxury', 'essential', 'nexora', 'standard']) {
     await desktop.selectOption(appearance);
     await expect(page.locator('.playbook').first()).toHaveAttribute('data-appearance', appearance);
     await expect(page.locator('#appearance-select')).toHaveValue(appearance);

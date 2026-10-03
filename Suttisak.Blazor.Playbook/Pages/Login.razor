@@ -47,6 +47,10 @@
                     <p class="access-demo-note">@T("Authentication is disabled in this preview.", "ตัวอย่างนี้ปิดการยืนยันตัวตนไว้")</p>
             </ChildContent>
             <Showcase>
+                @if (State.Appearance == "nexora")
+                {
+                    <picture><img src="@CurrentTheme.HeroPath" width="@CurrentTheme.HeroWidth" height="@CurrentTheme.HeroHeight" alt="" /></picture>
+                }
                 <span class="access-story__index">@CurrentTheme.Name</span>
                 <div class="identity-showcase-copy">
                     <h2>@(IsThai ? "ข้อมูลที่ชัดเจน เพื่อการดูแลที่ต่อเนื่อง" : "Clear information. Considered care.")</h2>
