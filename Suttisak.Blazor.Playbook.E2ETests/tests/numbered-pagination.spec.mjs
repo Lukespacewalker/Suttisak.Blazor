@@ -2,10 +2,13 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import path from 'node:path';
 
-async function openLarge(page, appearance = 'nexora') {
-  await page.goto(`/components/app-grid-paginator?appearance=${appearance}`);
+async function openLarge(page, appearance = 'nexora', mode = 'light') {
+  await page.goto(`/components/app-grid-paginator?appearance=${appearance}&mode=${mode}`);
   await page.getByRole('combobox', { name: 'Record set', exact: true }).selectOption('large');
   const pagination = page.getByRole('navigation', { name: 'Record pagination' });
+  await expect(page.locator('.playbook')).toHaveAttribute('data-color-mode', mode);
+  const forcedColors = await page.evaluate(() => matchMedia('(forced-colors: active)').matches);
+  await expect(pagination).toHaveCSS('color-scheme', forcedColors ? 'light dark' : mode);
   await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 1–10 of 1,248 rows');
   return pagination;
 }
@@ -24,9 +27,10 @@ async function expectTargetSize(pagination, minimum) {
   expect(select.height, 'Page-size selector height').toBeGreaterThanOrEqual(minimum);
 }
 
-test('numbered pages expose first, middle and last windows, real rows, and one current page', async ({ page }, testInfo) => {
+for (const mode of ['light', 'dark']) {
+test(`numbered pages expose first, middle and last windows, real rows, and one current page in ${mode}`, async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  const pagination = await openLarge(page);
+  const pagination = await openLarge(page, 'nexora', mode);
   expect(await page.evaluate(() => matchMedia('(pointer: fine)').matches)).toBe(true);
   const desktopTarget = await pagination.getByRole('button', { name: 'Next page' }).boundingBox();
   expect(desktopTarget.width).toBe(40);
@@ -37,9 +41,14 @@ test('numbered pages expose first, middle and last windows, real rows, and one c
   const page5 = pagination.getByRole('button', { name: 'Page 5', exact: true });
   await page5.focus();
   await page5.press('Enter');
+  await expect(page5).toBeFocused();
+  await expect(page5).toHaveCSS('outline-width', '2px');
   await expect(pagination.locator('[aria-current="page"]')).toHaveText('5');
   await expect(page.getByRole('table', { name: 'Paged records table', exact: true }).locator('tbody tr').first()).toContainText('Record 41');
-  await pagination.getByRole('button', { name: 'Page 125', exact: true }).click();
+  const last = pagination.getByRole('button', { name: 'Page 125', exact: true });
+  await last.focus();
+  await last.press('Enter');
+  await expect(last).toBeFocused();
   await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 1,241–1,248 of 1,248 rows');
   await expect(numbers).toHaveText(['1', '121', '122', '123', '124', '125']);
   await expect(pagination.getByRole('button', { name: 'Next page' })).toBeDisabled();
@@ -52,16 +61,22 @@ test('numbered pages expose first, middle and last windows, real rows, and one c
   await expect(pagination.locator('.app-grid-paginator__ellipsis')).toHaveCount(2);
   await expect(pagination.locator('[aria-current="page"]')).toHaveText('62');
   await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 611–620 of 1,248 rows');
-  await pagination.screenshot({ path: capturePath(testInfo, 'pagination-middle-1440.png') });
+  const middle = pagination.getByRole('button', { name: 'Page 62', exact: true });
+  await middle.focus();
+  await middle.press('Enter');
+  await expect(middle).toBeFocused();
+  await expect(middle).toHaveCSS('outline-width', '2px');
+  await pagination.screenshot({ path: capturePath(testInfo, `pagination-middle-1440-${mode}.png`) });
   await pagination.getByRole('combobox', { name: 'Rows per page' }).selectOption('50');
   await expect(pagination.locator('[aria-current="page"]')).toHaveText('1');
   await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 1–50 of 1,248 rows');
   await expect(pagination.getByRole('button', { name: 'Page 25', exact: true })).toBeVisible();
   await expect(page.getByRole('table', { name: 'Paged records table', exact: true }).locator('tbody tr.app-grid__data-row')).toHaveCount(50);
+  await expect(pagination).toHaveCSS('color-scheme', mode);
 });
 
-test('empty and loading results announce their state without navigable phantom pages', async ({ page }) => {
-  const pagination = await openLarge(page);
+test(`empty and loading results announce their state without navigable phantom pages in ${mode}`, async ({ page }) => {
+  const pagination = await openLarge(page, 'nexora', mode);
   await page.getByRole('combobox', { name: 'Record set', exact: true }).selectOption('empty');
   await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 0–0 of 0 rows');
   await expect(pagination.locator('.app-grid-paginator__number')).toHaveCount(0);
@@ -73,14 +88,14 @@ test('empty and loading results announce their state without navigable phantom p
   await expect(pagination.getByRole('button', { name: 'Previous page' })).toBeDisabled();
   await expect(pagination.getByRole('button', { name: 'Next page' })).toBeDisabled();
 });
+}
 
 for (const width of [320, 390, 768, 1024, 1440]) {
   for (const mode of ['light', 'dark']) {
     test(`numbered pagination remains operable and contained at ${width} in ${mode}`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 1000 });
       await page.emulateMedia({ colorScheme: mode, reducedMotion: 'reduce' });
-      await page.addInitScript(mode => localStorage.setItem('suttisak-blazor:theme-settings', JSON.stringify({ mode, appearance: 'nexora' })), mode);
-      const pagination = await openLarge(page);
+      const pagination = await openLarge(page, 'nexora', mode);
       if (width === 1440) await page.locator('.component-specimen__demo').evaluate(el => { el.style.width = '256px'; });
       const page2 = pagination.getByRole('button', { name: 'Page 2', exact: true });
       await page2.focus();
@@ -91,6 +106,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
       await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 11–20 of 1,248 rows');
       await pagination.getByRole('combobox', { name: 'Rows per page' }).selectOption('25');
       await expect(pagination.locator('[aria-current="page"]')).toHaveText('1');
+      await expect(pagination).toHaveCSS('color-scheme', mode);
       expect(await pagination.evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
       const narrowContainer = await pagination.evaluate(el => el.clientWidth <= 480);
       await expectTargetSize(pagination, narrowContainer ? 44 : 40);
