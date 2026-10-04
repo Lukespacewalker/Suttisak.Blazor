@@ -14,9 +14,23 @@ function capturePath(testInfo, name) {
   return process.env.CONTROL_EVIDENCE_DIR ? path.join(process.env.CONTROL_EVIDENCE_DIR, name) : testInfo.outputPath(name);
 }
 
+async function expectTargetSize(pagination, minimum) {
+  for (const button of await pagination.locator('button:visible').all()) {
+    const box = await button.boundingBox();
+    expect(box.width, await button.getAttribute('aria-label')).toBeGreaterThanOrEqual(minimum);
+    expect(box.height, await button.getAttribute('aria-label')).toBeGreaterThanOrEqual(minimum);
+  }
+  const select = await pagination.getByRole('combobox', { name: 'Rows per page' }).boundingBox();
+  expect(select.height, 'Page-size selector height').toBeGreaterThanOrEqual(minimum);
+}
+
 test('numbered pages expose first, middle and last windows, real rows, and one current page', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const pagination = await openLarge(page);
+  expect(await page.evaluate(() => matchMedia('(pointer: fine)').matches)).toBe(true);
+  const desktopTarget = await pagination.getByRole('button', { name: 'Next page' }).boundingBox();
+  expect(desktopTarget.width).toBe(40);
+  expect(desktopTarget.height).toBe(40);
   const numbers = pagination.locator('.app-grid-paginator__number');
   await expect(numbers).toHaveText(['1', '2', '3', '4', '5', '125']);
   await expect(pagination.locator('.app-grid-paginator__ellipsis')).toHaveCount(1);
@@ -78,17 +92,42 @@ for (const width of [320, 390, 768, 1024, 1440]) {
       await pagination.getByRole('combobox', { name: 'Rows per page' }).selectOption('25');
       await expect(pagination.locator('[aria-current="page"]')).toHaveText('1');
       expect(await pagination.evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
-      for (const control of await pagination.locator('button:visible, select:visible').all()) {
-        const box = await control.boundingBox();
-        expect(box.width).toBeGreaterThanOrEqual(24);
-        expect(box.height).toBeGreaterThanOrEqual(40);
-      }
+      const narrowContainer = await pagination.evaluate(el => el.clientWidth <= 480);
+      await expectTargetSize(pagination, narrowContainer ? 44 : 40);
       const results = await new AxeBuilder({ page }).include('.app-grid-paginator').withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
       expect(results.violations.filter(v => ['serious', 'critical'].includes(v.impact))).toEqual([]);
       await pagination.screenshot({ path: capturePath(testInfo, `pagination-${width}-${mode}.png`) });
     });
   }
 }
+
+test.describe('coarse-pointer pagination', () => {
+  test.use({ hasTouch: true });
+
+  for (const width of [390, 1440]) {
+    test(`touch targets remain 44px and actionable in RTL at ${width}`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: 1000 });
+      const pagination = await openLarge(page);
+      expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
+      if (width === 1440) expect(await pagination.evaluate(el => el.clientWidth)).toBeGreaterThan(480);
+      await pagination.evaluate(el => { el.dir = 'rtl'; });
+      await expectTargetSize(pagination, 44);
+      const page2 = pagination.getByRole('button', { name: 'Page 2', exact: true });
+      await page2.tap();
+      await expect(page2).toHaveAttribute('aria-current', 'page');
+      await pagination.getByRole('button', { name: 'Next page' }).tap();
+      await expect(pagination.locator('[aria-current="page"]')).toHaveText('3');
+      await pagination.getByRole('button', { name: 'Previous page' }).tap();
+      await expect(pagination.locator('[aria-current="page"]')).toHaveText('2');
+      await pagination.getByRole('combobox', { name: 'Rows per page' }).selectOption('25');
+      await expect(pagination.locator('[aria-current="page"]')).toHaveText('1');
+      await expectTargetSize(pagination, 44);
+      expect(await pagination.evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
+      if (width === 390) await expect(pagination.getByRole('button', { name: 'Page 50', exact: true })).toBeHidden();
+      await pagination.screenshot({ path: capturePath(testInfo, `pagination-touch-rtl-${width}.png`) });
+    });
+  }
+});
 
 for (const appearance of ['standard', 'essential', 'quiet-luxury']) {
   test(`numbered paging preserves host state and focus in ${appearance}`, async ({ page }) => {

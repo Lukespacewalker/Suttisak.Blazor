@@ -1,10 +1,10 @@
-.app-grid-paginator { display: flex; container: app-grid-paginator / inline-size; width: 100%; min-width: 0; flex-wrap: wrap; align-items: center; gap: .65rem; color: var(--app-foreground-muted); font-size: .88rem; }
+.app-grid-paginator { --app-grid-paginator-control-size: 2.5rem; display: flex; container: app-grid-paginator / inline-size; width: 100%; min-width: 0; flex-wrap: wrap; align-items: center; gap: .65rem; color: var(--app-foreground-muted); font-size: .88rem; }
 .app-grid-paginator__controls { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; min-width: 0; margin-inline-start: auto; }
 .app-grid-paginator__pages { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; min-width: 0; font-variant-numeric: tabular-nums; }
 .app-grid-paginator button,
 .app-grid-paginator input,
-.app-grid-paginator select { min-height: 2.5rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-sm, .45rem); background: var(--app-surface); color: inherit; font: inherit; }
-.app-grid-paginator button { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; min-height: 2.5rem; padding: 0; color: var(--app-foreground); cursor: pointer; }
+.app-grid-paginator select { min-height: var(--app-grid-paginator-control-size); border: 1px solid var(--app-border); border-radius: var(--app-radius-sm, .45rem); background: var(--app-surface); color: inherit; font: inherit; }
+.app-grid-paginator button { display: inline-flex; align-items: center; justify-content: center; width: var(--app-grid-paginator-control-size); min-height: var(--app-grid-paginator-control-size); padding: 0; color: var(--app-foreground); cursor: pointer; }
 .app-grid-paginator button:disabled { cursor: default; opacity: .5; }
 .app-grid-paginator button:not(:disabled):hover { background: var(--app-surface-hover); }
 .app-grid-paginator button.app-grid-paginator__number { border-color: transparent; background: transparent; }
@@ -22,11 +22,15 @@
 
 @container app-grid-paginator (max-width: 30rem) {
     .app-grid-paginator__summary { width: 100%; margin-inline-end: 0; }
-    .app-grid-paginator__controls { width: 100%; margin-inline-start: 0; justify-content: space-between; }
+    .app-grid-paginator__controls { --app-grid-paginator-control-size: 2.75rem; width: 100%; margin-inline-start: 0; justify-content: space-between; }
     .app-grid-paginator__pages { justify-content: center; }
     .app-grid-paginator__number[data-compact-hidden],
     .app-grid-paginator__ellipsis { display: none; }
     .app-grid-paginator__page-label { margin-inline-start: 0; }
+}
+
+@media (pointer: coarse) {
+    .app-grid-paginator { --app-grid-paginator-control-size: 2.75rem; }
 }
 
 @media (forced-colors: active) {
