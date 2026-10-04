@@ -3,7 +3,8 @@
 <ComponentSpecimenLayout Viewport="@Viewport" ControlsLabel="Grid pagination and virtualization controls">
     <Preview>
         <div class="component-specimen__demo">
-            <AppGridShell AriaLabel="Paged records example" TabIndex="0" data-testid="grid-shell">
+            <AppGridShell AriaLabel="Paged records example" TabIndex="0" data-testid="grid-shell"
+                          State="@(_recordSet == "loading" ? AsyncContentState.Loading : AsyncContentState.Ready)">
                 <ChildContent>
                     <AppGrid TGridItem="PageRecord"
                          Items="@Records.AsQueryable()"
@@ -17,15 +18,13 @@
                     </AppGrid>
                 </ChildContent>
                 <Pagination>
-                    <AppGridPaginator State="@_pagination"
+                    <AppGridPaginator State="@(_recordSet == "loading" ? _loadingPagination : _pagination)"
                                       AriaLabel="Record pagination"
                                       PreviousLabel="Previous page"
                                       NextLabel="Next page"
-                                      CurrentPageIndexChanged="OnPageChanged">
-                        <SummaryTemplate>
-                            <span data-testid="grid-pagination-summary">Page @(_pagination.CurrentPageIndex + 1) of @MaximumPage</span>
-                        </SummaryTemplate>
-                    </AppGridPaginator>
+                                      PageSizeOptions="@PageSizes" ShowPageInput="@_legacyInput" ShowPageNumbers="@(!_legacyInput)"
+                                      SummaryTemplate="@(_customSummary ? CustomSummary : null)"
+                                      ItemsPerPageChanged="OnPageSizeChanged" CurrentPageIndexChanged="OnPageChanged" />
                 </Pagination>
             </AppGridShell>
 
@@ -47,13 +46,16 @@
         </div>
     </Preview>
     <Controls>
-        <label>Rows per page
-            <select value="@_pagination.ItemsPerPage" @onchange="ChangePageSizeAsync">
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="6">6</option>
+        <label>Record set
+            <select value="@_recordSet" @onchange="ChangeRecordSetAsync">
+                <option value="small">6 records</option>
+                <option value="large">1,248 records</option>
+                <option value="empty">Empty results</option>
+                <option value="loading">Loading results</option>
             </select>
         </label>
+        <label><input type="checkbox" @bind="_legacyInput" /> Legacy numeric page input</label>
+        <label><input type="checkbox" @bind="_customSummary" /> Custom summary template</label>
         <label>
             <input type="checkbox" @bind="_virtualize" />
             Virtualize AppGrid
@@ -70,7 +72,8 @@
         <article><span>Paging</span><strong>One shared state</strong><small>AppGrid and AppGridPaginator use QuickGrid PaginationState.</small></article>
         <article><span>Virtualization</span><strong>One grid engine</strong><small>AppGrid renders only the viewport and overscan window.</small></article>
         <article><span>Shell</span><strong>Focusable data region</strong><small>AppGridShell owns the surface, state, and scrolling composition.</small></article>
-        <article><span>Boundaries</span><strong>Previous / next</strong><small>Native disabled states prevent paging outside the result set.</small></article>
+        <article><span>Boundaries</span><strong>Number window + ellipsis</strong><small>Current page and nearby pages stay visible. Narrow containers keep the current page and one neighbor on each side.</small></article>
+        <article><span>Page size</span><strong>Reset to the first page</strong><small>The native select updates shared state before callbacks. Custom current sizes remain available.</small></article>
     </States>
 </ComponentSpecimenLayout>
 
@@ -78,11 +81,16 @@
     [Parameter, EditorRequired] public string Viewport { get; set; } = "desktop";
 
     private readonly PaginationState _pagination = new() { ItemsPerPage = 2 };
+    private readonly PaginationState _loadingPagination = new() { ItemsPerPage = 10 };
+    private string _recordSet = "small";
+    private bool _legacyInput;
+    private bool _customSummary;
+    private bool _pageSizeChanged;
     private bool _virtualize;
     private int _overscan = 3;
     private string _status = "The paginator starts on page 1.";
 
-    private static readonly PageRecord[] Records =
+    private static readonly PageRecord[] SmallRecords =
     [
         new(201, "Annual surveillance", "Active"),
         new(202, "Ergonomic review", "In review"),
@@ -91,23 +99,33 @@
         new(205, "Recovery study", "Complete"),
         new(206, "Movement campaign", "Complete")
     ];
+    private static readonly PageRecord[] LargeRecords = Enumerable.Range(1, 1248)
+        .Select(index => new PageRecord(index, $"Record {index:N0}", "Active")).ToArray();
+    private PageRecord[] Records => _recordSet == "empty" ? [] : _recordSet == "large" ? LargeRecords : SmallRecords;
+    private IReadOnlyList<int> PageSizes => _recordSet == "small" ? new[] { 2, 3, 6 } : new[] { 10, 25, 50, 100 };
+    private RenderFragment CustomSummary => @<span data-testid="grid-pagination-summary">Page @(_pagination.CurrentPageIndex + 1) of @MaximumPage</span>;
 
     private int MaximumPage => Math.Max(1, (_pagination.LastPageIndex ?? 0) + 1);
 
     private Task OnPageChanged(int index)
     {
-        _status = $"AppGridPaginator moved to page {index + 1}.";
+        if (!_pageSizeChanged) _status = $"AppGridPaginator moved to page {index + 1}.";
+        _pageSizeChanged = false;
         return Task.CompletedTask;
     }
 
-    private async Task ChangePageSizeAsync(ChangeEventArgs args)
+    private Task OnPageSizeChanged(int size)
     {
-        if (!int.TryParse(args.Value?.ToString(), out var size))
-            return;
-
-        _pagination.ItemsPerPage = size;
-        await _pagination.SetCurrentPageIndexAsync(0);
+        _pageSizeChanged = true;
         _status = $"AppGridPaginator now shows {size} rows per page.";
+        return Task.CompletedTask;
+    }
+
+    private async Task ChangeRecordSetAsync(ChangeEventArgs args)
+    {
+        _recordSet = args.Value?.ToString() ?? "small";
+        _pagination.ItemsPerPage = _recordSet == "small" ? 2 : 10;
+        await _pagination.SetCurrentPageIndexAsync(0);
     }
 
     private sealed record PageRecord(int Id, string Name, string Status);

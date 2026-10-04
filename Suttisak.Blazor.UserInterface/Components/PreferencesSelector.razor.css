@@ -8,6 +8,17 @@
     gap: .375rem;
 }
 
+.preferences-selector__trigger { display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--app-foreground-muted); font: inherit; font-size: 1.15rem; cursor: pointer; }
+.preferences-selector__trigger:hover { background: var(--app-accent-soft); color: var(--app-accent); }
+.preferences-selector__trigger:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+.preferences-selector__native-popover { position: fixed; inset: calc(var(--app-shell-header-height, 4rem) + .4rem) 1rem auto auto; margin: 0; min-width: 11rem; max-width: calc(100vw - 1.5rem); max-height: calc(100dvh - 1.5rem); overflow: auto; box-sizing: border-box; padding: .85rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md, .75rem); background: var(--app-surface); color: var(--app-foreground); box-shadow: var(--app-shadow-md); }
+.preferences-selector__native-popover:popover-open { display: grid; gap: .75rem; }
+.preferences-selector__native-popover > span { color: var(--app-foreground-muted); font-size: .85rem; }
+.preferences-selector__native-popover ::deep button { min-width: 2.75rem; min-height: 2.75rem; }
+@supports (top: anchor(bottom)) {
+    .preferences-selector__native-popover { top: calc(anchor(bottom) + .4rem); right: auto; left: anchor(right); transform: translateX(-100%); position-try-fallbacks: flip-block; }
+}
+
 .preferences-selector__mobile {
     display: none;
     position: relative;
@@ -68,7 +79,7 @@
 }
 
 @media (max-width: 900px) {
-    .preferences-selector__desktop {
+    .preferences-selector:not(.preferences-selector--header-only) .preferences-selector__desktop {
         display: none;
     }
 
@@ -78,6 +89,8 @@
 }
 
 @media (forced-colors: active) {
+    .preferences-selector__trigger { border: 1px solid ButtonText; }
+    .preferences-selector__native-popover { border-color: CanvasText; background: Canvas; color: CanvasText; }
     .preferences-selector__mobile > summary,
     .preferences-selector__popover {
         border-color: CanvasText;

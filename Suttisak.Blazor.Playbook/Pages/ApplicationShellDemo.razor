@@ -4,7 +4,7 @@
 
 <PlaybookShell>
     <div class="application-shell-workbench">
-        <DemoApplicationShell BreadcrumbItems="@OverviewBreadcrumbs">
+        <DemoApplicationShell BreadcrumbItems="@OverviewBreadcrumbs" CompactHeaderPreferences="@CompactPreferences">
             <PageHeading>
                 <PageHeading Title="Good morning, Kanda"
                              Description="A compact home for daily operations, recent activity, and the work that needs attention."
@@ -42,9 +42,11 @@
             </ChildContent>
         </DemoApplicationShell>
     </div>
+    <p><a href="application-shell?compactPreferences=true">Try the opt-in icon preference popovers</a>. The mobile drawer keeps direct language and scheme actions.</p>
 </PlaybookShell>
 
 @code {
+    [SupplyParameterFromQuery(Name = "compactPreferences")] public bool CompactPreferences { get; set; }
     private readonly Breadcrumb[] OverviewBreadcrumbs =
     [
         new("Home", null, "Overview")

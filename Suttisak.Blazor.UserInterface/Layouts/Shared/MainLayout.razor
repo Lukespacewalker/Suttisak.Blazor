@@ -15,7 +15,10 @@
 @inject NavigationManager NavigationManager
 
 <CascadingValue Value="this">
-    <ApplicationShell SkipLinkText="@GlobalDesign.Value.SkipLinkText">
+    <ApplicationShell SkipLinkText="@GlobalDesign.Value.SkipLinkText"
+                      CompactHeaderPreferences="@GlobalDesign.Value.CompactHeaderPreferences"
+                      HeaderThemeLabel="@GlobalDesign.Value.HeaderThemeLabel"
+                      HeaderLanguageLabel="@GlobalDesign.Value.HeaderLanguageLabel">
         <Brand>
             <a class="main-layout__brand" href="/" aria-label="Home">
                 <AppLogo AssetPath="@GlobalDesign.Value.LogoAssetPath" ChildContent="@LogoContent" />

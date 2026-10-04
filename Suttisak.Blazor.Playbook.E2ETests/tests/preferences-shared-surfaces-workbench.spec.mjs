@@ -9,6 +9,14 @@ const routes = [
   ['/components/hero', 'Title', 'shared-surfaces-workbench']
 ];
 
+async function openPreference(page, name) {
+  const preferences = page.getByTestId('preferences-workbench');
+  await preferences.locator(`[data-shell-preference="${name}"]`).click();
+  const popup = preferences.locator(`[data-shell-preference-popup="${name}"]`);
+  await expect(popup).toBeVisible();
+  return popup.locator(name === 'theme' ? '.theme-selector' : '.culture-selector');
+}
+
 for (const [path, parameter, workbench] of routes) {
   test(`${path} exposes its real executable contract after direct navigation and reload`, async ({ page }) => {
     await page.goto(path);
@@ -30,24 +38,24 @@ test('CultureSelector persists auto, English, and Thai preferences through the h
   await page.evaluate(() => window.blazorCulture.set('en-US'));
   await page.goto('/components/culture-selector');
 
-  let selector = page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .culture-selector');
+  let selector = await openPreference(page, 'language');
   await expect(selector.getByRole('button', { name: 'Use English' })).toHaveAttribute('aria-pressed', 'true');
   await selector.getByRole('button', { name: 'ใช้ภาษาไทย' }).click();
 
   await expect(page).toHaveURL(/\/components\/culture-selector$/);
   await expect.poll(() => page.evaluate(() => window.blazorCulture.get())).toBe('th-TH');
-  selector = page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .culture-selector');
+  selector = await openPreference(page, 'language');
   await expect(selector.getByRole('button', { name: 'ใช้ภาษาไทย' })).toHaveAttribute('aria-pressed', 'true');
   await expect(selector.getByRole('button', { name: 'Use English' })).toHaveAttribute('aria-pressed', 'false');
 
   await page.reload();
-  selector = page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .culture-selector');
+  selector = await openPreference(page, 'language');
   await expect(selector.getByRole('button', { name: 'ใช้ภาษาไทย' })).toHaveAttribute('aria-pressed', 'true');
 
   await selector.getByRole('button', { name: 'Use device language' }).click();
   await expect(page).toHaveURL(/\/components\/culture-selector$/);
   await expect.poll(() => page.evaluate(() => window.blazorCulture.getPreference())).toBe('auto');
-  selector = page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .culture-selector');
+  selector = await openPreference(page, 'language');
   await expect(selector.getByRole('button', { name: 'Use device language' })).toHaveAttribute('aria-pressed', 'true');
 });
 
@@ -55,7 +63,8 @@ test('ThemeSwitcher persists light and dark choices and follows live system-sche
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/components/theme-switcher');
 
-  const theme = () => page.locator('[data-testid="preferences-workbench"] .preferences-selector__desktop .theme-selector');
+  await openPreference(page, 'theme');
+  const theme = () => page.locator('[data-testid="preferences-workbench"] [data-shell-preference-popup="theme"] .theme-selector');
   await expect(theme().getByRole('button', { name: 'Use system theme' })).toHaveAttribute('aria-pressed', 'true');
 
   await theme().getByRole('button', { name: 'Use dark theme' }).click();
@@ -77,6 +86,7 @@ test('ThemeSwitcher persists light and dark choices and follows live system-sche
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('suttisak-blazor:theme-settings')).mode)).toBe('dark');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await openPreference(page, 'theme');
   await expect(theme().getByRole('button', { name: 'Use dark theme' })).toHaveAttribute('aria-pressed', 'true');
 });
 

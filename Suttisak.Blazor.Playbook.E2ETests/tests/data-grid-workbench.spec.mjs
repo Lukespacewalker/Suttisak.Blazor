@@ -15,8 +15,8 @@ test('AppGridShell workbench exposes runtime API metadata and paged data', async
   await expect(page.getByRole('complementary', { name: 'AppGridShell controls' })).toBeVisible();
   await expect(page.getByRole('rowheader', { name: 'State', exact: true })).toBeVisible();
   await expect(page.getByRole('table', { name: 'Playbook records table' })).toBeVisible();
-  await expect(page.getByText('6 rows', { exact: true })).toBeVisible();
-  await expect(page.getByRole('spinbutton')).toHaveValue('1');
+  await expect(page.getByText('Showing 1–3 of 6 rows', { exact: true })).toBeVisible();
+  await expect(page.locator('.app-grid-paginator [aria-current="page"]')).toHaveText('1');
 });
 
 test('data grid sorting and pagination execute against the live grid', async ({ page }) => {
@@ -28,7 +28,7 @@ test('data grid sorting and pagination execute against the live grid', async ({ 
   await expect(table.locator('tbody tr').first()).toContainText('1043');
 
   await page.getByRole('button', { name: 'Next' }).click();
-  await expect(page.getByRole('spinbutton')).toHaveValue('2');
+  await expect(page.locator('.app-grid-paginator [aria-current="page"]')).toHaveText('2');
   await expect(table.locator('tbody tr').first()).toContainText('1046');
 });
 
@@ -37,10 +37,10 @@ test('data grid search and page-size controls recompute visible data', async ({ 
 
   await page.getByRole('searchbox', { name: 'Search records' }).fill('Wellness');
   await expect(page.getByText('2 matching records', { exact: true })).toBeVisible();
-  await expect(page.getByText('2 rows', { exact: true })).toBeVisible();
+  await expect(page.getByText('Showing 1–2 of 2 rows', { exact: true })).toBeVisible();
 
   await page.getByLabel('Rows per page').selectOption('2');
-  await expect(page.getByRole('spinbutton')).toHaveValue('1');
+  await expect(page.locator('.app-grid-paginator [aria-current="page"]')).toHaveText('1');
 });
 
 test('data grid exposes loading and empty states without rendering stale rows', async ({ page }) => {

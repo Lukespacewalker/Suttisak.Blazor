@@ -1,4 +1,5 @@
 @inject NavigationManager NavigationManager
+@using Suttisak.Blazor.UserInterface.Components
 
 <a class="app-shell__skip-link" href="@SkipLinkHref" @onclick="FocusMainAsync">@SkipLinkText</a>
 
@@ -39,13 +40,22 @@
             {
                 <div class="app-shell__preference app-shell__preference--appearance">@AppearanceSwitcher</div>
             }
-            @if (ThemeSwitcher is not null)
+            @if (CompactHeaderPreferences)
             {
-                <div class="app-shell__preference app-shell__preference--theme">@ThemeSwitcher</div>
+                <PreferencesSelector HeaderOnly="true" CompactHeaderPreferences="true"
+                                     HeaderThemeLabel="@HeaderThemeLabel" HeaderLanguageLabel="@HeaderLanguageLabel"
+                                     ThemeContent="@ThemeSwitcher" LanguageContent="@LanguageSwitcher" />
             }
-            @if (LanguageSwitcher is not null)
+            else
             {
-                <div class="app-shell__preference app-shell__preference--language">@LanguageSwitcher</div>
+                @if (ThemeSwitcher is not null)
+                {
+                    <div class="app-shell__preference app-shell__preference--theme">@ThemeSwitcher</div>
+                }
+                @if (LanguageSwitcher is not null)
+                {
+                    <div class="app-shell__preference app-shell__preference--language">@LanguageSwitcher</div>
+                }
             }
         </div>
         @if (Profile is not null)
@@ -124,6 +134,9 @@
     [Parameter] public string MobileThemeLabel { get; set; } = "Theme";
     [Parameter] public string MobileAppearanceLabel { get; set; } = "Appearance";
     [Parameter] public string MobileLanguageLabel { get; set; } = "Language";
+    [Parameter] public bool CompactHeaderPreferences { get; set; }
+    [Parameter] public string HeaderThemeLabel { get; set; } = "Color scheme";
+    [Parameter] public string HeaderLanguageLabel { get; set; } = "Language";
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }

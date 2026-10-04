@@ -1,6 +1,14 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+async function settledStyles(locator, keys) {
+  // Theme hydration and focus can start a shared CSS transition. Compare the
+  // final presentation, rather than unrelated intermediate animation frames.
+  await expect.poll(() => locator.evaluate(el => el.getAnimations()
+    .filter(animation => animation.playState === 'running').length)).toBe(0);
+  return locator.evaluate((el, keys) => Object.fromEntries(keys.map(key => [key, getComputedStyle(el)[key]])), keys);
+}
+
 for (const theme of ['mentalinsight', 'healthinsight', 'audiogramiq']) {
   for (const mode of ['light', 'dark']) {
     test(`quiet luxury access keeps the form primary and the introduction compact for ${theme}/${mode}`, async ({ page }) => {
@@ -19,11 +27,10 @@ for (const theme of ['mentalinsight', 'healthinsight', 'audiogramiq']) {
       const previewInput = layout.getByLabel('Username', { exact: true });
       await previewInput.focus();
       const inputProperties = ['paddingInlineStart', 'paddingInlineEnd', 'borderTopWidth', 'backgroundColor', 'fontFamily', 'fontSize', 'fontWeight', 'outlineStyle'];
-      const previewStyles = await previewInput.evaluate((el, keys) => Object.fromEntries(keys.map(key => [key, getComputedStyle(el)[key]])), inputProperties);
+      const previewStyles = await settledStyles(previewInput, inputProperties);
       const inputMarkup = await previewInput.evaluate(el => el.closest('.app-form-control').outerHTML);
       const buttonProperties = ['fontFamily', 'fontSize', 'fontWeight', 'borderRadius', 'backgroundColor', 'boxShadow', 'paddingInlineStart', 'paddingBlockStart'];
-      const previewButtonStyles = await layout.getByRole('button', { name: 'Sign in', exact: true })
-        .evaluate((el, keys) => Object.fromEntries(keys.map(key => [key, getComputedStyle(el)[key]])), buttonProperties);
+      const previewButtonStyles = await settledStyles(layout.getByRole('button', { name: 'Sign in', exact: true }), buttonProperties);
 
       // A consumer fixture deliberately loads only published library assets.
       // The same presentation must work without Playbook CSS or application code.
@@ -51,10 +58,9 @@ for (const theme of ['mentalinsight', 'healthinsight', 'audiogramiq']) {
       const consumer = page.locator('.access-page-layout');
       const input = consumer.getByLabel('Username', { exact: true });
       await input.focus();
-      const consumerStyles = await input.evaluate((el, keys) => Object.fromEntries(keys.map(key => [key, getComputedStyle(el)[key]])), inputProperties);
+      const consumerStyles = await settledStyles(input, inputProperties);
       expect(previewStyles, 'Playbook must not repaint the shared icon input').toEqual(consumerStyles);
-      const consumerButtonStyles = await consumer.getByRole('button', { name: 'Continue', exact: true })
-        .evaluate((el, keys) => Object.fromEntries(keys.map(key => [key, getComputedStyle(el)[key]])), buttonProperties);
+      const consumerButtonStyles = await settledStyles(consumer.getByRole('button', { name: 'Continue', exact: true }), buttonProperties);
       expect(previewButtonStyles, 'Playbook must not repaint the shared primary action').toEqual(consumerButtonStyles);
       const wrap = input.locator('..');
       await expect(wrap).toHaveCSS('outline-style', 'solid');

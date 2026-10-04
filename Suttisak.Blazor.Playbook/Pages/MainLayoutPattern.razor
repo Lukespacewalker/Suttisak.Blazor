@@ -32,12 +32,23 @@
     <div class="layout-contract-page__grid">
         <article><strong>Named sections</strong><p>Header, navigation, navigation footer, messages, and page heading use separate section outlets.</p></article>
         <article><strong>Breadcrumb cascade</strong><p>PageBreadcrumbs populates MainLayout and clears when navigation changes.</p></article>
-        <article><strong>Responsive shell</strong><p>ApplicationShell provides desktop collapse and the mobile navigation overlay.</p></article>
+        <article><strong>Responsive shell</strong><p>ApplicationShell provides desktop collapse and the mobile navigation overlay. Hosts can opt into two header icon popovers with BlazorUIOptions.CompactHeaderPreferences; mobile pickers remain in the drawer.</p></article>
     </div>
     <a class="layout-contract-page__back" href="components/main-layout">Return to MainLayout documentation</a>
+    @if (LongContent)
+    {
+        <section aria-label="Long routed content">
+            @foreach (var index in Enumerable.Range(1, 40))
+            {
+                <p>Record @index. This routed content demonstrates natural document scrolling while the shell keeps its navigation and header accessible.</p>
+            }
+            <p data-testid="layout-long-content-end">End of the long content example.</p>
+        </section>
+    }
 </section>
 
 @code {
+    [SupplyParameterFromQuery(Name = "longContent")] public bool LongContent { get; set; }
     private static readonly Breadcrumb[] Breadcrumbs =
     [
         new("Home", "/layout-patterns/application", "Layouts"),

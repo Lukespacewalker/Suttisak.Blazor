@@ -14,7 +14,11 @@ builder.Services.AddSingleton<PlaybookState>();
 builder.Services.AddSingleton<DemoRecordStore>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, PlaybookAuthenticationStateProvider>();
-builder.Services.AddBlazorUserInterface(options => options.DefaultCulture = "en-US");
+builder.Services.AddBlazorUserInterface(options =>
+{
+    options.DefaultCulture = "en-US";
+    options.CompactHeaderPreferences = true;
+});
 
 var host = builder.Build();
 var jsRuntime = host.Services.GetRequiredService<IJSRuntime>();

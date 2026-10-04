@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Suttisak.Blazor.UserInterface.Components;
 using Suttisak.Blazor.UserInterface.Region;
 using Suttisak.Blazor.UserInterface.Services;
+using Suttisak.Blazor.UserInterface.Layouts.Shared;
 
 namespace Suttisak.Blazor.UserInterface.Tests;
 
@@ -21,6 +22,25 @@ public sealed class PreferenceSsrContractTests
         Assert.Equal(2, cut.FindAll(".culture-selector").Count);
         Assert.Equal(2, cut.FindAll("[data-theme-selector]").Count);
         Assert.Equal(6, cut.FindAll("[data-theme-preference]").Count);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Header_controls_share_opt_in_native_popovers_and_keep_their_mobile_disclosure(bool withUser)
+    {
+        using var context = new BunitContext();
+        context.Services.AddOptions<BlazorUIOptions>().Configure(options => options.CompactHeaderPreferences = true);
+        context.AddAuthorization();
+        var cut = withUser
+            ? context.Render<HeaderControlWithUser>().Find(".preferences-selector")
+            : context.Render<HeaderControl>().Find(".preferences-selector");
+
+        Assert.Equal(2, cut.QuerySelectorAll("[popover='auto']").Length);
+        Assert.Equal(2, cut.QuerySelectorAll(".preferences-selector__desktop [data-shell-preference]").Length);
+        Assert.Single(cut.QuerySelectorAll(".preferences-selector__mobile"));
+        Assert.Empty(cut.QuerySelectorAll(".preferences-selector__mobile [popover]"));
+        Assert.Equal(2, cut.QuerySelectorAll(".preferences-selector__mobile .culture-selector, .preferences-selector__mobile [data-theme-selector]").Length);
     }
 
     [Theory]
@@ -67,6 +87,33 @@ public sealed class PreferenceSsrContractTests
 
         Assert.Equal("en-US", options.DefaultCulture);
         Assert.Equal("Culture/Set", options.CultureSetUrl);
+        Assert.False(options.CompactHeaderPreferences);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void MainLayout_passes_opt_in_header_preferences_without_wrapping_mobile_pickers(bool compact)
+    {
+        using var context = new BunitContext();
+        context.Services.AddOptions<BlazorUIOptions>().Configure(options =>
+        {
+            options.CompactHeaderPreferences = compact;
+            options.HeaderThemeLabel = "สีหน้าจอ";
+            options.HeaderLanguageLabel = "ภาษา";
+        });
+        context.AddAuthorization();
+        var cut = context.Render<MainLayout>();
+
+        Assert.Equal(compact ? 2 : 0, cut.FindAll("[popover='auto']").Count);
+        Assert.Equal(2, cut.FindAll(".app-shell__navigation-preferences [data-theme-selector], .app-shell__navigation-preferences .culture-selector").Count);
+        Assert.Empty(cut.FindAll(".app-shell__navigation-preferences [popover]"));
+        if (compact)
+        {
+            Assert.Equal("สีหน้าจอ", cut.Find("[data-shell-preference='theme']").GetAttribute("aria-label"));
+            Assert.Equal("ภาษา", cut.Find("[data-shell-preference='language']").GetAttribute("aria-label"));
+            Assert.Equal(cut.Find("[data-shell-preference='theme']").GetAttribute("popovertarget"), cut.Find("[data-shell-preference-popup='theme']").Id);
+        }
     }
 
     private static string Read(params string[] path) => File.ReadAllText(Path.Combine([RepositoryRoot, .. path]));

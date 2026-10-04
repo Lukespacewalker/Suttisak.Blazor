@@ -83,7 +83,7 @@
                     <span role="status">@_lastAction</span>
                 </Footer>
                 <Pagination>
-                    <AppGridPaginator State="@_pagination" AriaLabel="Playbook grid pagination" />
+                    <AppGridPaginator State="@_pagination" PageSizeOptions="@(new[] { 2, 3, 6 })" AriaLabel="Playbook grid pagination" />
                 </Pagination>
             </AppGridShell>
         </div>
@@ -104,13 +104,6 @@
                 {
                     <option value="@value">@value</option>
                 }
-            </select>
-        </label>
-        <label>Rows per page
-            <select value="@_pagination.ItemsPerPage" @onchange="ChangePageSizeAsync">
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="6">6</option>
             </select>
         </label>
     </Controls>
@@ -231,12 +224,4 @@
         _lastAction = $"Deleted {snapshot.Length} record(s).";
     }
 
-    private async Task ChangePageSizeAsync(ChangeEventArgs args)
-    {
-        if (int.TryParse(args.Value?.ToString(), out var pageSize))
-        {
-            _pagination.ItemsPerPage = pageSize;
-            await _pagination.SetCurrentPageIndexAsync(0);
-        }
-    }
 }

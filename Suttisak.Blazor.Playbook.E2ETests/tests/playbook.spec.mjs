@@ -4,7 +4,9 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('UI Playbook shared-component contracts', () => {
   test('ThemeSelector updates the one html data-theme contract', async ({ page }) => {
     await page.goto('/components/theme-switcher');
-    const selector = page.locator('.component-detail__preview-frame .theme-selector').first();
+    const preferences = page.getByTestId('preferences-workbench');
+    await preferences.locator('[data-shell-preference="theme"]').click();
+    const selector = preferences.locator('[data-shell-preference-popup="theme"] .theme-selector');
     await expect(selector).toBeVisible();
 
     await selector.getByRole('button', { name: 'Use dark theme' }).click();

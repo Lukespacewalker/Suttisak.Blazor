@@ -1,11 +1,44 @@
 @using System.Globalization
+@using Microsoft.Extensions.Options
+@using Suttisak.Blazor.UserInterface.Services
+@inject IOptions<BlazorUIOptions> Options
 
-<div class="preferences-selector">
+<div class="@(HeaderOnly ? "preferences-selector preferences-selector--header-only" : "preferences-selector")">
     <div class="preferences-selector__desktop">
-        <CultureSelector />
-        <ThemeSwitcher />
+        @if (CompactHeaderPreferences ?? Options.Value.CompactHeaderPreferences)
+        {
+            <button type="button" class="preferences-selector__trigger" data-shell-preference="theme"
+                    aria-label="@EffectiveHeaderThemeLabel" title="@EffectiveHeaderThemeLabel"
+                    popovertarget="@ThemePopoverId" style="@($"anchor-name: --{ThemePopoverId}")">
+                <span aria-hidden="true">◐</span>
+            </button>
+            <div id="@ThemePopoverId" class="preferences-selector__native-popover" popover="auto"
+                 data-shell-preference-popup="theme" role="group" aria-label="@EffectiveHeaderThemeLabel"
+                 style="@($"position-anchor: --{ThemePopoverId}")">
+                <span>@EffectiveHeaderThemeLabel</span>
+                @EffectiveThemeContent
+            </div>
+            <button type="button" class="preferences-selector__trigger" data-shell-preference="language"
+                    aria-label="@EffectiveHeaderLanguageLabel" title="@EffectiveHeaderLanguageLabel"
+                    popovertarget="@LanguagePopoverId" style="@($"anchor-name: --{LanguagePopoverId}")">
+                <Suttisak.Blazor.Icons.Icon Name="Globe" Size="20" aria-hidden="true" />
+            </button>
+            <div id="@LanguagePopoverId" class="preferences-selector__native-popover" popover="auto"
+                 data-shell-preference-popup="language" role="group" aria-label="@EffectiveHeaderLanguageLabel"
+                 style="@($"position-anchor: --{LanguagePopoverId}")">
+                <span>@EffectiveHeaderLanguageLabel</span>
+                @EffectiveLanguageContent
+            </div>
+        }
+        else
+        {
+            @EffectiveLanguageContent
+            @EffectiveThemeContent
+        }
     </div>
 
+    @if (!HeaderOnly)
+    {
     <details class="preferences-selector__mobile">
         <summary aria-label="@PreferencesLabel" title="@PreferencesLabel">
             <Suttisak.Blazor.Icons.Icon Name="Settings" Size="20" />
@@ -13,17 +46,31 @@
         <div class="preferences-selector__popover">
             <div class="preferences-selector__section">
                 <span class="preferences-selector__label">@LanguageLabel</span>
-                <CultureSelector />
+                @EffectiveLanguageContent
             </div>
             <div class="preferences-selector__section">
                 <span class="preferences-selector__label">@ThemeLabel</span>
-                <ThemeSwitcher />
+                @EffectiveThemeContent
             </div>
         </div>
     </details>
+    }
 </div>
 
 @code {
+    [Parameter] public bool? CompactHeaderPreferences { get; set; }
+    [Parameter] public bool HeaderOnly { get; set; }
+    [Parameter] public string? HeaderThemeLabel { get; set; }
+    [Parameter] public string? HeaderLanguageLabel { get; set; }
+    [Parameter] public RenderFragment? ThemeContent { get; set; }
+    [Parameter] public RenderFragment? LanguageContent { get; set; }
+    private readonly string _instanceId = $"header-preferences-{Guid.NewGuid():N}";
+    private string ThemePopoverId => $"{_instanceId}-theme";
+    private string LanguagePopoverId => $"{_instanceId}-language";
+    private string EffectiveHeaderThemeLabel => HeaderThemeLabel ?? Options.Value.HeaderThemeLabel;
+    private string EffectiveHeaderLanguageLabel => HeaderLanguageLabel ?? Options.Value.HeaderLanguageLabel;
+    private RenderFragment EffectiveThemeContent => ThemeContent ?? (@<ThemeSwitcher />);
+    private RenderFragment EffectiveLanguageContent => LanguageContent ?? (@<CultureSelector />);
     private bool IsThai => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "th";
     private string PreferencesLabel => IsThai ? "การตั้งค่าภาษาและธีม" : "Language and theme preferences";
     private string LanguageLabel => IsThai ? "ภาษา" : "Language";

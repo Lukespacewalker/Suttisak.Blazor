@@ -66,6 +66,7 @@
 .app-shell__preferences { margin-inline-start: auto; gap: .35rem; }
 .app-shell__preference--appearance { min-width: 0; }
 
+
 .app-shell__menu-button {
     display: grid;
     width: 2.45rem;

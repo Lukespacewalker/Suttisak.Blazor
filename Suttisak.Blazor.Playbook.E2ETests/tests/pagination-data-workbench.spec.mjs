@@ -12,7 +12,7 @@ test('AppGridPaginator exposes runtime API metadata and starts at the first boun
   const pagination = page.getByRole('navigation', { name: 'Record pagination' });
   await expect(pagination.getByRole('button', { name: 'Previous page' })).toBeDisabled();
   await expect(pagination.getByRole('button', { name: 'Next page' })).toBeEnabled();
-  await expect(page.getByTestId('grid-pagination-summary')).toHaveText('Page 1 of 3');
+  await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 1–2 of 6 rows');
 });
 
 test('AppGridPaginator moves with buttons and direct page entry while clamping boundaries', async ({ page }) => {
@@ -21,6 +21,8 @@ test('AppGridPaginator moves with buttons and direct page entry while clamping b
   const pagination = page.getByRole('navigation', { name: 'Record pagination' });
   const previous = pagination.getByRole('button', { name: 'Previous page' });
   const next = pagination.getByRole('button', { name: 'Next page' });
+  await page.getByLabel('Legacy numeric page input').check();
+  await page.getByLabel('Custom summary template').check();
   const pageNumber = pagination.getByRole('spinbutton');
 
   await next.click();
@@ -44,10 +46,10 @@ test('changing page size resets the current page and total pages', async ({ page
 
   const pagination = page.getByRole('navigation', { name: 'Record pagination' });
   await pagination.getByRole('button', { name: 'Next page' }).click();
-  await expect(page.getByTestId('grid-pagination-summary')).toHaveText('Page 2 of 3');
+  await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 3–4 of 6 rows');
 
   await page.getByLabel('Rows per page').selectOption('3');
-  await expect(page.getByTestId('grid-pagination-summary')).toHaveText('Page 1 of 2');
+  await expect(pagination.locator('.app-grid-paginator__summary')).toHaveText('Showing 1–3 of 6 rows');
   await expect(page.getByTestId('pagination-status')).toHaveText('AppGridPaginator now shows 3 rows per page.');
 });
 

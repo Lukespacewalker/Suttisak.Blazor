@@ -1359,7 +1359,7 @@
       "category": "Data \u0026 display",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Accessible icon navigation and result context, always shown for paged AppGrid data sources; omit for virtual scrolling.",
+      "summary": "Accessible numbered page window, result range, and page-size selector using shared PaginationState; custom summaries and optional numeric entry remain supported.",
       "tags": [
         "grid",
         "pagination"
@@ -1790,7 +1790,7 @@
       "category": "Navigation",
       "status": "stable",
       "coverage": "reference",
-      "summary": "Legacy header-region adapter with language and color-scheme buttons, without an appearance dropdown.",
+      "summary": "Header-region adapter using PreferencesSelector, including host opt-in scheme/language icon popovers, without an appearance dropdown.",
       "tags": [
         "navigation",
         "header",
@@ -1807,7 +1807,7 @@
       "category": "Navigation",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Header language and color-scheme buttons beside authenticated or anonymous identity controls, without an appearance dropdown.",
+      "summary": "Shared preference presentation beside identity controls, including host opt-in icon popovers, without an appearance dropdown.",
       "tags": [
         "navigation",
         "header",
@@ -1881,7 +1881,7 @@
       "category": "Preferences \u0026 time",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Language and color-scheme buttons with a responsive native disclosure, without an appearance dropdown.",
+      "summary": "Shared language and scheme composition with optional desktop icon popovers, content slots, and the existing mobile native disclosure; no appearance dropdown.",
       "tags": [
         "preferences",
         "settings"
@@ -2277,7 +2277,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Responsive application frame owning skip navigation, header, primary navigation, and main content, with mobile Escape dismissal; Nexora uses a desktop panel toggle and quiet utility controls.",
+      "summary": "Responsive application frame with mobile Escape dismissal, optional icon popovers for header preferences, and raw pickers in the mobile drawer; Nexora uses quiet utility controls.",
       "tags": [
         "layout",
         "application",
@@ -2373,7 +2373,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Router layout that maps application sections, breadcrumbs, and body content into ApplicationShell.",
+      "summary": "Router layout mapping sections, breadcrumbs, body, and opt-in compact header preference options into ApplicationShell.",
       "tags": [
         "layout",
         "application",

@@ -5,7 +5,8 @@
 <ApplicationShell MainContentId="demo-application-main"
                     NavigationLabel="Demo application navigation"
                     MenuButtonLabel="Open demo navigation"
-                    CloseMenuLabel="Close demo navigation">
+                    CloseMenuLabel="Close demo navigation"
+                    CompactHeaderPreferences="@CompactHeaderPreferences">
     <Brand>
         <NavLink class="demo-app-brand" href="application-shell" Match="NavLinkMatch.All">
             <span aria-hidden="true"><img src="@CurrentTheme.LogoPath" alt="" width="@CurrentTheme.LogoWidth" height="@CurrentTheme.LogoHeight" /></span>
@@ -72,6 +73,7 @@
     [Inject] private DemoRecordStore Store { get; set; } = default!;
     [Parameter] public IEnumerable<Breadcrumb>? BreadcrumbItems { get; set; }
     [Parameter] public RenderFragment? PageHeading { get; set; }
+    [Parameter] public bool CompactHeaderPreferences { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 
     private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);

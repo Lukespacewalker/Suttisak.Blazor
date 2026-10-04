@@ -11,5 +11,8 @@
         public string DefaultCulture { get; set; } = "en-US";
         public string CultureSetUrl { get; set; } = "Culture/Set";
         public string ManageAccountUrl { get; set; } = "Account/Manage";
+        public bool CompactHeaderPreferences { get; set; }
+        public string HeaderThemeLabel { get; set; } = "Color scheme";
+        public string HeaderLanguageLabel { get; set; } = "Language";
     }
 }

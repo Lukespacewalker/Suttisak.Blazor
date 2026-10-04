@@ -9,7 +9,10 @@
     --app-accent-border: var(--app-nexora-accent-border, color-mix(in srgb, var(--app-brand) 50%, var(--app-surface)));
     --app-brand-soft: var(--app-accent-soft);
     --app-brand-secondary-soft: var(--app-accent-soft);
-    --nexora-primary-highlight: var(--app-nexora-accent-highlight, color-mix(in srgb, var(--app-brand) 92%, var(--app-surface)));
+    --nexora-primary-highlight: var(--app-nexora-accent-highlight, color-mix(in srgb, var(--app-brand) 94%, var(--app-surface)));
+    --nexora-primary-background-image: linear-gradient(115deg, var(--nexora-primary-highlight), var(--app-brand) 48%, color-mix(in srgb, var(--app-brand) 94%, var(--app-foreground)));
+    --nexora-primary-shadow: inset 0 1px 0 color-mix(in srgb, var(--app-on-brand) 25%, transparent), 0 2px 8px color-mix(in srgb, var(--app-brand) 12%, transparent);
+    --nexora-primary-hover-shadow: inset 0 1px 0 color-mix(in srgb, var(--app-on-brand) 30%, transparent), 0 3px 12px color-mix(in srgb, var(--app-brand) 18%, transparent);
 
     --app-background: light-dark(#f7f5f0, #17181a);
     --app-surface: light-dark(#ffffff, #232426);
@@ -50,6 +53,18 @@
     background: var(--app-surface);
     backdrop-filter: none;
     box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell__header {
+    background: linear-gradient(110deg, color-mix(in srgb, var(--app-accent) 3%, var(--app-surface)), var(--app-surface) 62%, color-mix(in srgb, var(--app-accent) 1%, var(--app-surface)));
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.nav-shell, .app-shell__navigation) {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--app-accent) 2%, var(--app-surface)), var(--app-surface) 35%, color-mix(in srgb, var(--app-accent) 3%, var(--app-surface)));
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell__content {
+    padding-block-end: calc(clamp(1rem, 2vw, 1.5rem) + env(safe-area-inset-bottom, 0px));
 }
 
 /* Utility controls recede behind the page task. Selection and keyboard focus
@@ -229,19 +244,20 @@
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary, .marketing-action--primary) {
     /* Keep an opaque accent beneath the gradient during hover transitions. */
     background-color: var(--app-brand);
-    background-image: linear-gradient(110deg, var(--app-brand), var(--nexora-primary-highlight));
+    background-image: var(--nexora-primary-background-image);
     color: var(--app-on-brand);
     border-color: var(--app-brand);
-    box-shadow: var(--app-shadow-sm);
+    box-shadow: var(--nexora-primary-shadow);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button:hover, .app-button:active, .marketing-action:hover) {
     transform: none;
 }
 
-:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary:hover, .marketing-action--primary:hover) {
-    background: var(--app-brand);
-    box-shadow: var(--app-shadow-sm);
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary, .marketing-action--primary):where(:hover:not(:disabled):not([aria-disabled="true"])) {
+    background-color: var(--app-brand);
+    background-image: var(--nexora-primary-background-image);
+    box-shadow: var(--nexora-primary-hover-shadow);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control__label {
@@ -557,7 +573,8 @@
 }
 
 @media (forced-colors: active) {
-    :is(:root, .app-appearance-scope)[data-appearance="nexora"] { --app-focus-ring: Highlight; --nexora-surface-border: CanvasText; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] { --app-focus-ring: Highlight; --nexora-surface-border: CanvasText; --nexora-primary-background-image: none; --nexora-primary-shadow: none; --nexora-primary-hover-shadow: none; }
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-shell__header, .nav-shell, .app-shell__navigation) { background: Canvas; color: CanvasText; }
     :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-button--primary, .marketing-action--primary) { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
     :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.experience-heading, .marketing-call-to-action, .access-page-layout__showcase) { background: Canvas; color: CanvasText; }
     :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-card, .glass-card, .app-grid-shell, .experience-card) { border-color: CanvasText; }

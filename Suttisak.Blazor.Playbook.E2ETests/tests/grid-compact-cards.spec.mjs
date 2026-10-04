@@ -35,7 +35,7 @@ test('cards sort, paginate, select and retain state and focus across resize', as
   await page.getByRole('checkbox', { name: 'Select row 1043', exact: true }).check();
   await page.getByRole('combobox', { name: 'Sort direction', exact: true }).selectOption('descending');
   await page.getByRole('button', { name: 'Next', exact: true }).click();
-  await expect(page.getByRole('spinbutton')).toHaveValue('2');
+  await expect(page.locator('.app-grid-paginator [aria-current="page"]')).toHaveText('2');
   await expect(page.getByRole('checkbox', { name: 'Select row 1043', exact: true })).toBeChecked();
   await page.getByRole('checkbox', { name: 'Select row 1043', exact: true }).focus();
   await page.locator('.component-specimen__demo').evaluate(el => { el.style.width = '900px'; });
@@ -43,7 +43,7 @@ test('cards sort, paginate, select and retain state and focus across resize', as
   await expect(page.locator('.app-grid__cards-view')).not.toBeVisible();
   await expect(page.locator('.app-grid')).toBeFocused();
   await expect(page.getByRole('checkbox', { name: 'Select row 1043', exact: true })).toBeChecked();
-  await expect(page.getByRole('spinbutton')).toHaveValue('2');
+  await expect(page.locator('.app-grid-paginator [aria-current="page"]')).toHaveText('2');
   await page.getByRole('button', { name: 'ID', exact: true }).focus();
   await page.locator('.component-specimen__demo').evaluate(el => { el.style.width = '360px'; });
   await expect(page.locator('.app-grid__cards-view')).toBeVisible();
