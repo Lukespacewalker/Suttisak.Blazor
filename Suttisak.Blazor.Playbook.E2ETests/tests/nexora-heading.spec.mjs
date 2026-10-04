@@ -37,7 +37,7 @@ async function headingHost(page, { mode = 'light', appearance = 'nexora', visual
 
 for (const mode of ['light', 'dark']) {
   test(`Nexora ${mode} PageHeading stays unframed above the first-viewport task`, async ({ page }, testInfo) => {
-    for (const size of [{ width: 320 }, { width: 390 }, { width: 1440 }, { width: 1440, constrained: true }]) {
+    for (const size of [{ width: 320 }, { width: 390 }, { width: 768 }, { width: 1024 }, { width: 1440 }, { width: 1440, constrained: true }]) {
       await headingHost(page, { ...size, mode, kind: 'page' });
       const heading = page.locator('.page-heading');
       await expect(heading).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
@@ -66,7 +66,7 @@ for (const mode of ['light', 'dark']) {
       await expect(page.locator('.app-page__intro')).not.toHaveCSS('box-shadow', 'none');
     }
   });
-  for (const size of [{ width: 320 }, { width: 390 }, { width: 1440 }, { width: 1440, constrained: true }]) {
+  for (const size of [{ width: 320 }, { width: 390 }, { width: 768 }, { width: 1024 }, { width: 1440 }, { width: 1440, constrained: true }]) {
     test(`Nexora ${mode} heading preserves the following task at ${size.width}${size.constrained ? ' with 320px parent' : ''}`, async ({ page }, testInfo) => {
       for (const visual of [false, true]) {
         await headingHost(page, { ...size, mode, visual });
@@ -80,7 +80,11 @@ for (const mode of ['light', 'dark']) {
           return { height: element.getBoundingClientRect().height, minHeight: style.minHeight, fontSize: parseFloat(getComputedStyle(title).fontSize), titleWidth: title.getBoundingClientRect().width, copyWidth: element.querySelector('.experience-heading__copy').getBoundingClientRect().width, scrollWidth: element.scrollWidth, width: element.clientWidth };
         });
         expect(geometry.minHeight, 'no hero minimum height').toBe('0px');
-        expect(geometry.fontSize).toBeLessThanOrEqual(32);
+        expect(geometry.fontSize).toBeGreaterThanOrEqual(24);
+        expect(geometry.fontSize).toBeLessThanOrEqual(size.width <= 390 || size.constrained ? 30.4 : 41.6);
+        await expect(heading).toHaveCSS('border-top-width', '0px');
+        await expect(heading).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+        await expect(heading).toHaveCSS('box-shadow', 'none');
         expect(geometry.titleWidth, 'heading uses available copy width').toBeCloseTo(geometry.copyWidth, 0);
         expect(geometry.height).toBeLessThanOrEqual(visual ? 350 : 290);
         expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.width);
@@ -117,10 +121,11 @@ for (const mode of ['light', 'dark']) {
     const heading = page.locator('.page-heading');
     await expect(heading.locator('h1')).toHaveCSS('font-family', 'Sarabun, serif');
     await expect(heading.locator('.page-heading__section-icon')).toHaveCSS('color', mode === 'light' ? 'rgb(23, 106, 101)' : 'rgb(131, 206, 197)');
-    for (const width of [1440, 390, 320]) {
+    for (const width of [1440, 1024, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 844 });
       const titleSize = await heading.locator('h1').evaluate(element => parseFloat(getComputedStyle(element).fontSize));
-      expect(titleSize).toBeLessThanOrEqual(26.4);
+      expect(titleSize).toBeGreaterThanOrEqual(24);
+      expect(titleSize).toBeLessThanOrEqual(width <= 390 ? 30.4 : 41.6);
       const primary = heading.getByRole('button', { name: 'Save assessment', exact: true });
       await primary.focus();
       await expect(primary).toHaveCSS('outline-width', '2px');

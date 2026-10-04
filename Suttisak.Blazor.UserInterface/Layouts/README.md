@@ -47,10 +47,15 @@ and language controls move to the top of that drawer, while profile access
 remains right-aligned in the header. Navigation closes
 automatically after a route change. The component also supports `HeaderActions`
 and `NavigationFooter` for application-owned secondary content. On desktop the
-navigation remains expanded initially and can be collapsed from the header;
-the menu button animates between hamburger and close states. Desktop collapse
+navigation remains expanded initially and can be collapsed from the header.
+Nexora uses the existing panel-contract and panel-expand icons on desktop;
+its mobile menu still changes between hamburger and close states. Other
+appearances retain their existing desktop menu symbol. Desktop collapse
 and mobile drawer state are independent so resizing does not leave the mobile
 navigation unexpectedly open.
+Escape dismisses an open mobile navigation drawer when keyboard focus is inside
+it and restores focus to its menu button. A nested native popover or dialog owns
+its own Escape, and desktop navigation is unaffected.
 
 ## Breadcrumbs
 
@@ -76,3 +81,11 @@ breadcrumb renderer and composes it with the active `PageHeading` or
 as the current page, removes its link, and applies `aria-current="page"`.
 Applications remain responsible for localizing breadcrumb titles and can
 configure `BreadcrumbLabel` and `SkipLinkText` through `BlazorUIOptions`.
+
+From UI 1.0.31, Nexora renders breadcrumbs and both heading components directly
+on the page background. The title has a stronger desktop hierarchy, then adapts
+to the available parent width so actions and useful task content remain visible
+on tablets and narrow previews. Header scheme/language buttons use quiet chrome
+with an explicit selected state and keyboard focus. This is an appearance-only
+treatment; shell slots, IDs, preference behavior, and public parameters remain
+unchanged.

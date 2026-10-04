@@ -92,6 +92,21 @@
         if (trigger?.dataset.labelClosed) trigger.setAttribute("aria-label", trigger.dataset.labelClosed);
     };
 
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape" || event.defaultPrevented) return;
+        const target = event.target instanceof Element ? event.target : null;
+        // A nested native overlay owns the first Escape. Only a visible mobile
+        // drawer containing keyboard focus can be dismissed by the shell.
+        if (target?.closest("[popover]:popover-open, dialog[open]")) return;
+        const navigation = target?.closest(".app-shell__navigation.is-open");
+        const shell = navigation?.closest("[data-app-shell]");
+        const trigger = shell?.querySelector('[data-shell-action="mobile"]');
+        if (!shell || !trigger || trigger.getClientRects().length === 0) return;
+        event.preventDefault();
+        closeMobileNavigation(shell);
+        trigger.focus();
+    });
+
     document.addEventListener("click", event => {
         const target = event.target instanceof Element ? event.target : null;
         const themeButton = target?.closest("[data-theme-preference]");

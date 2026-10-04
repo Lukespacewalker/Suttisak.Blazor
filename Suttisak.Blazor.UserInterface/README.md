@@ -100,15 +100,21 @@ derived selection surface, boundary, and subtle primary-button gradient.
 Use explicit light/dark values and check text and control contrast when choosing
 a palette. Typography continues using the shared or host-provided Latin/Thai fonts.
 
-From 1.0.30, Nexora uses compact `PageHeading` typography and content-driven
-`ExperienceHeading` spacing. Omit `Visual` to avoid an unused visual column;
+From 1.0.31, Nexora gives `PageHeading` and `ExperienceHeading` a responsive
+display hierarchy while preserving content-driven spacing. Omit `Visual` to avoid an unused visual column;
 supplied meaningful visuals wrap beneath the copy in constrained parents.
 Titles use the available copy width, and eyebrow/emphasis follow the host
 accent. Use PageHeading for task pages and ExperienceHeading for reader-facing
-results or guidance. Nexora PageHeading sits directly on the page background,
+results or guidance. Nexora headings and breadcrumbs sit directly on the page background,
 without a surrounding border, card surface, or shadow; actions and navigation
 keep their accessible controls. The legacy `app-page__intro` surface retains
 its card treatment. Other appearances retain their existing heading geometry.
+Nexora uses quiet language/scheme controls and an existing panel icon for desktop
+sidebar collapse. The mobile menu retains its open/close symbol and focus
+behavior, and Escape from inside an open drawer restores focus to its opener.
+Cards use subtle neutral boundaries, and nonvirtualized tables use
+sentence-case headings and compact rows; semantic states and virtualized row
+geometry remain intact.
 
 The first-visit appearance and color mode are independent:
 

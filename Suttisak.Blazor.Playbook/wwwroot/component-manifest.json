@@ -1243,7 +1243,7 @@
       "category": "Actions \u0026 surfaces",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Compact page title with description, section context, navigation, and action slots; Nexora places restrained host typography directly on the page background.",
+      "summary": "Page title with description, section context, navigation, and action slots; Nexora gives the unframed title a responsive display hierarchy using host typography.",
       "tags": [
         "heading",
         "page",
@@ -1998,7 +1998,7 @@
       "category": "Experience",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Reader-facing heading with details and optional decorative or meaningful visuals; Nexora adapts to content and parent width without hero space.",
+      "summary": "Reader-facing heading with details and optional decorative or meaningful visuals; Nexora uses an unframed editorial introduction that adapts to content and parent width.",
       "tags": [
         "experience",
         "heading",
@@ -2277,7 +2277,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Responsive application frame owning skip navigation, header, primary navigation, and main content.",
+      "summary": "Responsive application frame owning skip navigation, header, primary navigation, and main content, with mobile Escape dismissal; Nexora uses a desktop panel toggle and quiet utility controls.",
       "tags": [
         "layout",
         "application",
@@ -2297,7 +2297,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Shell heading region that combines optional breadcrumbs with application-owned heading content.",
+      "summary": "Shell heading region that combines optional breadcrumbs with application-owned heading content; Nexora places both directly on the page background.",
       "tags": [
         "layout",
         "heading",

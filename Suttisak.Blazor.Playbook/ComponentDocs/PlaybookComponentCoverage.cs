@@ -50,7 +50,7 @@ public static class PlaybookComponentCoverage
                 "application-shell",
                 ["Coordinate header, navigation, responsive menu controls, skip link, heading slot, and main content.", "Keep desktop collapse and mobile containment semantics connected through stable IDs."],
                 ["Brand, routes, navigation information architecture, profile, preferences, and page content."],
-                ["The /application-shell route exercises desktop and mobile navigation, focus, active routes, and breadcrumbs."],
+                ["The /application-shell route exercises desktop and mobile navigation, focus, active routes, and breadcrumbs.", "nexora-responsive-workspace.spec.mjs exercises panel collapse, tablet navigation, search, sorting, selection, and editor focus at 768/1024/1440px."],
                 ["MainLayout", "Nav", "PageHeading"]),
             ["ApplicationPageHeading"] = Pattern(
                 "ApplicationPageHeading combines breadcrumbs with the heading content supplied by the page.",

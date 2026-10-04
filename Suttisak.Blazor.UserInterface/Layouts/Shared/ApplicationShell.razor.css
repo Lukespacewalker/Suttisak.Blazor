@@ -81,6 +81,7 @@
 }
 
 .app-shell__menu-button--mobile { display: none; }
+.app-shell__menu-button ::deep .app-shell__panel-icon { display: none; }
 .app-shell__menu-button span { display: block; width: 1.1rem; height: 2px; border-radius: 99rem; background: currentColor; transform-origin: center; transition: transform .2s ease, opacity .15s ease; }
 .app-shell__menu-button.is-open { border-color: var(--app-accent-border); background: var(--app-accent-soft); color: var(--app-accent); }
 .app-shell__menu-button.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
