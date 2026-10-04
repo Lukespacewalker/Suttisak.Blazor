@@ -166,3 +166,36 @@ test('mobile navigation leaves nested native Escape and resized desktop navigati
   await expect(page.locator('[data-shell-action="desktop"]')).toHaveAttribute('aria-expanded', 'true');
   await expect(link).toBeFocused();
 });
+
+for (const appearance of ['nexora', 'standard', 'essential', 'quiet-luxury']) {
+  test(`${appearance} mobile Escape dismisses an owned popup before navigation when focus stays on its invoker`, async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await page.goto(`/application-shell/records?appearance=${appearance}`);
+    const toggle = page.locator('[data-shell-action="mobile"]');
+    const navigation = page.locator('.app-shell__navigation');
+    await toggle.click();
+    await navigation.evaluate(element => {
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.textContent = 'Open navigation help';
+      trigger.setAttribute('popovertarget', 'navigation-help');
+      const popup = document.createElement('div');
+      popup.id = 'navigation-help';
+      popup.popover = 'auto';
+      popup.textContent = 'Navigation help';
+      element.append(trigger, popup);
+    });
+    const popupTrigger = navigation.getByRole('button', { name: 'Open navigation help' });
+    await popupTrigger.focus();
+    await popupTrigger.press('Enter');
+    await expect(popupTrigger).toBeFocused();
+    await expect(navigation.locator('#navigation-help')).toBeVisible();
+    await popupTrigger.press('Escape');
+    await expect(navigation.locator('#navigation-help')).toBeHidden();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(popupTrigger).toBeFocused();
+    await popupTrigger.press('Escape');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(toggle).toBeFocused();
+  });
+}

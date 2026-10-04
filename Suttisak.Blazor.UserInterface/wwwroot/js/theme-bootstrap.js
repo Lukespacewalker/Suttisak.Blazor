@@ -102,6 +102,9 @@
         const shell = navigation?.closest("[data-app-shell]");
         const trigger = shell?.querySelector('[data-shell-action="mobile"]');
         if (!shell || !trigger || trigger.getClientRects().length === 0) return;
+        // Native popovers without autofocus keep focus on their invoker. Let
+        // the current navigation's open popup consume Escape in that state too.
+        if (navigation.querySelector("[popover]:popover-open, dialog[open]")) return;
         event.preventDefault();
         closeMobileNavigation(shell);
         trigger.focus();
