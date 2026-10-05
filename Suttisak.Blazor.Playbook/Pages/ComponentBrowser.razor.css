@@ -1,24 +1,24 @@
 .component-browser {
     width: min(100% - 2rem, 94rem);
     margin: 0 auto;
-    padding: clamp(2rem, 5vw, 5rem) 0 6rem;
+    padding: clamp(1.5rem, 3vw, 3rem) 0 5rem;
 }
 
 .component-browser__hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(20rem, .55fr);
-    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, .55fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
     align-items: end;
-    padding: 0 clamp(.25rem, 2vw, 1rem) 3rem;
+    padding: 0 0 2rem;
     border-bottom: 1px solid var(--app-border);
 }
 
 .component-browser__hero h1 {
     margin: .45rem 0 1rem;
     font-family: var(--app-font-heading);
-    font-size: clamp(3rem, 7vw, 6.5rem);
-    line-height: .88;
-    letter-spacing: -.065em;
+    font-size: clamp(2rem, 3.5vw, 3.25rem);
+    line-height: 1.12;
+    letter-spacing: -.035em;
 }
 
 .component-browser__hero h1 em {
@@ -65,7 +65,7 @@
 .component-browser__coverage-summary article {
     display: grid;
     align-content: end;
-    min-height: 6.5rem;
+    min-height: 4.5rem;
     padding: .85rem;
 }
 
@@ -75,13 +75,13 @@
 
 .component-browser__coverage-summary strong {
     color: var(--app-accent);
-    font: 800 clamp(1.45rem, 3vw, 2.35rem)/1 var(--app-font-heading);
+    font: 750 clamp(1.35rem, 2vw, 1.75rem)/1.15 var(--app-font-heading);
 }
 
 .component-browser__coverage-summary article span {
     margin-top: .35rem;
     color: var(--app-foreground-muted);
-    font-size: .58rem;
+    font-size: .68rem;
 }
 
 .component-browser__coverage-summary > div {
@@ -109,7 +109,7 @@
 .component-browser__workspace {
     display: grid;
     grid-template-columns: 17rem minmax(0, 1fr);
-    gap: clamp(2rem, 4vw, 4rem);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     align-items: start;
 }
 
@@ -119,7 +119,7 @@
     display: grid;
     max-height: calc(100dvh - 6.25rem);
     gap: 1.35rem;
-    padding: 1.5rem .25rem 1rem;
+    padding: 1.5rem .4rem 1rem;
     overflow-y: auto;
 }
 
@@ -139,6 +139,7 @@
 
 .component-browser__search input {
     width: 100%;
+    box-sizing: border-box;
     padding: .62rem .7rem;
     border: 1px solid var(--app-border);
     border-radius: var(--app-radius-sm);
@@ -316,7 +317,7 @@
 .component-browser__group h2 {
     margin: 0;
     font-family: var(--app-font-heading);
-    font-size: clamp(1.55rem, 3vw, 2.35rem);
+    font-size: clamp(1.35rem, 2.5vw, 1.8rem);
     letter-spacing: -.035em;
 }
 
@@ -340,7 +341,7 @@
 .component-browser__grid--compact { grid-template-columns: 1fr; gap: .4rem; }
 
 .component-browser__grid--compact .component-browser__card {
-    grid-template-columns: 10rem minmax(11rem, .65fr) minmax(16rem, 1fr) minmax(9rem, auto);
+    grid-template-columns: minmax(6rem, .65fr) minmax(0, .9fr) minmax(0, 1.2fr) minmax(7rem, auto);
     min-height: 0;
     align-items: center;
     gap: .75rem 1rem;
@@ -359,7 +360,7 @@
     min-height: 13rem;
     padding: 1rem;
     border: 1px solid var(--app-border);
-    border-radius: var(--app-radius-lg);
+    border-radius: var(--app-radius-md);
     background: var(--app-surface);
     color: var(--app-foreground);
     text-decoration: none;
@@ -370,8 +371,8 @@
 .component-browser__card:focus-visible {
     border-color: var(--app-accent-border);
     outline: none;
-    box-shadow: var(--app-shadow-md);
-    transform: translateY(-2px);
+    box-shadow: var(--app-shadow-sm);
+    transform: translateY(-1px);
 }
 
 .component-browser__card-meta {
@@ -386,7 +387,7 @@
     padding: .2rem .42rem;
     border: 1px solid var(--app-border);
     border-radius: var(--app-radius-round);
-    font-size: .5rem;
+    font-size: .6rem;
     font-weight: 850;
     letter-spacing: .04em;
     text-transform: uppercase;
@@ -412,14 +413,14 @@
 .component-browser__card p {
     margin: 0;
     color: var(--app-foreground-muted);
-    font-size: .7rem;
+    font-size: .8rem;
     line-height: 1.55;
 }
 
 .component-browser__card > small {
     margin-top: .85rem;
     color: var(--app-foreground-muted);
-    font-size: .57rem;
+    font-size: .66rem;
     line-height: 1.45;
 }
 
@@ -431,7 +432,7 @@
     margin-top: auto;
     padding-top: 1rem;
     color: var(--app-accent);
-    font-size: .62rem;
+    font-size: .72rem;
     font-weight: 800;
 }
 
@@ -494,3 +495,15 @@
     .component-browser__card:focus-visible { transform: none; }
 }
 .component-browser__members { color: var(--app-foreground-muted); font-size: .72rem; line-height: 1.6; overflow-wrap: anywhere; }
+
+.component-browser :is(a, button, input):focus-visible {
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: 3px;
+}
+
+@media (forced-colors: active) {
+    .component-browser :is(a, button, input):focus-visible { outline-color: Highlight; }
+    .component-browser__card:hover,
+    .component-browser__coverage-filter button.is-active,
+    .component-browser__view-switcher button.is-active { border-color: Highlight; box-shadow: none; }
+}

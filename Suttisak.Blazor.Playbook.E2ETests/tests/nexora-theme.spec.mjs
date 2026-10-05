@@ -8,10 +8,10 @@ const storageKey = 'suttisak-blazor:theme-settings';
 
 for (const mode of ['light', 'dark']) {
   test(`Nexora ${mode} signed-out shell access keeps readable hover and keyboard focus`, async ({ page }) => {
-    await page.goto(`/specimens/profile-menu?appearance=nexora&mode=${mode}`);
+    await page.goto(`/specimens/profile-menu?appearance=nexora&theme=audiogramiq&mode=${mode}`);
     const login = page.locator('.shell-profile-login');
     await login.hover();
-    await expect(login).toHaveCSS('color', mode === 'light' ? 'rgb(255, 253, 248)' : 'rgb(36, 30, 22)');
+    await expect(login).toHaveCSS('color', mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(6, 38, 40)');
     await page.mouse.move(0, 0);
     await page.keyboard.press('Tab');
     await login.focus();
@@ -191,7 +191,7 @@ for (const mode of ['light', 'dark']) {
   for (const kind of ['checkbox', 'radio']) {
     test(`Nexora ${mode} unchecked ${kind} has a visible boundary and keeps keyboard selection`, async ({ page }, testInfo) => {
       await page.emulateMedia({ reducedMotion: 'reduce' });
-      await page.goto(`/components/app-${kind === 'checkbox' ? 'checkbox' : 'radio-group'}?appearance=nexora&mode=${mode}`);
+      await page.goto(`/components/app-${kind === 'checkbox' ? 'checkbox' : 'radio-group'}?appearance=nexora&theme=audiogramiq&mode=${mode}`);
       const preview = page.locator('.component-detail__preview-frame').first();
       const input = kind === 'checkbox' ? preview.getByRole('checkbox') : preview.getByRole('radio', { name: 'Phone', exact: true });
       if (kind === 'checkbox') {
@@ -240,7 +240,7 @@ for (const mode of ['light', 'dark']) {
       await input.focus();
       await input.press('Space');
       await expect(input).toBeChecked();
-      await expect(control).toHaveCSS('border-color', mode === 'light' ? 'rgb(139, 100, 41)' : 'rgb(214, 184, 124)');
+      await expect(control).toHaveCSS('border-color', mode === 'light' ? 'rgb(8, 119, 125)' : 'rgb(76, 215, 212)');
       await expect(input.locator('..')).toHaveCSS('outline-width', '2px');
     });
   }

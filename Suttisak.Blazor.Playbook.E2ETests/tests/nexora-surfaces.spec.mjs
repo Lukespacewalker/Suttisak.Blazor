@@ -41,8 +41,10 @@ for (const width of [320, 768, 1440]) {
 
 for (const mode of ['light', 'dark']) {
   for (const accent of [null, '#8c4b29', '#245ea8', '#7147a1']) {
-    test(`Nexora ${mode} primary gradient preserves text contrast and hover with ${accent ?? 'default accent'}`, async ({ page }, testInfo) => {
+    test(`Nexora ${mode} primary gradient preserves text contrast and hover with ${accent ?? 'library default accent'}`, async ({ page }, testInfo) => {
       await page.goto(`/components/app-button?appearance=nexora&mode=${mode}`);
+      // Keep the unbranded fallback covered independently of Playbook's host palette.
+      if (!accent) await page.locator('.playbook').evaluate(el => el.classList.remove('theme-audiogramiq'));
       if (accent) await page.locator('.playbook').evaluate((el, accent) => {
         el.style.setProperty('--app-nexora-accent', accent);
         el.style.setProperty('--app-nexora-on-accent', '#fffdf8');
