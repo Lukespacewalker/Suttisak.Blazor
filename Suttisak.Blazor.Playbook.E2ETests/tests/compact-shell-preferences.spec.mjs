@@ -42,6 +42,13 @@ for (const width of [1024, 1440]) {
       await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto(`/application-shell?compactPreferences=true&appearance=nexora&mode=${mode}`);
       const shell = page.locator('[data-app-shell]');
+      const themeIcon = shell.locator('[data-shell-preference="theme"] [aria-hidden="true"]').first();
+      const languageIcon = shell.locator('[data-shell-preference="language"] [aria-hidden="true"]').first();
+      const themeIconBox = await themeIcon.boundingBox();
+      const languageIconBox = await languageIcon.boundingBox();
+      expect(Math.abs(themeIconBox.width - languageIconBox.width), 'Preference icons must have balanced visible frames').toBeLessThanOrEqual(1);
+      expect(Math.abs(themeIconBox.height - languageIconBox.height), 'Preference icons must have balanced visible frames').toBeLessThanOrEqual(1);
+      expect(Math.abs(themeIconBox.y + themeIconBox.height / 2 - languageIconBox.y - languageIconBox.height / 2), 'Preference icons must share a vertical center').toBeLessThanOrEqual(1);
       for (const preference of ['theme', 'language']) {
         const trigger = shell.locator(`[data-shell-preference="${preference}"]`);
         const popup = shell.locator(`[data-shell-preference-popup="${preference}"]`);
