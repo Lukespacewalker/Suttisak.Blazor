@@ -6,15 +6,19 @@
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-    <AccessPageLayout>
+    <AccessPageLayout LoginPresentation="@LoginPresentation" HeadingId="@HeadingId" ShowcaseLabel="@ShowcaseLabel"
+                      ShowcaseBrand="@(LoginPresentation ? ShowcaseBrandContent : null)"
+                      HeaderActions="@(LoginPresentation ? HeaderActionsContent : null)"
+                      SupportingContent="@(LoginPresentation ? SupportingContent : null)"
+                      Footer="@(LoginPresentation ? FooterContent : null)"
+                      Kicker="@(!LoginPresentation ? KickerContent : null)">
         <Brand><SectionOutlet SectionId="CardEyebrowSection" /></Brand>
         <Controls>
             <div class="identity-layout__preferences">
-                <PreferencesSelector @rendermode="HeaderRenderMode" />
+                <PreferencesSelector Compact="@LoginPresentation" @rendermode="HeaderRenderMode" />
             </div>
         </Controls>
-        <Kicker><SectionOutlet SectionId="CardKickerSection" /></Kicker>
-        <Title><SectionOutlet SectionId="CardTitleSection" /></Title>
+        <Title><SectionOutlet SectionId="@(LoginPresentation ? CardKickerSection : CardTitleSection)" /></Title>
         <Intro><SectionOutlet SectionId="CardIntroSection" /></Intro>
         <ChildContent>@Body</ChildContent>
         <Showcase><SectionOutlet SectionId="ShowcaseSection" /></Showcase>
@@ -26,6 +30,19 @@
 	public static object CardKickerSection = new();
 	public static object CardTitleSection = new();
 	public static object CardIntroSection = new();
+	public static object ShowcaseBrandSection = new();
+	public static object HeaderActionsSection = new();
+	public static object SupportingContentSection = new();
+	public static object FooterSection = new();
+
+    protected virtual bool LoginPresentation => false;
+    protected virtual string HeadingId => "access-page-title";
+    protected virtual string ShowcaseLabel => "Account access information";
+    private RenderFragment ShowcaseBrandContent => @<SectionOutlet SectionId="ShowcaseBrandSection" />;
+    private RenderFragment HeaderActionsContent => @<SectionOutlet SectionId="HeaderActionsSection" />;
+    private RenderFragment SupportingContent => @<SectionOutlet SectionId="SupportingContentSection" />;
+    private RenderFragment FooterContent => @<SectionOutlet SectionId="FooterSection" />;
+    private RenderFragment KickerContent => @<SectionOutlet SectionId="CardKickerSection" />;
 
 	public virtual IComponentRenderMode? HeaderRenderMode { get; set; }
 }

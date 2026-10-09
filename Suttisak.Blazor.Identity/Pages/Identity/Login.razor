@@ -43,11 +43,11 @@
 </SectionContent>
 
 <text>
-	<StatusMessage Message="@_statusMessage" />
+	<StatusMessage Message="@_statusMessage" Intent="@(string.IsNullOrEmpty(_statusMessage) ? (FeedbackIntent?)null : FeedbackIntent.Error)" />
 
 	@if (ShowAlternativeSignInFirst)
 	{
-		<div class="login-alt-actions" role="group" aria-label="@Login_razor.AlternativeAccess">
+		<AlternativeAccessGroup Label="@Login_razor.AlternativeAccess">
 			<div class="login-provider-block">
 				<ExternalLoginPicker TUser="TUser" ProviderDescriptions="ExternalLoginProviderDescriptions" />
 			</div>
@@ -56,7 +56,7 @@
 						   OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
 				@Login_razor.ContinueWithPasskey
 			</PasskeySubmit>
-		</div>
+		</AlternativeAccessGroup>
 
 		<div class="identity-separator" aria-hidden="true">
 			<span></span>
@@ -109,7 +109,7 @@
 			<span></span>
 		</div>
 
-		<div class="login-alt-actions" role="group" aria-label="@Login_razor.AlternativeAccess">
+		<AlternativeAccessGroup Label="@Login_razor.AlternativeAccess">
 			<div class="login-provider-block">
 				<ExternalLoginPicker TUser="TUser" ProviderDescriptions="ExternalLoginProviderDescriptions" />
 			</div>
@@ -118,7 +118,7 @@
 						   OutputParameterName="@nameof(LoginWithPasskeyOutput)" OnSubmit="LoginWithPasskey">
 				@Login_razor.ContinueWithPasskey
 			</PasskeySubmit>
-		</div>
+		</AlternativeAccessGroup>
 	}
 
 	@if (UiSlots?.LoginFooter is not null)

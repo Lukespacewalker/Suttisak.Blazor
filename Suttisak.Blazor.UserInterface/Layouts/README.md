@@ -1,5 +1,43 @@
 # Application layouts
 
+## Login presentation
+
+From UI 1.0.33, a login-specific host layout can inherit `IdentityLayout` and
+enable the full-page `AccessPageLayout` composition. Other identity routes retain
+the default layout.
+
+```razor
+@inherits Suttisak.Blazor.UserInterface.Layouts.Shared.IdentityLayout
+
+@{ base.BuildRenderTree(__builder); }
+
+@code {
+    protected override bool LoginPresentation => true;
+    protected override string HeadingId => "workspace-login-title";
+    protected override string ShowcaseLabel => "Workspace introduction";
+    // Override HeaderRenderMode only when the host requires an interactive boundary.
+}
+```
+
+The page or host supplies `CardEyebrowSection` for the card brand,
+`CardKickerSection` for the login `h1`, `CardIntroSection` for its introduction,
+and `ShowcaseSection` for application-owned media and copy. Optional
+`ShowcaseBrandSection`, `HeaderActionsSection`, `SupportingContentSection`, and
+`FooterSection` fill the additional login slots. Supply a localized heading and
+showcase label; use `h2` for the showcase heading. The host owns routes, account
+links, imagery, authentication, and localization. Existing `HeaderRenderMode`
+continues to control the compact `PreferencesSelector` render boundary.
+
+For direct composition, `AccessPageLayout` exposes these as `Brand`, `Title`,
+`Intro`, `Showcase`, `ShowcaseBrand`, `HeaderActions`, `SupportingContent`, and
+`Footer`, with the form in `ChildContent`. `LoginPresentation` defaults to false;
+the older `IdentityLayout` section mapping and general access presentation remain
+available. This opt-in login composition supersedes earlier login geometry only
+where explicitly enabled. Playbook's `access/shared-login` route demonstrates
+the public slots, compact preferences, and `AlternativeAccessGroup` action tiles.
+
+## MainLayout
+
 `Layouts.Shared.MainLayout` composes the public `ApplicationShell` used by the
 application family. Consuming applications provide product-owned
 content through the existing heading, navigation, message, breadcrumb, and body

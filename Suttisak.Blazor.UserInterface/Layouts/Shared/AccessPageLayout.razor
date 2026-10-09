@@ -1,3 +1,39 @@
+@if (LoginPresentation)
+{
+    <div class="access-login-layout">
+    <main class="access-login-page">
+        <section class="access-login-panel" aria-labelledby="@HeadingId">
+            @if (Controls is not null || HeaderActions is not null)
+            {
+                <div class="access-login-topbar">
+                    @Controls
+                    @HeaderActions
+                </div>
+            }
+            <div class="access-login-card">
+                <header class="access-login-heading">
+                    @if (Brand is not null) { <div class="access-login-brand">@Brand</div> }
+                    @if (Kicker is not null) { <p class="access-login-kicker">@Kicker</p> }
+                    <h1 id="@HeadingId">@Title</h1>
+                    @if (Intro is not null) { <div class="access-login-intro">@Intro</div> }
+                </header>
+                <div class="access-login-body">@ChildContent</div>
+            </div>
+            @if (SupportingContent is not null) { <div class="access-login-support">@SupportingContent</div> }
+            @if (Footer is not null) { <div class="access-login-footer">@Footer</div> }
+        </section>
+        <aside class="access-login-showcase" aria-label="@ShowcaseLabel">
+            @if (ShowcaseBrand is not null)
+            {
+                <div class="access-login-showcase-brand">@ShowcaseBrand</div>
+            }
+            <div class="access-login-showcase-content">@Showcase</div>
+        </aside>
+    </main>
+    </div>
+}
+else
+{
 <section class="access-page-layout">
     <div class="access-page-layout__background" aria-hidden="true"></div>
     <main class="access-page-layout__grid">
@@ -30,8 +66,14 @@
         </aside>
     </main>
 </section>
+}
 
 @code {
+    [Parameter] public bool LoginPresentation { get; set; }
+    [Parameter] public RenderFragment? ShowcaseBrand { get; set; }
+    [Parameter] public RenderFragment? HeaderActions { get; set; }
+    [Parameter] public RenderFragment? SupportingContent { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
     [Parameter] public RenderFragment? Brand { get; set; }
     [Parameter] public RenderFragment? Controls { get; set; }
     [Parameter] public RenderFragment? Kicker { get; set; }

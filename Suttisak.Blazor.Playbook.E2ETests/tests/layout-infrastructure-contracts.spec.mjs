@@ -3,7 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 const contracts = [
   { slug: 'marketing-page', kind: 'Pattern docs', parameter: 'Id', route: 'landing' },
-  { slug: 'access-page-layout', kind: 'Pattern docs', parameter: 'Title', route: 'access/login' },
+  { slug: 'access-page-layout', kind: 'Pattern docs', parameter: 'Title', route: 'access/shared-login' },
+  { slug: 'alternative-access-group', kind: 'Pattern docs', parameter: 'Label', route: 'access/shared-login' },
   { slug: 'application-shell', kind: 'Pattern docs', parameter: 'Brand', route: 'application-shell' },
   { slug: 'header-footer-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/header-footer' },
   { slug: 'identity-layout', kind: 'Pattern docs', parameter: 'Body', route: 'layout-patterns/identity' },

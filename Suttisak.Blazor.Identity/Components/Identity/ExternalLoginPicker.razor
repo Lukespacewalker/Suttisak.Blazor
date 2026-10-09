@@ -15,7 +15,7 @@
 			{
 				<div class="external-login-option">
 					<AppButton Type="submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
-						<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?"/>
+						<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?" alt=""/>
 						@provider.DisplayName
 					</AppButton>
 					@if (ProviderDescriptions?.GetValueOrDefault(provider.Name) is { } description)

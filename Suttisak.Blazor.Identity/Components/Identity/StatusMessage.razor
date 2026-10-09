@@ -2,10 +2,14 @@
 
 @if (!string.IsNullOrEmpty(DisplayMessage))
 {
-    var statusMessageClass = DisplayMessage.StartsWith("Error") ? FeedbackIntent.Error : FeedbackIntent.Success;
-    var statusMessageTitle = DisplayMessage.StartsWith("Error") ? StatusMessage_razor.Error : StatusMessage_razor.Success;
+    var statusMessageTitle = EffectiveIntent switch
+    {
+        FeedbackIntent.Error => StatusMessage_razor.Error,
+        FeedbackIntent.Success => StatusMessage_razor.Success,
+        _ => null
+    };
 
-    <FeedbackBanner Intent="statusMessageClass" Title="@statusMessageTitle" CssClass="margin-bottom">
+    <FeedbackBanner Intent="@EffectiveIntent" Title="@statusMessageTitle" CssClass="margin-bottom">
         @DisplayMessage
     </FeedbackBanner>
 }
@@ -16,10 +20,14 @@
     [Parameter]
     public string? Message { get; set; }
 
+    [Parameter]
+    public FeedbackIntent? Intent { get; set; }
+
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
 
     private string? DisplayMessage => Message ?? _messageFromCookie;
+    private FeedbackIntent EffectiveIntent => Intent ?? (DisplayMessage?.StartsWith("Error") is true ? FeedbackIntent.Error : FeedbackIntent.Success);
 
     protected override void OnInitialized()
     {

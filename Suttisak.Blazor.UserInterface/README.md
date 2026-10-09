@@ -135,6 +135,43 @@ legible content in both modes. Use empty alt only for decorative imagery. Logos,
 image selection, organization content, account actions, and routes stay in the
 application. The same slot is available through IdentityLayout.ShowcaseSection.
 
+### Shared login presentation (1.0.33)
+
+For full-page login routes, use `AccessPageLayout LoginPresentation="true"`.
+The form stays first in document order; the photo showcase sits on the left at
+wide widths and follows the form in constrained parents. This opt-in composition
+supersedes the earlier general access geometry for those login routes. The
+existing presentation remains the default for registration and other access pages.
+
+Applications supply `Brand`, `Title`, `Intro`, `ChildContent`, and `Showcase`.
+Optional `ShowcaseBrand`, `HeaderActions`, `SupportingContent`, and `Footer` slots
+keep product identity, account links, supporting copy, and credits application-owned.
+Set `HeadingId` and `ShowcaseLabel` to localized route-specific values. Put a
+decorative `<picture><img alt="" ... /></picture>` before the showcase copy;
+use an `h2` for its heading. Retain meaningful recovery and registration links
+in the form or the header actions.
+
+Derived `IdentityLayout` implementations enable the same presentation by overriding
+`LoginPresentation`, `HeadingId`, and `ShowcaseLabel`. The login heading uses
+`CardKickerSection`; legacy layouts still use `CardTitleSection`. New sections
+`ShowcaseBrandSection`, `HeaderActionsSection`, `SupportingContentSection`, and
+`FooterSection` map to the matching slots. `CardEyebrowSection` remains the card
+brand slot. See [`Layouts/README.md`](Layouts/README.md) for a host example.
+
+`PreferencesSelector Compact="true"` renders separate native disclosures for
+language and color scheme at every width. It reuses `ThemeContent` and
+`LanguageContent`, accepts `HeaderThemeLabel` and `HeaderLanguageLabel`, and
+groups disclosures per instance. The existing `HeaderOnly`,
+`CompactHeaderPreferences`, and global header configuration remain available.
+`IdentityLayout.HeaderRenderMode` remains the host's choice for interactive controls.
+
+`AlternativeAccessGroup` takes a required accessible `Label` and `ChildContent`
+containing the configured provider and passkey actions. Provider markup uses
+`.login-provider-block` and `.external-login-option`; shared `AppButton` controls
+align in equal tiles, and a single passkey action fills the group when no provider
+option exists. The component does not change authentication or form submission.
+Playbook demonstrates this composition at `access/shared-login`.
+
 ## Global CSS bundling
 
 The package ships an opt-in MSBuild target that concatenates application global CSS into one static-web-asset file. It needs no Node.js or `package.json`. Keep the entry file and partials as source-only files, then declare their intended order in the consuming project's `.csproj`:

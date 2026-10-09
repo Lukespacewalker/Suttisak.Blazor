@@ -1,0 +1,62 @@
+@page "/access/shared-login"
+@inject PlaybookState State
+
+<PageTitle>Shared login presentation · UI Playbook</PageTitle>
+
+<PlaybookShell>
+    <AccessPageLayout LoginPresentation="true" HeadingId="shared-login-title" ShowcaseLabel="Example workspace welcome">
+        <Brand><a href="access/shared-login"><img src="@CurrentTheme.LogoPath" alt="" width="52" height="52" /><span>@CurrentTheme.Name</span></a></Brand>
+        <ShowcaseBrand><a href="access/shared-login"><img src="@CurrentTheme.LogoPath" alt="" width="40" height="40" /><span>@CurrentTheme.Name</span><small>A considered space for your work</small></a></ShowcaseBrand>
+        <Controls><PreferencesSelector Compact="true" /></Controls>
+        <HeaderActions><a href="access/register">New here? <strong>Create an account <Suttisak.Blazor.Icons.Icon Name="ArrowRight" Size="16" /></strong></a></HeaderActions>
+        <Title>Welcome back</Title>
+        <Intro>Sign in to continue to your workspace.</Intro>
+        <ChildContent>
+            <form class="access-form" @onsubmit="DemoSubmit" @onsubmit:preventDefault>
+                <AppTextBox Label="Username" Placeholder="name@company.com" Autocomplete="username" @bind-Value="_username">
+                    <IconContent><Suttisak.Blazor.Icons.Icon Name="Person" Size="20" /></IconContent>
+                </AppTextBox>
+                <AppTextBox Label="Password" Type="password" Placeholder="Enter your password" Autocomplete="current-password" @bind-Value="_password">
+                    <IconContent><Suttisak.Blazor.Icons.Icon Name="Password" Size="20" /></IconContent>
+                </AppTextBox>
+                <div class="access-form__options"><AppCheckbox Label="Keep me signed in" @bind-Value="_remember" /><AppButton Type="button" Variant="AppButtonVariant.Subtle" Class="access-text-action" OnClick='@(() => _status = "Password-recovery demonstration selected.")'>Forgot password?</AppButton></div>
+                <AppButton Type="submit" Variant="AppButtonVariant.Primary">Sign in</AppButton>
+            </form>
+            <div class="access-divider"><span>Alternative access</span></div>
+            <AlternativeAccessGroup Label="Alternative access">
+                <div class="login-provider-block">
+                    <form method="post" @onsubmit='@(() => _status = "Microsoft demonstration selected.")' @onsubmit:preventDefault>
+                        <div><div class="external-login-option">
+                            <AppButton Type="submit" Name="provider" Value="Microsoft">
+                                <img slot="start" style="width:20px" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Cpath fill='%23f25022' d='M1 1h9v9H1z'/%3E%3Cpath fill='%237fba00' d='M11 1h9v9h-9z'/%3E%3Cpath fill='%2300a4ef' d='M1 11h9v9H1z'/%3E%3Cpath fill='%23ffb900' d='M11 11h9v9h-9z'/%3E%3C/svg%3E" />
+                                Microsoft
+                            </AppButton>
+                        </div></div>
+                    </form>
+                </div>
+                <form method="post" @onsubmit='@(() => _status = "Passkey demonstration selected.")' @onsubmit:preventDefault>
+                    <AppButton Type="submit" Name="__passkeySubmit" IconStartName="PersonPasskey">Continue with passkey</AppButton>
+                </form>
+            </AlternativeAccessGroup>
+            <p role="status">@_status</p>
+        </ChildContent>
+        <Showcase>
+            <picture><img src="@CurrentTheme.HeroPath" width="@CurrentTheme.HeroWidth" height="@CurrentTheme.HeroHeight" alt="" /></picture>
+            <span class="identity-showcase-kicker">YOUR WORKSPACE</span>
+            <div class="identity-showcase-copy"><h2>A clear view of your work.</h2><p>Review information and continue working with your team.</p><blockquote>“Take a moment to see what matters.”</blockquote></div>
+            <div class="identity-showcase-features"><span><Suttisak.Blazor.Icons.Icon Name="Shield" Size="24" />Private access</span><span><Suttisak.Blazor.Icons.Icon Name="HeartPulse" Size="24" />At your pace</span><span><Suttisak.Blazor.Icons.Icon Name="DocumentOnePageSparkle" Size="24" />Clear information</span></div>
+            <div class="identity-showcase-status"><i aria-hidden="true"></i><span>Example workspace</span></div>
+        </Showcase>
+        <SupportingContent><span aria-hidden="true">✧</span>Your next step starts here.</SupportingContent>
+        <Footer><Suttisak.Blazor.UserInterface.Components.Common.CompanyFooter Prefix="" CompanyName="Example organization" CompanyUrl="https://example.invalid/" CreatorName="Example team" ApplicationVersion="" /></Footer>
+    </AccessPageLayout>
+</PlaybookShell>
+
+@code {
+    private PlaybookTheme CurrentTheme => PlaybookCatalog.Themes.First(theme => theme.Key == State.Theme);
+    private string? _username;
+    private string? _password;
+    private bool _remember;
+    private string _status = "Authentication is disabled in this preview.";
+    private void DemoSubmit() => _status = "Sign-in demonstration submitted.";
+}

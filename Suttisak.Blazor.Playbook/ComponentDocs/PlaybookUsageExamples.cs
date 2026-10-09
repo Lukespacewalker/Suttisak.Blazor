@@ -5,6 +5,45 @@ public static class PlaybookUsageExamples
     private static readonly IReadOnlyDictionary<string, string> Examples =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
+            ["AccessPageLayout"] = """
+                <AccessPageLayout LoginPresentation="true" HeadingId="sign-in-title" ShowcaseLabel="Workspace introduction">
+                    <Brand>@Brand</Brand>
+                    <ShowcaseBrand>@ShowcaseBrand</ShowcaseBrand>
+                    <Controls><PreferencesSelector Compact="true" /></Controls>
+                    <HeaderActions>@AccountActions</HeaderActions>
+                    <Title>Welcome back</Title>
+                    <Intro>Sign in to continue.</Intro>
+                    <ChildContent>@SignInForm</ChildContent>
+                    <Showcase>@WorkspaceIntroduction</Showcase>
+                    <SupportingContent>@SupportingCopy</SupportingContent>
+                    <Footer>@OrganizationFooter</Footer>
+                </AccessPageLayout>
+                """,
+            ["PreferencesSelector"] = """
+                @* Login disclosures. HeaderOnly and CompactHeaderPreferences retain the header contract. *@
+                <PreferencesSelector Compact="true" HeaderThemeLabel="Color scheme" HeaderLanguageLabel="Language" />
+                """,
+            ["AlternativeAccessGroup"] = """
+                <AlternativeAccessGroup Label="Alternative access">
+                    <div class="login-provider-block">
+                        <div class="external-login-option"><AppButton OnClick="UseProviderAsync">Provider</AppButton></div>
+                    </div>
+                    <AppButton IconStartName="PersonPasskey" OnClick="UsePasskeyAsync">Continue with passkey</AppButton>
+                </AlternativeAccessGroup>
+                """,
+            ["IdentityLayout"] = """
+                @inherits IdentityLayout
+                @{ base.BuildRenderTree(__builder); }
+                @code {
+                    protected override bool LoginPresentation => true;
+                    protected override string HeadingId => "workspace-sign-in-title";
+                    protected override string ShowcaseLabel => "Workspace introduction";
+                    // HeaderRenderMode remains the host's choice.
+                }
+                @* Page content supplies CardEyebrowSection, CardKickerSection, CardIntroSection,
+                   ShowcaseSection, ShowcaseBrandSection, HeaderActionsSection,
+                   SupportingContentSection, and FooterSection. *@
+                """,
             ["AppButton"] = """
                 <AppButton Variant="AppButtonVariant.Primary" OnClick="SaveAsync">
                     Save changes

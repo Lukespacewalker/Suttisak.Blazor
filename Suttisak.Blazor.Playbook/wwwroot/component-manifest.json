@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "componentCount": 96,
-  "pageCount": 78,
+  "componentCount": 97,
+  "pageCount": 79,
   "pages": [
     {
       "name": "AppTextBox",
@@ -622,6 +622,15 @@
       "href": "components/access-page-layout",
       "components": [
         "AccessPageLayout"
+      ]
+    },
+    {
+      "name": "AlternativeAccessGroup",
+      "slug": "alternative-access-group",
+      "category": "Application layouts",
+      "href": "components/alternative-access-group",
+      "components": [
+        "AlternativeAccessGroup"
       ]
     },
     {
@@ -1881,13 +1890,15 @@
       "category": "Preferences \u0026 time",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Shared language and scheme composition with optional desktop icon popovers, content slots, and the existing mobile native disclosure; no appearance dropdown.",
+      "summary": "Shared language and scheme composition with desktop icon popovers, host content slots, a mobile disclosure, and optional separate compact login disclosures.",
       "tags": [
         "preferences",
         "settings"
       ],
       "sourceArea": "Common",
-      "relatedPatternIds": [],
+      "relatedPatternIds": [
+        "secure-access-flow"
+      ],
       "documentationHref": "components/preferences-selector",
       "pageSlug": "preferences-selector"
     },
@@ -2258,11 +2269,12 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Access-page structure with application-owned content, a compact introduction in Quiet Luxury, and a photo-led split in Nexora.",
+      "summary": "Access-page structure with an optional full-page login presentation, application-owned brand, actions, supporting content, footer, and photo showcase slots.",
       "tags": [
         "layout",
         "access",
-        "identity"
+        "identity",
+        "login"
       ],
       "sourceArea": "Layouts",
       "relatedPatternIds": [
@@ -2270,6 +2282,26 @@
       ],
       "documentationHref": "components/access-page-layout",
       "pageSlug": "access-page-layout"
+    },
+    {
+      "name": "AlternativeAccessGroup",
+      "slug": "alternative-access-group",
+      "category": "Application layouts",
+      "status": "stable",
+      "coverage": "pattern",
+      "summary": "Labelled provider and passkey action group that aligns shared buttons and expands a single available method to the group width.",
+      "tags": [
+        "access",
+        "identity",
+        "provider",
+        "passkey"
+      ],
+      "sourceArea": "Layouts",
+      "relatedPatternIds": [
+        "secure-access-flow"
+      ],
+      "documentationHref": "components/alternative-access-group",
+      "pageSlug": "alternative-access-group"
     },
     {
       "name": "ApplicationShell",
@@ -2335,7 +2367,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Router layout that maps identity sections into AccessPageLayout while the application owns copy and authentication.",
+      "summary": "Router layout that maps identity sections into AccessPageLayout and supports opt-in login presentation through protected overrides and named sections.",
       "tags": [
         "layout",
         "identity",
@@ -2620,6 +2652,7 @@
       "status": "stable",
       "components": [
         "AccessPageLayout",
+        "AlternativeAccessGroup",
         "ApplicationShell",
         "ApplicationPageHeading",
         "HeaderFooterLayout",
@@ -3006,7 +3039,7 @@
       "slug": "secure-access-flow",
       "category": "Access",
       "maturity": "stable",
-      "summary": "A sign-in form inside a responsive AccessPageLayout.",
+      "summary": "An opt-in full-page login presentation with credential, provider, and passkey examples inside AccessPageLayout.",
       "intent": "Unauthenticated sign-in and registration routes.",
       "tags": [
         "access",
@@ -3019,6 +3052,16 @@
           "componentId": "access-page-layout",
           "componentName": "AccessPageLayout",
           "role": "Arranges brand, preferences, form copy, controls, and the product showcase."
+        },
+        {
+          "componentId": "preferences-selector",
+          "componentName": "PreferencesSelector",
+          "role": "Provides separate compact language and color-scheme disclosures."
+        },
+        {
+          "componentId": "alternative-access-group",
+          "componentName": "AlternativeAccessGroup",
+          "role": "Aligns configured provider and passkey actions without changing submission behavior."
         },
         {
           "componentId": "app-text-box",
@@ -3066,7 +3109,7 @@
           "Server validation, redirects, and account-recovery workflows"
         ]
       },
-      "minimalRazorRecipe": "\u003CAccessPageLayout HeadingId=\u0022sign-in-title\u0022 ShowcaseLabel=\u0022Product message\u0022\u003E\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\n    \u003CTitle\u003ESign in to continue\u003C/Title\u003E\n    \u003CChildContent\u003E\n        \u003CEditForm Model=\u0022@Credentials\u0022 OnValidSubmit=\u0022SignInAsync\u0022\u003E\n            \u003CAppTextBox Label=\u0022Email\u0022 Type=\u0022email\u0022 Autocomplete=\u0022username\u0022 @bind-Value=\u0022Credentials.Email\u0022 /\u003E\n            \u003CAppTextBox Label=\u0022Password\u0022 Type=\u0022password\u0022 Autocomplete=\u0022current-password\u0022 @bind-Value=\u0022Credentials.Password\u0022 /\u003E\n            \u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESign in\u003C/AppButton\u003E\n        \u003C/EditForm\u003E\n    \u003C/ChildContent\u003E\n\u003C/AccessPageLayout\u003E",
+      "minimalRazorRecipe": "\u003CAccessPageLayout LoginPresentation=\u0022true\u0022 HeadingId=\u0022sign-in-title\u0022 ShowcaseLabel=\u0022Product message\u0022\u003E\n    \u003CBrand\u003E@Brand\u003C/Brand\u003E\n    \u003CControls\u003E\u003CPreferencesSelector Compact=\u0022true\u0022 /\u003E\u003C/Controls\u003E\n    \u003CTitle\u003ESign in to continue\u003C/Title\u003E\n    \u003CChildContent\u003E\n        \u003CEditForm Model=\u0022@Credentials\u0022 OnValidSubmit=\u0022SignInAsync\u0022\u003E\n            \u003CAppTextBox Label=\u0022Email\u0022 Type=\u0022email\u0022 Autocomplete=\u0022username\u0022 @bind-Value=\u0022Credentials.Email\u0022 /\u003E\n            \u003CAppTextBox Label=\u0022Password\u0022 Type=\u0022password\u0022 Autocomplete=\u0022current-password\u0022 @bind-Value=\u0022Credentials.Password\u0022 /\u003E\n            \u003CAppButton Type=\u0022submit\u0022 Variant=\u0022AppButtonVariant.Primary\u0022\u003ESign in\u003C/AppButton\u003E\n        \u003C/EditForm\u003E\n    \u003C/ChildContent\u003E\n    \u003CShowcase\u003E@ProductMessage\u003C/Showcase\u003E\n\u003C/AccessPageLayout\u003E",
       "qualityChecks": [
         {
           "dimension": "Accessibility",
@@ -3081,13 +3124,13 @@
           "requirement": "This example covers layout only. Authentication, CSRF protection, and redirect validation remain server responsibilities."
         }
       ],
-      "liveHref": "access/login",
-      "liveLabel": "View the sign-in example",
+      "liveHref": "access/shared-login",
+      "liveLabel": "View the shared login example",
       "evidence": [
         {
           "kind": "Browser",
-          "source": "playbook.spec.mjs",
-          "guarantee": "Covers the access route, credential controls, language, and theme variants."
+          "source": "shared-login-presentation.spec.mjs",
+          "guarantee": "Executes credential, provider, and passkey demonstrations and checks compact preferences, light/dark modes, constrained widths, focus, and forced colors."
         },
         {
           "kind": "Browser",

@@ -9,7 +9,7 @@
 		<Copyright>Suttisak Denduangchai</Copyright>
 		<Description>A collection of useful templates for AspNetCore Identity</Description>
 		<RepositoryUrl>https://github.com/Lukespacewalker/Suttisak.Blazor</RepositoryUrl>
-		<AssemblyVersion>0.9.5</AssemblyVersion>
+		<AssemblyVersion>0.9.6</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<StaticWebAssetsEnabled>True</StaticWebAssetsEnabled>
@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Suttisak.Blazor.Identity.Core\Suttisak.Blazor.Identity.Core.csproj" />
+		<ProjectReference Include="..\Suttisak.Blazor.UserInterface\Suttisak.Blazor.UserInterface.csproj" />
 		<ProjectReference Include="..\Suttisak.Blazor.Identity.Generator\Suttisak.Blazor.Identity.Generator.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
 		<None Include="..\Suttisak.Blazor.Identity.Generator\bin\$(Configuration)\netstandard2.0\Suttisak.Blazor.Identity.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>

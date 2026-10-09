@@ -35,3 +35,73 @@
 
 @media (max-width: 960px) { .access-page-layout__grid { grid-template-columns: 1fr; } .access-page-layout__card { min-height: auto; } .access-page-layout__showcase { min-height: 22rem; } }
 @media (max-width: 640px) { .access-page-layout { min-height: calc(100dvh - 1rem); padding: .5rem; } .access-page-layout__background { background-size: 24px 24px; } .access-page-layout__grid { border-radius: 1rem; } .access-page-layout__card { padding: 1.25rem; } .access-page-layout__controls { position: static; justify-content: flex-end; margin-bottom: 1rem; } .access-page-layout__header { min-height: 0; } .access-page-layout__brand { padding-right: 0; } .access-page-layout__heading { margin-top: 3rem; } .access-page-layout__showcase { min-height: 0; } .access-page-layout__showcase-content { padding: 1.25rem; } .access-page-layout__showcase ::deep .identity-showcase-status, .access-page-layout__showcase ::deep .access-story__status { grid-template-columns: auto 1fr; } .access-page-layout__showcase ::deep .identity-showcase-status b, .access-page-layout__showcase ::deep .access-story__status b { display: none; } }
+
+/* Shared full-page login presentation. Product media and copy come from slots. */
+.access-login-layout { container-type: inline-size; }
+.access-login-page { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-areas: "showcase panel"; min-height: 100dvh; color: var(--app-foreground); background: var(--app-background); }
+.access-login-showcase { grid-area: showcase; position: relative; display: flex; min-width: 0; flex-direction: column; overflow: hidden; background: var(--access-showcase-background, #e5e5e5); color: var(--access-showcase-foreground, #262626); }
+.access-login-showcase-brand { position: relative; z-index: 2; padding: 2.1rem clamp(2rem, 5vw, 5rem) 0; }
+.access-login-showcase-brand ::deep > a { display: flex; align-items: center; gap: .65rem; color: var(--access-showcase-foreground, #262626); text-decoration: none; }
+.access-login-showcase-brand ::deep > a > span { min-width: 0; font-family: var(--app-font-heading); font-size: 1.7rem; line-height: 1.3; overflow-wrap: anywhere; }
+.access-login-showcase-brand ::deep img { flex-shrink: 0; }
+.access-login-showcase-brand ::deep small { max-width: 11rem; margin-left: .4rem; padding-left: 1rem; border-left: 1px solid var(--access-showcase-border, #999); font-size: .64rem; line-height: 1.65; letter-spacing: .08em; }
+.access-login-showcase-content { display: flex; width: 100%; box-sizing: border-box; flex: 1; flex-direction: column; justify-content: flex-start; padding: 3rem clamp(2rem, 5vw, 5rem) 2.5rem; }
+.access-login-showcase-content ::deep > picture { position: absolute; inset: 0; z-index: 0; }
+.access-login-showcase-content ::deep > picture img { width: 100%; height: 100%; object-fit: cover; object-position: 30% center; }
+.access-login-showcase-content::before { position: absolute; z-index: 1; inset: 0; content: ""; background: var(--access-showcase-overlay, linear-gradient(180deg, #ffffffc9 0%, #ffffffb3 34%, #ffffff18 61%, #262626d9 100%)); }
+.access-login-showcase-content ::deep > :not(picture) { position: relative; z-index: 2; }
+.access-login-page .access-login-showcase-content ::deep .identity-showcase-kicker { color: var(--access-showcase-accent, #525252); font-size: .72rem; letter-spacing: .12em; }
+.access-login-showcase-content ::deep .identity-showcase-copy { margin-top: 1.25rem; max-width: 31rem; }
+.access-login-showcase-content ::deep .identity-showcase-copy h2 { margin: 0 0 1.2rem; font-family: var(--app-font-heading); font-size: clamp(2.15rem, 3.5vw, 3.6rem); font-weight: 500; line-height: 1.4; }
+.access-login-showcase-content ::deep .identity-showcase-copy p { font-size: 1rem; line-height: 1.85; }
+.access-login-showcase-content ::deep .identity-showcase-copy blockquote { margin: 1.5rem 0 0; max-width: 25rem; padding: .8rem 1rem; border-top: 1px solid var(--access-showcase-border, #999); border-radius: .4rem; background: var(--access-showcase-quote-background, #ffffffdb); font-family: var(--app-font-heading); font-size: 1.25rem; font-style: italic; line-height: 1.7; }
+.access-login-showcase-content ::deep .identity-showcase-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: auto; padding-top: 6rem; color: var(--access-showcase-on-image, #fff); font-size: .78rem; line-height: 1.65; }
+.access-login-showcase-content ::deep .identity-showcase-features > span { display: grid; gap: .5rem; }
+.access-login-showcase-content ::deep .identity-showcase-features svg { color: var(--access-showcase-feature-accent, currentColor); }
+.access-login-page .access-login-showcase-content ::deep .identity-showcase-status { margin-top: auto; padding-top: 3rem; color: var(--access-showcase-on-image, #fff); opacity: 1; font-size: .72rem; }
+.access-login-page .access-login-showcase-content ::deep .identity-showcase-features ~ .identity-showcase-status { margin-top: 1.5rem; padding-top: 0; }
+.access-login-showcase-content ::deep .identity-showcase-status b { display: none; }
+.access-login-panel { grid-area: panel; position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; padding: 6rem clamp(1.5rem, 4vw, 4rem) 1.5rem; overflow: hidden; }
+.access-login-panel::before { position: absolute; inset: auto -20% -12rem; height: 24rem; border-radius: 50%; background: var(--app-accent-soft); opacity: .4; content: ""; transform: rotate(-9deg); }
+.access-login-topbar { position: absolute; z-index: 5; top: 1.5rem; left: 1.5rem; right: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: .75rem; font-size: .8rem; }
+.access-login-topbar ::deep > a { min-width: 0; max-width: 100%; color: var(--app-foreground-muted); text-decoration: none; overflow-wrap: anywhere; }
+.access-login-topbar ::deep .preferences-selector { flex-shrink: 0; }
+.access-login-topbar ::deep strong { display: inline-flex; align-items: center; gap: .4rem; margin-left: .35rem; color: var(--app-accent); font-weight: 500; vertical-align: middle; }
+.access-login-card { position: relative; z-index: 1; width: min(100%, 29rem); box-sizing: border-box; padding: 2rem; border: 1px solid transparent; border-radius: 1.15rem; background: color-mix(in srgb, var(--app-surface) 94%, transparent); box-shadow: 0 1rem 3rem color-mix(in srgb, var(--app-shadow-color) 30%, transparent); }
+.access-login-heading { text-align: center; }
+.access-login-brand ::deep > a { display: flex; align-items: center; flex-direction: column; gap: .45rem; color: var(--app-foreground); text-decoration: none; }
+.access-login-brand ::deep > a span { max-width: 100%; font-family: var(--app-font-heading); font-size: 1.75rem; line-height: 1.3; overflow-wrap: anywhere; }
+.access-login-heading h1 { margin: 1.1rem 0 0; font-family: var(--app-font-heading); font-size: 1.65rem; font-weight: 500; line-height: 1.5; }
+.access-login-intro { margin: .55rem 0 1.6rem; color: var(--app-foreground-muted); font-size: .85rem; line-height: 1.75; }
+.access-login-body ::deep .login-form-options { flex-wrap: wrap; gap: .6rem; font-size: .8rem; }
+.access-login-body ::deep .login-fields { gap: .9rem; }
+.access-login-body ::deep .app-form-control__input-wrap { min-height: 2.9rem; }
+.access-login-body ::deep .app-form-control__label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.access-login-body ::deep .login-form-actions .app-button { min-height: 2.9rem; font-size: .95rem; }
+.access-login-body ::deep .identity-separator { margin-block: 1.5rem; }
+.access-login-support { position: relative; z-index: 1; display: grid; justify-items: center; gap: .8rem; max-width: 22rem; margin: 0; color: var(--app-accent); font-family: var(--app-font-heading); font-size: 1.25rem; font-style: italic; line-height: 1.7; text-align: center; overflow-wrap: anywhere; }
+.access-login-support ::deep span { font-size: 2rem; }
+.access-login-panel:has(> .access-login-footer) .access-login-card { margin-top: auto; }
+.access-login-footer { position: relative; z-index: 1; align-self: stretch; margin-top: auto; }
+.access-login-footer ::deep .company-footer { justify-content: flex-end; gap: .35rem; padding: 0; border: 0; color: var(--app-foreground-muted); font-size: .75rem; line-height: 1.8; letter-spacing: 0; text-align: right; }
+.access-login-footer ::deep .company-footer > span:empty { display: none; }
+.access-login-footer ::deep .company-footer > span { min-width: 0; }
+.access-login-footer ::deep .company-footer a { font-weight: 400; text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
+.access-login-footer ::deep .company-footer a:hover { text-decoration: underline; }
+.access-login-footer ::deep .company-footer__separator { flex-basis: auto; width: auto; height: auto; overflow: visible; }
+.access-login-page ::deep a:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 4px; }
+@container (max-width: 65rem) { .access-login-showcase-brand ::deep small { display: none; } .access-login-topbar { flex-wrap: wrap; } .access-login-card { padding: 1.5rem; } }
+@container (max-width: 48rem) {
+    .access-login-page { grid-template-columns: 1fr; grid-template-areas: "panel" "showcase"; }
+    .access-login-panel { min-height: 100dvh; box-sizing: border-box; padding: 7rem 1rem 1rem; gap: 1.5rem; }
+    .access-login-showcase { min-height: 34rem; }
+    .access-login-showcase-content { padding: 2rem 1.5rem 1.5rem; }
+    .access-login-showcase-brand { padding: 1.5rem 1.5rem 0; }
+    .access-login-showcase-content ::deep .identity-showcase-copy h2 { font-size: 2rem; }
+    .access-login-showcase-content ::deep .identity-showcase-features { padding-top: 3rem; gap: .7rem; }
+    .access-login-topbar { top: 1rem; left: 1rem; right: 1rem; }
+    .access-login-topbar ::deep > a { margin-left: auto; }
+    .access-login-card { padding: 1.25rem; }
+    .access-login-footer { position: relative; left: auto; right: auto; bottom: auto; width: 100%; }
+}
+@media (forced-colors: active) { .access-login-showcase-content::before { background: Canvas; } .access-login-showcase-content ::deep > picture { display: none; } .access-login-showcase, .access-login-showcase-brand ::deep > a, .access-login-showcase-content ::deep :is(.identity-showcase-kicker, .identity-showcase-features, .identity-showcase-status) { color: CanvasText; } }

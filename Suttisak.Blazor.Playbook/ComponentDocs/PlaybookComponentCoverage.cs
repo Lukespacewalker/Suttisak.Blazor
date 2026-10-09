@@ -40,11 +40,18 @@ public static class PlaybookComponentCoverage
                 ["MarketingHero", "MarketingContainer", "LandingLayout"]),
             ["AccessPageLayout"] = Pattern(
                 "AccessPageLayout owns the access page's main landmark, heading relationship, and complementary showcase composition.",
-                "access/login",
-                ["Compose the access main, heading, controls, body, and showcase aside.", "Preserve one labelled h1 and responsive two-column-to-stacked behavior."],
+                "access/shared-login",
+                ["Compose the access main, heading, controls, body, and showcase aside.", "LoginPresentation adds showcase branding, header actions, supporting content, and footer slots.", "Preserve one labelled h1 and responsive two-column-to-stacked behavior."],
                 ["Brand, localized copy, authentication methods, form behavior, and showcase content."],
-                ["The /access/login route contains password, provider, and passkey examples inside this layout."],
-                ["IdentityLayout", "CultureSelector", "ThemeSwitcher"]),
+                ["The /access/shared-login route contains interactive password, provider, and passkey demonstrations.", "shared-login-presentation.spec.mjs checks light/dark modes, constrained parents, keyboard preferences, focus, forced colors, and reduced motion."],
+                ["IdentityLayout", "PreferencesSelector", "AlternativeAccessGroup"]),
+            ["AlternativeAccessGroup"] = Pattern(
+                "AlternativeAccessGroup keeps configured authentication methods in one labelled group while preserving each button or form's native behavior.",
+                "access/shared-login",
+                ["Align provider and passkey buttons in equal action tiles.", "Expand a single method when no provider option is present."],
+                ["Configured methods, provider forms, submission handlers, localized labels, and authentication policy."],
+                ["shared-login-presentation.spec.mjs executes both demo buttons and checks narrow and single-method layouts."],
+                ["AccessPageLayout", "AppButton"]),
             ["ApplicationShell"] = Pattern(
                 "ApplicationShell owns skip navigation, the application header, primary aside, mobile scrim, and the page main landmark.",
                 "application-shell",
@@ -69,7 +76,7 @@ public static class PlaybookComponentCoverage
             ["IdentityLayout"] = Pattern(
                 "IdentityLayout is a router-level section composition that executes AccessPageLayout and owns authentication-page structure.",
                 "layout-patterns/identity",
-                ["Map identity section outlets into AccessPageLayout slots.", "Provide culture and theme controls in the access card."],
+                ["Map identity section outlets into AccessPageLayout slots.", "Preserve the legacy layout by default; derived login layouts override LoginPresentation, HeadingId, and ShowcaseLabel.", "Provide compact culture and theme controls when login presentation is enabled."],
                 ["Identity form, brand, localized title and introduction, showcase, and authentication behavior."],
                 ["The identity layout route fills every named section in the layout."],
                 ["RootLayout", "AccessPageLayout", "PreferencesSelector"]),

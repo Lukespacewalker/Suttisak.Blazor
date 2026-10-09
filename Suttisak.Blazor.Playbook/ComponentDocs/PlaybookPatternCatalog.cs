@@ -225,11 +225,13 @@ public static class PlaybookPatternCatalog
             "secure-access-flow",
             "Access",
             PlaybookPatternMaturity.Stable,
-            "A sign-in form inside a responsive AccessPageLayout.",
+            "An opt-in full-page login presentation with credential, provider, and passkey examples inside AccessPageLayout.",
             "Unauthenticated sign-in and registration routes.",
             ["access", "identity", "authentication", "responsive"],
             [
                 I("AccessPageLayout", "Arranges brand, preferences, form copy, controls, and the product showcase."),
+                I("PreferencesSelector", "Provides separate compact language and color-scheme disclosures."),
+                I("AlternativeAccessGroup", "Aligns configured provider and passkey actions without changing submission behavior."),
                 I("AppTextBox", "Collects credential values with the correct input type and autocomplete token."),
                 I("AppCheckbox", "Hosts explicit session-persistence consent."),
                 I("AppButton", "Expresses the primary credential action and secondary recovery actions.")
@@ -244,8 +246,9 @@ public static class PlaybookPatternCatalog
                 ["Responsive access geometry and visual slot order", "Shared input, checkbox, and button semantics", "Theme-aware surface, focus, and error presentation"],
                 ["Authentication providers, antiforgery, rate limits, and session policy", "Brand copy, consent language, links, and telemetry", "Server validation, redirects, and account-recovery workflows"]),
             """
-            <AccessPageLayout HeadingId="sign-in-title" ShowcaseLabel="Product message">
+            <AccessPageLayout LoginPresentation="true" HeadingId="sign-in-title" ShowcaseLabel="Product message">
                 <Brand>@Brand</Brand>
+                <Controls><PreferencesSelector Compact="true" /></Controls>
                 <Title>Sign in to continue</Title>
                 <ChildContent>
                     <EditForm Model="@Credentials" OnValidSubmit="SignInAsync">
@@ -254,6 +257,7 @@ public static class PlaybookPatternCatalog
                         <AppButton Type="submit" Variant="AppButtonVariant.Primary">Sign in</AppButton>
                     </EditForm>
                 </ChildContent>
+                <Showcase>@ProductMessage</Showcase>
             </AccessPageLayout>
             """,
             [
@@ -261,10 +265,10 @@ public static class PlaybookPatternCatalog
                 Q("Responsive", "The form precedes optional showcase content in reading order and remains usable at 320 CSS pixels."),
                 Q("Security", "This example covers layout only. Authentication, CSRF protection, and redirect validation remain server responsibilities.")
             ],
-            "access/login",
-            "View the sign-in example",
+            "access/shared-login",
+            "View the shared login example",
             [
-                E("Browser", "playbook.spec.mjs", "Covers the access route, credential controls, language, and theme variants."),
+                E("Browser", "shared-login-presentation.spec.mjs", "Executes credential, provider, and passkey demonstrations and checks compact preferences, light/dark modes, constrained widths, focus, and forced colors."),
                 E("Browser", "layout-infrastructure-contracts.spec.mjs", "Checks AccessPageLayout on a routed page.")
             ]),
 
