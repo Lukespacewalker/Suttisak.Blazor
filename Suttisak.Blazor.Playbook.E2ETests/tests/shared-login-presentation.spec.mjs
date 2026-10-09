@@ -2,6 +2,98 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 for (const mode of ['light', 'dark']) {
+  test(`shared login ${mode} keeps provider captions visible and associated with their tiles`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto(`/access/shared-login?appearance=nexora&mode=${mode}`);
+    // Published Identity supplies this gap on the provider wrapper.
+    await page.addStyleTag({ content: '.login-provider-block .external-login-option { gap: .4rem; }' });
+    const layout = page.locator('.access-login-layout');
+    const group = layout.getByRole('group', { name: 'Alternative access' });
+    for (const multipleProviders of [false, true]) {
+      if (multipleProviders) {
+        await group.locator('.external-login-option').evaluate(option => {
+          const other = option.cloneNode(true);
+          other.querySelector('button').value = 'Google';
+          const label = other.querySelector('.app-button__label');
+          label.replaceChildren(label.querySelector('img'), document.createTextNode('Google'));
+          other.querySelector('.external-login-description').textContent = 'Use your Google account for personal access.';
+          option.after(other);
+        });
+      }
+      for (const description of [
+        "Use your corporate Microsoft account to access your organization's workspace.",
+        'ใช้บัญชี Microsoft ขององค์กรเพื่อเข้าสู่พื้นที่ทำงานและข้อมูลสำหรับพนักงานในองค์กร'
+      ]) {
+        await group.locator('.external-login-description').first().evaluate((element, text) => element.textContent = text, description);
+        for (const width of [1440, 390, 320]) {
+          await layout.evaluate((element, width) => element.style.width = `${width}px`, width);
+          const bounds = await group.boundingBox();
+          const microsoft = await group.getByRole('button', { name: 'Microsoft', exact: true }).boundingBox();
+          const passkey = await group.getByRole('button', { name: 'Continue with passkey', exact: true }).boundingBox();
+          if (multipleProviders) {
+            const google = await group.getByRole('button', { name: 'Google', exact: true }).boundingBox();
+            expect(Math.abs(microsoft.height - google.height)).toBeLessThanOrEqual(1);
+            expect(Math.abs(microsoft.y - google.y)).toBeLessThanOrEqual(1);
+          } else {
+            expect(Math.abs(microsoft.height - passkey.height)).toBeLessThanOrEqual(1);
+            expect(Math.abs(microsoft.y - passkey.y)).toBeLessThanOrEqual(1);
+          }
+          expect(passkey.height).toBeGreaterThanOrEqual(44);
+          for (const option of await group.locator('.external-login-option').all()) {
+            const tile = await option.locator('button').boundingBox();
+            const caption = option.locator('.external-login-description');
+            await expect(caption).toBeVisible();
+            const captionBounds = await caption.boundingBox();
+            expect(tile.y + tile.height).toBeLessThanOrEqual(captionBounds.y + 1);
+            expect(captionBounds.x).toBeGreaterThanOrEqual(tile.x - 1);
+            expect(captionBounds.x + captionBounds.width).toBeLessThanOrEqual(tile.x + tile.width + 1);
+            expect(captionBounds.y + captionBounds.height).toBeLessThanOrEqual(bounds.y + bounds.height + 1);
+            expect(await caption.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+            expect(await caption.evaluate(element => element.scrollHeight <= element.clientHeight)).toBe(true);
+            await expect(option.locator('.app-button__label > img')).toBeVisible();
+            await expect(option.locator('.app-button__label > img')).toHaveCSS('width', '32px');
+          }
+          expect(await group.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+          const status = await layout.getByRole('status').boundingBox();
+          expect(bounds.y + bounds.height).toBeLessThanOrEqual(status.y + 1);
+          if (width === 320) await group.screenshot({ path: testInfo.outputPath(`captions-${multipleProviders ? 'multiple' : 'single'}-${description.startsWith('Use') ? 'en' : 'th'}-320.png`) });
+        }
+      }
+      if (!multipleProviders) {
+        // Ordinary provider tiles do not reserve an empty caption row.
+        const caption = group.locator('.external-login-description');
+        const text = await caption.textContent();
+        await caption.evaluate(element => element.remove());
+        const bounds = await group.boundingBox();
+        const microsoft = await group.getByRole('button', { name: 'Microsoft', exact: true }).boundingBox();
+        const passkey = await group.getByRole('button', { name: 'Continue with passkey', exact: true }).boundingBox();
+        expect(Math.abs(microsoft.height - passkey.height)).toBeLessThanOrEqual(1);
+        expect(bounds.height).toBeCloseTo(microsoft.height, 0);
+        await group.locator('.external-login-option').evaluate((element, text) => {
+          const caption = document.createElement('span');
+          caption.className = 'external-login-description';
+          caption.textContent = text;
+          element.append(caption);
+        }, text);
+      } else {
+        // Mixed providers share the caption row even when one has no help text.
+        await group.locator('.external-login-description').last().evaluate(element => element.remove());
+        for (const width of [1440, 390, 320]) {
+          await layout.evaluate((element, width) => element.style.width = `${width}px`, width);
+          const microsoft = await group.getByRole('button', { name: 'Microsoft', exact: true }).boundingBox();
+          const google = await group.getByRole('button', { name: 'Google', exact: true }).boundingBox();
+          const passkey = await group.getByRole('button', { name: 'Continue with passkey', exact: true }).boundingBox();
+          const caption = await group.locator('.external-login-description').boundingBox();
+          expect(Math.abs(microsoft.height - google.height)).toBeLessThanOrEqual(1);
+          expect(Math.abs(microsoft.y - google.y)).toBeLessThanOrEqual(1);
+          expect(caption.y + caption.height).toBeLessThanOrEqual(passkey.y + 1);
+          expect(await group.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+        }
+        await group.screenshot({ path: testInfo.outputPath('captions-mixed-320.png') });
+      }
+    }
+  });
+
   test(`shared login ${mode} keeps form, photo, preferences and alternative actions usable`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(`/access/shared-login?appearance=nexora&mode=${mode}`);

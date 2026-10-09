@@ -4,7 +4,10 @@
 .login-alt-actions ::deep .login-provider-block, .login-alt-actions ::deep .login-provider-block form, .login-alt-actions ::deep .login-provider-block form > div { display: contents; }
 .login-alt-actions ::deep form { min-width: 0; }
 .login-alt-actions ::deep .external-login-option { display: grid; min-width: 0; align-items: stretch; }
-.login-alt-actions ::deep .app-button { display: flex; flex-direction: column; justify-content: center; gap: .6rem; width: 100%; height: 100%; min-height: 5.5rem; padding: .75rem .4rem; font-size: .8rem; line-height: 1.5; white-space: normal; }
+/* Share the control row without letting its provider caption inflate the passkey tile. */
+.login-alt-actions:has(.external-login-description) ::deep .external-login-option { grid-row: span 2; grid-template-rows: subgrid; row-gap: inherit; }
+.login-alt-actions ::deep .external-login-description { min-width: 0; overflow-wrap: anywhere; }
+.login-alt-actions ::deep .app-button { display: flex; flex-direction: column; justify-content: center; gap: .6rem; width: 100%; height: 100%; min-width: 0; min-height: 5.5rem; padding: .75rem .4rem; font-size: .8rem; line-height: 1.5; white-space: normal; }
 .login-alt-actions ::deep .app-button::before { display: none; }
 .login-alt-actions ::deep .app-button__label { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
 .login-alt-actions ::deep .app-button .app-button__icon { display: inline-flex; }
