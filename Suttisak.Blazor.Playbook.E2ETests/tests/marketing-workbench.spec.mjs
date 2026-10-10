@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -41,12 +42,12 @@ test('Marketing workbench composes the public primitives and exposes meaningful 
   await expect(page.getByTestId('marketing-hero').getByRole('heading', { level: 1 })).toHaveText('A clearer product promise.');
 
   await expect(page.getByTestId('marketing-product-frame')).toBeVisible();
-  await page.getByLabel('Product frame').uncheck();
+  await setCheckbox(page.getByLabel('Product frame'), false);
   await expect(page.getByTestId('marketing-product-frame')).toHaveCount(0);
 
   await page.goto('/components/marketing-feature-grid');
   await expect(page.getByTestId('marketing-featured-card')).toHaveClass(/marketing-card--featured/);
-  await page.getByLabel('Featured card').uncheck();
+  await setCheckbox(page.getByLabel('Featured card'), false);
   await expect(page.getByTestId('marketing-featured-card')).not.toHaveClass(/marketing-card--featured/);
 
   await page.goto('/components/marketing-step-list');

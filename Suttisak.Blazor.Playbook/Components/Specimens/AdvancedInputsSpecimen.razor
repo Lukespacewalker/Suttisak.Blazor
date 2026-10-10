@@ -131,18 +131,18 @@
                 }
             </select>
         </label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_includeSeconds" /> Include seconds</label>
+        <AppCheckbox @bind-Value="_includeSeconds" Label="Include seconds" />
         }
         @if (IsRadio)
         {
-        <label class="component-detail__check"><input type="checkbox" @bind="_horizontalRadios" /> Horizontal radios</label>
+        <AppCheckbox @bind-Value="_horizontalRadios" Label="Horizontal radios" />
         }
         @if (IsDateTime)
         {
-        <label class="component-detail__check"><input type="checkbox" @bind="_thaiText" /> Thai picker text</label>
+        <AppCheckbox @bind-Value="_thaiText" Label="Thai picker text" />
         }
-        <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+        <AppCheckbox @bind-Value="_required" Label="Required" />
+        <AppCheckbox @bind-Value="_disabled" Label="Disabled" />
     </Controls>
     <States>
         @if (IsNumber)

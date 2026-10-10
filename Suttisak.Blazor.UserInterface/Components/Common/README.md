@@ -526,3 +526,27 @@ services.AddBlazorUserInterface(options =>
 
 The host owns culture-cookie creation. Selecting `auto` should clear that cookie
 so request localization can use the browser's language preferences.
+
+
+## Searchable controlled selection
+
+`AppSearchPicker<TValue>` accepts caller-owned `Options` and `SelectedValues`. Set
+`Multiple` for several selections; single mode proposes one selected value. The
+callback proposes a new list and never changes internal selected state. A parent
+may reject it without remounting the picker or losing the current search. Supply
+`SelectedValueLabel` when async/narrowed options omit selected values. Arrow keys,
+Home/End move option focus; native Enter/Space chooses an option. Labels for
+search, selection, removal and loading/empty state are caller-owned parameters.
+For remote searches set `FilterLocally=false`, use `QueryChanged` and `Loading`;
+the component never fetches application endpoints.
+
+`AppSelect<TValue>.SelectionGuard` is an optional synchronous predicate applied
+before changing the bound value. A rejected value is restored through native
+bind:get/set. Existing callers without a guard keep the prior binding contract.
+For asynchronous domain checks or dirty-form guards, prefer parent-owned picker
+selection. Selection is independent of domain authorization; services still
+validate IDs and scope.
+
+See Playbook `components/app-search-picker` and the generic composition at
+`patterns/complete-report-print`. Screen pagination and full print markup are
+separate application compositions using the same filtered data, not a new grid.

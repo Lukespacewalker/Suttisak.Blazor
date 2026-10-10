@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import path from 'node:path';
 
 function capturePath(testInfo, name) {
@@ -95,11 +96,11 @@ test('Nexora keeps danger variants and disabled/busy primary actions distinct', 
     await expect(button).toHaveCSS('color', variant === 'Danger' ? 'rgb(180, 35, 24)' : 'rgb(255, 255, 255)');
   }
   await page.getByRole('combobox', { name: 'Variant', exact: true }).selectOption('Primary');
-  await page.getByRole('checkbox', { name: 'Disabled', exact: true }).check();
+  await setCheckbox(page.getByRole('checkbox', { name: 'Disabled', exact: true }), true);
   await expect(preview.getByRole('button')).toBeDisabled();
   await expect(preview.getByRole('button')).toHaveCSS('opacity', '0.48');
-  await page.getByRole('checkbox', { name: 'Disabled', exact: true }).uncheck();
-  await page.getByRole('checkbox', { name: 'Loading', exact: true }).check();
+  await setCheckbox(page.getByRole('checkbox', { name: 'Disabled', exact: true }), false);
+  await setCheckbox(page.getByRole('checkbox', { name: 'Loading', exact: true }), true);
   await expect(preview.getByRole('button')).toBeDisabled();
   await expect(preview.getByRole('button')).toHaveAttribute('aria-busy', 'true');
 });

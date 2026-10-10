@@ -68,9 +68,9 @@
                 <option value="4">4 columns</option>
             </select>
         </label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_showInlineValidation" /> Inline validation</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_stickyActions" /> Sticky actions</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled form inputs</label>
+        <AppCheckbox @bind-Value="_showInlineValidation" Label="Inline validation" />
+        <AppCheckbox @bind-Value="_stickyActions" Label="Sticky actions" />
+        <AppCheckbox @bind-Value="_disabled" Label="Disabled form inputs" />
     </Controls>
     <States>
         <article><span>Composition</span><strong>Section → grid → field → actions</strong><small>Layout primitives stay independent from field value and validation behavior</small></article>

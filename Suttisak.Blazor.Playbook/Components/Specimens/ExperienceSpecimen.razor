@@ -43,12 +43,12 @@
         </div>
     </Preview>
     <Controls>
-        <label><input type="checkbox" @bind="_includeVisual" /> Include visual</label>
-        <label><input type="checkbox" @bind="_visualIsDecorative" /> Decorative visual</label>
-        <label><input type="checkbox" @bind="_accent" /> Card accent</label>
-        <label><input type="checkbox" @bind="_elevated" /> Elevated card</label>
-        <label><input type="checkbox" @bind="_interactive" /> Interactive treatment</label>
-        <label><input type="checkbox" @bind="_recommended" /> Recommended disclosure</label>
+        <AppCheckbox @bind-Value="_includeVisual" Label="Include visual" />
+        <AppCheckbox @bind-Value="_visualIsDecorative" Label="Decorative visual" />
+        <AppCheckbox @bind-Value="_accent" Label="Card accent" />
+        <AppCheckbox @bind-Value="_elevated" Label="Elevated card" />
+        <AppCheckbox @bind-Value="_interactive" Label="Interactive treatment" />
+        <AppCheckbox @bind-Value="_recommended" Label="Recommended disclosure" />
     </Controls>
     <States>
         <article><span>Heading</span><strong>Unframed editorial hierarchy in Nexora</strong><small>Nexora places the title and introduction on the page background, with a larger desktop hierarchy and compact narrow typography so the following task stays visible. Other appearances retain their existing hero treatment; use PageHeading for task pages.</small></article>

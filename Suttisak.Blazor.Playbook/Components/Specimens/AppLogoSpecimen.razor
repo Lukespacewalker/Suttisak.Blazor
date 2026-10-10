@@ -21,7 +21,7 @@
     </Preview>
     <Controls>
         <label>Accessible name<input @bind="_alt" @bind:event="oninput" /></label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_useApplicationMarkup" /> Application-owned markup</label>
+        <AppCheckbox @bind-Value="_useApplicationMarkup" Label="Application-owned markup" />
     </Controls>
     <States>
         <article>

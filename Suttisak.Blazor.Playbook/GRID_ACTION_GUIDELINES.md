@@ -4,7 +4,8 @@ Use action placement to communicate scope. Row actions and selection actions are
 
 ## Canonical rule
 
-- **Grid-level actions** belong in the grid command bar: search, filters, create, refresh, column settings, and export of the current view.
+- **Page-level actions** belong in `PageHeading.PageActions`. For a page whose primary task is one list, place Create/Add and page-wide Import here, with one primary action and optionally one secondary action. Do not duplicate the same command in the heading and grid toolbar.
+- **Grid-level actions** belong in the grid command bar: search, filters, refresh, column settings, and export of the current view. Embedded grids and pages with several independent grids keep their local Create/Add commands beside the corresponding grid.
 - **Single-record actions** belong with the row. A frequent primary action may be inline. Secondary or destructive actions should move into one compact row overflow control.
 - **Multi-record actions** require `AppGridSelectionMode.Multiple` and belong in `AppGridShell.SelectionToolbar`.
 - Set `AppGridShell.SelectionActive` from the selected-row count so the contextual selection toolbar **replaces** the normal toolbar while selection exists. Do not stack both toolbars.
@@ -96,12 +97,23 @@ Interactive content inside a row (`a`, `button`, `input`, `select`, `textarea`, 
 | Export selected rows | Selection toolbar |
 | Delete selected rows | Selection toolbar + confirmation |
 | Change status for several rows | Selection toolbar |
-| Create record | Page/grid command bar |
+| Create record in a full-page list | Page heading |
+| Import records for the whole page | Page heading |
+| Create record in an embedded or independent grid | That grid's command bar |
 | Search, filter, refresh, columns | Grid command bar |
 
 The Playbook `AppGrid` specimen and `/application-shell/records` route are the canonical executable examples for this policy.
 
 ## Decision history
+
+### Page and grid command scope (2026-10-07)
+
+The current canonical rule above supersedes the earlier blanket direction to
+put Create in the grid command bar. A full-page list keeps its page-level Add
+or Import available in the heading when row selection replaces the grid's
+normal toolbar. Local creation in embedded or independent grids remains with
+that grid. `ApplicationRecords.razor` demonstrates the full-page rule with
+`New record` in its heading and batch commands in the selection toolbar.
 
 ### Space and navigation (2026-09-17)
 

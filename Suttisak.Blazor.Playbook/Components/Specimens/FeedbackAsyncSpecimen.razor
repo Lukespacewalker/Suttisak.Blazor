@@ -90,11 +90,11 @@
         <label>Progress value
             <input type="number" min="0" max="100" step="5" value="@_progress" @oninput="ChangeProgress" />
         </label>
-        <label><input type="checkbox" @bind="_compact" /> Compact panels</label>
-        <label><input type="checkbox" @bind="_statusLoading" /> Status loading</label>
-        <label><input type="checkbox" @bind="_circleSkeleton" /> Circle skeleton</label>
-        <label><input type="checkbox" @bind="_shimmer" /> Skeleton shimmer</label>
-        <label><input type="checkbox" @bind="_dismissible" /> Banner dismissible</label>
+        <AppCheckbox @bind-Value="_compact" Label="Compact panels" />
+        <AppCheckbox @bind-Value="_statusLoading" Label="Status loading" />
+        <AppCheckbox @bind-Value="_circleSkeleton" Label="Circle skeleton" />
+        <AppCheckbox @bind-Value="_shimmer" Label="Skeleton shimmer" />
+        <AppCheckbox @bind-Value="_dismissible" Label="Banner dismissible" />
         @if (!_showBanner)
         {
             <button type="button" @onclick="RestoreBanner">Restore feedback</button>

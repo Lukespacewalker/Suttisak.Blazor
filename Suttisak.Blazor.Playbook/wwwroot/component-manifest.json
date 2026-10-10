@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "componentCount": 97,
-  "pageCount": 79,
+  "componentCount": 98,
+  "pageCount": 80,
   "pages": [
     {
       "name": "AppTextBox",
@@ -28,6 +28,15 @@
       "href": "components/app-number-input",
       "components": [
         "AppNumberInput"
+      ]
+    },
+    {
+      "name": "AppSearchPicker",
+      "slug": "app-search-picker",
+      "category": "Forms \u0026 inputs",
+      "href": "components/app-search-picker",
+      "components": [
+        "AppSearchPicker"
       ]
     },
     {
@@ -798,6 +807,24 @@
       "pageSlug": "app-number-input"
     },
     {
+      "name": "AppSearchPicker",
+      "slug": "app-search-picker",
+      "category": "Forms \u0026 inputs",
+      "status": "stable",
+      "coverage": "interactive",
+      "summary": "Searchable parent-owned single or multiple selection with explicit query, loading, and rejection behavior.",
+      "tags": [
+        "search",
+        "picker",
+        "controlled",
+        "form"
+      ],
+      "sourceArea": "Common",
+      "relatedPatternIds": [],
+      "documentationHref": "components/app-search-picker",
+      "pageSlug": "app-search-picker"
+    },
+    {
       "name": "AppSelect",
       "slug": "app-select",
       "category": "Forms \u0026 inputs",
@@ -987,6 +1014,7 @@
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [
+        "complete-report-print",
         "validated-form-workflow"
       ],
       "documentationHref": "components/form-section",
@@ -1083,6 +1111,7 @@
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [
+        "complete-report-print",
         "validated-form-workflow",
         "virtualized-data-workspace",
         "secure-access-flow",
@@ -1260,6 +1289,7 @@
       ],
       "sourceArea": "Common",
       "relatedPatternIds": [
+        "complete-report-print",
         "application-workspace-shell",
         "router-level-layout-composition"
       ],
@@ -2516,6 +2546,7 @@
         "AppTextBox",
         "AppTextArea",
         "AppNumberInput",
+        "AppSearchPicker",
         "AppSelect",
         "AppSelectItem",
         "AppMultiSelect",
@@ -2674,6 +2705,74 @@
     }
   ],
   "patterns": [
+    {
+      "name": "Complete report and print",
+      "slug": "complete-report-print",
+      "category": "Reporting",
+      "maturity": "beta",
+      "summary": "A complete printable document composed separately from paged screen content.",
+      "intent": "Reports whose print output must retain every filtered record and source detail.",
+      "tags": [
+        "report",
+        "print",
+        "pagination"
+      ],
+      "ingredients": [
+        {
+          "componentId": "page-heading",
+          "componentName": "PageHeading",
+          "role": "Names the report context."
+        },
+        {
+          "componentId": "form-section",
+          "componentName": "FormSection",
+          "role": "Groups record sections."
+        },
+        {
+          "componentId": "app-button",
+          "componentName": "AppButton",
+          "role": "Provides screen paging and browser print actions."
+        }
+      ],
+      "compositionSteps": [
+        {
+          "title": "Freeze application data",
+          "detail": "Use the same filtered record set for screen and complete print content."
+        },
+        {
+          "title": "Render all print records",
+          "detail": "Print does not depend on visible screen pages or virtual rows."
+        }
+      ],
+      "ownership": {
+        "libraryResponsibilities": [
+          "Shared headings, sections and action presentation"
+        ],
+        "applicationResponsibilities": [
+          "Record scope, report status, source data, full print layout and export semantics"
+        ]
+      },
+      "minimalRazorRecipe": "\u003CFormSection Title=\u0022Report\u0022\u003EApplication-owned complete records\u003C/FormSection\u003E",
+      "qualityChecks": [
+        {
+          "dimension": "Print",
+          "requirement": "All filtered records are present with repeated headings and visible status."
+        },
+        {
+          "dimension": "Responsive",
+          "requirement": "Screen content remains readable in constrained containers."
+        }
+      ],
+      "liveHref": "report-print",
+      "liveLabel": "View report / print example",
+      "evidence": [
+        {
+          "kind": "Browser",
+          "source": "search-picker.spec.mjs",
+          "guarantee": "Checks complete print content independent of screen paging."
+        }
+      ]
+    },
     {
       "name": "Validated form workflow",
       "slug": "validated-form-workflow",

@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -24,7 +25,7 @@ test('ExperienceHeading switches a visual between meaningful and decorative trea
 
   const visual = page.getByTestId('experience-visual');
   const visualContainer = page.locator('.experience-heading__visual').first();
-  await page.getByLabel('Decorative visual').check();
+  await setCheckbox(page.getByLabel('Decorative visual'), true);
 
   await expect(visualContainer).toHaveAttribute('aria-hidden', 'true');
   await expect(visual).not.toHaveAttribute('role', 'img');
@@ -40,8 +41,8 @@ test('ExperienceCard controls presentation classes without changing application-
   await expect(card).not.toHaveClass(/experience-card--interactive/);
   await expect(card).toContainText('The shared component owns the surface treatment');
 
-  await page.getByLabel('Interactive treatment').check();
-  await page.getByLabel('Elevated card').uncheck();
+  await setCheckbox(page.getByLabel('Interactive treatment'), true);
+  await setCheckbox(page.getByLabel('Elevated card'), false);
   await expect(card).toHaveClass(/experience-card--interactive/);
   await expect(card).not.toHaveClass(/experience-card--elevated/);
 });
@@ -59,7 +60,7 @@ test('ExperienceDisclosure preserves native details behavior and recommendation 
   await secondary.locator('summary').click();
   await expect(secondary).toHaveAttribute('open', '');
 
-  await page.getByLabel('Recommended disclosure').uncheck();
+  await setCheckbox(page.getByLabel('Recommended disclosure'), false);
   await expect(primary).not.toHaveClass(/experience-disclosure--recommended/);
   await expect(primary.getByText('Recommended')).toHaveCount(0);
 });

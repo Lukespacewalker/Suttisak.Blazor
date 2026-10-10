@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -73,7 +74,7 @@ test('StatusPage detail executes the shared visual contract and error semantics'
   await expect(statusPage).toHaveAttribute('role', 'alert');
   await expect(statusPage).toHaveAttribute('aria-live', 'assertive');
 
-  await page.getByLabel('Custom visual slot').check();
+  await setCheckbox(page.getByLabel('Custom visual slot'), true);
   await expect(specimen.locator('.status-page-demo-visual')).toHaveText('◎');
   await page.waitForTimeout(800);
   await expectNoSeriousOrCriticalViolations(page);

@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -34,7 +35,7 @@ test('AppStack controls direction, spacing, and wrapping without changing childr
   await page.getByLabel('Gap').selectOption('0.5rem');
   await expect(stack).toHaveCSS('gap', '8px');
 
-  await page.getByLabel('Wrap horizontal content').uncheck();
+  await setCheckbox(page.getByLabel('Wrap horizontal content'), false);
   await expect(stack).toHaveCSS('flex-wrap', 'nowrap');
 });
 
@@ -59,7 +60,7 @@ test('interactive AppCard supports keyboard activation and active state', async 
 test('interactive card can be removed while the content surface stays non-interactive', async ({ page }) => {
   await page.goto('/components/app-card');
 
-  await page.getByLabel('Interactive card').uncheck();
+  await setCheckbox(page.getByLabel('Interactive card'), false);
   await expect(page.getByTestId('interactive-card')).toHaveCount(0);
   await expect(page.getByTestId('surface-card')).toBeVisible();
   await expect(page.getByTestId('surface-card')).not.toHaveAttribute('role', 'button');
@@ -72,7 +73,7 @@ test('AppDivider exposes native horizontal and explicit vertical separator seman
   await expect(divider).toHaveJSProperty('tagName', 'HR');
   await expect(divider).not.toHaveAttribute('aria-orientation', 'vertical');
 
-  await page.getByLabel('Vertical divider').check();
+  await setCheckbox(page.getByLabel('Vertical divider'), true);
   divider = page.getByTestId('layout-divider');
   await expect(divider).toHaveJSProperty('tagName', 'SPAN');
   await expect(divider).toHaveAttribute('role', 'separator');
@@ -95,7 +96,7 @@ test('CardMenu preserves native button activation and disabled behavior', async 
   await menu.click();
   await expect(page.getByTestId('layout-status')).toHaveText('Participant settings selected.');
 
-  await page.getByLabel('Disabled card menu').check();
+  await setCheckbox(page.getByLabel('Disabled card menu'), true);
   await expect(menu).toBeDisabled();
 });
 

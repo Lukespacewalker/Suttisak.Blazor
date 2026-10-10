@@ -74,8 +74,8 @@
         @if (ComponentName == "MarketingHero")
         {
             <label>Hero title<input @bind="_heroTitle" @bind:event="oninput" /></label>
-            <label><input type="checkbox" @bind="_showSecondaryAction" /> Secondary action</label>
-            <label><input type="checkbox" @bind="_showProductFrame" /> Product frame</label>
+            <AppCheckbox @bind-Value="_showSecondaryAction" Label="Secondary action" />
+            <AppCheckbox @bind-Value="_showProductFrame" Label="Product frame" />
         }
         @if (ComponentName is "MarketingHero" or "MarketingActionLink" or "MarketingCallToAction")
         {
@@ -83,8 +83,8 @@
         }
         @if (ComponentName is "MarketingCard" or "MarketingFeatureGrid")
         {
-            <label><input type="checkbox" @bind="_featuredCard" /> Featured card</label>
-            <label><input type="checkbox" @bind="_compactCards" /> Compact cards</label>
+            <AppCheckbox @bind-Value="_featuredCard" Label="Featured card" />
+            <AppCheckbox @bind-Value="_compactCards" Label="Compact cards" />
         }
         @if (ComponentName is "MarketingProofStrip" or "MarketingProofItem")
         {
@@ -98,7 +98,7 @@
         @if (ComponentName == "MarketingSectionHeader")
         {
             <label>Section title<input @bind="_sectionTitle" @bind:event="oninput" /></label>
-            <label><input type="checkbox" @bind="_compactHeader" /> Compact section header</label>
+            <AppCheckbox @bind-Value="_compactHeader" Label="Compact section header" />
         }
         @if (ComponentName == "MarketingCallToAction")
         {

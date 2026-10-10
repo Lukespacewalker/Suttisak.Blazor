@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -126,7 +127,7 @@ test('Hero and CompanyFooter preserve headings, contextual footer semantics, and
 
   await page.getByLabel('Hero title').fill('A focused shared story.');
   await expect(hero.getByRole('heading', { level: 1 })).toHaveText('A focused shared story.');
-  await page.getByLabel('Background treatment').uncheck();
+  await setCheckbox(page.getByLabel('Background treatment'), false);
   await expect(hero).not.toHaveClass(/background/);
 
   const footer = page.locator('[data-testid="shared-surfaces-workbench"] footer.company-footer');

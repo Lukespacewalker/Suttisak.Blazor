@@ -15,10 +15,10 @@
     <Controls>
         <label>Label<input @bind="_label" @bind:event="oninput" /></label>
         <label>Description<input @bind="_description" @bind:event="oninput" /></label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_value" /> Checked</label>
-        <label class="component-detail__check"><input type="checkbox" checked="@_threeState" @onchange="ToggleThreeState" /> Three-state mode</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+        <AppCheckbox @bind-Value="_value" Label="Checked" />
+        <AppCheckbox Value="@_threeState" ValueChanged="ToggleThreeState" Label="Three-state mode" />
+        <AppCheckbox @bind-Value="_required" Label="Required" />
+        <AppCheckbox @bind-Value="_disabled" Label="Disabled" />
     </Controls>
     <States>
         <article><span>Unchecked</span><AppCheckbox Value="false" Label="Include archived records" /></article>
@@ -43,9 +43,9 @@
         ? _checkState switch { true => "Checked", false => "Unchecked", null => "Indeterminate" }
         : _value ? "Checked" : "Unchecked";
 
-    private void ToggleThreeState(ChangeEventArgs args)
+    private void ToggleThreeState(bool value)
     {
-        _threeState = args.Value is bool value && value;
+        _threeState = value;
         if (_threeState)
         {
             _checkState = _value;

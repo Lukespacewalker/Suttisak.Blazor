@@ -54,12 +54,9 @@
                 <option value="loading">Loading results</option>
             </select>
         </label>
-        <label><input type="checkbox" @bind="_legacyInput" /> Legacy numeric page input</label>
-        <label><input type="checkbox" @bind="_customSummary" /> Custom summary template</label>
-        <label>
-            <input type="checkbox" @bind="_virtualize" />
-            Virtualize AppGrid
-        </label>
+        <AppCheckbox @bind-Value="_legacyInput" Label="Legacy numeric page input" />
+        <AppCheckbox @bind-Value="_customSummary" Label="Custom summary template" />
+        <AppCheckbox @bind-Value="_virtualize" Label="Virtualize AppGrid" />
         <label>Overscan rows
             <select @bind="_overscan">
                 <option value="1">1</option>

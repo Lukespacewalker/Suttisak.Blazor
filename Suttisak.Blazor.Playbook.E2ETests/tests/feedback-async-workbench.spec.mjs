@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -56,7 +57,7 @@ test('AppSkeleton specimen remains decorative while shape controls change the vi
   await expect(skeleton).toHaveAttribute('aria-hidden', 'true');
   await expect(skeleton).not.toHaveClass(/app-skeleton--circle/);
 
-  await page.getByLabel('Circle skeleton').check();
+  await setCheckbox(page.getByLabel('Circle skeleton'), true);
   await expect(skeleton).toHaveClass(/app-skeleton--circle/);
 });
 
@@ -83,7 +84,7 @@ test('StatusPanel specimen exposes loading state through the shared status contr
   await page.goto('/components/status-panel');
 
   await expect(page.getByRole('rowheader', { name: 'Loading', exact: true })).toBeVisible();
-  await page.getByLabel('Status loading').check();
+  await setCheckbox(page.getByLabel('Status loading'), true);
   const status = page.getByRole('status').filter({ hasText: 'Checking status' });
   await expect(status).toBeVisible();
   await expect(status).toHaveAttribute('aria-live', 'polite');
@@ -103,7 +104,7 @@ test('StatusPage specimen exposes slots, variants, and heading association', asy
   await expect(status).toHaveAttribute('role', 'alert');
   await expect(status).toHaveAttribute('aria-live', 'assertive');
 
-  await page.getByLabel('Custom visual slot').check();
+  await setCheckbox(page.getByLabel('Custom visual slot'), true);
   await expect(status).toContainText('◎');
 });
 

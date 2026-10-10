@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -85,7 +86,7 @@ test('AppCheckbox detail route keeps control state wired to the live specimen', 
 
   const previewCheckbox = page.getByRole('checkbox', { name: /Email me updates/i }).first();
   await expect(previewCheckbox).toBeChecked();
-  await page.getByLabel('Checked', { exact: true }).uncheck();
+  await setCheckbox(page.getByLabel('Checked', { exact: true }), false);
   await expect(previewCheckbox).not.toBeChecked();
 });
 
@@ -147,7 +148,7 @@ test('AppDrawer supports X and Escape while protecting against backdrop dismissa
   await expect(page.getByRole('complementary', { name: 'AppDrawer controls' })).toBeVisible();
   await expect(page.getByRole('rowheader', { name: 'Position' })).toBeVisible();
   await page.getByLabel('Position').selectOption('Start');
-  await page.getByLabel('Prevent outside dismiss').check();
+  await setCheckbox(page.getByLabel('Prevent outside dismiss'), true);
   await page.getByRole('button', { name: 'Open drawer' }).click();
 
   const drawer = page.getByRole('dialog', { name: 'Workspace settings' });

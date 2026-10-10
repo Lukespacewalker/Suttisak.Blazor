@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -49,13 +50,13 @@ test('navigation controls rerender submenu expanded and active presentation stat
   const expanded = page.getByLabel('Reports expanded');
   const active = page.getByLabel('Reports active');
 
-  await expanded.uncheck();
+  await setCheckbox(expanded, false);
   await expect(details).not.toHaveAttribute('open', '');
 
-  await active.check();
+  await setCheckbox(active, true);
   await expect(details).toHaveClass(/is-active/);
 
-  await expanded.check();
+  await setCheckbox(expanded, true);
   await expect(details).toHaveAttribute('open', '');
 });
 

@@ -28,14 +28,8 @@
         </div>
     </Preview>
     <Controls>
-        <label>
-            <input type="checkbox" @bind="_submenuExpanded" />
-            Reports expanded
-        </label>
-        <label>
-            <input type="checkbox" @bind="_submenuActive" />
-            Reports active
-        </label>
+        <AppCheckbox @bind-Value="_submenuExpanded" Label="Reports expanded" />
+        <AppCheckbox @bind-Value="_submenuActive" Label="Reports active" />
     </Controls>
     <States>
         <article><span>Embedded</span><strong>Composable nav panel</strong><small>Use inside shells or documentation frames without rendering the full mobile chrome.</small></article>

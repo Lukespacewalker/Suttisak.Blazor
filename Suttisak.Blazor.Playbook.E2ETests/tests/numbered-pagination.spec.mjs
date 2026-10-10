@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import AxeBuilder from '@axe-core/playwright';
 import path from 'node:path';
 
@@ -53,10 +54,10 @@ test(`numbered pages expose first, middle and last windows, real rows, and one c
   await expect(numbers).toHaveText(['1', '121', '122', '123', '124', '125']);
   await expect(pagination.getByRole('button', { name: 'Next page' })).toBeDisabled();
   await expect(page.getByRole('table', { name: 'Paged records table', exact: true }).locator('tbody tr').first()).toContainText('Record 1,241');
-  await page.getByLabel('Legacy numeric page input').check();
+  await setCheckbox(page.getByLabel('Legacy numeric page input'), true);
   await pagination.getByRole('spinbutton').fill('62');
   await pagination.getByRole('spinbutton').press('Enter');
-  await page.getByLabel('Legacy numeric page input').uncheck();
+  await setCheckbox(page.getByLabel('Legacy numeric page input'), false);
   await expect(numbers).toHaveText(['1', '60', '61', '62', '63', '64', '125']);
   await expect(pagination.locator('.app-grid-paginator__ellipsis')).toHaveCount(2);
   await expect(pagination.locator('[aria-current="page"]')).toHaveText('62');

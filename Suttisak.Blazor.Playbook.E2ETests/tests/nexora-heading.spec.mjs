@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 
 async function headingHost(page, { mode = 'light', appearance = 'nexora', visual = false, width = 390, constrained = false, accent = false, kind = 'experience' } = {}) {
   await page.setViewportSize({ width, height: 844 });
   await page.goto(`/specimens/${kind}-heading?appearance=${appearance}&mode=${mode}`);
   if (kind === 'experience') {
     await expect(page.getByTestId('experience-visual')).toBeVisible();
-    if (!visual) await page.getByLabel('Include visual', { exact: true }).uncheck();
+    if (!visual) await setCheckbox(page.getByLabel('Include visual', { exact: true }), false);
   }
   const heading = await page.locator(`.${kind}-heading`).evaluate(element => {
     const copy = element.cloneNode(true);
@@ -145,7 +146,7 @@ for (const mode of ['light', 'dark']) {
 test('Nexora heading retains keyboard task interactions, reduced motion and forced colors', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' });
   await page.goto('/specimens/experience-heading?appearance=nexora');
-  await page.getByLabel('Include visual', { exact: true }).uncheck();
+  await setCheckbox(page.getByLabel('Include visual', { exact: true }), false);
   const task = page.getByRole('button', { name: 'Open result details', exact: true });
   await task.focus();
   await task.press('Enter');

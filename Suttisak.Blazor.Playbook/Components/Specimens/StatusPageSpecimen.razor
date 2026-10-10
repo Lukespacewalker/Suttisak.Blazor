@@ -41,7 +41,7 @@
         <label>Eyebrow
             <input @bind="_eyebrow" />
         </label>
-        <label><input type="checkbox" @bind="_customVisual" /> Custom visual slot</label>
+        <AppCheckbox @bind-Value="_customVisual" Label="Custom visual slot" />
     </Controls>
     <States>
         <article><span>Structure</span><strong>Shared status composition</strong><small>Branding, copy, actions, references, and footer remain application-owned slots.</small></article>

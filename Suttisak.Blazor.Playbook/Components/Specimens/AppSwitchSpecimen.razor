@@ -7,8 +7,8 @@
     <Controls>
         <label>Label<input @bind="_label" @bind:event="oninput" /></label>
         <label>Description<input @bind="_description" @bind:event="oninput" /></label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_value" /> On</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+        <AppCheckbox @bind-Value="_value" Label="On" />
+        <AppCheckbox @bind-Value="_disabled" Label="Disabled" />
     </Controls>
     <States>
         <article><span>Off</span><AppSwitch Value="false" Label="Compact mode" /></article>

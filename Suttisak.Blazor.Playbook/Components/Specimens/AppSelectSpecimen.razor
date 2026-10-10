@@ -14,8 +14,8 @@
         <label>Label<input @bind="_label" @bind:event="oninput" /></label>
         <label>Placeholder<input @bind="_placeholder" @bind:event="oninput" /></label>
         <label>Description<input @bind="_description" @bind:event="oninput" /></label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_required" /> Required</label>
-        <label class="component-detail__check"><input type="checkbox" @bind="_disabled" /> Disabled</label>
+        <AppCheckbox @bind-Value="_required" Label="Required" />
+        <AppCheckbox @bind-Value="_disabled" Label="Disabled" />
     </Controls>
     <States>
         <article><span>Selected</span><AppSelect TValue="string" Value="@("th")" Label="Region" Options="@Options" /></article>

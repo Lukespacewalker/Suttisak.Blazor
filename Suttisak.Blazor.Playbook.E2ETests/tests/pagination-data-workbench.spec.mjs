@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -21,8 +22,8 @@ test('AppGridPaginator moves with buttons and direct page entry while clamping b
   const pagination = page.getByRole('navigation', { name: 'Record pagination' });
   const previous = pagination.getByRole('button', { name: 'Previous page' });
   const next = pagination.getByRole('button', { name: 'Next page' });
-  await page.getByLabel('Legacy numeric page input').check();
-  await page.getByLabel('Custom summary template').check();
+  await setCheckbox(page.getByLabel('Legacy numeric page input'), true);
+  await setCheckbox(page.getByLabel('Custom summary template'), true);
   const pageNumber = pagination.getByRole('spinbutton');
 
   await next.click();
@@ -68,7 +69,7 @@ test('AppGridShell exposes named focusable data regions', async ({ page }) => {
 test('AppGrid virtualization controls remain explicit and valid', async ({ page }) => {
   await page.goto(paginatorRoute);
 
-  await page.getByLabel('Virtualize AppGrid').check();
+  await setCheckbox(page.getByLabel('Virtualize AppGrid'), true);
   await page.getByLabel('Overscan rows').selectOption('5');
   await expect(page.getByLabel('Virtualize AppGrid')).toBeChecked();
   await expect(page.getByLabel('Overscan rows')).toHaveValue('5');

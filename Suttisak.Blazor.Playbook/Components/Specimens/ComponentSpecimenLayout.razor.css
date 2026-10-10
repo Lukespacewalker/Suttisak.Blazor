@@ -6,9 +6,9 @@
 .component-detail__preview-frame--full { max-width: 100%; }
 .component-detail__controls { display: grid; gap: .8rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .component-detail__controls > span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.component-detail__controls ::deep label { display: grid; gap: .35rem; color: var(--app-foreground); font-size: .7rem; font-weight: 700; }
+.component-detail__controls ::deep label:not(.app-choice) { display: grid; gap: .35rem; color: var(--app-foreground); font-size: .7rem; font-weight: 700; }
 .component-detail__controls ::deep input:not([type=checkbox]), .component-detail__controls ::deep select, .component-detail__controls ::deep textarea { width: 100%; box-sizing: border-box; padding: .52rem .58rem; border: 1px solid var(--app-border); border-radius: .5rem; background: var(--app-background); color: var(--app-foreground); font: inherit; }
-.component-detail__controls ::deep .component-detail__check { display: flex; gap: .5rem; align-items: center; }
+.component-detail__controls ::deep .app-choice { gap: .5rem; padding: .52rem .58rem; }
 .component-specimen__states { padding: 3rem 0 0; }
 .component-specimen__states > header { margin-bottom: 1.25rem; }
 .component-specimen__states > header span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }

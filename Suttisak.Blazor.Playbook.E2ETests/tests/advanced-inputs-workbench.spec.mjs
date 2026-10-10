@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -81,10 +82,10 @@ test('AppTimePicker specimen updates precision and localized trigger contract', 
 
   await page.getByLabel('Minute step').selectOption('5');
   await expect(input).toHaveAttribute('step', '300');
-  await page.getByLabel('Include seconds').check();
+  await setCheckbox(page.getByLabel('Include seconds'), true);
   await expect(input).toHaveAttribute('step', '5');
 
-  await page.getByLabel('Thai picker text').check();
+  await setCheckbox(page.getByLabel('Thai picker text'), true);
   const wrapper = page.locator('[data-app-time]').first();
   await expect(wrapper).toHaveAttribute('data-picker-locale', 'th-TH');
   await expect(page.getByRole('button', { name: 'เปิดตัวเลือกเวลา' })).toBeVisible();
@@ -106,7 +107,7 @@ test('AppDateTimePicker specimen binds browser-local values and transport field 
   const timezoneLabel = page.locator('[data-browser-timezone-label]').first();
   await expect(timezoneLabel).not.toHaveText('');
 
-  await page.getByLabel('Thai picker text').check();
+  await setCheckbox(page.getByLabel('Thai picker text'), true);
   const wrapper = page.locator('[data-app-datetime]').first();
   await expect(wrapper).toHaveAttribute('data-picker-locale', 'th-TH');
   await expect(page.getByRole('button', { name: 'เปิดตัวเลือกวันที่และเวลา' })).toBeVisible();

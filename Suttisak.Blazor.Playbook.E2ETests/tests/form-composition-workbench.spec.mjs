@@ -1,3 +1,4 @@
+import { setCheckbox } from '../helpers/set-checkbox.mjs';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -50,7 +51,7 @@ test('invalid submit flows DataAnnotations into summary, inline alerts, and ARIA
 test('inline validation can be hidden without removing summary feedback or aria-invalid', async ({ page }) => {
   await page.goto('/components/form-field');
 
-  await page.getByLabel('Inline validation').uncheck();
+  await setCheckbox(page.getByLabel('Inline validation'), false);
   await page.getByRole('button', { name: 'Save profile' }).click();
 
   await expect(page.getByTestId('validation-summary')).toContainText('Full name is required.');
@@ -82,7 +83,7 @@ test('form actions support reset, sticky state, and disabled inputs', async ({ p
 
   const actions = page.getByTestId('form-actions');
   await expect(actions).not.toHaveClass(/form-actions--sticky/);
-  await page.getByLabel('Sticky actions').check();
+  await setCheckbox(page.getByLabel('Sticky actions'), true);
   await expect(actions).toHaveClass(/form-actions--sticky/);
 
   await page.getByLabel('Full name').fill('Grace Hopper');
@@ -90,7 +91,7 @@ test('form actions support reset, sticky state, and disabled inputs', async ({ p
   await expect(page.getByLabel('Full name')).toHaveValue('');
   await expect(page.getByTestId('submit-status')).toHaveText('Form reset.');
 
-  await page.getByLabel('Disabled form inputs').check();
+  await setCheckbox(page.getByLabel('Disabled form inputs'), true);
   await expect(page.getByLabel('Full name')).toBeDisabled();
   await expect(page.getByLabel('Email')).toBeDisabled();
   await expect(page.getByRole('button', { name: 'Save profile' })).toBeDisabled();

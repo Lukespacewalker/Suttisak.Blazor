@@ -83,9 +83,8 @@
 .component-detail__usage [role="status"] { color: var(--app-foreground-muted); font-size: .7rem; }
 .component-detail__controls { display: grid; gap: .8rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .component-detail__controls > span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.component-detail__controls label { display: grid; gap: .35rem; color: var(--app-foreground-muted); font-size: .7rem; font-weight: 700; }
+.component-detail__controls label:not(.app-choice) { display: grid; gap: .35rem; color: var(--app-foreground-muted); font-size: .7rem; font-weight: 700; }
 .component-detail__controls input:not([type=checkbox]), .component-detail__controls select { width: 100%; box-sizing: border-box; padding: .52rem .58rem; border: 1px solid var(--app-border); border-radius: .5rem; background: var(--app-background); color: var(--app-foreground); font: inherit; }
-.component-detail__controls .component-detail__check { display: flex; gap: .5rem; align-items: center; }
 .component-detail__states, .component-detail__quality-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
 .component-detail__states article, .component-detail__quality-grid article { display: grid; align-content: start; gap: .8rem; min-height: 7rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .75rem; background: var(--app-surface); }
 .component-detail__states article > span { color: var(--app-foreground-muted); font-size: .65rem; font-weight: 750; }

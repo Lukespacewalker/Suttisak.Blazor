@@ -15,8 +15,17 @@
 			{
 				<div class="external-login-option">
 					<AppButton Type="submit" Name="provider" Value="@provider.Name" Title="@string.Format(ExternalLoginPicker_razor.LoginTitle, provider.DisplayName)">
-						<img slot="start" style="width:20px" src="@_providerIcons.GetValueOrDefault(provider.Name)?" alt=""/>
-						@provider.DisplayName
+						<IconStartContent>
+							@if (_providerIcons.GetValueOrDefault(provider.Name) is { } iconUrl)
+							{
+								<img width="20" height="20" src="@iconUrl" alt="" />
+							}
+							else
+							{
+								<Suttisak.Blazor.Icons.Icon Name="Person" Size="20" />
+							}
+						</IconStartContent>
+						<ChildContent>@provider.DisplayName</ChildContent>
 					</AppButton>
 					@if (ProviderDescriptions?.GetValueOrDefault(provider.Name) is { } description)
 					{
@@ -38,7 +47,7 @@
 		base.OnInitialized();
 		_providerIcons = new()
 		{
-			{"Microsoft", Assets["/_content/Suttisak.Blazor.Identity/images/icons/icons8-microsoft-50.webp"]},
+			{"Microsoft", Assets["/_content/Suttisak.Blazor.Identity/images/icons/microsoft.svg"]},
 			{"Google", Assets["/_content/Suttisak.Blazor.Identity/images/icons/icons8-google-48.webp"]},
 			{"Facebook", Assets["/_content/Suttisak.Blazor.Identity/images/icons/icons8-facebook-48.webp"]},
 			{"X", Assets["/_content/Suttisak.Blazor.Identity/images/icons/icons8-x-48.webp"]}
