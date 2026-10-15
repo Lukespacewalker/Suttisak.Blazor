@@ -70,6 +70,24 @@ interaction also work during static server rendering.
 Keep nesting to one submenu level. For sibling views of the current record or
 person, use `SectionNavigation` instead.
 
+### Collapsed desktop shell
+
+`ApplicationShell` keeps a 64px icon rail when desktop navigation is collapsed.
+`NavItem` retains its native link, accessible name, badge information, and active
+state. Its visible label appears on hover or keyboard focus. Supply meaningful
+icons through `IconRestName` and `NavSubmenu.IconName`; missing icons receive a
+generic link or group icon so a destination never becomes a blank target.
+
+Activating a collapsed `NavSubmenu` opens a native popover with its heading and
+full child labels. Enter and Space open the branch; Escape closes it and restores
+focus to its trigger. Outside activation also dismisses it. Expanded desktop
+navigation and the mobile drawer retain inline native `details` disclosures.
+Group labels remain available to assistive technology while separators replace
+their visible headings in the rail. Shell footer content remains available from
+an information button; localize `ApplicationShell.NavigationFooterLabel` in the
+consuming application. The desktop collapse preference does not shrink mobile
+navigation or hide its labels, preferences, or footer.
+
 ## SectionNavigation
 
 Use `SectionNavigation` inside an application page when the primary application

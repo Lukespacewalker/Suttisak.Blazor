@@ -311,6 +311,7 @@ public static class PlaybookPatternCatalog
             [
                 S("Use one main landmark", "Let ApplicationShell own the routed main landmark. Pages provide content inside it."),
                 S("Group destinations by task", "Compose NavGroup and NavItem labels from the user mental model, not the code namespace."),
+                S("Keep collapsed destinations visible", "Desktop collapse leaves a 64px icon rail. Hover or focus reveals labels; activate a branch to open its labelled flyout, and Escape returns focus to its trigger."),
                 S("Publish route context", "Provide breadcrumbs and one PageHeading for every routed workspace."),
                 S("Handle narrow screens", "Move navigation into the shell overlay while preserving destination and focus state.")
             ],
@@ -334,14 +335,16 @@ public static class PlaybookPatternCatalog
             [
                 Q("Accessibility", "Exactly one main landmark exists; navigation, menu buttons, profile controls, and route headings have stable names."),
                 Q("Responsive", "The mobile menu traps no focus, restores focus to its opener, and does not hide routed content from assistive technology."),
-                Q("Routing", "Active navigation and breadcrumb state follow the current URI and clear when the route changes.")
+                Q("Routing", "Active navigation and breadcrumb state follow the current URI and clear when the route changes."),
+                Q("Collapsed navigation", "Icon targets remain at least 44px; submenu and footer popovers stay inside the viewport. Mobile restores full labels independently of the desktop collapse state.")
             ],
             "application-shell",
             "View the application shell",
             [
                 E("Browser", "playbook.spec.mjs", "Exercises desktop collapse, mobile navigation, and application routes."),
                 E("Browser", "layout-infrastructure-contracts.spec.mjs", "Covers ApplicationShell and its slots."),
-                E("Browser", "navigation-workbench.spec.mjs", "Covers grouped and nested shared navigation behavior.")
+                E("Browser", "navigation-workbench.spec.mjs", "Covers grouped and nested shared navigation behavior."),
+                E("Browser", "navigation-rail.spec.mjs", "Exercises visible collapsed destinations, hover/focus labels, keyboard flyouts, footer access, and mobile restoration.")
             ]),
 
         new(

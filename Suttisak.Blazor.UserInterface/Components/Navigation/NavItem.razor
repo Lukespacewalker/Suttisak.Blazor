@@ -6,10 +6,14 @@
    aria-current="@(IsActive ? "page" : null)"
    href="@Href"
    @onclick="HandleClick">
-    <span class="nav-item__icon">
+    <span class="nav-item__icon" aria-hidden="true">
         @if (!string.IsNullOrWhiteSpace(DisplayIconName))
         {
             <Suttisak.Blazor.Icons.Icon Name="@DisplayIconName" Size="20" Variant="@(IsActive ? Suttisak.Blazor.Icons.IconVariant.Filled : Suttisak.Blazor.Icons.IconVariant.Regular)" />
+        }
+        else
+        {
+            <Suttisak.Blazor.Icons.Icon Name="Link" Size="20" />
         }
     </span>
     <span class="nav-item__label">@ChildContent</span>

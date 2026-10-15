@@ -1741,7 +1741,7 @@
       "category": "Navigation",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Single navigation destination with icon, label, active-state, and optional badge support.",
+      "summary": "Routed destination with an icon, accessible label, active state, and optional badge; collapsed shells retain an icon and hover/focus label.",
       "tags": [
         "navigation",
         "item"
@@ -1759,7 +1759,7 @@
       "category": "Navigation",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Expandable navigation branch that contains a nested set of destinations.",
+      "summary": "Native navigation disclosure that becomes a keyboard-accessible labelled flyout in a collapsed desktop shell.",
       "tags": [
         "navigation",
         "submenu"
@@ -2339,7 +2339,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Responsive application frame with mobile Escape dismissal, optional icon popovers for header preferences, and raw pickers in the mobile drawer; Nexora uses quiet utility controls.",
+      "summary": "Responsive application frame with a 64px collapsed desktop icon rail, labelled navigation flyouts, accessible footer information, and a full labelled mobile drawer.",
       "tags": [
         "layout",
         "application",
@@ -3318,6 +3318,10 @@
           "detail": "Compose NavGroup and NavItem labels from the user mental model, not the code namespace."
         },
         {
+          "title": "Keep collapsed destinations visible",
+          "detail": "Desktop collapse leaves a 64px icon rail. Hover or focus reveals labels; activate a branch to open its labelled flyout, and Escape returns focus to its trigger."
+        },
+        {
           "title": "Publish route context",
           "detail": "Provide breadcrumbs and one PageHeading for every routed workspace."
         },
@@ -3351,6 +3355,10 @@
         {
           "dimension": "Routing",
           "requirement": "Active navigation and breadcrumb state follow the current URI and clear when the route changes."
+        },
+        {
+          "dimension": "Collapsed navigation",
+          "requirement": "Icon targets remain at least 44px; submenu and footer popovers stay inside the viewport. Mobile restores full labels independently of the desktop collapse state."
         }
       ],
       "liveHref": "application-shell",
@@ -3370,6 +3378,11 @@
           "kind": "Browser",
           "source": "navigation-workbench.spec.mjs",
           "guarantee": "Covers grouped and nested shared navigation behavior."
+        },
+        {
+          "kind": "Browser",
+          "source": "navigation-rail.spec.mjs",
+          "guarantee": "Exercises visible collapsed destinations, hover/focus labels, keyboard flyouts, footer access, and mobile restoration."
         }
       ]
     },

@@ -90,7 +90,13 @@
             </div>
             @if (NavigationFooter is not null)
             {
-                <div class="app-shell__navigation-footer">@NavigationFooter</div>
+                <div class="app-shell__navigation-footer">
+                    <button class="app-shell__footer-trigger" type="button" data-rail-trigger
+                            aria-label="@NavigationFooterLabel" aria-controls="@FooterId" aria-expanded="false">
+                        <Suttisak.Blazor.Icons.Icon Name="Info" Size="20" />
+                    </button>
+                    <div id="@FooterId" class="app-shell__footer-content" data-rail-panel>@NavigationFooter</div>
+                </div>
             }
         </aside>
 
@@ -107,6 +113,7 @@
             <div class="app-shell__content">@ChildContent</div>
         </main>
     </div>
+    <div class="app-shell__rail-tooltip" popover="manual" aria-hidden="true"></div>
 </div>
 
 @code {
@@ -130,6 +137,7 @@
     [Parameter] public string CloseMenuLabel { get; set; } = "Close navigation";
     [Parameter] public string CollapseNavigationLabel { get; set; } = "Collapse navigation";
     [Parameter] public string ExpandNavigationLabel { get; set; } = "Expand navigation";
+    [Parameter] public string NavigationFooterLabel { get; set; } = "Navigation information";
     [Parameter] public string MobilePreferencesLabel { get; set; } = "Application preferences";
     [Parameter] public string MobileThemeLabel { get; set; } = "Theme";
     [Parameter] public string MobileAppearanceLabel { get; set; } = "Appearance";
@@ -142,6 +150,7 @@
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private string NavigationIdValue => NavigationId ?? _generatedNavigationId;
+    private string FooterId => $"{NavigationIdValue}-footer";
     private string SkipLinkHref => $"{NavigationManager.ToAbsoluteUri(NavigationManager.Uri).PathAndQuery}#{Uri.EscapeDataString(MainContentId)}";
     private Task FocusMainAsync() => _mainElement.FocusAsync().AsTask();
     private string CssClassValue => string.IsNullOrWhiteSpace(Class)

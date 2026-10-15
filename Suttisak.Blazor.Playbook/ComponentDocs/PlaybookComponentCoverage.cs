@@ -55,9 +55,9 @@ public static class PlaybookComponentCoverage
             ["ApplicationShell"] = Pattern(
                 "ApplicationShell owns skip navigation, the application header, primary aside, mobile scrim, and the page main landmark.",
                 "application-shell",
-                ["Coordinate header, navigation, responsive menu controls, skip link, heading slot, and main content.", "Keep desktop collapse and mobile containment semantics connected through stable IDs."],
+                ["Coordinate header, navigation, responsive menu controls, skip link, heading slot, and main content.", "Keep a 64px icon rail with hover/focus labels and native submenu/footer popovers on desktop; retain the full labelled mobile drawer."],
                 ["Brand, routes, navigation information architecture, profile, preferences, and page content."],
-                ["The /application-shell route exercises desktop and mobile navigation, focus, active routes, and breadcrumbs.", "nexora-responsive-workspace.spec.mjs exercises panel collapse, tablet navigation, search, sorting, selection, and editor focus at 768/1024/1440px."],
+                ["The /application-shell route exercises desktop and mobile navigation, focus, active routes, and breadcrumbs.", "navigation-rail.spec.mjs covers compact destinations, label tooltips, keyboard flyouts, footer access, and mobile restoration; nexora-responsive-workspace.spec.mjs covers the routed workspace at 768/1024/1440px."],
                 ["MainLayout", "Nav", "PageHeading"]),
             ["ApplicationPageHeading"] = Pattern(
                 "ApplicationPageHeading combines breadcrumbs with the heading content supplied by the page.",

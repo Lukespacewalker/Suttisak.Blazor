@@ -45,7 +45,8 @@ for (const mode of ['light', 'dark']) {
         await expect(toggle).toHaveAttribute('aria-label', 'Expand navigation');
         await expect(toggle).toHaveAttribute('aria-expanded', 'false');
         await expect(toggle.locator('.app-shell__panel-icon--expand')).toBeVisible();
-        await expect(shell.locator('.app-shell__navigation')).toBeHidden();
+        await expect(shell.locator('.app-shell__navigation')).toBeVisible();
+        await expect.poll(async () => Math.round((await shell.locator('.app-shell__navigation').boundingBox()).width)).toBe(64);
         await toggle.press('Enter');
         await expect(toggle).toHaveAttribute('aria-expanded', 'true');
         await expect(toggle.locator('.app-shell__panel-icon--contract')).toBeVisible();

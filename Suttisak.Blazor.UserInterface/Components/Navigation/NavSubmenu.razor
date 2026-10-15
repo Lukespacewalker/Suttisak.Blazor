@@ -1,9 +1,6 @@
 <details class="@CssClassValue" style="@Style" open="@Expanded" @attributes="AdditionalAttributes">
-    <summary class="nav-submenu__trigger">
-        @if (!string.IsNullOrWhiteSpace(IconName))
-        {
-            <span class="nav-submenu__icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@IconName" Size="20" Variant="@(Active ? Suttisak.Blazor.Icons.IconVariant.Filled : Suttisak.Blazor.Icons.IconVariant.Regular)" /></span>
-        }
+    <summary id="@TriggerId" class="nav-submenu__trigger" data-rail-trigger aria-controls="@PanelId">
+        <span class="nav-submenu__icon" aria-hidden="true"><Suttisak.Blazor.Icons.Icon Name="@(string.IsNullOrWhiteSpace(IconName) ? "Grid" : IconName)" Size="20" Variant="@(Active ? Suttisak.Blazor.Icons.IconVariant.Filled : Suttisak.Blazor.Icons.IconVariant.Regular)" /></span>
         <span class="nav-submenu__label">@Label</span>
         @if (!string.IsNullOrWhiteSpace(Badge))
         {
@@ -11,10 +8,15 @@
         }
         <span class="nav-submenu__chevron" aria-hidden="true"></span>
     </summary>
-    <div class="nav-submenu__items">@ChildContent</div>
+    <div id="@PanelId" class="nav-submenu__items" data-rail-panel aria-labelledby="@TriggerId">
+        <span class="nav-submenu__heading" aria-hidden="true">@Label</span>
+        @ChildContent
+    </div>
 </details>
 
 @code {
+    private readonly string TriggerId = $"nav-submenu-{Guid.NewGuid():N}";
+    private string PanelId => $"{TriggerId}-items";
     [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
     [Parameter] public string? IconName { get; set; }
     [Parameter] public string? Badge { get; set; }

@@ -17,6 +17,16 @@
         color: var(--app-foreground);
     }
 
+.nav-item:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-item, .nav-item__label, .nav-item__trailing { transition: none; }
+}
+
+@media (forced-colors: active) {
+    .nav-item--active { outline: 2px solid Highlight; outline-offset: -2px; }
+}
+
 .nav-item--active {
     color: var(--app-accent);
     background: var(--app-accent-soft);

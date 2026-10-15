@@ -1,6 +1,7 @@
 .app-shell {
     --app-shell-header-height: 4rem;
     --app-shell-navigation-width: 15.5rem;
+    --app-shell-navigation-rail-width: 4rem;
     position: relative;
     container: app-shell / inline-size;
     isolation: isolate;
@@ -98,8 +99,7 @@
     transition: grid-template-columns .24s cubic-bezier(.2, .75, .25, 1);
 }
 
-.app-shell__frame.is-desktop-collapsed { grid-template-columns: 0 minmax(0, 1fr); }
-.app-shell__frame.is-desktop-collapsed .app-shell__navigation { visibility: hidden; overflow: hidden; border-inline-end: 0; opacity: 0; transform: translateX(-1rem); }
+.app-shell__frame.is-desktop-collapsed { grid-template-columns: var(--app-shell-navigation-rail-width) minmax(0, 1fr); }
 
 .app-shell__navigation {
     position: sticky;
@@ -127,6 +127,73 @@
     color: var(--app-foreground-muted);
 }
 .app-shell__navigation-footer:empty { display: none; }
+.app-shell__footer-trigger { display: none; }
+.app-shell__footer-trigger:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+.app-shell__footer-content[popover] {
+    position: fixed;
+    inset: auto;
+    width: min(18rem, calc(100vw - 5.5rem));
+    max-height: calc(100dvh - 1rem);
+    box-sizing: border-box;
+    overflow: auto;
+    margin: 0;
+    padding: var(--app-space-4);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    box-shadow: var(--app-shadow-md);
+}
+.app-shell__rail-tooltip {
+    position: fixed;
+    inset: auto;
+    max-width: min(20rem, calc(100vw - 5.5rem));
+    box-sizing: border-box;
+    margin: 0;
+    padding: var(--app-space-2) var(--app-space-3);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-sm);
+    background: var(--app-foreground);
+    color: var(--app-background);
+    font-size: var(--app-type-sm);
+    overflow-wrap: anywhere;
+    box-shadow: var(--app-shadow-md);
+}
+
+@container app-shell (min-width: 48.001rem) {
+    .is-desktop-collapsed .app-shell__navigation-scroll { padding-inline: .5rem; scrollbar-width: none; }
+    .is-desktop-collapsed ::deep .nav-item:not([popover] .nav-item),
+    .is-desktop-collapsed ::deep .nav-submenu__trigger {
+        position: relative;
+        justify-content: center;
+        gap: 0;
+        min-height: 44px;
+        box-sizing: border-box;
+        padding: .75rem;
+    }
+    /* Keep names and badge information in the accessibility tree. */
+    .is-desktop-collapsed ::deep .nav-item:not([popover] .nav-item) .nav-item__label,
+    .is-desktop-collapsed ::deep .nav-item:not([popover] .nav-item) .nav-item__trailing,
+    .is-desktop-collapsed ::deep .nav-submenu__label,
+    .is-desktop-collapsed ::deep .nav-submenu__badge,
+    .is-desktop-collapsed ::deep .nav-group__label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+    .is-desktop-collapsed ::deep .nav-group + .nav-group { margin-top: var(--app-space-4); padding-top: var(--app-space-4); border-top: 1px solid var(--app-border); }
+    .is-desktop-collapsed ::deep .nav-submenu__chevron { position: absolute; right: .2rem; width: .25rem; height: .25rem; transform: rotate(-45deg); }
+    .is-desktop-collapsed ::deep .nav-submenu__items:not([popover]) { display: none; }
+    .is-desktop-collapsed ::deep .nav-submenu:has(.nav-item--active) > .nav-submenu__trigger { color: var(--app-accent); background: var(--app-accent-soft); box-shadow: inset 3px 0 0 var(--app-accent); }
+    .is-desktop-collapsed .app-shell__navigation-footer { padding: .5rem; }
+    .is-desktop-collapsed .app-shell__footer-trigger { display: grid; width: 100%; min-height: 44px; place-items: center; border: 0; border-radius: var(--app-radius-sm); background: transparent; color: var(--app-foreground-muted); cursor: pointer; }
+    .is-desktop-collapsed .app-shell__footer-trigger:hover { background: var(--app-surface-hover); color: var(--app-foreground); }
+    .is-desktop-collapsed .app-shell__footer-content:not([popover]) { display: none; }
+}
 
 .app-shell__main { position: relative; z-index: 1; min-width: 0; outline: none; }
 .app-shell__main:focus-visible { box-shadow: inset 0 0 0 2px var(--app-accent); }
@@ -200,4 +267,6 @@
 @media (forced-colors: active) {
     .app-shell__header,
     .app-shell__navigation { background: Canvas; }
+    .app-shell__rail-tooltip,
+    .app-shell__footer-content[popover] { background: Canvas; color: CanvasText; }
 }
