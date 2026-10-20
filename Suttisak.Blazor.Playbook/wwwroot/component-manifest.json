@@ -1759,7 +1759,7 @@
       "category": "Navigation",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Native navigation disclosure that becomes a keyboard-accessible labelled flyout in a collapsed desktop shell.",
+      "summary": "Native navigation disclosure with guided inline hierarchy, 44px child targets, distinct hover and selected states, and a labelled flyout in a collapsed desktop shell.",
       "tags": [
         "navigation",
         "submenu"

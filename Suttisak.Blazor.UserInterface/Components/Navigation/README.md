@@ -70,6 +70,13 @@ interaction also work during static server rendering.
 Keep nesting to one submenu level. For sibling views of the current record or
 person, use `SectionNavigation` instead.
 
+Inline children use an indented guide with short connectors and at least 44px
+targets. Hover uses the neutral surface token; selection keeps the accent fill
+and a stronger label, including while hovered. Child destinations omit the
+top-level active strip so the hierarchy stays clear. The collapsed rail marks
+the active parent, while its flyout separates the group heading from the child
+destinations. Colors continue to follow the consuming application's theme.
+
 ### Collapsed desktop shell
 
 `ApplicationShell` keeps a 64px icon rail when desktop navigation is collapsed.

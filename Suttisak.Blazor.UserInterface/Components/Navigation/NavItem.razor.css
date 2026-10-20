@@ -27,10 +27,12 @@
     .nav-item--active { outline: 2px solid Highlight; outline-offset: -2px; }
 }
 
-.nav-item--active {
+.nav-item--active,
+.nav-item--active:hover {
     color: var(--app-accent);
     background: var(--app-accent-soft);
     box-shadow: inset 3px 0 0 var(--app-accent);
+    font-weight: 700;
 }
 
 .nav-item__icon,

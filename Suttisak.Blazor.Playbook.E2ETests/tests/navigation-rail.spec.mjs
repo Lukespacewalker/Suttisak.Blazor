@@ -62,6 +62,8 @@ test('collapsed navigation preserves footer access and restores full mobile labe
   await navigation.locator('.nav-submenu__trigger').click();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator('[data-shell-action="mobile"]').click();
+  await expect.poll(async () => (await navigation.boundingBox()).x).toBeGreaterThanOrEqual(0);
+  await expect(navigation.getByRole('link', { name: 'Overview', exact: true })).toBeInViewport();
   await expect(navigation.locator('.nav-item__label').filter({ hasText: 'Overview' })).toBeVisible();
   await expect(navigation.getByText('All systems ready', { exact: true })).toBeVisible();
   await expect(footer).toBeHidden();

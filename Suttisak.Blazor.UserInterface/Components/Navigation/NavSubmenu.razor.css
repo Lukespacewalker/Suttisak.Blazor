@@ -11,10 +11,10 @@
     align-items: center;
     gap: .65rem;
     padding: .58rem .7rem;
-    border-radius: .55rem;
+    border-radius: var(--app-radius-md);
     color: var(--app-foreground-muted);
-    font-size: .82rem;
-    font-weight: 720;
+    font-size: var(--app-type-sm);
+    font-weight: 600;
     cursor: pointer;
     list-style: none;
     transition: background-color .16s ease, color .16s ease;
@@ -33,13 +33,15 @@
 
 .nav-submenu__items {
     display: grid;
-    gap: .12rem;
-    margin: .25rem 0 .45rem 1.05rem;
-    padding: .35rem 0 .35rem .75rem;
-    border-inline-start: 2px solid var(--app-accent-border);
+    gap: var(--app-space-1);
+    margin: var(--app-space-1) 0 var(--app-space-2) var(--app-space-4);
+    padding: var(--app-space-1) 0 var(--app-space-1) var(--app-space-3);
+    border-inline-start: 1px solid var(--app-border);
 }
 
-.nav-submenu__items ::deep .nav-item { min-height: 2.25rem; padding: .48rem .55rem; border-radius: .45rem; font-size: .74rem; }
+.nav-submenu__items ::deep .nav-item { position: relative; min-height: 44px; box-sizing: border-box; gap: var(--app-space-2); padding: var(--app-space-2); border-radius: var(--app-radius-md); font-size: var(--app-type-sm); }
+.nav-submenu__items ::deep .nav-item::before { content: ""; position: absolute; inset-inline-start: calc(-1 * var(--app-space-3)); top: 50%; width: var(--app-space-3); height: 1px; background: var(--app-border); }
+.nav-submenu__items ::deep .nav-item__label { white-space: normal; overflow-wrap: anywhere; }
 .nav-submenu__items ::deep .nav-item--active { box-shadow: none; }
 .nav-submenu__heading { display: none; }
 
@@ -59,9 +61,8 @@
     box-shadow: var(--app-shadow-md);
 }
 .nav-submenu__items[popover]:not(:popover-open) { display: none; }
-.nav-submenu__items[popover] .nav-submenu__heading { display: block; padding: .5rem .55rem; font-weight: 750; overflow-wrap: anywhere; }
-.nav-submenu__items[popover] ::deep .nav-item { min-height: 44px; box-sizing: border-box; font-size: .83rem; }
-.nav-submenu__items[popover] ::deep .nav-item__label { white-space: normal; overflow-wrap: anywhere; }
+.nav-submenu__items[popover] .nav-submenu__heading { display: block; margin-block-end: var(--app-space-1); padding: var(--app-space-2) var(--app-space-2) var(--app-space-3); border-bottom: 1px solid var(--app-border); font-weight: 750; overflow-wrap: anywhere; }
+.nav-submenu__items[popover] ::deep .nav-item::before { content: none; }
 
 @media (prefers-reduced-motion: reduce) {
     .nav-submenu__trigger,

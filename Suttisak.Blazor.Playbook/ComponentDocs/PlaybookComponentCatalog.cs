@@ -99,7 +99,7 @@ public static class PlaybookComponentCatalog
             ["Nav"] = "Primary application navigation container with responsive open and collapsed state coordination.",
             ["NavGroup"] = "Labelled navigation group for organizing related application destinations.",
             ["NavItem"] = "Routed destination with an icon, accessible label, active state, and optional badge; collapsed shells retain an icon and hover/focus label.",
-            ["NavSubmenu"] = "Native navigation disclosure that becomes a keyboard-accessible labelled flyout in a collapsed desktop shell.",
+            ["NavSubmenu"] = "Native navigation disclosure with guided inline hierarchy, 44px child targets, distinct hover and selected states, and a labelled flyout in a collapsed desktop shell.",
             ["SectionNavigation"] = "Local section navigation for switching views within one application workspace.",
             ["MobileNavigationAccount"] = "Mobile account region that brings identity and preferences into the navigation surface.",
             ["ProfileMenu"] = "Authenticated profile disclosure with account context, preferences, and sign-out action.",

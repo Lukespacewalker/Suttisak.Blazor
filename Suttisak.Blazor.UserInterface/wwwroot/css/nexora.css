@@ -126,7 +126,7 @@
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .nav-item--active {
     background: var(--app-accent-soft);
     color: var(--app-accent);
-    box-shadow: inset 3px 0 0 var(--app-accent);
+    font-weight: 700;
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-page__intro {

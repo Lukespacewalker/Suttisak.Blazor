@@ -229,7 +229,7 @@
         transition: transform .22s cubic-bezier(.2, .75, .25, 1);
     }
 
-    .app-shell__navigation.is-open { transform: translateX(0); }
+    .app-shell__frame .app-shell__navigation.is-open { transform: translateX(0); }
 
     .app-shell__scrim.is-visible {
         position: sticky;
