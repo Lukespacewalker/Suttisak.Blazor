@@ -31,8 +31,13 @@ for (const mode of ['light', 'dark']) {
     const colors = new Set();
     for (const theme of ['audiogramiq', 'bafsworkout', 'coekpi', 'ergotrack', 'mentalinsight', 'healthinsight']) {
       await page.getByLabel('Application', { exact: true }).selectOption(theme);
+      await expect(page.locator('.playbook').first()).toHaveClass(new RegExp(`\\btheme-${theme}\\b`));
       const button = page.locator('.component-detail__preview-frame .app-button--primary').first();
       await expect(button).toBeVisible();
+      await button.evaluate(element => {
+        getComputedStyle(element).backgroundColor;
+        return Promise.all(element.getAnimations().filter(animation => animation.effect.getTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})));
+      });
       colors.add(await button.evaluate(el => getComputedStyle(el).backgroundColor));
       await expect(page.locator('.playbook').first()).toHaveCSS('background-color', mode === 'light' ? 'rgb(245, 242, 235)' : 'rgb(28, 27, 24)');
       expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);

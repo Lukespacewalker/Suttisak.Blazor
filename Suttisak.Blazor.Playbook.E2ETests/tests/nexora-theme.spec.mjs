@@ -143,8 +143,12 @@ for (const mode of ['light', 'dark']) {
     const image = layout.locator('picture img');
     await expect(image).toBeVisible();
     expect(await image.evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
-    const pictureBox = await image.boundingBox();
-    const panelBox = await layout.locator('.access-page-layout__showcase').boundingBox();
+    await page.evaluate(() => document.fonts.ready);
+    const { pictureBox, panelBox } = await layout.evaluate(element => {
+      const picture = element.querySelector('picture img').getBoundingClientRect();
+      const panel = element.querySelector('.access-page-layout__showcase').getBoundingClientRect();
+      return { pictureBox: { width: picture.width, height: picture.height }, panelBox: { width: panel.width, height: panel.height } };
+    });
     expect(pictureBox.width).toBeCloseTo(panelBox.width, 0);
     expect(pictureBox.height).toBeCloseTo(panelBox.height, 0);
     await layout.getByLabel('Username', { exact: true }).focus();

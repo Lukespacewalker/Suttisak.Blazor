@@ -64,7 +64,12 @@
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell__content {
+    padding-inline: var(--app-space-4);
     padding-block-end: calc(clamp(1rem, 2vw, 1.5rem) + env(safe-area-inset-bottom, 0px));
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell__page-heading {
+    padding: var(--app-space-3) var(--app-space-4);
 }
 
 /* Utility controls recede behind the page task. Selection and keyboard focus
@@ -145,11 +150,11 @@
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .page-heading__body {
     align-items: flex-start;
-    padding: .4rem 0 .75rem;
+    padding: var(--app-space-1) 0 var(--app-space-2);
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .page-heading__section {
-    padding: .1rem 0 .65rem;
+    padding: 0 0 var(--app-space-1);
     border-bottom: 0;
     background: transparent;
 }
@@ -192,7 +197,7 @@
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .application-page-heading__breadcrumbs {
-    padding: .1rem 0 .65rem;
+    padding: 0 0 var(--app-space-1);
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -228,6 +233,31 @@
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-card:not(.is-active):not(:hover), .glass-card, .app-grid-shell, .experience-card:not(:hover)) {
     border-color: var(--nexora-surface-border);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-card {
+    padding: clamp(var(--app-space-3), 2cqi, var(--app-space-4));
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-card__header {
+    gap: var(--app-space-3);
+    margin-bottom: var(--app-space-3);
+    padding-bottom: var(--app-space-2);
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-card__footer {
+    margin-top: var(--app-space-3);
+    padding-top: var(--app-space-2);
+}
+
+@container app-shell (max-width: 48rem) {
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell__page-heading {
+        padding: var(--app-space-2) var(--app-space-3);
+    }
+
+    :is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-shell__content {
+        padding-inline: var(--app-space-3);
+    }
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-card--interactive:hover, .card-menu:hover, .experience-card--interactive:hover) {
