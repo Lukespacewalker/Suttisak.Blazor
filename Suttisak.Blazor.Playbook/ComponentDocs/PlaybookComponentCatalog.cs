@@ -91,7 +91,7 @@ public static class PlaybookComponentCatalog
             ["StatusPanel"] = "Contained status explanation with optional visual, detail, and recovery actions.",
             ["StatusPage"] = "Full-page status composition with brand, heading, visual, actions, reference, and footer slots.",
             ["StatusRouteContent"] = "Route-aware status composition that resolves configured copy and actions for an HTTP status code.",
-            ["AppDialog"] = "Modal overlay with labelled content, focus management, and configurable dismissal behavior.",
+            ["AppDialog"] = "Modal overlay with labelled, scrollable content, an optional fixed footer, focus management, and configurable dismissal behavior.",
             ["AppDrawer"] = "Edge-aligned overlay panel for contained workflows that retain the underlying page context.",
             ["AppLogo"] = "Application-owned logo slot with a legacy static-asset image fallback.",
             ["AppTabs"] = "Keyboard-aware tab list that coordinates selection and associated panel content.",

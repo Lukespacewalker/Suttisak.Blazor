@@ -1,7 +1,7 @@
 .app-dialog { width: min(36rem, calc(100vw - 2rem)); max-height: min(44rem, calc(100dvh - 2rem)); padding: 0; border: 1px solid var(--app-border); border-radius: 1rem; background: transparent; color: var(--app-foreground); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / .28); overflow: hidden; }
 .app-dialog::backdrop { background: rgb(8 15 22 / .58); backdrop-filter: blur(3px); }
 .app-dialog[open] { animation: app-dialog-in 180ms cubic-bezier(.2, .8, .2, 1); }
-.app-dialog__surface { display: grid; max-height: inherit; background: var(--app-surface); }
+.app-dialog__surface { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: inherit; background: var(--app-surface); }
 .app-dialog__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.25rem 1rem; border-block-end: 1px solid var(--app-grid-line); }
 .app-dialog__heading { display: flex; min-width: 0; align-items: flex-start; gap: .75rem; }
 .app-dialog__heading h2 { margin: 0; color: var(--app-foreground); font-size: 1.15rem; line-height: 1.35; }

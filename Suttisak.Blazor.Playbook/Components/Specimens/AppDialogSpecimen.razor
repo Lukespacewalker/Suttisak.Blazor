@@ -9,15 +9,21 @@
             <AppDialog TInput="string" TResult="string" @ref="_dialog"
                        Title="@_title" Description="@_description"
                        Mode="@_mode" Dangerous="@_dangerous"
-                       Dismissible="@_dismissible" PreventDismissOnOutsideClick="@_preventOutsideDismiss">
+                       Dismissible="@_dismissible" PreventDismissOnOutsideClick="@_preventOutsideDismiss" Footer="@FooterContent">
                 <Body Context="dialog">
                     <p>Review <strong>@dialog.Value</strong> before continuing.</p>
+                    @if (_longContent)
+                    {
+                        @for (var i = 1; i <= 20; i++)
+                        {
+                            <p>Section @i: review the selected options and supporting information before confirming this action.</p>
+                        }
+                    }
+                    @if (!_showFooter)
+                    {
+                        <AppButton OnClick="@(_ => dialog.CancelAsync())">Close content</AppButton>
+                    }
                 </Body>
-                <Footer Context="dialog">
-                    <AppButton OnClick="@(_ => dialog.CancelAsync())">Cancel</AppButton>
-                    <AppButton Variant="@(_dangerous ? AppButtonVariant.Danger : AppButtonVariant.Primary)"
-                               OnClick="@(_ => ConfirmAsync(dialog))">Confirm</AppButton>
-                </Footer>
             </AppDialog>
         </div>
     </Preview>
@@ -28,6 +34,8 @@
         <AppCheckbox @bind-Value="_dangerous" Label="Dangerous" />
         <AppCheckbox @bind-Value="_dismissible" Label="Dismissible" />
         <AppCheckbox @bind-Value="_preventOutsideDismiss" Label="Prevent outside dismiss" />
+        <AppCheckbox @bind-Value="_longContent" Label="Long content" />
+        <AppCheckbox @bind-Value="_showFooter" Label="Show footer" />
     </Controls>
 </ComponentSpecimenLayout>
 
@@ -41,7 +49,15 @@
     private bool _dangerous;
     private bool _dismissible = true;
     private bool _preventOutsideDismiss;
+    private bool _longContent;
+    private bool _showFooter = true;
     private string? _lastResult;
+
+    private RenderFragment<AppOverlayContext<string, string>>? FooterContent => _showFooter ? dialog => @<text>
+        <AppButton OnClick="@(_ => dialog.CancelAsync())">Cancel</AppButton>
+        <AppButton Variant="@(_dangerous ? AppButtonVariant.Danger : AppButtonVariant.Primary)"
+                   OnClick="@(_ => ConfirmAsync(dialog))">Confirm</AppButton>
+    </text> : null;
 
     private async Task OpenAsync()
     {

@@ -1616,7 +1616,7 @@
       "category": "Overlays",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Modal overlay with labelled content, focus management, and configurable dismissal behavior.",
+      "summary": "Modal overlay with labelled, scrollable content, an optional fixed footer, focus management, and configurable dismissal behavior.",
       "tags": [
         "dialog",
         "modal",
