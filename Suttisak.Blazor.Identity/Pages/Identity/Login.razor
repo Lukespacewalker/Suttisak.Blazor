@@ -85,6 +85,8 @@
 
 		</div>
 
+		@CredentialsHelpContent
+
 		<div class="login-form-options">
 			<label class="login-remember-row" for="remember-me">
 				<input id="remember-me" name="@($"{LoginWithUsernameFormName}.RememberMe")" type="checkbox"
@@ -151,6 +153,7 @@
 	[SupplyParameterFromQuery]
 	private string? ReturnUrl { get; set; }
 
+	protected virtual RenderFragment? CredentialsHelpContent => null;
 	protected virtual string RedirectUrl { get; set; } = "/";
 	protected virtual string UserNamePlaceholder { get; set; } = "";
 	protected virtual string PasswordPlaceholder { get; set; } = "";
