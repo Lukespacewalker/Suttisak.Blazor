@@ -319,13 +319,13 @@
     box-shadow: none;
 }
 
-:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:invalid)) .app-form-control__input-wrap {
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] :is(.app-form-control.has-error, .app-form-control:has(.app-form-control__input:invalid, [aria-invalid="true"])) .app-form-control__input-wrap {
     border-color: var(--app-danger);
     background: var(--app-danger-soft);
     box-shadow: none;
 }
 
-:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control:has(.modified.valid) .app-form-control__input-wrap {
+:is(:root, .app-appearance-scope)[data-appearance="quiet-luxury"] .app-form-control:has(.modified.valid):not(.has-error):not(:has(:invalid, [aria-invalid="true"])) .app-form-control__input-wrap {
     border-color: var(--app-success);
     background: var(--app-surface);
 }

@@ -106,7 +106,8 @@ textarea {
     --app-duration-normal: 220ms;
     --app-duration-slow: 420ms;
 
-    --app-page-padding-block: .75rem 1.5rem;
+    --app-page-padding-block-start: .75rem;
+    --app-page-padding-block: var(--app-page-padding-block-start) 1.5rem;
     --app-page-padding-inline: 1.5rem;
     --app-page-gap: var(--app-space-4);
     --app-content-max-width: none;
@@ -217,7 +218,8 @@ samp {
     max-width: var(--app-content-max-width);
     min-width: 0;
     min-height: 0;
-    padding: var(--app-page-padding-block) var(--app-page-padding-inline);
+    padding-block: var(--app-page-padding-block);
+    padding-inline: var(--app-page-padding-inline);
     outline: none;
 }
 
@@ -237,7 +239,8 @@ samp {
     flex-direction: column;
     gap: .35rem;
     min-width: 0;
-    margin: calc(-1 * var(--app-page-padding-block)) calc(-1 * var(--app-page-padding-inline)) 0;
+    margin-block: calc(-1 * var(--app-page-padding-block-start)) 0;
+    margin-inline: calc(-1 * var(--app-page-padding-inline));
     padding: .8rem var(--app-page-padding-inline) .9rem;
     border-bottom: 1px solid var(--app-border);
     background:
@@ -353,7 +356,7 @@ samp {
 
 @media (max-width: 48rem) {
     :root {
-        --app-page-padding-block: .75rem 1rem;
+        --app-page-padding-block: var(--app-page-padding-block-start) 1rem;
         --app-page-padding-inline: .75rem;
         --app-page-gap: .75rem;
     }

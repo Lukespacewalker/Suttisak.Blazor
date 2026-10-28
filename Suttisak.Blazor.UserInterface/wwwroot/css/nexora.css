@@ -231,6 +231,10 @@
     backdrop-filter: none;
 }
 
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .experience-card--elevated {
+    box-shadow: var(--app-shadow-md);
+}
+
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] :is(.app-card:not(.is-active):not(:hover), .glass-card, .app-grid-shell, .experience-card:not(:hover)) {
     border-color: var(--nexora-surface-border);
 }
@@ -338,7 +342,7 @@
     outline-color: var(--app-danger);
 }
 
-:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control:has(.modified.valid) .app-form-control__input-wrap {
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .app-form-control:has(.modified.valid):not(.has-error):not(:has(:invalid, [aria-invalid="true"])) .app-form-control__input-wrap {
     border-color: var(--app-success);
     background: var(--app-success-soft);
 }
