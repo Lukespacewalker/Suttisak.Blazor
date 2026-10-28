@@ -31,7 +31,7 @@
 | `Suttisak.Blazor.UserInterface.Tests` | Fast bUnit contract tests |
 | `Suttisak.Blazor.Playbook.E2ETests` | Chromium, interaction, responsive, and axe accessibility regression coverage |
 
-The Playbook maintains a metadata-driven catalog of **96 public components**, each with a stable detail route. **79 components have interactive mappings across 26 distinct executable workbenches**, and a separate library teaches **8 first-class composition patterns**. Components that cannot be exercised honestly in isolation remain explicit **Pattern** or **Reference** coverage instead of receiving decorative fake demos.
+The Playbook maintains a metadata-driven public component catalog with stable detail routes, interactive workbenches, and composition patterns. The [generated manifest](Suttisak.Blazor.Playbook/wwwroot/component-manifest.json) records the current inventory. Components that need an application context have explicit **Pattern** or **Reference** coverage.
 
 ### Design principles
 
@@ -69,19 +69,18 @@ The Playbook exposes:
 - `/guidelines` for accessibility, theming, responsive behavior, and maturity rules
 - `/component-manifest.json` for agents and tooling
 
-The **Appearance** selector offers **Standard**, **Quiet Luxury**, and **Essential**.
-Quiet Luxury provides
-warm ivory or charcoal surfaces, restrained application-colored accents, subtle elevation,
-and serif typography for all headings, including component previews, with the
-existing Latin/Thai fonts for functional text. Heading typography follows the
-shared `--app-font-heading` token; this supersedes the earlier selective
-page-title overrides. Thai glyphs retain the Sarabun fallback.
+The **Appearance** selector offers **Standard**, **Quiet Luxury**, **Essential**,
+and **Nexora**. Nexora is the fallback when a host or saved browser preference
+does not select another appearance. Quiet Luxury provides warm ivory or charcoal
+surfaces, restrained application-colored accents, and subtle elevation. Heading
+typography follows `--app-font-heading`. Quiet Luxury supplies a serif heading
+stack with a Sarabun Thai fallback; hosts can override the appearance font contract.
 Try `/application-shell?appearance=quiet-luxury` or `/?appearance=quiet-luxury`.
 Appearance is independent of the six application identities, supports light,
 dark, and system mode, and follows constrained component previews. The earlier
-Playbook-only study is superseded by the shared appearance contract in UI 1.0.25:
-consumers can offer all three choices through `AppearanceSelector` or the shared
-layouts. See [consumer appearance setup](Suttisak.Blazor.UserInterface/README.md#appearance).
+Playbook-only study is superseded by the shared appearance contract. Applications
+can offer `AppearanceSelector` on a settings or preview surface; shared headers
+provide language and color-scheme controls. See [consumer appearance setup](Suttisak.Blazor.UserInterface/README.md#appearance).
 The earlier uniform bronze palette is superseded by explicit light/dark palettes
 for each application in `Suttisak.Blazor.Playbook/wwwroot/quiet-luxury.css`.
 Appearance controls neutral surfaces, typography, radius, and elevation; the
@@ -103,7 +102,7 @@ colors. Try `/application-shell/records?appearance=essential` or
 `/components/app-calendar-picker?appearance=essential`. Shared neutral overrides
 live in `Suttisak.Blazor.UserInterface/wwwroot/css/appearance.css`; the Playbook
 styles retain gallery-specific presentation. The same light/dark/system and
-isolated-preview controls apply to all three appearances.
+isolated-preview controls apply to all four appearances.
 
 ### Consume a package
 
@@ -111,8 +110,8 @@ Packages are currently distributed through GitHub Packages. Configure the GitHub
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="1.0.3" />
-  <PackageReference Include="Suttisak.Blazor.Identity" Version="0.9.1" />
+  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="1.0.39" />
+  <PackageReference Include="Suttisak.Blazor.Identity" Version="0.9.9" />
 </ItemGroup>
 ```
 
@@ -122,10 +121,14 @@ Feed:
 https://nuget.pkg.github.com/LukeSpacewalker/index.json
 ```
 
-Load the packaged CSS contract once in the host:
+Load the packaged CSS contract once in the host. Replace `MyApplication` with
+the host assembly name and keep appearance CSS after application and isolated styles:
 
 ```html
 <link href="_content/Suttisak.Blazor.UserInterface/css/main.css" rel="stylesheet" />
+<link href="app.css" rel="stylesheet" />
+<link href="MyApplication.styles.css" rel="stylesheet" />
+<link href="_content/Suttisak.Blazor.UserInterface/css/appearance.css" rel="stylesheet" />
 ```
 
 ### Compose shared UI
@@ -174,14 +177,11 @@ Applications retain ownership of product copy, routing decisions, branding, and 
 
 ## Component Playbook
 
-The Playbook has two first-class discovery surfaces driven by typed catalogs: the Component Browser explains reusable contracts, while the Pattern Library teaches how those contracts compose. The current verified inventory is:
-
-| Artifact | Count |
-|---|---:|
-| Catalogued public components | **93** |
-| Components with interactive mappings | **76** |
-| Distinct executable workbenches | **26** |
-| First-class composition patterns | **8** |
+The Playbook has two first-class discovery surfaces driven by typed catalogs:
+the Component Browser explains reusable contracts, while the Pattern Library
+teaches how those contracts compose. Read the generated manifest for the current
+component and pattern inventory; `PlaybookSpecimenRegistry` reports interactive
+mappings and distinct executable workbenches.
 
 These terms are deliberately separate:
 
@@ -222,7 +222,10 @@ _content/Suttisak.Blazor.UserInterface/css/main.css
 _content/Suttisak.Blazor.UserInterface/design-tokens.json
 ```
 
-The manifest currently contains **71 public tokens across 10 semantic groups**: identity, surfaces, content, feedback, font families, type scale, spacing, shape and elevation, motion, and layout. The `/tokens` page is generated from that manifest, and unit tests verify that it stays synchronized with the first public CSS declarations.
+The manifest groups public tokens into identity, surfaces, content, feedback,
+font families, type scale, spacing, shape and elevation, motion, and layout.
+The `/tokens` page is generated from that manifest, and unit tests verify that
+every token name and default stays synchronized with the public CSS declarations.
 
 Applications override semantic roles, preferably with explicit light and dark values:
 
