@@ -2,6 +2,7 @@
     <Preview>
         <div class="component-specimen__demo">
             <AsyncContent State="@_asyncState"
+                          Embedded="@_embedded"
                           LoadingTitle="Loading report"
                           LoadingMessage="Refreshing the latest occupational health data."
                           EmptyTitle="No report data"
@@ -45,6 +46,7 @@
                     <StatusPanel Title="@StatusTitle"
                                  Message="@StatusMessage"
                                  Compact="@_compact"
+                                 Embedded="@_embedded"
                                  Loading="@_statusLoading"
                                  Intent="@_intent" />
                 </section>
@@ -91,6 +93,7 @@
             <input type="number" min="0" max="100" step="5" value="@_progress" @oninput="ChangeProgress" />
         </label>
         <AppCheckbox @bind-Value="_compact" Label="Compact panels" />
+        <AppCheckbox @bind-Value="_embedded" Label="Embedded panels" />
         <AppCheckbox @bind-Value="_statusLoading" Label="Status loading" />
         <AppCheckbox @bind-Value="_circleSkeleton" Label="Circle skeleton" />
         <AppCheckbox @bind-Value="_shimmer" Label="Skeleton shimmer" />
@@ -115,6 +118,7 @@
     private FeedbackIntent _intent = FeedbackIntent.Info;
     private double _progress = 45;
     private bool _compact = true;
+    private bool _embedded;
     private bool _statusLoading;
     private bool _circleSkeleton;
     private bool _shimmer = true;

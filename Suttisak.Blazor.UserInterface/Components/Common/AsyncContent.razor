@@ -7,7 +7,7 @@
         }
         else
         {
-            <StatusPanel Loading="true" Title="@LoadingTitle" Message="@LoadingMessage" />
+            <StatusPanel Embedded="@Embedded" Loading="true" Title="@LoadingTitle" Message="@LoadingMessage" />
         }
         break;
     case AsyncContentState.Empty:
@@ -17,7 +17,7 @@
         }
         else
         {
-            <StatusPanel Title="@EmptyTitle" Message="@EmptyMessage" IconName="@EmptyIconName" IconSize="@EmptyIconSize" />
+            <StatusPanel Embedded="@Embedded" Title="@EmptyTitle" Message="@EmptyMessage" IconName="@EmptyIconName" IconSize="@EmptyIconSize" />
         }
         break;
     case AsyncContentState.Error:
@@ -27,7 +27,8 @@
         }
         else
         {
-            <StatusPanel Title="@ErrorTitle"
+            <StatusPanel Embedded="@Embedded"
+                         Title="@ErrorTitle"
                          Message="@ErrorMessage"
                          IconName="@ErrorIconName"
                          IconSize="@ErrorIconSize"
@@ -44,6 +45,8 @@
 
 @code {
     [Parameter] public AsyncContentState State { get; set; } = AsyncContentState.Ready;
+    /// <summary>Uses frameless default status panels; application-supplied state fragments remain application-owned.</summary>
+    [Parameter] public bool Embedded { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? LoadingContent { get; set; }
     [Parameter] public RenderFragment? EmptyContent { get; set; }

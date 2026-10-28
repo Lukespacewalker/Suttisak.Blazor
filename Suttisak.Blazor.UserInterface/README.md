@@ -13,6 +13,24 @@ See [`Components/Marketing/README.md`](Components/Marketing/README.md) for the M
 
 Agents editing this project must also follow [`AGENTS.md`](AGENTS.md).
 
+## Embedded feedback and customization (1.0.39)
+
+Use `StatusPanel Embedded="true"` or `AsyncContent Embedded="true"` inside an
+already framed container. Embedded default panels retain their headings,
+messages, live regions, and recovery actions while removing the extra surface,
+border, shadow, and standalone margins. Standalone presentation remains the
+default, and custom async-state fragments remain application-owned.
+`AppGridShell` uses embedded feedback automatically.
+
+Appearance styles preserve `ExperienceCard.Elevated` and give validation errors
+precedence over success when native browser constraints and model validation
+differ. `CardMenu.Style` can override padding without `!important`.
+
+Page spacing uses `padding-block` and `padding-inline`. Existing one- or two-value
+`--app-page-padding-block` overrides continue to set page padding. For the legacy
+`.app-page__intro` inset, hosts customizing the block-start padding should also
+set the single-valued `--app-page-padding-block-start`; its default is `.75rem`.
+
 ## Appearance
 
 The package includes **Standard**, **Essential**, **Quiet Luxury**, and **Nexora**. Appearance

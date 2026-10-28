@@ -1,5 +1,10 @@
 # Nexora spacing release
 
+Historical release record. The [2026-10-28 component quality release](2026-10-28-component-quality-release.md)
+supersedes the deployment method below for new changes: publish new library
+packages, update source package references, and release application versions.
+Do not reuse the historical CSS-only Docker-layer rollout for future updates.
+
 Goal: apply the approved compact working-page spacing to Nexora and release it to AudiogramIQ, BafsWorkout, HealthInsight, CoeKPI, ErgoTrack, and MentalInsight.
 
 Design: shell headings use 12px vertical / 16px horizontal padding on desktop and 8px / 12px in shells at most 48rem wide. Breadcrumb and section spacing use 4px bottom padding; the title body uses 4px top / 8px bottom. AppCard padding interpolates from 12px to 16px using 2cqi of the nearest eligible container, with smaller header/footer separators. Reuse application spacing tokens. Preserve other appearances, control hit areas, table geometry, access pages, and public APIs.

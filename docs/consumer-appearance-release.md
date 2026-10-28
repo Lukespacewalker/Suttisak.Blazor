@@ -1,6 +1,9 @@
 # Consumer appearance release handoff
 
-## Current release: Nexora default, UI 1.0.29
+For current work, follow the [2026-10-28 component quality release plan](superpowers/plans/2026-10-28-component-quality-release.md).
+The records below describe earlier releases and are retained as history.
+
+## Historical release: Nexora default, UI 1.0.29
 
 The user requested Nexora as the primary appearance and authorized publication
 and consumer integration on 2026-10-03. This supersedes Standard as the library

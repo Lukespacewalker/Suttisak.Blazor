@@ -1318,7 +1318,7 @@
       "category": "Data \u0026 display",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Grid framing surface that composes data controls, result context, and the table region.",
+      "summary": "Grid framing surface that composes data controls, result context, and the table region with embedded loading, empty, and error feedback.",
       "tags": [
         "grid",
         "shell",
@@ -1525,7 +1525,7 @@
       "category": "Feedback \u0026 async",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Asynchronous content boundary that switches between loading, success, empty, and failure states.",
+      "summary": "Asynchronous content boundary with standalone or embedded default status panels and application-owned state fragments.",
       "tags": [
         "async",
         "loading",
@@ -1559,7 +1559,7 @@
       "category": "Feedback \u0026 async",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Contained status explanation with optional visual, detail, and recovery actions.",
+      "summary": "Status explanation with optional visual, detail, and recovery actions; use Embedded inside an already framed container.",
       "tags": [
         "status",
         "feedback",

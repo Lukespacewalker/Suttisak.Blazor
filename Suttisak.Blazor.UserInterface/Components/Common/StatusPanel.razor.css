@@ -68,3 +68,14 @@
 }
 
 .status-panel--compact .status-panel__actions { justify-content: flex-start; }
+
+.status-panel--embedded {
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    padding: var(--app-space-4);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}

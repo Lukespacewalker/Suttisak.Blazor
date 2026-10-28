@@ -28,6 +28,8 @@
     [Parameter] public int IconSize { get; set; } = 24;
     [Parameter] public bool Loading { get; set; }
     [Parameter] public bool Compact { get; set; }
+    /// <summary>Removes the standalone surface when the status is inside an already framed container.</summary>
+    [Parameter] public bool Embedded { get; set; }
     [Parameter] public string Role { get; set; } = "status";
     [Parameter] public string AriaLive { get; set; } = "polite";
     [Parameter] public string? Variant { get; set; }
@@ -40,6 +42,7 @@
     {
         "status-panel",
         Compact ? "status-panel--compact" : null,
+        Embedded ? "status-panel--embedded" : null,
         Intent is not null
             ? $"status-panel--{Intent.Value.ToString().ToLowerInvariant()}"
             : string.IsNullOrWhiteSpace(Variant) ? null : $"status-panel--{Variant}",
