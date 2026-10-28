@@ -107,24 +107,24 @@
                                 <span class="person-completion person-completion--warning"><strong>2</strong> follow-ups</span>
                             </section>
                             <div class="person-results-grid">
-                                <article class="person-result-card person-result-card--attention">
+                                <AppCard Class="person-result-card person-result-card--attention" Style="border-color: var(--app-warning-border)" role="article">
                                     <div><span>HEARING</span><span class="demo-status demo-status--in-review">Follow up</span></div>
                                     <strong>Early high-frequency shift</strong>
                                     <p>A small change is present at 4-6 kHz in the left ear compared with the previous examination.</p>
                                     <footer><span>Recommended</span><b>Repeat audiometry in 3 months</b></footer>
-                                </article>
-                                <article class="person-result-card person-result-card--positive">
+                                </AppCard>
+                                <AppCard Class="person-result-card person-result-card--positive" Style="border-color: var(--app-success-border)" role="article">
                                     <div><span>VISION</span><span class="demo-status demo-status--complete">Within range</span></div>
                                     <strong>Vision requirements met</strong>
                                     <p>Distance, near vision, and color perception meet the current role requirements.</p>
                                     <footer><span>Next step</span><b>Continue annual surveillance</b></footer>
-                                </article>
-                                <article class="person-result-card">
+                                </AppCard>
+                                <AppCard Class="person-result-card" role="article">
                                     <div><span>FITNESS SUMMARY</span><span class="demo-status">Draft</span></div>
                                     <strong>Fit with follow-up</strong>
                                     <p>Work can continue. Complete the hearing follow-up before the next annual assessment.</p>
                                     <footer><span>Reviewed by</span><b>Dr. Narin · 13 Aug 2026</b></footer>
-                                </article>
+                                </AppCard>
                             </div>
                             break;
 
@@ -151,11 +151,11 @@
                                 <div><span>EXTENDED WORKSPACE</span><h2>@SectionTitle</h2><p>Fifteen sibling views are available through the section menu.</p></div>
                                 <span class="person-completion"><strong>15</strong> sections</span>
                             </section>
-                            <article class="person-overview-card">
+                            <AppCard Class="person-overview-card" role="article">
                                 <span class="person-card-label">ACTIVE DESTINATION</span>
                                 <h3>@SectionTitle</h3>
                                 <p>On desktop, frequent destinations remain visible and the other sections appear under More. On mobile, every destination appears in one section menu.</p>
-                            </article>
+                            </AppCard>
                             break;
 
                         default:
@@ -164,7 +164,7 @@
                                 <span class="person-completion"><strong>80%</strong> complete</span>
                             </section>
                             <div class="person-overview-grid">
-                                <article class="person-overview-card person-overview-card--identity">
+                                <AppCard Class="person-overview-card person-overview-card--identity" role="article">
                                     <span class="person-card-label">IDENTITY & VISIT</span>
                                     <dl>
                                         <div><dt>Employee ID</dt><dd>BAFS-01842</dd></div>
@@ -172,15 +172,15 @@
                                         <div><dt>Department</dt><dd>Airside Operations</dd></div>
                                         <div><dt>Role</dt><dd>Ground safety officer</dd></div>
                                     </dl>
-                                </article>
-                                <article class="person-overview-card person-overview-card--signal">
+                                </AppCard>
+                                <AppCard Class="person-overview-card person-overview-card--signal" role="article">
                                     <span class="person-card-label">CURRENT SIGNAL</span>
                                     <strong class="person-signal-value">2</strong>
                                     <h3>Items need follow-up</h3>
                                     <p>Hearing review and physician sign-off remain before completion.</p>
                                     <a href="application-shell/person/results">Review results →</a>
-                                </article>
-                                <article class="person-overview-card person-overview-card--timeline">
+                                </AppCard>
+                                <AppCard Class="person-overview-card person-overview-card--timeline" role="article">
                                     <span class="person-card-label">CHECKUP PROGRESS</span>
                                     <ol>
                                         <li class="is-complete"><i></i><div><strong>Registration</strong><small>08:20</small></div></li>
@@ -188,7 +188,7 @@
                                         <li class="is-current"><i></i><div><strong>Clinical review</strong><small>2 items pending</small></div></li>
                                         <li><i></i><div><strong>Final report</strong><small>Not generated</small></div></li>
                                     </ol>
-                                </article>
+                                </AppCard>
                             </div>
                             break;
                     }

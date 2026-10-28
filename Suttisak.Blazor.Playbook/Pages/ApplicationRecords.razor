@@ -29,13 +29,14 @@
                 <AppGridShell AriaLabel="Program records" SelectionActive="@(_selectedRecords.Count > 0)">
                     <Search>
                         <div class="demo-data-search" role="search">
-                            <Suttisak.Blazor.Icons.Icon Name="Search" Size="20" aria-hidden="true"  />
                             <AppTextBox Id="record-search"
                                         Type="search"
                                         aria-label="Search records"
                                         Placeholder="Search records…"
                                         Autocomplete="off"
-                                        @bind-Value="_searchText" />
+                                        @bind-Value="_searchText">
+                                <IconContent><Suttisak.Blazor.Icons.Icon Name="Search" Size="20" /></IconContent>
+                            </AppTextBox>
                             @if (!string.IsNullOrWhiteSpace(_searchText))
                             {
                                 <AppButton IconOnly="true" Variant="AppButtonVariant.Subtle" AriaLabel="Clear search" OnClick="@(_ => ClearSearch())">×</AppButton>

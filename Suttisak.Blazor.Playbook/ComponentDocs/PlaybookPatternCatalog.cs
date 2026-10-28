@@ -206,7 +206,7 @@ public static class PlaybookPatternCatalog
                 ["Responsive section geometry and shared reading widths", "Action variants, feature grids, proof strips, and step rhythm", "Skip-link and landmark plumbing inside MarketingPage"],
                 ["Product promise, claims, proof, and legal review", "Brand assets, image crops, destinations, and analytics", "Product preview contents and conversion behavior"]),
             """
-            <MarketingPage Id="product" SkipTarget="benefits">
+            <MarketingPage Id="product" SkipText="Skip to benefits" SkipTarget="benefits">
                 <MarketingHero Title="Understand the signal. Act with confidence."
                                Description="A summary of the result and the available next step.">
                     <Actions><MarketingActionLink Href="#benefits">View benefits</MarketingActionLink></Actions>
@@ -380,11 +380,13 @@ public static class PlaybookPatternCatalog
             """
             <AppGridShell AriaLabel="Program records">
                 <Search><AppTextBox Label="Search records" @bind-Value="Search" /></Search>
-                <ChildContent><AppGrid TGridItem="Record" Items="@FilteredRecords">...</AppGrid></ChildContent>
+                <ChildContent><AppGrid TGridItem="Record" Items="@FilteredRecords" Pagination="@Pagination">...</AppGrid></ChildContent>
                 <Pagination><AppGridPaginator State="@Pagination" /></Pagination>
             </AppGridShell>
 
             @code {
+                private readonly PaginationState Pagination = new() { ItemsPerPage = 10 };
+
                 private Task<AppOverlayResult<Record>> EditAsync() =>
                     OverlayService.ShowDrawerAsync<RecordEditor, Record>(
                         new AppOverlayOptions { Title = "Record editor", DrawerPosition = AppDrawerPosition.End });

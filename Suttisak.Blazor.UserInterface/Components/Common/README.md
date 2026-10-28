@@ -189,12 +189,12 @@ and form inputs so behavior and visual tokens remain consistent.
 
 ```razor
 <AppButton Variant="AppButtonVariant.Primary" OnClick="CreateParticipant">
-    <IconStart><Icon Name="Add" Size="20" /></IconStart>
+    <IconStartContent><Icon Name="Add" Size="20" /></IconStartContent>
     <ChildContent>Add participant</ChildContent>
 </AppButton>
 
 <AppButton Href="participants/export" Variant="AppButtonVariant.Secondary">
-    <IconStart><Icon Name="ArrowDownload" Size="20" /></IconStart>
+    <IconStartContent><Icon Name="ArrowDownload" Size="20" /></IconStartContent>
     <ChildContent>Export</ChildContent>
 </AppButton>
 
@@ -202,7 +202,7 @@ and form inputs so behavior and visual tokens remain consistent.
            Size="AppButtonSize.Compact"
            IconOnly="true"
            AriaLabel="Edit participant">
-    <IconStart><Icon Name="Edit" Size="20" /></IconStart>
+    <IconStartContent><Icon Name="Edit" Size="20" /></IconStartContent>
 </AppButton>
 ```
 
@@ -351,16 +351,27 @@ validation-message pipeline. Do not supply both bindings to one instance.
         </FormGrid>
     </FormSection>
     <FormActions>
-        <AppButton Type="ButtonType.Submit" Variant="AppButtonVariant.Primary">Save changes</AppButton>
+        <AppButton Type="submit" Variant="AppButtonVariant.Primary">Save changes</AppButton>
         <AppButton OnClick="Cancel">Cancel</AppButton>
     </FormActions>
 </EditForm>
 
-<FeedbackBanner Title="Changes saved"
-                Message="The participant record is up to date."
-                Intent="FeedbackIntent.Success"
-                Dismissible="true" />
+@if (showSavedBanner)
+{
+    <FeedbackBanner Title="Changes saved"
+                    Message="The participant record is up to date."
+                    Intent="FeedbackIntent.Success"
+                    Dismissible="true"
+                    OnDismiss="@(() => showSavedBanner = false)" />
+}
+
+@code {
+    private bool showSavedBanner;
+}
 ```
+
+After a successful `SaveAsync`, set `showSavedBanner = true`. The caller owns
+visibility; `OnDismiss` hides the banner by updating that state.
 
 Keep DataAnnotations on presentation/request models when that is convenient;
 domain entities and application commands do not need to reference UI validation
@@ -470,6 +481,12 @@ Use `FeedbackBanner` for contextual or dismissible page feedback and
 Use `FeedbackIntent.Error` for failed operations, `Warning` when work can
 continue with caution, `Success` for confirmed completion, and `Info` for
 neutral guidance.
+
+`StatusPanel` and `AsyncContent` accept `Embedded="true"` to present a state
+inside an existing surface without adding another card frame. The default is
+`false`, preserving their standalone presentation. `AppGridShell` uses embedded
+states automatically. Custom `LoadingContent`, `EmptyContent`, and `ErrorContent`
+fragments remain caller-owned, including their framing.
 
 The shared `css/main.css` establishes typography roles, responsive page
 padding, semantic state colors, reduced-motion behavior, and compatibility

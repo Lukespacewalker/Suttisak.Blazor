@@ -25,7 +25,7 @@ for (const mode of ['light', 'dark']) {
     await page.getByLabel('Application', { exact: true }).selectOption('audiogramiq');
     await page.getByRole('searchbox', { name: 'Search records', exact: true }).fill('Annual hearing');
     await expect(page.getByText('1 of 6 records', { exact: true })).toBeVisible();
-    await expect(page.locator('.demo-data-search')).toHaveCSS('outline-style', 'solid');
+    await expect(page.locator('.demo-data-search .app-form-control__input-wrap')).toHaveCSS('outline-style', 'solid');
     await page.getByRole('button', { name: 'Clear search', exact: true }).click();
     await expect(page.getByText('6 records', { exact: true })).toBeVisible();
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations).toEqual([]);

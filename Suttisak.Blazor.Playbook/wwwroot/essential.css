@@ -8,8 +8,8 @@
 
 .playbook[data-appearance="essential"] :is(.page-heading, .component-detail__lab, .component-detail__preview-frame,
     .component-detail__controls, .component-detail__isolated-stage, .component-detail__isolated-frame,
-    .component-detail__documentation, .app-card, .app-grid-shell, .glass-card, .demo-overview-card,
-    .demo-data-panel, .playbook-home__signal, .playbook-stack) {
+    .component-detail__documentation, .app-card, .app-grid-shell, .glass-card,
+    .playbook-home__signal, .playbook-stack) {
     border-color: var(--app-border);
     border-radius: var(--app-radius-lg);
     box-shadow: none;
@@ -27,25 +27,6 @@
 .playbook[data-appearance="essential"] :is(.app-button, .playbook-home__actions a, .playbook-brand span) {
     border-radius: var(--app-radius-sm);
     font-weight: 600;
-    box-shadow: none;
-}
-
-.playbook[data-appearance="essential"] .demo-data-search {
-    height: auto;
-    border-color: var(--essential-input-border);
-    border-radius: var(--app-radius-sm);
-    background: var(--app-surface);
-}
-
-.playbook[data-appearance="essential"] .demo-data-search .app-form-control__input-wrap {
-    border: 0;
-    outline: none;
-    box-shadow: none;
-}
-
-.playbook[data-appearance="essential"] .demo-data-search:focus-within {
-    outline: 2px solid var(--app-focus-ring);
-    outline-offset: 2px;
     box-shadow: none;
 }
 
