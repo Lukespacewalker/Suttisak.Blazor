@@ -46,8 +46,8 @@
                              IconName="KeyMultiple">
             <Badge><IdentityStatusBadge Tone="success">@Text["Enabled"]</IdentityStatusBadge></Badge>
             <Actions>
-                <a class="identity-card-action" href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes">@TwoFactorAuthentication_razor.ResetRecoveryCodes</a>
-                <a class="identity-card-action identity-card-action--danger" href="@IdentityRoutes.Account.Manage.DisableTwoFactorAuthentication">@TwoFactorAuthentication_razor.Disable2FA</a>
+                <AppButton Href="@IdentityRoutes.Account.Manage.GenerateRecoveryCodes" Variant="AppButtonVariant.Secondary">@TwoFactorAuthentication_razor.ResetRecoveryCodes</AppButton>
+                <AppButton Href="@IdentityRoutes.Account.Manage.DisableTwoFactorAuthentication" Variant="AppButtonVariant.Danger">@TwoFactorAuthentication_razor.Disable2FA</AppButton>
             </Actions>
         </IdentitySettingCard>
 
@@ -70,10 +70,10 @@
                          IconName="Phone">
         <Badge><IdentityStatusBadge Tone="@(_hasAuthenticator ? "success" : "warning")">@(_hasAuthenticator ? Text["Enabled"] : Text["NotConfigured"])</IdentityStatusBadge></Badge>
         <Actions>
-            <a class="identity-card-action" href="@IdentityRoutes.Account.Manage.EnableAuthenticator">@(_hasAuthenticator ? TwoFactorAuthentication_razor.SetupAuthenticatorApp : TwoFactorAuthentication_razor.AddAuthenticatorApp)</a>
+            <AppButton Href="@IdentityRoutes.Account.Manage.EnableAuthenticator" Variant="AppButtonVariant.Secondary">@(_hasAuthenticator ? TwoFactorAuthentication_razor.SetupAuthenticatorApp : TwoFactorAuthentication_razor.AddAuthenticatorApp)</AppButton>
             @if (_hasAuthenticator)
             {
-                <a class="identity-card-action" href="@IdentityRoutes.Account.Manage.ResetAuthenticator">@TwoFactorAuthentication_razor.ResetAuthenticatorApp</a>
+                <AppButton Href="@IdentityRoutes.Account.Manage.ResetAuthenticator" Variant="AppButtonVariant.Secondary">@TwoFactorAuthentication_razor.ResetAuthenticatorApp</AppButton>
             }
         </Actions>
     </IdentitySettingCard>

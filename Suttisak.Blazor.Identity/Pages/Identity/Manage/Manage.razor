@@ -19,41 +19,41 @@
                              Description="@Text["EmailDescription"]"
                              IconName="Mail">
             <Badge><IdentityStatusBadge Tone="@(_isEmailConfirmed ? "success" : "warning")">@(_isEmailConfirmed ? Text["Verified"] : Text["NotVerified"])</IdentityStatusBadge></Badge>
-            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.Email">@Text["ManageAction"]</a></Actions>
+            <Actions><AppButton Href="@IdentityRoutes.Account.Manage.Email" Variant="AppButtonVariant.Secondary">@Text["ManageAction"]</AppButton></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.ChangePassword"
                              Description="@Text["PasswordDescription"]"
                              IconName="Password">
             <Badge><IdentityStatusBadge Tone="@(_hasPassword ? "success" : "warning")">@(_hasPassword ? Text["PasswordSet"] : Text["NoPassword"])</IdentityStatusBadge></Badge>
-            <Actions><a class="identity-card-action" href="@(_hasPassword ? IdentityRoutes.Account.Manage.ChangePassword : IdentityRoutes.Account.Manage.SetPassword)">@Text["ManageAction"]</a></Actions>
+            <Actions><AppButton Href="@(_hasPassword ? IdentityRoutes.Account.Manage.ChangePassword : IdentityRoutes.Account.Manage.SetPassword)" Variant="AppButtonVariant.Secondary">@Text["ManageAction"]</AppButton></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.TwoFactorAuthentication"
                              Description="@Text["TwoFactorDescription"]"
                              IconName="KeyMultiple">
             <Badge><IdentityStatusBadge Tone="@(_is2FaEnabled ? "success" : "warning")">@(_is2FaEnabled ? Text["Enabled"] : Text["NotConfigured"])</IdentityStatusBadge></Badge>
-            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication">@Text["ManageAction"]</a></Actions>
+            <Actions><AppButton Href="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" Variant="AppButtonVariant.Secondary">@Text["ManageAction"]</AppButton></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.Passkeys"
                              Description="@Text["PasskeysDescription"]"
                              IconName="PersonPasskey">
             <Badge><IdentityStatusBadge Tone="@(_passkeyCount > 0 ? "success" : "neutral")">@string.Format(Text["PasskeyCount"], _passkeyCount)</IdentityStatusBadge></Badge>
-            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.Passkeys">@Text["ManageAction"]</a></Actions>
+            <Actions><AppButton Href="@IdentityRoutes.Account.Manage.Passkeys" Variant="AppButtonVariant.Secondary">@Text["ManageAction"]</AppButton></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.ExternalLogins"
                              Description="@Text["ExternalLoginsDescription"]"
                              IconName="GlobeSurface">
             <Badge><IdentityStatusBadge>@string.Format(Text["ExternalLoginCount"], _externalLoginCount)</IdentityStatusBadge></Badge>
-            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.ExternalLogins">@Text["ManageAction"]</a></Actions>
+            <Actions><AppButton Href="@IdentityRoutes.Account.Manage.ExternalLogins" Variant="AppButtonVariant.Secondary">@Text["ManageAction"]</AppButton></Actions>
         </IdentitySettingCard>
 
         <IdentitySettingCard Title="@Manage_razor.PersonalData"
                              Description="@Text["PersonalDataDescription"]"
                              IconName="DatabasePerson">
-            <Actions><a class="identity-card-action" href="@IdentityRoutes.Account.Manage.PersonalData">@Text["ManageAction"]</a></Actions>
+            <Actions><AppButton Href="@IdentityRoutes.Account.Manage.PersonalData" Variant="AppButtonVariant.Secondary">@Text["ManageAction"]</AppButton></Actions>
         </IdentitySettingCard>
     </div>
 </IdentityManageShell>

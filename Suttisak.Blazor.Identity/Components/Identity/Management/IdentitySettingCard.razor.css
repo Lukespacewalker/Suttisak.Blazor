@@ -18,11 +18,6 @@
 .identity-setting-card p { margin-top: .3rem; color: var(--app-foreground-muted); line-height: 1.5; }
 .identity-setting-card__details { margin-top: .6rem; color: var(--app-foreground-muted); font-size: .88rem; }
 .identity-setting-card__actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; }
-.identity-setting-card__actions ::deep .identity-card-action { display: inline-flex; align-items: center; justify-content: center; min-height: 2.15rem; padding: .35rem .7rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-sm); color: var(--app-foreground); font-size: var(--app-type-sm, .875rem); font-weight: 650; text-decoration: none; }
-.identity-setting-card__actions ::deep .identity-card-action:hover { background: var(--app-accent-soft); }
-.identity-setting-card__actions ::deep .identity-card-action:focus-visible { outline: none; }
-.identity-setting-card__actions ::deep .identity-card-action--danger { color: var(--app-danger); border-color: var(--app-danger-border); }
-.identity-setting-card__actions ::deep .identity-card-action--danger:hover { background: var(--app-danger-soft); }
 .identity-setting-card--danger { border-color: var(--app-danger-border); background: var(--app-danger-soft); }
 .identity-setting-card--danger .identity-setting-card__icon { color: var(--app-danger); background: var(--app-danger-soft); }
 @media (max-width: 600px) { .identity-setting-card { grid-template-columns: auto minmax(0, 1fr); } .identity-setting-card__actions { grid-column: 1 / -1; justify-content: stretch; } .identity-setting-card__actions ::deep .app-button, .identity-setting-card__actions ::deep a { flex: 1; } }

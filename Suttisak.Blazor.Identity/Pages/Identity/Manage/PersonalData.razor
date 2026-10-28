@@ -26,7 +26,7 @@
                          Description="@PersonalData_razor.Warning"
                          IconName="Delete"
                          CssClass="identity-setting-card--danger">
-        <Actions><a class="identity-card-action identity-card-action--danger" href="@IdentityRoutes.Account.Manage.DeletePersonalData">@PersonalData_razor.DeleteLink</a></Actions>
+        <Actions><AppButton Href="@IdentityRoutes.Account.Manage.DeletePersonalData" Variant="AppButtonVariant.Danger">@PersonalData_razor.DeleteLink</AppButton></Actions>
     </IdentitySettingCard>
 </div>
 

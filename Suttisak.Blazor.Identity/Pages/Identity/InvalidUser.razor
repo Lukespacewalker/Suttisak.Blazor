@@ -1,12 +1,7 @@
 <PageTitle>@InvalidUser_razor.PageTitle</PageTitle>
 
 <IdentityFlowPanel Title="@InvalidUser_razor.Header">
-    <StatusPanel Compact="true"
-                 Title="@InvalidUser_razor.Header"
-                 Intent="FeedbackIntent.Error"
-                 IconName="PersonDelete"
-                 Role="alert"
-                 AriaLive="assertive">
-        <Actions><StatusMessage /></Actions>
-    </StatusPanel>
+    <div role="alert" aria-live="assertive">
+        <StatusMessage />
+    </div>
 </IdentityFlowPanel>
