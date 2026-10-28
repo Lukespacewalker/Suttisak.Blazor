@@ -18,7 +18,7 @@ public sealed partial class DesignTokenContractTests
         Assert.Equal(1, manifest.SchemaVersion);
 
         var manifestTokens = manifest.Categories.SelectMany(category => category.Tokens).ToArray();
-        Assert.Equal(71, manifestTokens.Length);
+        Assert.Equal(72, manifestTokens.Length);
         Assert.Equal(manifestTokens.Length, manifestTokens.Select(token => token.Name).Distinct(StringComparer.Ordinal).Count());
 
         var cssTokens = new Dictionary<string, string>(StringComparer.Ordinal);

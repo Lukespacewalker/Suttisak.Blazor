@@ -104,8 +104,8 @@ test('packaged design-token manifest is complete and unique', async ({ request }
   expect(manifest.categories).toHaveLength(10);
 
   const tokens = manifest.categories.flatMap(category => category.tokens);
-  expect(tokens).toHaveLength(71);
-  expect(new Set(tokens.map(token => token.name)).size).toBe(71);
+  expect(tokens).toHaveLength(72);
+  expect(new Set(tokens.map(token => token.name)).size).toBe(72);
   expect(tokens.map(token => token.name)).toContain('--app-brand');
   expect(tokens.map(token => token.name)).toContain('--app-focus-ring');
   expect(tokens.map(token => token.name)).toContain('--app-marketing-max-width');
@@ -115,7 +115,7 @@ test('token explorer renders the packaged contract and passes axe', async ({ pag
   await page.goto('/tokens');
 
   await expect(page.getByRole('heading', { level: 1, name: 'Design tokens' })).toBeVisible({ timeout: wasmTimeout });
-  await expect(page.locator('[data-design-token]')).toHaveCount(71, { timeout: wasmTimeout });
+  await expect(page.locator('[data-design-token]')).toHaveCount(72, { timeout: wasmTimeout });
   await expect(page.locator('[data-design-token="--app-brand"]')).toBeVisible();
   await expect(page.locator('[data-design-token="--app-duration-normal"]')).toBeVisible();
   await expectNoSeriousOrCriticalViolations(page);
