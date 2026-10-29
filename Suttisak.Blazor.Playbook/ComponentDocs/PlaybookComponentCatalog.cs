@@ -106,7 +106,7 @@ public static class PlaybookComponentCatalog
             ["HeaderControl"] = "Header-region adapter using PreferencesSelector, including host opt-in scheme/language icon popovers, without an appearance dropdown.",
             ["HeaderControlWithUser"] = "Shared preference presentation beside identity controls, including host opt-in icon popovers, without an appearance dropdown.",
             ["ShellProfileControl"] = "Compact shell account control that switches between profile disclosure and login link, with readable accent hover and keyboard focus.",
-            ["CultureSelector"] = "Culture chooser that lets an application expose its supported locales consistently.",
+            ["CultureSelector"] = "Language chooser for Static SSR, Interactive Server, and WebAssembly that preserves the current URL and reflects the rendered culture.",
             ["PreferencesSelector"] = "Shared language and scheme composition with desktop icon popovers, host content slots, a mobile disclosure, and optional separate compact login disclosures.",
             ["AppearanceSelector"] = "Standalone setting for Standard, Essential, Quiet Luxury, or Nexora, independent of color mode and shared headers.",
             ["ThemeSwitcher"] = "Theme-mode selector for applying the shared light, dark, or system preference contract.",

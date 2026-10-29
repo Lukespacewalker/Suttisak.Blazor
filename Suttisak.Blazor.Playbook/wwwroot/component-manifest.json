@@ -1903,7 +1903,7 @@
       "category": "Preferences \u0026 time",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Culture chooser that lets an application expose its supported locales consistently.",
+      "summary": "Language chooser for Static SSR, Interactive Server, and WebAssembly that preserves the current URL and reflects the rendered culture.",
       "tags": [
         "culture",
         "locale",

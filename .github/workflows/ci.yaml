@@ -15,6 +15,8 @@ on:
       - 'Suttisak.Blazor.UserInterface.Tests/**'
       - 'Suttisak.Blazor.Playbook/**'
       - 'Suttisak.Blazor.Playbook.E2ETests/**'
+      - 'Suttisak.Blazor.CultureTestHost/**'
+      - 'Suttisak.Blazor.CultureTestHost.Client/**'
       - '*.slnx'
       - '**/*.props'
       - '**/*.targets'

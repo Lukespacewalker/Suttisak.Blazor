@@ -9,16 +9,33 @@ window.blazorCulture = {
         return null;
     },
 
-    getPreference() {
+    getPreference(fallback = "auto") {
         try {
-            return this.normalizePreference(window.localStorage.getItem(this.storageKey)) ?? "auto";
+            return this.normalizePreference(window.localStorage.getItem(this.storageKey)) ?? fallback;
         } catch {
-            return "auto";
+            return fallback;
         }
     },
 
     get(defaultCulture = "en-US") {
-        const preference = this.getPreference();
+        let preference = this.getPreference(null);
+        if (preference === null) {
+            // Hosted WASM must retain the server's culture even when browser
+            // storage is unavailable. Explicit local preferences still win.
+            try {
+                const cookie = document.cookie.split(";").map(value => value.trim())
+                    .find(value => value.startsWith(".AspNetCore.Culture="));
+                const uiCulture = cookie && decodeURIComponent(cookie.substring(cookie.indexOf("=") + 1))
+                    .split("|").find(value => value.startsWith("uic="));
+                preference = this.normalizePreference(uiCulture?.substring(4));
+            } catch {
+                // A malformed or inaccessible cookie falls back to the device.
+            }
+        }
+        return this.resolve(preference ?? "auto", defaultCulture);
+    },
+
+    resolve(preference, defaultCulture = "en-US") {
         if (preference === "en") return "en-US";
         if (preference === "th") return "th-TH";
 
@@ -52,8 +69,13 @@ window.blazorCulture = {
     synchronizeSelectors(root = document) {
         const preference = this.getPreference();
         root.querySelectorAll("[data-culture-selector]").forEach(selector => {
+            // Storage is a preference, not proof that this server circuit or WASM
+            // runtime has applied it. Only mark Auto when its result is rendered.
+            const current = this.normalizePreference(selector.dataset.currentCulture);
+            const automatic = this.normalizePreference(this.resolve("auto", selector.dataset.defaultCulture));
+            const selectedPreference = preference === "auto" && current === automatic ? "auto" : current;
             selector.querySelectorAll("[data-culture-preference]").forEach(button => {
-                const selected = button.dataset.culturePreference === preference;
+                const selected = button.dataset.culturePreference === selectedPreference;
                 button.classList.toggle("active", selected);
                 button.setAttribute("aria-pressed", String(selected));
             });
@@ -61,10 +83,24 @@ window.blazorCulture = {
     }
 };
 
-document.addEventListener("click", event => {
-    const target = event.target instanceof Element ? event.target.closest("[data-culture-preference]") : null;
-    if (target) window.blazorCulture.set(target.dataset.culturePreference);
-});
+document.addEventListener("submit", event => {
+    const form = event.target;
+    const button = event.submitter;
+    if (!(form instanceof HTMLFormElement) || !form.matches("[data-culture-selector]")
+        || !(button instanceof HTMLElement) || !button.dataset.culturePreference) return;
+
+    // Persistent interactive layouts need the live URL, not the URL captured
+    // when the selector rendered. A full navigation starts a fresh culture context.
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const preference = window.blazorCulture.normalizePreference(button.dataset.culturePreference);
+    const destination = new URL(form.action, document.baseURI);
+    destination.searchParams.set("culture", preference === "auto" ? "auto"
+        : window.blazorCulture.resolve(preference, form.dataset.defaultCulture));
+    destination.searchParams.set("redirectUri", location.pathname + location.search + location.hash);
+    window.blazorCulture.set(preference);
+    window.location.assign(destination.href);
+}, true);
 addEventListener("storage", event => {
     if (event.key === window.blazorCulture.storageKey) window.blazorCulture.synchronizeSelectors();
 });

@@ -26,7 +26,7 @@
         <p role="status">@NoteText</p>
     </Controls>
     <States>
-        <article><span>Culture</span><strong>Host-owned redirect and persistence</strong><small>CultureSelector stores the requested culture, then lets the application apply it and return to the current route.</small></article>
+        <article><span>Culture</span><strong>One selection, current route</strong><small>CultureSelector reloads through the host endpoint, preserving the live path, query, and fragment. The pressed state follows the rendered language in Static SSR, Interactive Server, and WebAssembly.</small></article>
         <article><span>Theme</span><strong>Light, dark, and system</strong><small>ThemeSwitcher synchronizes every mounted selector and reacts to system-scheme changes.</small></article>
         <article><span>Appearance settings</span><strong>Standard, Essential, Quiet Luxury, and Nexora</strong><small>The standalone AppearanceSelector remembers an explicitly requested setting without adding a dropdown to shared headers.</small></article>
         <article><span>Responsive</span><strong>One native disclosure on mobile</strong><small>PreferencesSelector keeps the controls together without duplicating a parallel interaction contract.</small></article>

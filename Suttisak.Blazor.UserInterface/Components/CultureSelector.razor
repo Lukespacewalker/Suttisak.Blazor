@@ -4,7 +4,8 @@
 @inject IOptions<BlazorUIOptions> Options
 
 <form class="culture-selector" aria-label="Language" method="get" action="@Options.Value.CultureSetUrl"
-      data-culture-selector data-default-culture="@Options.Value.DefaultCulture">
+      data-enhance="false" data-culture-selector data-default-culture="@Options.Value.DefaultCulture"
+      data-current-culture="@CultureInfo.CurrentUICulture.Name">
     <input type="hidden" name="redirectUri" value="@RedirectUri" />
     <button type="submit" name="culture" value="auto" data-culture-preference="auto"
             aria-label="Use device language" aria-pressed="false">Auto</button>
@@ -16,6 +17,6 @@
 
 @code {
     private static string Pressed(bool value) => value ? "true" : "false";
-    private static bool IsCurrentCulture(string cultureName) => cultureName == CultureInfo.CurrentCulture.Name;
-    private string RedirectUri => new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+    private static bool IsCurrentCulture(string cultureName) => cultureName == CultureInfo.CurrentUICulture.Name;
+    private string RedirectUri => new Uri(Navigation.Uri).PathAndQuery + new Uri(Navigation.Uri).Fragment;
 }

@@ -1,0 +1,15 @@
+@page "/probe/{Mode}/{Record}"
+@inject NavigationManager Navigation
+
+<h1>@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "th" ? "ผลตรวจ" : "Test results")</h1>
+<p data-testid="culture">@CultureInfo.CurrentUICulture.Name</p>
+<p data-testid="runtime">@(RendererInfo.IsInteractive ? RendererInfo.Name : "Static")</p>
+<a href="@($"probe/{Mode}/person%20one?visit=a%26b&next=%2Freports%3Fx%3D1#result")">Open person</a>
+<button @onclick="() => _clicks++">Counter @_clicks</button>
+<div id="result">Example record: @Record</div>
+
+@code {
+    [Parameter] public string Mode { get; set; } = "static";
+    [Parameter] public string Record { get; set; } = "landing";
+    private int _clicks;
+}

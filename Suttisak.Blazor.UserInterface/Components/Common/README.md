@@ -529,8 +529,12 @@ Applications should use semantic CSS tokens for their accent
 colors and retain their `<meta name="theme-color">`; do not add theme attributes
 to `body` or depend on a JavaScript global.
 
-`CultureSelector` likewise works in static SSR. It submits `auto`, `en-US`, or
-`th-TH` to the application-owned culture endpoint and performs a full reload.
+`CultureSelector` works in Static SSR, Interactive Server, and Interactive
+WebAssembly. Load `blazor-utilities.js` before Blazor starts. Selecting a language
+performs a full navigation through the application-owned endpoint so server
+circuits and WebAssembly restart with the new culture. The return URL is read
+at submission time and retains its encoded path, query, and fragment, including
+when the selector lives in a persistent layout or the app uses a base path.
 Configure the application fallback and endpoint through `BlazorUIOptions`:
 
 ```csharp
@@ -541,8 +545,27 @@ services.AddBlazorUserInterface(options =>
 });
 ```
 
-The host owns culture-cookie creation. Selecting `auto` should clear that cookie
-so request localization can use the browser's language preferences.
+The host owns culture-cookie creation and must redirect locally to `redirectUri`.
+The browser stores `auto`, `en`, or `th` as `BlazorCulture`; the endpoint receives
+`auto`, `en-US`, or `th-TH`. For Auto, delete the culture cookie so request
+localization can use the browser's language preferences. Do not write an `auto`
+culture cookie or recreate a fixed culture cookie on every page request if Auto
+should continue following the device. The native form also works without JavaScript.
+
+For WebAssembly, initialize both `CultureInfo.DefaultThreadCurrentCulture` and
+`CultureInfo.DefaultThreadCurrentUICulture` from `blazorCulture.get(defaultCulture)`
+before `RunAsync`, and load globalization data for the supported languages.
+Standalone WebAssembly hosts need a `Culture/Set` route which applies the requested
+supported culture before returning to `redirectUri`; see the Playbook example.
+Hosted WebAssembly uses the server's cookie endpoint as well as this client startup.
+When local storage is missing or unavailable, `blazorCulture.get` falls back to
+the standard `.AspNetCore.Culture` cookie's UI culture before the device language.
+
+The pressed button reflects `CurrentUICulture` rendered by the component. A stale
+local-storage value or a preference changed in another tab cannot claim that the
+current page has already switched language. Auto is selected only when the
+rendered language matches the device-language resolution. A full reload discards
+unsaved in-memory page state; persist that state in the consuming application if needed.
 
 
 ## Searchable controlled selection
