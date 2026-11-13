@@ -103,6 +103,8 @@ test('Nexora keeps danger variants and disabled/busy primary actions distinct', 
   await setCheckbox(page.getByRole('checkbox', { name: 'Loading', exact: true }), true);
   await expect(preview.getByRole('button')).toBeDisabled();
   await expect(preview.getByRole('button')).toHaveAttribute('aria-busy', 'true');
+  await expect(preview.locator('.app-button__spinner')).toBeVisible();
+  await expect(preview.locator('.app-button__spinner')).toHaveCSS('border-top-style', 'solid');
 });
 
 test('Nexora forced colors remove decorative gradients while preserving keyboard focus', async ({ page }) => {

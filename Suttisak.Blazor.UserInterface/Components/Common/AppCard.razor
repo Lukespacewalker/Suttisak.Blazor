@@ -6,7 +6,7 @@
             @onclick="HandleClickAsync"
             @onkeydown="HandleKeyDownAsync"
             @attributes="AdditionalAttributes">
-    @if (Header is not null || !string.IsNullOrWhiteSpace(Title))
+    @if (Header is not null || HasTitle || Actions is not null)
     {
         <header class="app-card__header">
             @if (Header is not null)
@@ -15,13 +15,16 @@
             }
             else
             {
-                <div>
-                    <h2>@Title</h2>
-                    @if (!string.IsNullOrWhiteSpace(EffectiveDescription))
-                    {
-                        <p>@EffectiveDescription</p>
-                    }
-                </div>
+                @if (HasTitle)
+                {
+                    <div>
+                        <h2>@Title</h2>
+                        @if (!string.IsNullOrWhiteSpace(EffectiveDescription))
+                        {
+                            <p>@EffectiveDescription</p>
+                        }
+                    </div>
+                }
                 @Actions
             }
         </header>
@@ -60,6 +63,7 @@
     }.Where(value => !string.IsNullOrWhiteSpace(value)));
 
     private string? EffectiveDescription => Description ?? Subtitle;
+    private bool HasTitle => !string.IsNullOrWhiteSpace(Title);
 
     private Task HandleClickAsync(MouseEventArgs args) => OnClick.InvokeAsync(args);
 

@@ -25,7 +25,11 @@
     display: none;
 }
 
-.experience-disclosure summary:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+.experience-disclosure > summary:focus-visible {
+    border-radius: inherit;
+    outline: 2px solid var(--app-focus-ring);
+    outline-offset: -4px;
+}
 
 .experience-disclosure__marker {
     display: grid;
@@ -143,6 +147,10 @@
         background: Canvas;
         color: CanvasText;
         box-shadow: none;
+    }
+
+    .experience-disclosure > summary:focus-visible {
+        outline-color: Highlight;
     }
 
     .experience-disclosure__marker::before,

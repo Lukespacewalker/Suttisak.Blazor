@@ -496,7 +496,7 @@ public static class PlaybookPatternCatalog
                 <Nav Embedded="true">...</Nav>
             </SectionContent>
             <SectionContent SectionName="@CommonSections.PageHeading">
-                <PageHeading Title="Workspace" />
+                <PageHeading Title="Workspace" HeadingId="workspace-title" />
             </SectionContent>
 
             <PageBreadcrumbs Items="@Breadcrumbs" />

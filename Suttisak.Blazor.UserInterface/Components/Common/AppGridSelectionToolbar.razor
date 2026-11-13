@@ -10,7 +10,9 @@
     </fieldset>
     <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact"
                IconOnly="true" AriaLabel="@ClearLabel" Disabled="@(Busy || SelectedCount == 0)"
-               OnClick="ClearAsync"><span aria-hidden="true">×</span></AppButton>
+               OnClick="ClearAsync">
+        <IconStartContent><span aria-hidden="true">×</span></IconStartContent>
+    </AppButton>
 </div>
 
 @code {

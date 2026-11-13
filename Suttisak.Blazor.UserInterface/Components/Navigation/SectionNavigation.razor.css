@@ -41,7 +41,6 @@
     grid-column: 2;
     display: flex;
     min-width: 0;
-    overflow: hidden;
 }
 
 .section-navigation__items,

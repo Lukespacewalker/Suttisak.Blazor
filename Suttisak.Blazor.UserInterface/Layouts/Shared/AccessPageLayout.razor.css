@@ -1,6 +1,6 @@
-.access-page-layout { position: relative; display: grid; min-height: 100dvh; place-items: center; overflow: hidden; padding: clamp(.75rem, 2vw, 1.5rem); background: radial-gradient(circle at 85% 10%, var(--app-brand-soft), transparent 30%), var(--app-background); }
+.access-page-layout { position: relative; display: grid; min-height: 100dvh; place-items: center; overflow: hidden; padding: clamp(.75rem, 2vw, 1.5rem); background: radial-gradient(circle at 85% 10%, var(--app-brand-soft), transparent 30%), var(--app-background); container: access-page / inline-size; }
 .access-page-layout__background { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle, var(--app-grid-line) 1px, transparent 1.25px); background-size: 28px 28px; mask-image: linear-gradient(180deg, rgb(0 0 0 / .92), rgb(0 0 0 / .55)); }
-.access-page-layout__grid { position: relative; z-index: 1; display: grid; width: min(96rem, 100%); grid-template-columns: minmax(28rem, .9fr) minmax(30rem, 1.1fr); overflow: hidden; border: 1px solid var(--app-border); border-radius: 1.5rem; background: var(--app-surface); box-shadow: 0 1.25rem 3.5rem var(--app-shadow-color); }
+.access-page-layout__grid { position: relative; z-index: 1; display: grid; width: min(96rem, 100%); box-sizing: border-box; grid-template-columns: minmax(28rem, .9fr) minmax(30rem, 1.1fr); overflow: hidden; border: 1px solid var(--app-border); border-radius: 1.5rem; background: var(--app-surface); box-shadow: 0 1.25rem 3.5rem var(--app-shadow-color); }
 .access-page-layout__card { position: relative; min-width: 0; min-height: clamp(48rem, calc(100dvh - 3rem), 64rem); box-sizing: border-box; padding: clamp(1.5rem, 4cqi, 4.5rem); }
 .access-page-layout__controls { position: absolute; z-index: 2; top: clamp(1.25rem, 2.5cqi, 2.25rem); right: clamp(1.25rem, 2.5cqi, 2.25rem); display: flex; align-items: center; gap: .5rem; }
 .access-page-layout__header { display: flex; min-height: 17rem; flex-direction: column; margin-bottom: 1.75rem; }
@@ -33,8 +33,28 @@
 .access-page-layout__showcase-orb--primary { top: -12rem; right: -10rem; width: 34rem; height: 34rem; border: 1px solid var(--app-on-brand); opacity: .14; }
 .access-page-layout__showcase-orb--secondary { bottom: -9rem; left: -9rem; width: 20rem; height: 20rem; border: 5rem solid var(--app-brand-secondary-soft); opacity: .45; }
 
-@media (max-width: 960px) { .access-page-layout__grid { grid-template-columns: 1fr; } .access-page-layout__card { min-height: auto; } .access-page-layout__showcase { min-height: 22rem; } }
-@media (max-width: 640px) { .access-page-layout { min-height: calc(100dvh - 1rem); padding: .5rem; } .access-page-layout__background { background-size: 24px 24px; } .access-page-layout__grid { border-radius: 1rem; } .access-page-layout__card { padding: 1.25rem; } .access-page-layout__controls { position: static; justify-content: flex-end; margin-bottom: 1rem; } .access-page-layout__header { min-height: 0; } .access-page-layout__brand { padding-right: 0; } .access-page-layout__heading { margin-top: 3rem; } .access-page-layout__showcase { min-height: 0; } .access-page-layout__showcase-content { padding: 1.25rem; } .access-page-layout__showcase ::deep .identity-showcase-status, .access-page-layout__showcase ::deep .access-story__status { grid-template-columns: auto 1fr; } .access-page-layout__showcase ::deep .identity-showcase-status b, .access-page-layout__showcase ::deep .access-story__status b { display: none; } }
+/* The split needs room for both track minimums and the grid's two borders. */
+@container access-page (width < calc(58rem + 2px)) {
+    .access-page-layout__grid { grid-template-columns: minmax(0, 1fr); }
+    .access-page-layout__card { min-height: auto; }
+    .access-page-layout__showcase { min-height: 22rem; }
+}
+@media (max-width: 640px) { .access-page-layout { min-height: calc(100dvh - 1rem); padding: .5rem; } }
+@container access-page (max-width: 624px) {
+    .access-page-layout__background { background-size: 24px 24px; }
+    .access-page-layout__grid { border-radius: 1rem; }
+    .access-page-layout__card { padding: 1.25rem; }
+    .access-page-layout__controls { position: static; justify-content: flex-end; margin-bottom: 1rem; }
+    .access-page-layout__header { min-height: 0; }
+    .access-page-layout__brand { padding-right: 0; }
+    .access-page-layout__heading { margin-top: 3rem; }
+    .access-page-layout__showcase { min-height: 0; }
+    .access-page-layout__showcase-content { padding: 1.25rem; }
+    .access-page-layout__showcase ::deep .identity-showcase-status,
+    .access-page-layout__showcase ::deep .access-story__status { grid-template-columns: auto 1fr; }
+    .access-page-layout__showcase ::deep .identity-showcase-status b,
+    .access-page-layout__showcase ::deep .access-story__status b { display: none; }
+}
 
 /* Shared full-page login presentation. Product media and copy come from slots. */
 .access-login-layout { container-type: inline-size; }

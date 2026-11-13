@@ -206,7 +206,9 @@ and form inputs so behavior and visual tokens remain consistent.
 </AppButton>
 ```
 
-Always provide `AriaLabel` when `IconOnly` is enabled. `Href` renders a link;
+Always provide `AriaLabel` when `IconOnly` is enabled. Set `IconStartName` or
+`IconStartContent` for the icon and use `ChildContent` for the text label.
+`Href` renders a link;
 without it the component renders a native button. The component intentionally
 does not wrap a third-party button, so application branding stays within the
 shared design-token contract.
@@ -227,10 +229,10 @@ actions last.
 
 <PageHeading SectionTitle="Assessment workspace"
              SectionDescription="Administration"
-             SectionIcon="@(new Icons.Regular.Size20.Briefcase())"
+             SectionIconName="Briefcase"
              Title="Participants"
              Description="Manage people in the current assessment period"
-             Icon="@(new Icons.Regular.Size24.People())">
+             IconName="People">
     <SectionActions>
         <AppButton Variant="AppButtonVariant.Subtle">Workspace settings</AppButton>
     </SectionActions>
@@ -249,7 +251,7 @@ actions last.
               LoadingTitle="Loading participants"
               EmptyTitle="No participants yet"
               EmptyMessage="Add a participant to begin."
-              EmptyIcon="@(new Icons.Regular.Size24.People())"
+              EmptyIconName="People"
               ErrorTitle="Participants could not be loaded"
               ErrorMessage="@errorMessage"
               OnRetry="LoadAsync">

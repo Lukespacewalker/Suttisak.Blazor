@@ -110,7 +110,7 @@ Packages are currently distributed through GitHub Packages. Configure the GitHub
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="1.0.39" />
+  <PackageReference Include="Suttisak.Blazor.UserInterface" Version="1.0.41" />
   <PackageReference Include="Suttisak.Blazor.Identity" Version="0.9.9" />
 </ItemGroup>
 ```

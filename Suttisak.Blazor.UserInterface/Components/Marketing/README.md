@@ -112,7 +112,7 @@ An anchor styled as a primary or secondary call to action. `LeadingContent` norm
 <MarketingActionLink Href="/workspace"
                      Variant="MarketingActionVariant.Primary">
     <LeadingContent>...</LeadingContent>
-    Open workspace
+    <ChildContent>Open workspace</ChildContent>
 </MarketingActionLink>
 ```
 
@@ -124,7 +124,9 @@ A shared capability grid and semantic feature/support card. Use `Featured` for o
 <MarketingFeatureGrid>
     <MarketingCard Title="Structured workflow" Featured="true">
         <Visual>...</Visual>
-        <p>Describe the outcome rather than implementation details.</p>
+        <ChildContent>
+            <p>Describe the outcome rather than implementation details.</p>
+        </ChildContent>
     </MarketingCard>
 </MarketingFeatureGrid>
 ```

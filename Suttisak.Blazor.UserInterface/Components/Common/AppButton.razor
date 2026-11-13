@@ -1,16 +1,16 @@
 @if (!string.IsNullOrWhiteSpace(Href))
 {
     <a class="@CssClassValue"
-       href="@(Disabled ? null : Href)"
+       href="@(IsDisabled ? null : Href)"
        aria-label="@AriaLabel"
-       aria-disabled="@(Disabled ? "true" : null)"
+       aria-disabled="@(IsDisabled ? "true" : null)"
        aria-busy="@(IsBusy ? "true" : null)"
-       tabindex="@(Disabled ? -1 : null)"
+       tabindex="@(IsDisabled ? -1 : null)"
        title="@EffectiveTitle"
        style="@ColorStyle"
        @onclick="HandleClickAsync"
-       @onclick:preventDefault="@Disabled"
-       @attributes="AdditionalAttributes">
+       @onclick:preventDefault="@IsDisabled"
+       @attributes="EffectiveAttributes">
         @ButtonContent
     </a>
 }
@@ -22,9 +22,9 @@ else
             aria-busy="@(IsBusy ? "true" : null)"
             title="@EffectiveTitle"
             style="@ColorStyle"
-            disabled="@(Disabled || IsBusy)"
+            disabled="@IsDisabled"
             @onclick="HandleClickAsync"
-            @attributes="AdditionalAttributes">
+            @attributes="EffectiveAttributes">
         @ButtonContent
     </button>
 }
@@ -54,6 +54,15 @@ else
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
+    private static readonly HashSet<string> DisabledStateAttributes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "href", "aria-disabled", "aria-busy", "tabindex", "disabled"
+    };
+
+    private IEnumerable<KeyValuePair<string, object>>? EffectiveAttributes => IsDisabled
+        ? AdditionalAttributes?.Where(attribute => !DisabledStateAttributes.Contains(attribute.Key))
+        : AdditionalAttributes;
+
     private string CssClassValue => string.Join(' ', new[]
     {
         "app-button",
@@ -64,65 +73,53 @@ else
         Class
     }.Where(value => !string.IsNullOrWhiteSpace(value)));
 
-    private RenderFragment ButtonContent => builder =>
-    {
-        var sequence = 0;
-        if (IsBusy)
+    private RenderFragment ButtonContent => @<text>
+        @if (IsBusy)
         {
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "app-button__spinner");
-            builder.AddAttribute(sequence++, "aria-hidden", "true");
-            builder.CloseElement();
+            <span class="app-button__spinner" aria-hidden="true"></span>
         }
-        else if (IconStartContent is not null || !string.IsNullOrWhiteSpace(IconStartName))
+        else if (HasStartIcon)
         {
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "app-button__icon");
-            if (IconStartContent is not null)
-            {
-                builder.AddContent(sequence++, IconStartContent);
-            }
-            else if (!string.IsNullOrWhiteSpace(IconStartName))
-            {
-                builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(sequence++);
-                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Name), IconStartName);
-                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Size), IconStartSize);
-                builder.CloseComponent();
-            }
-            builder.CloseElement();
+            <span class="app-button__icon">
+                @if (IconStartContent is not null)
+                {
+                    @IconStartContent
+                }
+                else
+                {
+                    <Suttisak.Blazor.Icons.Icon Name="@IconStartName" Size="@IconStartSize" />
+                }
+            </span>
         }
 
-        if (ChildContent is not null)
+        @if (ChildContent is not null)
         {
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "app-button__label");
-            builder.AddContent(sequence++, ChildContent);
-            builder.CloseElement();
+            <span class="@(UseChildContentAsIcon ? "app-button__icon" : "app-button__label")">@ChildContent</span>
         }
 
-        if (!IsBusy && (IconEndContent is not null || !string.IsNullOrWhiteSpace(IconEndName)))
+        @if (!IsBusy && HasEndIcon)
         {
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "app-button__icon");
-            if (IconEndContent is not null)
-            {
-                builder.AddContent(sequence++, IconEndContent);
-            }
-            else if (!string.IsNullOrWhiteSpace(IconEndName))
-            {
-                builder.OpenComponent<Suttisak.Blazor.Icons.Icon>(sequence++);
-                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Name), IconEndName);
-                builder.AddAttribute(sequence++, nameof(Suttisak.Blazor.Icons.Icon.Size), IconEndSize);
-                builder.CloseComponent();
-            }
-            builder.CloseElement();
+            <span class="app-button__icon">
+                @if (IconEndContent is not null)
+                {
+                    @IconEndContent
+                }
+                else
+                {
+                    <Suttisak.Blazor.Icons.Icon Name="@IconEndName" Size="@IconEndSize" />
+                }
+            </span>
         }
-    };
+    </text>;
 
     private Task HandleClickAsync(MouseEventArgs args) =>
-        Disabled || IsBusy ? Task.CompletedTask : OnClick.InvokeAsync(args);
+        IsDisabled ? Task.CompletedTask : OnClick.InvokeAsync(args);
 
     private bool IsBusy => Busy || Loading;
+    private bool IsDisabled => Disabled || IsBusy;
+    private bool HasStartIcon => IconStartContent is not null || !string.IsNullOrWhiteSpace(IconStartName);
+    private bool HasEndIcon => IconEndContent is not null || !string.IsNullOrWhiteSpace(IconEndName);
+    private bool UseChildContentAsIcon => IconOnly && !IsBusy && !HasStartIcon && !HasEndIcon;
     private string? EffectiveTitle => Title ?? ToolTip;
     private string? ColorStyle => string.IsNullOrWhiteSpace(Color) ? null : $"color:{Color}";
     private string HtmlType => Type.ToLowerInvariant() is "submit" or "reset" ? Type.ToLowerInvariant() : "button";

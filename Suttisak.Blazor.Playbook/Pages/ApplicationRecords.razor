@@ -39,7 +39,9 @@
                             </AppTextBox>
                             @if (!string.IsNullOrWhiteSpace(_searchText))
                             {
-                                <AppButton IconOnly="true" Variant="AppButtonVariant.Subtle" AriaLabel="Clear search" OnClick="@(_ => ClearSearch())">×</AppButton>
+                                <AppButton IconOnly="true" Variant="AppButtonVariant.Subtle" AriaLabel="Clear search" OnClick="@(_ => ClearSearch())">
+                                    <IconStartContent>×</IconStartContent>
+                                </AppButton>
                             }
                         </div>
                     </Search>
