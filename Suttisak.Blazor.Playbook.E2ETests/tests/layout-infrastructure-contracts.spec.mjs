@@ -90,14 +90,14 @@ test('MainLayout route keeps current navigation, skip focus, and mobile containm
   await page.setViewportSize({ width: 390, height: 720 });
   await page.goto('/layout-patterns/application');
 
-  const current = page.getByRole('link', { name: 'Application', exact: true });
-  await expect(current).toHaveAttribute('aria-current', 'page');
-
+  const navigation = page.locator('.app-shell__navigation');
+  const current = navigation.getByRole('link', { name: 'Application', exact: true });
   const menuButton = page.locator('[data-shell-action="mobile"]');
   await expect(menuButton).toHaveAttribute('aria-label', 'Open navigation');
+  await expect(current).toHaveCount(0);
   await menuButton.click();
-  const navigation = page.locator('.app-shell__navigation');
   await expect(navigation).toHaveClass(/is-open/);
+  await expect(current).toHaveAttribute('aria-current', 'page');
   await expect.poll(() => navigation.evaluate(element => element.getBoundingClientRect().left))
     .toBeGreaterThanOrEqual(0);
   const geometry = await navigation.evaluate(element => {

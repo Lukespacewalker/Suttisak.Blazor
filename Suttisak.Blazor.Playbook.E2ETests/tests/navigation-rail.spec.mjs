@@ -88,6 +88,93 @@ test('idle rail follows its container breakpoint and restores expanded branches'
   await expect(branch).not.toHaveAttribute('open', '');
 });
 
+test('the closed drawer skips Tab and restores its opener after keyboard or backdrop dismissal', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/application-shell/records?appearance=nexora');
+  const shell = page.locator('[data-app-shell]');
+  const toggle = shell.locator('[data-shell-action="mobile"]');
+  const navigation = shell.locator('.app-shell__navigation');
+
+  await expect(page.getByRole('heading', { name: 'Program records', exact: true })).toBeFocused();
+  await expect(navigation).toBeHidden();
+  await toggle.focus();
+  for (let step = 0; step < 5; step++) {
+    await page.keyboard.press('Tab');
+    expect(await navigation.evaluate(element => element.contains(document.activeElement))).toBe(false);
+  }
+
+  await toggle.press('Enter');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(navigation.locator(':focus')).toHaveCount(1);
+  await page.keyboard.press('Tab');
+  await expect(navigation.locator(':focus')).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await expect(toggle).toBeFocused();
+  await expect(navigation).toBeHidden();
+
+  await toggle.click();
+  const scrim = shell.locator('[data-shell-action="close"]');
+  const backdrop = await scrim.boundingBox();
+  await scrim.click({ position: { x: backdrop.width - 12, y: 24 } });
+  await expect(toggle).toBeFocused();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+
+  await toggle.click();
+  const mainFocus = shell.locator('.app-shell__main :focus');
+  for (let step = 0; step < 20 && !await mainFocus.count(); step++) {
+    await page.keyboard.press('Tab');
+  }
+  await expect(mainFocus).toHaveCount(1);
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+});
+
+test('container boundary resets the drawer and hands off focus to the visible menu button', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/application-shell/records?appearance=nexora');
+  const shell = page.locator('[data-app-shell]');
+  const navigation = shell.locator('.app-shell__navigation');
+  const desktop = shell.locator('[data-shell-action="desktop"]');
+  const mobile = shell.locator('[data-shell-action="mobile"]');
+  const overview = navigation.getByRole('link', { name: 'Overview', exact: true });
+  const resizeShell = width => shell.evaluate((element, width) => { element.style.width = `${width}px`; }, width);
+
+  await expect(page.getByRole('heading', { name: 'Program records', exact: true })).toBeFocused();
+  await overview.focus();
+  await expect(overview).toBeFocused();
+  await resizeShell(767);
+  await expect(navigation).toBeHidden();
+  await expect(mobile).toBeFocused();
+  await resizeShell(768);
+  await expect(desktop).toBeHidden();
+  await mobile.press('Enter');
+  await expect(navigation.locator(':focus')).toHaveCount(1);
+  await overview.focus();
+
+  await resizeShell(769);
+  await expect(desktop).toBeVisible();
+  await expect(navigation).toBeVisible();
+  await expect(navigation).not.toHaveClass(/is-open/);
+  await expect(overview).toBeFocused();
+  await expect(mobile).toHaveAttribute('aria-expanded', 'false');
+
+  await desktop.click();
+  await expect(desktop).toHaveAttribute('aria-expanded', 'false');
+  await resizeShell(768.5);
+  await expect.poll(() => shell.evaluate(element => element.getBoundingClientRect().width)).toBe(768.5);
+  await expect(desktop).toBeVisible();
+  await expect(navigation.locator('.app-shell__footer-trigger')).toBeVisible();
+  await resizeShell(768);
+  await expect(desktop).toBeHidden();
+  await expect(mobile).toBeFocused();
+  await expect(mobile).toHaveAttribute('aria-expanded', 'false');
+  await expect(navigation).toBeHidden();
+  await expect(navigation).toHaveCSS('transition-property', 'none');
+});
+
 test('forced colors preserves the active descendant branch in the rail', async ({ page }) => {
   await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
   await page.goto('/application-shell/records?appearance=nexora');

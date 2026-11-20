@@ -2,42 +2,43 @@
     padding-block: var(--app-space-4) var(--app-space-18);
 }
 
+.marketing-proof-strip ::deep .marketing-proof-strip__container {
+    container: marketing-proof-strip / inline-size;
+}
+
 .marketing-proof-strip__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
     border-block: 1px solid var(--app-border);
 }
 
-.marketing-proof-strip__grid ::deep .marketing-proof-item:not(:last-child) {
-    border-right: 1px solid var(--app-border);
+.marketing-proof-strip__grid ::deep > .marketing-proof-item {
+    overflow-wrap: anywhere;
 }
 
-@media (min-width: 761px) and (max-width: 980px) {
-    .marketing-proof-strip__grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+@container marketing-proof-strip (inline-size < 36rem) {
+    .marketing-proof-strip__grid ::deep > .marketing-proof-item:not(:last-child) {
+        border-block-end: 1px solid var(--app-border);
+    }
+}
+
+/* Two 18rem tracks fit here. Span an unpaired item across the final row. */
+@container marketing-proof-strip (36rem <= inline-size < 54rem) {
+    .marketing-proof-strip__grid ::deep > .marketing-proof-item:nth-child(odd):not(:last-child) {
+        border-inline-end: 1px solid var(--app-border);
     }
 
-    .marketing-proof-strip__grid ::deep .marketing-proof-item:nth-child(2n) {
-        border-right: 0;
+    .marketing-proof-strip__grid ::deep > .marketing-proof-item:has(~ .marketing-proof-item:nth-child(odd)) {
+        border-block-end: 1px solid var(--app-border);
     }
 
-    .marketing-proof-strip__grid ::deep .marketing-proof-item:not(:nth-last-child(-n + 2)) {
-        border-bottom: 1px solid var(--app-border);
-    }
-
-    .marketing-proof-strip__grid ::deep .marketing-proof-item:last-child:nth-child(odd) {
+    .marketing-proof-strip__grid ::deep > .marketing-proof-item:last-child:nth-child(odd) {
         grid-column: 1 / -1;
-        border-right: 0;
     }
 }
 
-@container marketing-page (max-width: 760px) {
-    .marketing-proof-strip__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .marketing-proof-strip__grid ::deep .marketing-proof-item:not(:last-child) {
-        border-right: 0;
-        border-bottom: 1px solid var(--app-border);
+@container marketing-proof-strip (inline-size >= 54rem) {
+    .marketing-proof-strip__grid ::deep > .marketing-proof-item:not(:last-child) {
+        border-inline-end: 1px solid var(--app-border);
     }
 }

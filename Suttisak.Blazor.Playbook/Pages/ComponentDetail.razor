@@ -75,11 +75,26 @@
                     <p>@PlaybookComponentCoverage.DescriptionFor(Component)</p>
                     @if (HasInteractiveSpecimen)
                     {
-                        <div class="component-detail__viewport" role="group" aria-label="Preview viewport">
-                            <button type="button" class="@ViewportClass("mobile")" aria-pressed="@Pressed(ActiveViewport == "mobile")" @onclick='() => SetViewport("mobile")'>375</button>
-                            <button type="button" class="@ViewportClass("tablet")" aria-pressed="@Pressed(ActiveViewport == "tablet")" @onclick='() => SetViewport("tablet")'>768</button>
-                            <button type="button" class="@ViewportClass("desktop")" aria-pressed="@Pressed(ActiveViewport == "desktop")" @onclick='() => SetViewport("desktop")'>1280</button>
-                            <button type="button" class="@ViewportClass("full")" aria-pressed="@Pressed(ActiveViewport == "full")" @onclick='() => SetViewport("full")'>Full</button>
+                        <div class="component-detail__preview-options">
+                            <div class="component-detail__preview-option">
+                                <span id="preview-viewport-label">Viewport (px)</span>
+                                <div class="component-detail__viewport" role="group" aria-labelledby="preview-viewport-label">
+                                    <button type="button" class="@ViewportClass("mobile")" aria-pressed="@Pressed(ActiveViewport == "mobile")" @onclick='() => SetViewport("mobile")'>375</button>
+                                    <button type="button" class="@ViewportClass("tablet")" aria-pressed="@Pressed(ActiveViewport == "tablet")" @onclick='() => SetViewport("tablet")'>768</button>
+                                    <button type="button" class="@ViewportClass("desktop")" aria-pressed="@Pressed(ActiveViewport == "desktop")" @onclick='() => SetViewport("desktop")'>1280</button>
+                                    <button type="button" class="@ViewportClass("full")" aria-pressed="@Pressed(ActiveViewport == "full")" @onclick='() => SetViewport("full")'>Full</button>
+                                </div>
+                            </div>
+                            @if (ActiveViewport == "full")
+                            {
+                                <div class="component-detail__preview-option">
+                                    <label for="preview-host-width">Host width (px)</label>
+                                    <div class="component-detail__host-width">
+                                        <input id="preview-host-width" type="number" min="1" step="1" placeholder="Auto" @bind="_requestedHostWidth" />
+                                        <output for="preview-host-width" data-testid="rendered-host-width" @ref="_renderedHostWidth"></output>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     }
                 </header>
@@ -88,7 +103,9 @@
                 {
                     @if (ActiveViewport == "full")
                     {
-                        <DynamicComponent @key="DocumentPage!.Slug" Type="@SpecimenType" Parameters="@SpecimenParameters" />
+                        <div @ref="_inlinePreview" style="@HostWidthStyle">
+                            <DynamicComponent @key="DocumentPage!.Slug" Type="@SpecimenType" Parameters="@SpecimenParameters" />
+                        </div>
                     }
                     else
                     {
@@ -251,6 +268,14 @@
     private string? _focusMember;
     private DotNetObjectReference<ComponentDetail>? _fragmentReceiver;
     private int? _fragmentListener;
+    private int? _requestedHostWidth;
+    private ElementReference _inlinePreview;
+    private ElementReference _renderedHostWidth;
+    private string? _observedHostSlug;
+    private int? _hostWidthObserver;
+    private string? HostWidthStyle => _requestedHostWidth is > 0
+        ? FormattableString.Invariant($"--playbook-preview-host-width: {_requestedHostWidth}px")
+        : null;
     private PlaybookComponentDefinition? Component => DocumentPage?.Members.FirstOrDefault(member => member.Slug == _selectedSlug) ?? DocumentPage?.Primary;
     private PlaybookComponentDefinition? PreviewComponent => Component?.Name == "AppGridPaginator" ? Component : DocumentPage?.Primary;
     private Type? SpecimenType => PreviewComponent is null ? null : PlaybookSpecimenRegistry.SpecimenTypeFor(PreviewComponent);
@@ -376,6 +401,15 @@
             _fragmentReceiver = DotNetObjectReference.Create(this);
             _fragmentListener = await JsRuntime.InvokeAsync<int>("playbookComponentNavigation.subscribe", _fragmentReceiver);
         }
+        var hostSlug = ActiveViewport == "full" && HasInteractiveSpecimen ? PreviewComponent?.Slug : null;
+        if (hostSlug != _observedHostSlug)
+        {
+            await StopMeasuringHostWidth();
+            _observedHostSlug = hostSlug;
+            if (hostSlug is not null)
+                _hostWidthObserver = await JsRuntime.InvokeAsync<int?>("playbookSpecimenWidth.observe", _inlinePreview, _renderedHostWidth);
+        }
+
         if (_focusMember is not { } target) return;
         _focusMember = null;
         await JsRuntime.InvokeVoidAsync("playbookFocus.focusById", target);
@@ -403,6 +437,14 @@
         if (_fragmentListener is { } listener)
             await JsRuntime.InvokeVoidAsync("playbookComponentNavigation.unsubscribe", listener);
         _fragmentReceiver?.Dispose();
+        await StopMeasuringHostWidth();
+    }
+
+    private async Task StopMeasuringHostWidth()
+    {
+        if (_hostWidthObserver is not { } observer) return;
+        _hostWidthObserver = null;
+        await JsRuntime.InvokeVoidAsync("playbookSpecimenWidth.unobserve", observer);
     }
 
     private async Task SetViewport(string viewport)

@@ -1,6 +1,7 @@
 .app-grid-shell { box-sizing: border-box; display: flex; flex: 1 1 0; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid var(--app-glass-border); border-radius: var(--app-radius-lg); background: var(--app-glass-surface-strong); box-shadow: var(--app-shadow-md); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); overscroll-behavior-inline: contain; }
 .app-grid-shell__commandbar,
 .app-grid-shell__toolbar { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: .65rem; padding: .75rem; border-bottom: 1px solid var(--app-border); background: var(--app-surface-muted); }
+.app-grid-shell__commandbar { container: app-grid-commandbar / inline-size; }
 .app-grid-shell__toolbar { justify-content: space-between; }
 .app-grid-shell__search { min-width: min(18rem, 100%); flex: 1 1 18rem; }
 .app-grid-shell__search ::deep .app-form-control__input-wrap { border-color: var(--app-border); background: var(--app-surface); box-shadow: 0 .18rem .55rem var(--app-shadow-color); }
@@ -13,7 +14,7 @@
 .app-grid-shell__viewport ::deep .app-grid--adaptive { min-width: 0; }
 .app-grid-shell__footer { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; padding: .7rem .85rem; border-top: 1px solid var(--app-border); background: var(--app-surface-muted); }
 
-@container (max-width: 32rem) {
+@container app-grid-commandbar (inline-size <= 32rem) {
     .app-grid-shell__search,
     .app-grid-shell__filters,
     .app-grid-shell__actions { flex-basis: 100%; margin-inline-start: 0; }

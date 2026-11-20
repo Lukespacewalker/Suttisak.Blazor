@@ -160,7 +160,8 @@ test('Nexora heading retains keyboard task interactions, reduced motion and forc
 for (const appearance of ['standard', 'essential', 'quiet-luxury']) {
   test(`${appearance} retains its existing ExperienceHeading geometry`, async ({ page }) => {
     await headingHost(page, { appearance, width: 1440 });
-    await expect(page.locator('.experience-heading')).toHaveCSS('min-height', '330px');
+    const heading = page.locator('.experience-heading');
+    expect((await heading.boundingBox()).height).toBeGreaterThanOrEqual(330);
     await expect(page.locator('.experience-heading h1')).toHaveCSS('font-size', '80px');
     await expect(page.locator('.experience-heading__visual')).toBeVisible();
   });

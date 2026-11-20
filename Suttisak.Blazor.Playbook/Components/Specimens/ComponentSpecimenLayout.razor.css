@@ -4,6 +4,11 @@
 .component-detail__preview-frame--tablet { max-width: 48rem; }
 .component-detail__preview-frame--desktop { max-width: 80rem; }
 .component-detail__preview-frame--full { max-width: 100%; }
+.component-specimen__host {
+    inline-size: min(100%, var(--playbook-preview-host-width, 100%));
+    min-inline-size: 0;
+    margin-inline: auto;
+}
 .component-detail__controls { display: grid; gap: .8rem; padding: 1rem; border: 1px solid var(--app-border); border-radius: .8rem; background: var(--app-surface); }
 .component-detail__controls > span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .component-detail__controls ::deep label:not(.app-choice) { display: grid; gap: .35rem; color: var(--app-foreground); font-size: .7rem; font-weight: 700; }

@@ -32,10 +32,32 @@
 .component-detail__section > header span { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .component-detail__section > header h2 { margin: .25rem 0 0; font-family: var(--app-font-heading); font-size: clamp(1.35rem, 2.5vw, 1.8rem); line-height: 1.2; letter-spacing: -.025em; }
 .component-detail__section > header p { max-width: 36rem; margin: 0; color: var(--app-foreground-muted); font-size: .78rem; line-height: 1.55; }
+.component-detail__preview-options { display: flex; flex-wrap: wrap; align-items: end; gap: .65rem 1rem; }
+.component-detail__preview-option { display: grid; min-inline-size: 0; gap: .35rem; }
+.component-detail__preview-option label { color: var(--app-accent); font-size: .62rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.component-detail__host-width { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .65rem; }
+.component-detail__host-width input {
+    box-sizing: border-box;
+    inline-size: 6rem;
+    min-block-size: 2.2rem;
+    padding: .4rem .55rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface);
+    color: var(--app-foreground);
+    font: inherit;
+    font-size: .75rem;
+}
+.component-detail__host-width input:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+.component-detail__host-width output { color: var(--app-foreground-muted); font-size: .72rem; font-variant-numeric: tabular-nums; }
 .component-detail__viewport { display: flex; flex-wrap: wrap; gap: .25rem; padding: .25rem; border: 1px solid var(--app-border); border-radius: var(--app-radius-md); background: var(--app-surface); }
 .component-detail__viewport button { padding: .4rem .6rem; border: 0; border-radius: var(--app-radius-sm); background: transparent; color: var(--app-foreground-muted); font: inherit; font-size: .7rem; font-weight: 750; cursor: pointer; }
 .component-detail__viewport button.is-active { background: var(--app-accent-soft); color: var(--app-foreground); }
 .component-detail__viewport button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 2px; }
+@media (pointer: coarse) {
+    .component-detail__host-width input,
+    .component-detail__viewport button { min-inline-size: 2.75rem; min-block-size: 2.75rem; }
+}
 .component-detail__isolated-stage { max-width: 100%; padding: 1rem; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--app-border); border-radius: var(--app-radius-lg); background: var(--app-surface-muted); scrollbar-gutter: stable; }
 .component-detail__isolated-frame { display: block; max-width: none; margin-inline: auto; border: 0; border-radius: var(--app-radius-md); background: var(--app-background); box-shadow: var(--app-shadow-md); }
 .component-detail__isolated-frame--mobile { width: 375px; height: 812px; }
@@ -139,6 +161,7 @@
 }
 
 @media (forced-colors: active) {
+    .component-detail__host-width input:focus-visible,
     .component-detail :is(a, button, summary, pre, .component-detail__isolated-stage, .component-detail__member-docs):focus-visible,
     .component-detail__sidebar details a:focus-visible { outline-color: Highlight; }
     .component-detail__patterns a:hover,

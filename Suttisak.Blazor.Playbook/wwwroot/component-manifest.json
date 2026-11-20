@@ -1026,7 +1026,7 @@
       "category": "Forms \u0026 inputs",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Responsive field grid that collapses form columns when the browser viewport is constrained.",
+      "summary": "Field grid that stacks columns in a constrained form container and on narrow viewports.",
       "tags": [
         "form",
         "grid",
@@ -1318,7 +1318,7 @@
       "category": "Data \u0026 display",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Grid framing surface that composes data controls, result context, and the table region with embedded loading, empty, and error feedback.",
+      "summary": "Grid framing surface with controls that adapt to the available shell width, a dedicated scroll region for the table, and embedded loading, empty, and error feedback.",
       "tags": [
         "grid",
         "shell",
@@ -2039,7 +2039,7 @@
       "category": "Experience",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Reader-facing heading with details and optional decorative or meaningful visuals; Nexora uses an unframed editorial introduction that adapts to content and parent width.",
+      "summary": "Reader-facing heading with details and optional visuals that stacks the copy and visual in narrow containers. Nexora presents it as an unframed editorial introduction.",
       "tags": [
         "experience",
         "heading",
@@ -2227,7 +2227,7 @@
       "category": "Marketing",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Horizontal or wrapping composition of concise MarketingProofItem evidence.",
+      "summary": "A grid of concise MarketingProofItem evidence that adapts to its own available width.",
       "tags": [
         "marketing",
         "proof",
@@ -2280,7 +2280,7 @@
       "category": "Marketing",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Responsive sequence that composes multiple MarketingStep instructions.",
+      "summary": "An ordered sequence of MarketingStep instructions that adapts to its own available width.",
       "tags": [
         "marketing",
         "steps",
@@ -2339,7 +2339,7 @@
       "category": "Application layouts",
       "status": "stable",
       "coverage": "pattern",
-      "summary": "Responsive application frame with a 64px collapsed desktop icon rail, labelled navigation flyouts, accessible footer information, and a full labelled mobile drawer.",
+      "summary": "Container-responsive application frame with a 64px collapsed desktop icon rail, labelled navigation flyouts, and a compact drawer that restores focus to its opener when dismissed.",
       "tags": [
         "layout",
         "application",

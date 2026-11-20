@@ -38,17 +38,60 @@ test('legacy compact catalog route redirects to the shared Component Browser', a
   await expect(page.getByRole('button', { name: 'Compact' })).toHaveAttribute('aria-pressed', 'true');
 });
 
-test('375 preview uses a real child viewport and triggers FormGrid media queries', async ({ page }) => {
+test('isolated viewport presets set the actual iframe width', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/components/form-grid?viewport=mobile');
 
-  const host = page.getByTestId('isolated-specimen-frame');
-  await expect(host).toBeVisible({ timeout: wasmTimeout });
-  await expect.poll(() => host.evaluate(element => element.contentWindow?.innerWidth ?? 0)).toBe(375);
+  const viewport = page.getByRole('group', { name: 'Viewport (px)' });
+  const frame = page.getByTestId('isolated-specimen-frame');
+  const hostWidth = page.getByLabel('Host width (px)');
+  await expect(frame).toBeVisible({ timeout: wasmTimeout });
 
-  const isolated = page.frameLocator('[data-testid="isolated-specimen-frame"]');
-  const grid = isolated.locator('.form-grid').first();
-  await expect(grid).toBeVisible();
-  await expect.poll(() => grid.evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)).toBe(1);
+  for (const width of [375, 768, 1280]) {
+    const preset = viewport.getByRole('button', { name: String(width), exact: true });
+    await preset.click();
+    await expect(preset).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(() => frame.evaluate(element => element.contentWindow?.innerWidth)).toBe(width);
+    await expect(hostWidth).toHaveCount(0);
+  }
+
+  await viewport.getByRole('button', { name: 'Full', exact: true }).click();
+  await expect(frame).toHaveCount(0);
+  await expect(hostWidth).toBeVisible();
+  await expect(page.getByTestId('profile-grid')).toBeVisible();
+  expect(await page.evaluate(() => innerWidth)).toBe(1440);
+});
+
+test('Full viewport measures the inline host and preserves live form state as it reflows', async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 900 });
+  await page.goto('/components/form-grid?appearance=standard');
+  const widthInput = page.getByRole('spinbutton', { name: 'Host width (px)' });
+  const widthOutput = page.getByTestId('rendered-host-width');
+  const grid = page.getByTestId('profile-grid');
+  const fullName = grid.getByRole('textbox', { name: 'Full name' });
+  await expect(widthOutput).toHaveText(/^Rendered: [\d.]+ px$/);
+  await fullName.fill('Playbook reviewer');
+
+  for (const [width, columns] of [[701, 2], [700, 1], [699, 1], [320, 1]]) {
+    await widthInput.fill(String(width));
+    await widthInput.press('Tab');
+    await expect(widthOutput).toHaveText(`Rendered: ${width} px`);
+    const layout = await grid.evaluate(element => ({
+      columns: getComputedStyle(element).gridTemplateColumns.split(' ').length,
+      width: element.getBoundingClientRect().width,
+      viewport: innerWidth
+    }));
+    expect(layout).toEqual({ width, columns, viewport: 1600 });
+    await expect(fullName).toHaveValue('Playbook reviewer');
+  }
+
+  await page.setViewportSize({ width: 320, height: 900 });
+  await expect.poll(() => page.getByTestId('specimen-host-width-surface').evaluate(element => element.clientWidth)).toBeLessThan(320);
+  await expect(widthOutput).not.toHaveText('Rendered: 320 px');
+  await widthInput.clear();
+  await widthInput.press('Tab');
+  await page.setViewportSize({ width: 1600, height: 900 });
+  await expect.poll(() => grid.evaluate(element => element.clientWidth)).toBeGreaterThan(701);
 });
 
 test('isolated viewport keeps top-layer dialogs inside the child browsing context', async ({ page }) => {

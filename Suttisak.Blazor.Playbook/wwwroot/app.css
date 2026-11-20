@@ -148,7 +148,7 @@ select { font: inherit; }
     z-index: 30;
     top: 0;
     display: grid;
-    grid-template-columns: auto auto minmax(10rem, 1fr) auto auto;
+    grid-template-columns: auto auto minmax(10rem, 1fr) auto;
     align-items: center;
     gap: 1rem;
     padding: .75rem clamp(1rem, 3vw, 2.5rem);
@@ -191,10 +191,15 @@ select { font: inherit; }
     .playbook-control select:focus-visible { outline-color: Highlight; }
 }
 
+.playbook-switches { display: flex; flex-wrap: wrap; justify-content: end; align-items: center; gap: .55rem; min-inline-size: 0; }
 .playbook-segment { display: inline-flex; padding: .2rem; border: 1px solid var(--app-border); border-radius: .65rem; background: var(--app-surface-muted); }
 .playbook-segment button { padding: .38rem .68rem; border: 0; border-radius: .45rem; background: transparent; color: var(--app-foreground-muted); cursor: pointer; }
 .playbook-segment--theme button { min-width: 1.85rem; padding-inline: .38rem; }
+.playbook-segment button:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 1px; }
 .playbook-segment button.is-active { background: var(--app-surface); color: var(--app-accent); box-shadow: 0 .15rem .5rem var(--app-shadow-color); font-weight: 750; }
+@media (pointer: coarse) {
+    .playbook-segment button { min-inline-size: 2.75rem; min-block-size: 2.75rem; }
+}
 
 .playbook-canvas { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); max-width: 98rem; margin: 0 auto; padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 4vw, 4rem) 8rem; }
 .playbook-index { position: sticky; top: 6.5rem; display: grid; align-self: start; gap: .65rem; }
@@ -703,7 +708,6 @@ select { font: inherit; }
     .playbook-brand strong { display: none; }
     .playbook-control { grid-template-columns: auto minmax(7.5rem, 9rem); }
     .playbook-nav { justify-self: end; }
-    .playbook-segment--viewport { display: none; }
     .playbook-canvas { grid-template-columns: 1fr; }
     .playbook-index { display: none; }
     .playbook-intro { grid-template-columns: 1fr; }
@@ -716,9 +720,16 @@ select { font: inherit; }
 }
 
 @media (max-width: 50rem) {
-    .playbook-bar { grid-template-columns: auto 1fr auto; }
-    .playbook-nav { justify-self: end; }
-    .playbook-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .playbook-bar { grid-template-columns: minmax(2rem, 1fr) minmax(0, max-content); }
+    .playbook-brand { grid-column: 1; grid-row: 1; }
+    .playbook-switches { grid-column: 2; grid-row: 1; }
+    .playbook-nav { position: relative; grid-column: 1 / -1; grid-row: 2; width: 100%; justify-self: stretch; flex-wrap: wrap; }
+    .playbook-nav > a, .playbook-nav-group { flex: 1 0 auto; text-align: center; }
+    .playbook-nav-group { position: static; }
+    .playbook-nav-group > summary { justify-content: center; }
+    .playbook-nav-group__menu { top: calc(100% + .35rem); inset-inline: 0; min-inline-size: 0; max-block-size: min(60dvh, 28rem); overflow-y: auto; }
+    .playbook-nav-group__menu a { white-space: normal; overflow-wrap: anywhere; text-align: start; }
+    .playbook-controls { display: grid; grid-column: 1 / -1; grid-row: 3; grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .playbook-control { grid-template-columns: auto minmax(0, 1fr); }
     .landing-workbench__note { grid-template-columns: 1fr auto; }
     .landing-workbench__note p { grid-column: 1 / -1; grid-row: 2; }
@@ -738,16 +749,11 @@ select { font: inherit; }
 }
 
 @media (max-width: 34rem) {
-    .playbook-bar { grid-template-columns: minmax(0, 1fr) auto; gap: .55rem; padding: .55rem .65rem; }
-    .playbook-brand { grid-column: 1; grid-row: 1; }
+    .playbook-bar { gap: .55rem; padding: .55rem .65rem; }
     .playbook-brand strong { display: none; }
-    .playbook-nav { grid-column: 1 / -1; grid-row: 2; width: 100%; justify-self: stretch; overflow-x: auto; }
-    .playbook-nav > a, .playbook-nav-group { flex: 1; }
-    .playbook-nav > a, .playbook-nav-group > summary { justify-content: center; padding-inline: .4rem; text-align: center; font-size: .72rem; }
-    .playbook-nav-group__menu { position: fixed; top: 7.5rem; right: .65rem; left: .65rem; max-height: calc(100dvh - 8.5rem); overflow-y: auto; }
-    .playbook-controls { grid-column: 1 / -1; grid-row: 3; }
+    .playbook-nav > a, .playbook-nav-group > summary { padding-inline: .4rem; font-size: .72rem; }
     .playbook-control { grid-template-columns: minmax(0, 1fr); gap: .25rem; }
-    .playbook-segment { grid-column: 2; grid-row: 1; }
+    .playbook-segment--viewport button { padding-inline: .55rem; }
     .playbook-card-grid, .playbook-marketing-grid, .token-grid { grid-template-columns: 1fr; }
     .playbook-intro h1 { max-width: 100%; font-size: clamp(2.35rem, 12vw, 3.2rem); overflow-wrap: anywhere; }
     .landing-workbench { padding: .5rem; }
@@ -827,6 +833,7 @@ select { font: inherit; }
 .playbook[data-appearance="nexora"] .pattern-browser__card:focus-within,
 .playbook[data-appearance="nexora"] .pattern-detail__components a:focus-visible { outline: 2px solid var(--app-focus-ring); outline-offset: 3px; }
 @media (forced-colors: active) {
+    .playbook-segment button:focus-visible,
     .playbook[data-appearance="nexora"] .pattern-browser__card:focus-within,
     .playbook[data-appearance="nexora"] .pattern-detail__components a:focus-visible { outline-color: Highlight; }
 }
