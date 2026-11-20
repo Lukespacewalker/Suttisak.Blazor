@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.13" />
     <ProjectReference Include="../Suttisak.Blazor.CultureTestHost.Client/Suttisak.Blazor.CultureTestHost.Client.csproj" />
   </ItemGroup>
 </Project>
