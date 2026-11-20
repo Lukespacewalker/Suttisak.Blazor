@@ -1,33 +1,35 @@
 <header @attributes="AdditionalAttributes"
         class="@CssClassValue"
         aria-labelledby="@HeadingIdValue">
-    <div class="experience-heading__copy">
-        @if (!string.IsNullOrWhiteSpace(Eyebrow))
-        {
-            <span class="experience-heading__eyebrow">@Eyebrow</span>
-        }
-        <h1 id="@HeadingIdValue">
-            @Title
-            @if (!string.IsNullOrWhiteSpace(Emphasis))
+    <div class="experience-heading__layout">
+        <div class="experience-heading__copy">
+            @if (!string.IsNullOrWhiteSpace(Eyebrow))
             {
-                <br />
-                <em>@Emphasis</em>
+                <span class="experience-heading__eyebrow">@Eyebrow</span>
             }
-        </h1>
-        @if (!string.IsNullOrWhiteSpace(Description))
-        {
-            <p class="experience-heading__lead">@Description</p>
-        }
-        @if (Details is not null)
-        {
-            <div class="experience-heading__details">@Details</div>
-        }
-    </div>
+            <h1 id="@HeadingIdValue">
+                @Title
+                @if (!string.IsNullOrWhiteSpace(Emphasis))
+                {
+                    <br />
+                    <em>@Emphasis</em>
+                }
+            </h1>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p class="experience-heading__lead">@Description</p>
+            }
+            @if (Details is not null)
+            {
+                <div class="experience-heading__details">@Details</div>
+            }
+        </div>
 
-    <div class="experience-heading__visual" aria-hidden="@VisualIsDecorative.ToString().ToLowerInvariant()">
-        <span class="experience-heading__orbit experience-heading__orbit--one"></span>
-        <span class="experience-heading__orbit experience-heading__orbit--two"></span>
-        @Visual
+        <div class="experience-heading__visual" aria-hidden="@VisualIsDecorative.ToString().ToLowerInvariant()">
+            <span class="experience-heading__orbit experience-heading__orbit--one"></span>
+            <span class="experience-heading__orbit experience-heading__orbit--two"></span>
+            @Visual
+        </div>
     </div>
 
     @if (!string.IsNullOrWhiteSpace(Watermark))

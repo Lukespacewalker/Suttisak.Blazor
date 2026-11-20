@@ -160,7 +160,7 @@
     box-shadow: var(--app-shadow-md);
 }
 
-@container app-shell (min-width: 48.001rem) {
+@container app-shell (width > 48rem) {
     .is-desktop-collapsed .app-shell__navigation-scroll { padding-inline: .5rem; scrollbar-width: none; }
     .is-desktop-collapsed ::deep .nav-item:not([popover] .nav-item),
     .is-desktop-collapsed ::deep .nav-submenu__trigger {
@@ -209,8 +209,7 @@
     .app-shell__frame.is-desktop-collapsed { grid-template-columns: minmax(0, 1fr); }
     .app-shell__main { grid-area: 1 / 1; }
 
-    .app-shell__navigation,
-    .app-shell__frame.is-desktop-collapsed .app-shell__navigation {
+    .app-shell__navigation {
         position: sticky;
         top: var(--app-shell-header-height);
         grid-area: 1 / 1;
@@ -221,15 +220,17 @@
         height: calc(100dvh - var(--app-shell-header-height));
         min-height: 0;
         box-shadow: 1.25rem 0 3rem var(--app-shadow-color);
-        visibility: visible;
         overflow: visible;
         border-inline-end: 1px solid var(--app-border);
         opacity: 1;
-        transform: translateX(-105%);
         transition: transform .22s cubic-bezier(.2, .75, .25, 1);
     }
 
-    .app-shell__frame .app-shell__navigation.is-open { transform: translateX(0); }
+    .app-shell__navigation:not(.is-open) { display: none; }
+
+    @starting-style {
+        .app-shell__navigation.is-open { transform: translateX(-105%); }
+    }
 
     .app-shell__scrim.is-visible {
         position: sticky;

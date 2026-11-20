@@ -2,18 +2,21 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(13.75rem, .6fr);
-    min-height: 20.625rem;
+    container: experience-heading / inline-size;
     margin: 0;
-    padding: clamp(1.75rem, 5vw, 4.25rem);
+    padding: clamp(1.5rem, 5%, 4.25rem);
     border: 1px solid var(--app-accent-border);
-    border-radius: .25rem 2.625rem .25rem 2.625rem;
+    border-radius: .25rem min(2.625rem, 7.5%);
     background:
         radial-gradient(circle at 78% 25%, var(--app-brand-secondary-soft), transparent 32%),
         var(--app-brand);
     color: var(--app-on-brand);
     box-shadow: 0 1.75rem 4.375rem var(--app-shadow-color);
+}
+
+.experience-heading__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .experience-heading::before {
@@ -33,7 +36,10 @@
     position: relative;
     z-index: 2;
     align-self: center;
-    max-width: 47.5rem;
+    min-inline-size: 0;
+    max-inline-size: 47.5rem;
+    padding-inline-end: 1rem;
+    overflow-wrap: anywhere;
 }
 
 .experience-heading__eyebrow {
@@ -49,9 +55,10 @@
     max-width: 14ch;
     margin: .7rem 0 1rem;
     color: inherit;
-    font-size: clamp(2.6rem, 6vw, 5rem);
+    font-size: 2.5rem;
+    font-size: clamp(2.5rem, 1rem + 7.3cqi, 5rem);
     font-weight: 800;
-    line-height: .88;
+    line-height: 1.08;
     letter-spacing: -.045em;
 }
 
@@ -66,7 +73,7 @@
     margin: 0;
     color: inherit;
     opacity: .76;
-    font-size: 1.04rem;
+    font-size: .93rem;
     line-height: 1.65;
 }
 
@@ -75,8 +82,27 @@
 }
 
 .experience-heading__visual {
+    position: absolute;
+    inset: auto -4.375rem -4.7rem auto;
+    inline-size: 14.375rem;
+    min-block-size: 13.125rem;
+    opacity: .7;
+}
+
+.experience-heading--visual-content .experience-heading__copy { padding-inline-end: 0; }
+
+.experience-heading--visual-content .experience-heading__visual {
     position: relative;
-    min-height: 13.125rem;
+    inset: auto;
+    inline-size: 100%;
+    min-block-size: 8.75rem;
+    margin-block-start: .75rem;
+    opacity: 1;
+}
+
+.experience-heading__visual ::deep :is(img, svg, canvas, video) {
+    max-inline-size: 100%;
+    block-size: auto;
 }
 
 .experience-heading__orbit {
@@ -123,7 +149,8 @@
     bottom: -2.2rem;
     color: var(--app-on-brand);
     opacity: .045;
-    font-size: clamp(5rem, 13vw, 10rem);
+    font-size: 5rem;
+    font-size: clamp(5rem, 13cqi, 10rem);
     font-weight: 900;
     line-height: 1;
     letter-spacing: -.06em;
@@ -162,51 +189,28 @@
     to { transform: translate(-50%, -50%) rotate(385deg); }
 }
 
-@media (max-width: 48.75rem) {
-    .experience-heading {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding-bottom: 2.25rem;
-        border-radius: .25rem 1.75rem .25rem 1.75rem;
+/* Leave room for a readable text column alongside the visual and inner gutters. */
+@container experience-heading (inline-size >= 41rem) {
+    .experience-heading__layout {
+        grid-template-columns: minmax(0, 1.4fr) minmax(13.75rem, .6fr);
+        column-gap: 1.5rem;
+        min-block-size: 16rem;
     }
 
-    .experience-heading__visual {
-        position: absolute;
-        inset: auto -4.375rem -4.7rem auto;
-        width: 14.375rem;
-        opacity: .7;
-    }
+    .experience-heading__copy { padding-inline-end: 0; }
 
-    .experience-heading__copy {
-        padding-right: 1rem;
-    }
-
-    .experience-heading h1 {
-        font-size: clamp(2.65rem, 12vw, 4rem);
-    }
-
-    .experience-heading--visual-content .experience-heading__copy { padding-right: 0; }
-
-    .experience-heading--visual-content .experience-heading__visual {
+    .experience-heading .experience-heading__visual {
         position: relative;
         inset: auto;
-        width: 100%;
-        min-height: 10rem;
-        margin-top: .75rem;
+        inline-size: auto;
+        min-block-size: 13.125rem;
+        margin-block-start: 0;
         opacity: 1;
     }
 }
 
-@media (max-width: 32.5rem) {
-    .experience-heading {
-        padding: 1.5rem;
-    }
-
-    .experience-heading__lead {
-        font-size: .93rem;
-    }
-
-    .experience-heading--visual-content .experience-heading__visual { min-height: 8.75rem; }
+@container experience-heading (inline-size > 29rem) {
+    .experience-heading__lead { font-size: 1.04rem; }
 }
 
 @media (forced-colors: active) {

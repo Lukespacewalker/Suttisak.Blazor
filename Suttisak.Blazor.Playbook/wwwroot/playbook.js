@@ -147,6 +147,28 @@ window.playbookLoader = (() => {
     };
 })();
 
+window.playbookSpecimenWidth = {
+    nextId: 0,
+    observers: new Map(),
+    observe(stage, output) {
+        const host = stage?.querySelector('.component-specimen__host');
+        if (!host || !output) return null;
+
+        const id = ++this.nextId;
+        const observer = new ResizeObserver(([entry]) => {
+            const width = entry.contentBoxSize?.[0]?.inlineSize ?? entry.contentRect.width;
+            output.textContent = `Rendered: ${Number(width.toFixed(2))} px`;
+        });
+        observer.observe(host);
+        this.observers.set(id, observer);
+        return id;
+    },
+    unobserve(id) {
+        this.observers.get(id)?.disconnect();
+        this.observers.delete(id);
+    }
+};
+
 // Blazor does not notify NavigationManager for native same-page anchor changes.
 window.playbookComponentNavigation = {
     currentFragment: () => location.hash,

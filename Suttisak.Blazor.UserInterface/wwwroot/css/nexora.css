@@ -394,11 +394,6 @@
 /* Reader headings adapt to their content and parent width, rather than reserving
    hero space. A supplied visual keeps its own column or wraps below the copy. */
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .experience-heading {
-    container-type: inline-size;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
     min-width: 0;
     min-height: 0;
     padding: .5rem 0 .75rem;
@@ -406,6 +401,14 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
+}
+
+:is(:root, .app-appearance-scope)[data-appearance="nexora"] .experience-heading__layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    min-block-size: 0;
 }
 
 :is(:root, .app-appearance-scope)[data-appearance="nexora"] .experience-heading__copy {
@@ -441,8 +444,8 @@
     inset: auto;
     flex: 0 1 12rem;
     min-width: 0;
-    min-height: 0;
-    width: auto;
+    min-block-size: 0;
+    inline-size: auto;
     margin: 0;
     opacity: 1;
     overflow-wrap: anywhere;

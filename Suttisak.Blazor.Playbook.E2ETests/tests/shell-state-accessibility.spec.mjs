@@ -51,6 +51,42 @@ test.describe('Playbook shell state and accessibility', () => {
     expect(await page.evaluate(() => history.length)).toBe(initialHistoryLength);
   });
 
+  test('preview width remains usable across the desktop threshold and on a narrow screen', async ({ page }) => {
+    await page.goto('/landing?globalViewport=narrow');
+    const header = page.locator('.playbook-bar');
+    const widthGroup = header.getByRole('group', { name: 'Global preview width' });
+    const wide = widthGroup.getByRole('button', { name: 'Wide' });
+    const narrow = widthGroup.getByRole('button', { name: 'Narrow' });
+
+    for (const width of [1345, 1344, 1343, 1280, 801, 800, 320]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect(widthGroup).toHaveCount(1);
+      await expect(wide).toBeInViewport();
+      await expect(narrow).toBeInViewport();
+      expect(await header.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+    }
+
+    const systemTheme = header.getByRole('button', { name: 'Use system theme' });
+    await systemTheme.focus();
+    await page.keyboard.press('Tab');
+    await expect(wide).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(wide).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(() => new URL(page.url()).searchParams.get('globalViewport')).toBe('wide');
+
+    await narrow.click();
+    await expect(narrow).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(() => new URL(page.url()).searchParams.get('globalViewport')).toBe('narrow');
+
+    const patterns = header.locator('summary').filter({ hasText: 'Patterns' });
+    await patterns.focus();
+    await page.keyboard.press('Enter');
+    const patternBrowser = header.getByRole('link', { name: /Pattern browser/ });
+    await expect(patternBrowser).toBeInViewport();
+    await page.keyboard.press('Tab');
+    await expect(patternBrowser).toBeFocused();
+  });
+
   test('skip link moves focus to the global content target', async ({ page }) => {
     await page.goto('/landing');
 

@@ -81,78 +81,10 @@
         synchronizeThemeSelectors();
     };
 
-    const closeMobileNavigation = (shell) => {
-        const navigation = shell.querySelector(".app-shell__navigation");
-        const scrim = shell.querySelector(".app-shell__scrim");
-        const trigger = shell.querySelector('[data-shell-action="mobile"]');
-        navigation?.classList.remove("is-open");
-        scrim?.classList.remove("is-visible");
-        trigger?.classList.remove("is-open");
-        trigger?.setAttribute("aria-expanded", "false");
-        if (trigger?.dataset.labelClosed) trigger.setAttribute("aria-label", trigger.dataset.labelClosed);
-    };
-
-    document.addEventListener("keydown", event => {
-        if (event.key !== "Escape" || event.defaultPrevented) return;
-        const target = event.target instanceof Element ? event.target : null;
-        // A nested native overlay owns the first Escape. Only a visible mobile
-        // drawer containing keyboard focus can be dismissed by the shell.
-        if (target?.closest("[popover]:popover-open, dialog[open]")) return;
-        const navigation = target?.closest(".app-shell__navigation.is-open");
-        const shell = navigation?.closest("[data-app-shell]");
-        const trigger = shell?.querySelector('[data-shell-action="mobile"]');
-        if (!shell || !trigger || trigger.getClientRects().length === 0) return;
-        // Native popovers without autofocus keep focus on their invoker. Let
-        // the current navigation's open popup consume Escape in that state too.
-        if (navigation.querySelector("[popover]:popover-open, dialog[open]")) return;
-        event.preventDefault();
-        closeMobileNavigation(shell);
-        trigger.focus();
-    });
-
     document.addEventListener("click", event => {
         const target = event.target instanceof Element ? event.target : null;
         const themeButton = target?.closest("[data-theme-preference]");
-        if (themeButton) {
-            setTheme(themeButton.dataset.themePreference);
-            return;
-        }
-
-        const shell = target?.closest("[data-app-shell]");
-        if (!shell) return;
-
-        const action = target.closest("[data-shell-action]")?.dataset.shellAction;
-        if (action === "desktop") {
-            const frame = shell.querySelector(".app-shell__frame");
-            const trigger = target.closest("button");
-            const collapsed = frame?.classList.toggle("is-desktop-collapsed") ?? false;
-            trigger?.classList.toggle("is-open", !collapsed);
-            trigger?.setAttribute("aria-expanded", String(!collapsed));
-            const label = collapsed ? trigger?.dataset.labelClosed : trigger?.dataset.labelOpen;
-            if (label) trigger?.setAttribute("aria-label", label);
-            return;
-        }
-
-        if (action === "mobile") {
-            const navigation = shell.querySelector(".app-shell__navigation");
-            const scrim = shell.querySelector(".app-shell__scrim");
-            const trigger = target.closest("button");
-            const opened = navigation?.classList.toggle("is-open") ?? false;
-            scrim?.classList.toggle("is-visible", opened);
-            trigger?.classList.toggle("is-open", opened);
-            trigger?.setAttribute("aria-expanded", String(opened));
-            const label = opened ? trigger?.dataset.labelOpen : trigger?.dataset.labelClosed;
-            if (label) trigger?.setAttribute("aria-label", label);
-            return;
-        }
-
-        if (action === "close" || target.closest(".app-shell__navigation a")) {
-            closeMobileNavigation(shell);
-        }
-    });
-
-    addEventListener("popstate", () => {
-        document.querySelectorAll("[data-app-shell]").forEach(closeMobileNavigation);
+        if (themeButton) setTheme(themeButton.dataset.themePreference);
     });
 
     matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => {
@@ -207,10 +139,40 @@
                 if (tooltip?.trigger.closest('[data-app-shell]') === shell) positionPanel(tooltip.panel, tooltip.trigger);
             }
             synchronizeRail(shell);
+            if (!isVisible(shellMenuButton(shell, 'mobile'))) setMobileNavigation(shell, false);
         }
     });
     const isRail = shell => shell?.querySelector('.app-shell__frame')?.classList.contains('is-desktop-collapsed')
         && shell.querySelector('[data-shell-action="desktop"]')?.getClientRects().length > 0;
+
+    const shellMenuButton = (shell, mode) => shell.querySelector(`[data-shell-action="${mode}"]`);
+    const isVisible = element => Boolean(element?.getClientRects().length)
+        && getComputedStyle(element).visibility === 'visible';
+
+    const setMobileNavigation = (shell, open, restoreFocus = false) => {
+        const navigation = shell.querySelector('.app-shell__navigation');
+        const trigger = shellMenuButton(shell, 'mobile');
+        if (!navigation || !trigger || navigation.classList.contains('is-open') === open) return;
+
+        trigger.classList.toggle('is-open', open);
+        trigger.setAttribute('aria-expanded', String(open));
+        const label = open ? trigger.dataset.labelOpen : trigger.dataset.labelClosed;
+        if (label) trigger.setAttribute('aria-label', label);
+        if (restoreFocus && isVisible(trigger)) trigger.focus({ preventScroll: true });
+
+        navigation.classList.toggle('is-open', open);
+        shell.querySelector('.app-shell__scrim')?.classList.toggle('is-visible', open);
+        if (!open) return;
+
+        const previousFocus = document.activeElement;
+        requestAnimationFrame(() => {
+            if (!navigation.classList.contains('is-open') || !isVisible(trigger) || document.activeElement !== previousFocus) return;
+            const controls = navigation.querySelectorAll('a[href], button, select, input, textarea, summary, [tabindex]');
+            const firstControl = Array.from(controls).find(control => control.tabIndex >= 0
+                && !control.matches(':disabled') && !control.closest('[inert]') && isVisible(control));
+            (firstControl ?? navigation).focus({ preventScroll: true });
+        });
+    };
 
     const hideTooltip = () => {
         clearTimeout(hideTimer);
@@ -286,18 +248,52 @@
             if (!tooltip?.trigger.contains(document.activeElement)) hideTooltip();
         }, 120);
     });
-    document.addEventListener('focusin', event => showTooltip(event.target));
+    document.addEventListener('focusin', event => {
+        const target = event.target;
+        const shell = target.closest('[data-app-shell]');
+        const main = target.closest('.app-shell__main');
+        if (shell && main?.closest('[data-app-shell]') === shell) setMobileNavigation(shell, false);
+        showTooltip(target);
+    });
     document.addEventListener('focusout', event => {
         if (tooltip?.trigger === event.target) hideTooltip();
+        const target = event.target;
+        if (event.relatedTarget || !target.closest('.app-shell__navigation, [data-shell-action]')) return;
+        const shell = target.closest('[data-app-shell]');
+        if (!shell) return;
+        // A breakpoint can hide the focused control and drop focus to the document.
+        requestAnimationFrame(() => {
+            if (!shell.isConnected || document.activeElement !== document.body || isVisible(target)) return;
+            const mobile = shellMenuButton(shell, 'mobile');
+            const trigger = isVisible(mobile) ? mobile : shellMenuButton(shell, 'desktop');
+            trigger?.focus({ preventScroll: true });
+        });
     });
 
     document.addEventListener('click', event => {
         const target = event.target instanceof Element ? event.target : null;
         const shell = target?.closest('[data-app-shell]');
-        if (target?.closest('[data-shell-action="desktop"]')) {
+        if (!shell) return;
+        const button = target.closest('[data-shell-action]');
+        const action = button?.dataset.shellAction;
+        if (action === 'desktop') {
+            const collapsed = shell.querySelector('.app-shell__frame')?.classList.toggle('is-desktop-collapsed') ?? false;
+            button.classList.toggle('is-open', !collapsed);
+            button.setAttribute('aria-expanded', String(!collapsed));
+            const label = collapsed ? button.dataset.labelClosed : button.dataset.labelOpen;
+            if (label) button.setAttribute('aria-label', label);
             hideTooltip();
             closeFlyout();
             synchronizeRail(shell);
+            return;
+        }
+        if (action === 'mobile') {
+            const open = button.getAttribute('aria-expanded') === 'true';
+            setMobileNavigation(shell, !open, open);
+            return;
+        }
+        if (action === 'close') {
+            setMobileNavigation(shell, false, true);
             return;
         }
         const trigger = target?.closest('[data-rail-trigger]');
@@ -319,6 +315,7 @@
         } else if (target?.closest('.app-shell__navigation a')) {
             hideTooltip();
             closeFlyout();
+            setMobileNavigation(shell, false, true);
         }
     });
 
@@ -334,6 +331,18 @@
         } else if (tooltip) {
             event.preventDefault();
             hideTooltip();
+        } else {
+            const target = event.target instanceof Element ? event.target : null;
+            const shell = target?.closest('[data-app-shell]');
+            if (!shell || !target.closest('.app-shell__navigation, [data-shell-action="mobile"]')) return;
+            const navigation = shell.querySelector('.app-shell__navigation.is-open');
+            if (!navigation || !isVisible(shellMenuButton(shell, 'mobile'))) return;
+            // The first Escape belongs to a native popup, even when its invoker
+            // retains focus.
+            const openOverlay = '[popover]:popover-open, dialog[open]';
+            if (target.closest(openOverlay) || navigation.querySelector(openOverlay)) return;
+            event.preventDefault();
+            setMobileNavigation(shell, false, true);
         }
     });
     const reset = () => {
@@ -342,7 +351,13 @@
         document.querySelectorAll('[data-app-shell]').forEach(synchronizeRail);
     };
     addEventListener('resize', reset);
-    addEventListener('popstate', reset);
+    addEventListener('popstate', () => {
+        reset();
+        document.querySelectorAll('[data-app-shell]').forEach(shell => {
+            const navigation = shell.querySelector('.app-shell__navigation');
+            setMobileNavigation(shell, false, navigation?.contains(document.activeElement));
+        });
+    });
     document.addEventListener('scroll', event => {
         if (flyout?.panel.contains(event.target)) return;
         hideTooltip();
