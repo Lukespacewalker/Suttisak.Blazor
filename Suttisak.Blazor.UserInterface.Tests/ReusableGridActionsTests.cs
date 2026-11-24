@@ -17,7 +17,8 @@ public sealed class ReusableGridActionsTests
             .Add(component => component.ClearLabel, "ล้างการเลือก")
             .Add(component => component.OnClear, () => calls++)
             .Add(component => component.Actions, builder => builder.AddMarkupContent(0, "<button>Export</button>")));
-        Assert.Equal("2 รายการที่เลือก", cut.Find("[role=status]").TextContent.Trim());
+        var actions = cut.Find("[role='group'][aria-label='Actions for selected rows']");
+        Assert.Equal("2 รายการที่เลือก", actions.QuerySelector("[role=status]")!.TextContent.Trim());
         cut.Find("button[aria-label='ล้างการเลือก']").Click();
         Assert.Equal(1, calls);
         cut.Render(parameters => parameters.Add(component => component.Busy, true));

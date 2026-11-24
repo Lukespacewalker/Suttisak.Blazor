@@ -4,7 +4,7 @@
 <label class="app-choice app-choice--radio @Class" for="@InputId">
     <input id="@InputId" class="app-choice__native" type="radio" name="@Group.Name"
            value="@Format(Value)" checked="@IsSelected" required="@Group.Required"
-           disabled="@(Group.Disabled || Disabled)" aria-invalid="@Group.HasValidationError"
+           disabled="@(Group.Disabled || Disabled)" aria-invalid="@(Group.HasValidationError ? "true" : null)"
            aria-describedby="@Group.DescribedBy" @onchange="HandleChange" @attributes="AdditionalAttributes" />
     <span class="app-choice__control" aria-hidden="true"><i></i></span>
     <span class="app-choice__content">

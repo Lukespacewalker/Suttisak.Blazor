@@ -4,6 +4,7 @@
     <Preview>
         <div class="component-specimen__demo">
             <AppGridShell AriaLabel="Playbook records"
+                         ViewportAriaLabel="@(_pattern == "Table" ? "Scrollable records table" : null)"
                          State="@_state"
                          SelectionActive="@(_selectedRecords.Count > 0)"
                          LoadingTitle="Loading playbook records"

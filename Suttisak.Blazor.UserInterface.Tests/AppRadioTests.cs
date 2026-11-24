@@ -59,6 +59,60 @@ public sealed class AppRadioTests
         cut.WaitForAssertion(() => Assert.Null(model.Selection));
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Radio_validation_links_the_error_and_exposes_an_aria_token(bool useChildContent)
+    {
+        using var context = new BunitContext();
+        var model = new RadioModel();
+        var editContext = new EditContext(model);
+        var messages = new ValidationMessageStore(editContext);
+        Expression<Func<ContactMethod?>> valueExpression = () => model.Selection;
+        var field = FieldIdentifier.Create(valueExpression);
+        var cut = context.Render<EditForm>(parameters => parameters
+            .Add(component => component.EditContext, editContext)
+            .Add(component => component.ChildContent, _ => builder =>
+            {
+                builder.OpenComponent<AppRadioGroup<ContactMethod?>>(0);
+                builder.AddAttribute(1, nameof(AppRadioGroup<ContactMethod?>.ValueExpression), valueExpression);
+                if (useChildContent)
+                {
+                    builder.AddAttribute(2, nameof(AppRadioGroup<ContactMethod?>.ChildContent), NullableEnumRadios);
+                }
+                else
+                {
+                    builder.AddAttribute(3, nameof(AppRadioGroup<ContactMethod?>.Options),
+                        new[] { new AppSelectOption<ContactMethod?>(ContactMethod.Email, "Email") });
+                }
+                builder.CloseComponent();
+            }));
+
+        Assert.All(cut.FindAll("input[type=radio]"), radio => Assert.False(radio.HasAttribute("aria-invalid")));
+
+        await cut.InvokeAsync(() =>
+        {
+            messages.Add(field, "Choose a contact method.");
+            editContext.NotifyValidationStateChanged();
+        });
+
+        var error = cut.Find("[role=alert]");
+        Assert.All(cut.FindAll("input[type=radio]"), radio =>
+        {
+            Assert.Equal("true", radio.GetAttribute("aria-invalid"));
+            Assert.Equal(error.Id, radio.GetAttribute("aria-describedby"));
+        });
+
+        await cut.InvokeAsync(() =>
+        {
+            messages.Clear(field);
+            editContext.NotifyValidationStateChanged();
+        });
+
+        Assert.Empty(cut.FindAll("[role=alert]"));
+        Assert.All(cut.FindAll("input[type=radio]"), radio => Assert.False(radio.HasAttribute("aria-invalid")));
+    }
+
     [Fact]
     public void Regular_enum_and_value_types_keep_their_existing_formatted_values()
     {

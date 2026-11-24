@@ -3,15 +3,12 @@
 @using System.Text
 
 @inject UserManager<TUser> UserManager
-@inject IEmailSender<TUser> EmailSender
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>@RegisterConfirmation_razor.PageTitle</PageTitle>
 
 <IdentityFlowPanel Title="@RegisterConfirmation_razor.Header" Description="@RegisterConfirmation_razor.Message">
-<h1>@RegisterConfirmation_razor.Header</h1>
-
 <StatusMessage Message="@_statusMessage" />
 
 @if (_emailConfirmationLink is not null)
@@ -19,10 +16,6 @@
     <p>
         @((MarkupString)string.Format(RegisterConfirmation_razor.NoOpEmailSenderMessage, _emailConfirmationLink))
     </p>
-}
-else
-{
-    <p role="alert">@RegisterConfirmation_razor.Message</p>
 }
 </IdentityFlowPanel>
 
@@ -43,12 +36,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (Email is null)
+        if (string.IsNullOrWhiteSpace(Email))
         {
             RedirectManager.RedirectTo("");
+            return;
         }
 
-        var user = await UserManager.FindByEmailAsync(Email!);
+        var user = await UserManager.FindByEmailAsync(Email);
         if (user is null)
         {
             HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;

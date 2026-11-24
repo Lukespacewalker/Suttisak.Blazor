@@ -104,7 +104,7 @@ test('specimen edits data and confirms batch deletion without mutating on cancel
   await editor.getByRole('button', { name: 'Save record', exact: true }).click();
   await expect(page.getByRole('table', { name: 'Playbook records table' })).toContainText('Edited assessment');
   await page.getByRole('checkbox', { name: 'Select all visible rows' }).check();
-  const toolbar = page.getByRole('toolbar', { name: 'Actions for selected rows' });
+  const toolbar = page.getByRole('group', { name: 'Actions for selected rows' });
   await toolbar.getByRole('button', { name: 'Delete selected', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Delete selected records?' });
   await dialog.getByRole('button', { name: 'Keep records' }).click();

@@ -14,33 +14,50 @@
 <IdentityManageShell Title="@Manage_razor.DisableTwoFactorAuthentication" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.DisableTwoFactorAuthentication) })">
 
-<StatusMessage />
+@if (!_twoFactorEnabled)
+{
+    <StatusMessage Message="@Disable2fa_razor.ErrorNotEnabled" Intent="FeedbackIntent.Error" />
+    <AppButton Href="Account/Manage/TwoFactorAuthentication" Variant="AppButtonVariant.Secondary">@Manage_razor.TwoFactorAuthentication</AppButton>
+    @if (HttpMethods.IsPost(HttpContext.Request.Method))
+    {
+        @* Retain dispatch for a stale form while displaying the unavailable status. *@
+        <form @formname="@ActionFormName" @onsubmit="IgnoreUnavailableSubmit" method="post" hidden>
+            <AntiforgeryToken />
+        </form>
+    }
+}
+else
+{
+    <StatusMessage Message="@_message" Intent="FeedbackIntent.Error" />
 
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>@Disable2fa_razor.WarningTitle</strong>
-    </p>
-    <p>
-        @Disable2fa_razor.WarningContent <a href="@IdentityRoutes.Account.Manage.ResetAuthenticator">@Disable2fa_razor.ResetAuthenticatorLink</a>
-    </p>
-</div>
+    <div class="alert alert-warning" role="alert">
+        <p><strong>@Disable2fa_razor.WarningTitle</strong></p>
+        <p>
+            @Disable2fa_razor.WarningContent <a href="@IdentityRoutes.Account.Manage.ResetAuthenticator">@Disable2fa_razor.ResetAuthenticatorLink</a>
+        </p>
+    </div>
 
-<div>
-    <form @formname="disable-2fa" @onsubmit="OnSubmitAsync" method="post">
-        <AntiforgeryToken />
-        <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@Disable2fa_razor.DisableButton</AppButton>
-    </form>
-</div>
+    <div>
+        <form @formname="@ActionFormName" @onsubmit="OnSubmitAsync" method="post">
+            <AntiforgeryToken />
+            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@Disable2fa_razor.DisableButton</AppButton>
+        </form>
+    </div>
+}
 
 </IdentityManageShell>
 
 @code {
+    private const string ActionFormName = "disable-2fa";
+
     public static string StaticPageIcon { get; set; } = "ShieldDismiss";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.DisableTwoFactorAuthentication;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.DisableTwoFactorAuthentication);
 
-    private TUser _user = null!;
+    private TUser? _user;
+    private bool _twoFactorEnabled;
+    private string? _message;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
@@ -55,18 +72,23 @@
         await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
 
-        if (HttpMethods.IsGet(HttpContext.Request.Method) && !await UserManager.GetTwoFactorEnabledAsync(_user))
-        {
-            throw new InvalidOperationException(Disable2fa_razor.ErrorNotEnabled);
-        }
+        _twoFactorEnabled = _user is not null && await UserManager.GetTwoFactorEnabledAsync(_user);
     }
+
+    private static void IgnoreUnavailableSubmit() { }
 
     protected virtual async Task OnSubmitAsync()
     {
+        if (_user is null || !_twoFactorEnabled)
+        {
+            return;
+        }
+
         var disable2FaResult = await UserManager.SetTwoFactorEnabledAsync(_user, false);
         if (!disable2FaResult.Succeeded)
         {
-            throw new InvalidOperationException(Disable2fa_razor.ErrorUnexpected);
+            _message = Disable2fa_razor.ErrorUnexpected;
+            return;
         }
 
         var userId = await UserManager.GetUserIdAsync(_user);

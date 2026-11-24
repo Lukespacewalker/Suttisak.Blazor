@@ -10,8 +10,7 @@
 
 <IdentityFlowPanel Title="@ConfirmEmailChange_razor.ConfirmEmailChange">
 <section style="display: flex; flex-direction: column; align-items:center">
-	<h1>@ConfirmEmailChange_razor.ConfirmEmailChange</h1>
-	<StatusMessage Message="@_message"/>
+	<StatusMessage Message="@_message" Intent="@(_confirmed ? FeedbackIntent.Success : FeedbackIntent.Error)" />
 	<a style="margin-top:4rem;" href="/">
 		<h3>
 			Back to home
@@ -24,6 +23,7 @@
 
 @code {
 	private string? _message;
+	private bool _confirmed;
 
 	[CascadingParameter]
 	private HttpContext HttpContext { get; set; } = null!;
@@ -39,21 +39,32 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		if (UserId is null || Email is null || Code is null)
+		if (string.IsNullOrWhiteSpace(UserId) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Code))
 		{
 			RedirectManager.RedirectToWithStatus(
 				"Account/Login", ConfirmEmailChange_razor.ErrorInvalidLink, HttpContext);
+			return;
 		}
 
-		var user = await UserManager.FindByIdAsync(UserId!);
+		string code;
+		try
+		{
+			code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code));
+		}
+		catch (FormatException)
+		{
+			_message = ConfirmEmailChange_razor.ErrorInvalidLink;
+			return;
+		}
+
+		var user = await UserManager.FindByIdAsync(UserId);
 		if (user is null)
 		{
 			_message = string.Format(ConfirmEmailChange_razor.ErrorUserNotFound, UserId);
 			return;
 		}
 
-		var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code!));
-		var result = await UserManager.ChangeEmailAsync(user, Email!, code);
+		var result = await UserManager.ChangeEmailAsync(user, Email, code);
 		if (!result.Succeeded)
 		{
 			_message = ConfirmEmailChange_razor.ErrorChangingEmail;
@@ -68,6 +79,7 @@
 		// }
 
 		await SignInManager.RefreshSignInAsync(user);
+		_confirmed = true;
 		_message = ConfirmEmailChange_razor.ThankYouForConfirming;
 	}
 }

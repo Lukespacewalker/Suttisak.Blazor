@@ -59,7 +59,7 @@ test('multiple selection replaces the regular toolbar with contextual batch acti
   await page.goto('/components/app-grid');
 
   const table = page.getByRole('table', { name: 'Playbook records table' });
-  const selectionToolbar = page.getByRole('toolbar', { name: 'Actions for selected rows' });
+  const selectionToolbar = page.getByRole('group', { name: 'Actions for selected rows' });
 
   await expect(page.getByText('Use row actions for one record; select rows for batch work.', { exact: true })).toBeVisible();
   await expect(selectionToolbar).not.toBeVisible();
@@ -97,7 +97,7 @@ test('select all is available for multiple selection', async ({ page }) => {
   await expect(rows.first()).toHaveClass(/is-selected/);
   await expect(rows.nth(1)).toHaveClass(/is-selected/);
   await expect(rows.nth(2)).toHaveClass(/is-selected/);
-  await expect(page.getByRole('toolbar', { name: 'Actions for selected rows' }).getByText('3 selected', { exact: true })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Actions for selected rows' }).getByText('3 selected', { exact: true })).toBeVisible();
 });
 
 test('record workflow keeps single-row and batch actions in separate scopes', async ({ page }) => {
@@ -105,12 +105,12 @@ test('record workflow keeps single-row and batch actions in separate scopes', as
 
   const table = page.getByRole('table', { name: 'Program records' });
   await expect(table).toBeVisible();
-  await expect(page.getByRole('toolbar', { name: 'Actions for selected rows' })).not.toBeVisible();
+  await expect(page.getByRole('group', { name: 'Actions for selected rows' })).not.toBeVisible();
 
   const firstRow = table.locator('tbody tr').first();
   await firstRow.getByRole('checkbox').check();
 
-  const selectionToolbar = page.getByRole('toolbar', { name: 'Actions for selected rows' });
+  const selectionToolbar = page.getByRole('group', { name: 'Actions for selected rows' });
   await expect(selectionToolbar).toBeVisible();
   await expect(selectionToolbar.getByRole('button', { name: 'Delete selected', exact: true })).toBeVisible();
 

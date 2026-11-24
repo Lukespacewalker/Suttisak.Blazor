@@ -219,9 +219,13 @@ test('AppGridShell stacks controls within a narrow desktop host and scrolls the 
 
   await page.getByRole('combobox', { name: 'Responsive pattern', exact: true }).selectOption('Table');
   await expect(page.getByRole('table', { name: 'Playbook records table' })).toBeVisible();
-  const viewport = shell.locator('.app-grid-shell__viewport');
+  const viewport = shell.getByRole('region', { name: 'Scrollable records table' });
   expect(await viewport.evaluate(element => element.scrollWidth - element.clientWidth)).toBeGreaterThan(0);
   expect(await page.locator('html').evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+  await viewport.focus();
+  await expect(viewport).toBeFocused();
+  await viewport.press('ArrowRight');
+  await expect.poll(() => viewport.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
 
   const search = page.getByRole('searchbox', { name: 'Search records' });
   await search.fill('office');

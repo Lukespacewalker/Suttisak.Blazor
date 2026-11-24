@@ -1318,7 +1318,7 @@
       "category": "Data \u0026 display",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Grid framing surface with controls that adapt to the available shell width, a dedicated scroll region for the table, and embedded loading, empty, and error feedback.",
+      "summary": "Grid framing surface with controls that adapt to the available shell width, an opt-in named and keyboard-focusable scroll region, and embedded loading, empty, and error feedback.",
       "tags": [
         "grid",
         "shell",
@@ -1357,7 +1357,7 @@
       "category": "Data \u0026 display",
       "status": "stable",
       "coverage": "interactive",
-      "summary": "Contextual selection summary, application actions, and a clear-selection callback.",
+      "summary": "Named group for the selection summary, Tab-navigable batch actions, and a clear-selection callback.",
       "tags": [
         "grid",
         "selection",

@@ -24,7 +24,10 @@
                   LoadingTitle="@LoadingTitle"
                   EmptyTitle="@EmptyTitle"
                   EmptyMessage="@EmptyMessage">
-        <div class="app-grid-shell__viewport">@ChildContent</div>
+        <div class="app-grid-shell__viewport"
+             role="@(HasNamedViewport ? "region" : null)"
+             aria-label="@(HasNamedViewport ? ViewportAriaLabel : null)"
+             tabindex="@(HasNamedViewport ? 0 : (int?)null)">@ChildContent</div>
     </AsyncContent>
     @if (Footer is not null || Pagination is not null)
     {
@@ -49,9 +52,13 @@
     [Parameter] public string? CssClass { get; set; }
     [Parameter] public string? Style { get; set; }
     [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Names and focuses the scroll viewport when the shell owns scrolling for its content.</summary>
+    [Parameter] public string? ViewportAriaLabel { get; set; }
     [Parameter] public int TabIndex { get; set; } = -1;
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool HasNamedViewport => !string.IsNullOrWhiteSpace(ViewportAriaLabel);
 
     private string CssClassValue => string.Join(' ', new[] { "app-grid-shell", CssClass }
         .Where(value => !string.IsNullOrWhiteSpace(value)));

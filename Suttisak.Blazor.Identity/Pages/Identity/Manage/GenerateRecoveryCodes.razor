@@ -12,7 +12,19 @@
 <IdentityManageShell Title="@Manage_razor.GenerateRecoveryCodes" Description="@Text["TwoFactorDescription"]" ActiveUrl="@IdentityRoutes.Account.Manage.TwoFactorAuthentication" IconName="@StaticPageIcon"
                      BreadcrumbItems="@(new[] { new Breadcrumb(Manage<TUser>.StaticPageIcon, Manage<TUser>.StaticPageUrl, Manage_razor.Manage), new Breadcrumb(TwoFactorAuthentication<TUser>.StaticPageIcon, TwoFactorAuthentication<TUser>.StaticPageUrl, Manage_razor.TwoFactorAuthentication), new Breadcrumb(StaticPageIcon, null, Manage_razor.GenerateRecoveryCodes) })">
 
-@if (_recoveryCodes is not null)
+@if (!_twoFactorEnabled)
+{
+    <StatusMessage Message="@GenerateRecoveryCodes_razor.ErrorNotEnabled" Intent="FeedbackIntent.Error" />
+    <AppButton Href="Account/Manage/TwoFactorAuthentication" Variant="AppButtonVariant.Secondary">@Manage_razor.TwoFactorAuthentication</AppButton>
+    @if (HttpMethods.IsPost(HttpContext.Request.Method))
+    {
+        @* Retain dispatch for a stale form while displaying the unavailable status. *@
+        <form @formname="@ActionFormName" @onsubmit="IgnoreUnavailableSubmit" method="post" hidden>
+            <AntiforgeryToken />
+        </form>
+    }
+}
+else if (_recoveryCodes is not null)
 {
     <ShowRecoveryCodes RecoveryCodes="_recoveryCodes.ToArray()" StatusMessage="@_message" />
 }
@@ -31,7 +43,7 @@ else
         </p>
     </div>
     <div>
-        <form @formname="generate-recovery-codes" @onsubmit="OnSubmitAsync" method="post">
+        <form @formname="@ActionFormName" @onsubmit="OnSubmitAsync" method="post">
             <AntiforgeryToken />
             <AppButton Type="submit" Variant="AppButtonVariant.Primary">@GenerateRecoveryCodes_razor.GenerateButton</AppButton>
         </form>
@@ -41,13 +53,16 @@ else
 </IdentityManageShell>
 
 @code {
+    private const string ActionFormName = "generate-recovery-codes";
+
     public static string StaticPageIcon { get; set; } = "KeyMultiple";
     public static string StaticPageUrl { get; set; } = IdentityRoutes.Account.Manage.GenerateRecoveryCodes;
     public static string? StaticPageTitleResource { get; set; } = typeof(Manage_razor).FullName!.Replace("_", ".");
     public static string StaticPageTitleKey { get; set; } = nameof(Manage_razor.GenerateRecoveryCodes);
 
     private string? _message;
-    private TUser _user = null!;
+    private TUser? _user;
+    private bool _twoFactorEnabled;
     private IEnumerable<string>? _recoveryCodes;
 
     [CascadingParameter]
@@ -63,15 +78,18 @@ else
         await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
 
-        var isTwoFactorEnabled = await UserManager.GetTwoFactorEnabledAsync(_user);
-        if (!isTwoFactorEnabled)
-        {
-            throw new InvalidOperationException(GenerateRecoveryCodes_razor.ErrorNotEnabled);
-        }
+        _twoFactorEnabled = _user is not null && await UserManager.GetTwoFactorEnabledAsync(_user);
     }
+
+    private static void IgnoreUnavailableSubmit() { }
 
     protected virtual async Task OnSubmitAsync()
     {
+        if (_user is null || !_twoFactorEnabled)
+        {
+            return;
+        }
+
         var userId = await UserManager.GetUserIdAsync(_user);
         _recoveryCodes = await UserManager.GenerateNewTwoFactorRecoveryCodesAsync(_user, 10);
         _message = GenerateRecoveryCodes_razor.SuccessMessage;

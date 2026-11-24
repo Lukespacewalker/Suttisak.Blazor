@@ -50,9 +50,9 @@ else
                         @EnableAuthenticator_razor.Step3
                     </p>
 
-                    <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
+                    <EditForm Model="Input" FormName="enable-authenticator" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
-                        <AppTextBox Name="Input.Code" @bind-Value="Input!.Code" AutoComplete="off" Placeholder="@EnableAuthenticator_razor.CodePlaceholder" Style="width: 100%;" />
+                        <AppTextBox Name="Input.Code" @bind-Value="Input!.Code" AutoComplete="one-time-code" inputmode="numeric" Label="@EnableAuthenticator_razor.VerificationCodeLabel" Style="width: 100%;" />
                         <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@EnableAuthenticator_razor.VerifyButton</AppButton>
                         <ValidationSummary class="text-danger" role="alert" />
                     </EditForm>
@@ -73,7 +73,7 @@ else
     private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
     private string? _message;
-    private TUser _user = null!;
+    private TUser? _user;
     private string? _sharedKey;
     private string? _authenticatorUri;
     private IEnumerable<string>? _recoveryCodes;
@@ -95,11 +95,19 @@ else
         await base.OnInitializedAsync();
         _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
 
-        await LoadSharedKeyAndQrCodeUriAsync(_user);
+        if (_user is not null)
+        {
+            await LoadSharedKeyAndQrCodeUriAsync(_user);
+        }
     }
 
     protected virtual async Task OnValidSubmitAsync()
     {
+        if (_user is null)
+        {
+            return;
+        }
+
         // Strip spaces and hyphens
         var verificationCode = Input!.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
@@ -140,8 +148,18 @@ else
 
         _sharedKey = FormatKey(unformattedKey!);
 
-        var email = await UserManager.GetEmailAsync(user);
-        _authenticatorUri = GenerateQrCodeUri(email!, unformattedKey!);
+        var accountName = UserManager.SupportsUserEmail ? await UserManager.GetEmailAsync(user) : null;
+        if (string.IsNullOrWhiteSpace(accountName))
+        {
+            accountName = await UserManager.GetUserNameAsync(user);
+        }
+
+        if (string.IsNullOrWhiteSpace(accountName))
+        {
+            accountName = await UserManager.GetUserIdAsync(user);
+        }
+
+        _authenticatorUri = GenerateQrCodeUri(accountName, unformattedKey!);
     }
 
     protected virtual string FormatKey(string unformattedKey)

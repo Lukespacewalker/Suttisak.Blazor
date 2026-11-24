@@ -10,27 +10,38 @@
 <PageTitle>@LoginWithRecoveryCode_razor.PageTitle</PageTitle>
 
 <IdentityFlowPanel Title="@LoginWithRecoveryCode_razor.Header" Description="@LoginWithRecoveryCode_razor.InfoMessage">
-<h1>@LoginWithRecoveryCode_razor.Header</h1>
-<hr />
-<StatusMessage Message="@_message" />
-<p>
-    @LoginWithRecoveryCode_razor.InfoMessage
-</p>
-<FormGrid Columns="1">
-    <div>
-        <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <DataAnnotationsValidator />
-            <FormValidationSummary class="text-danger" role="alert" />
-            <AppTextBox Name="Input.RecoveryCode" @bind-Value="Input!.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
-            <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</AppButton>
-        </EditForm>
-    </div>
-</FormGrid>
+@if (_user is not null)
+{
+    <StatusMessage Message="@_message" />
+    <FormGrid Columns="1">
+        <div>
+            <EditForm Model="Input" FormName="@SignInFormName" OnValidSubmit="OnValidSubmitAsync" method="post">
+                <DataAnnotationsValidator />
+                <FormValidationSummary class="text-danger" role="alert" />
+                <AppTextBox Name="Input.RecoveryCode" @bind-Value="Input!.RecoveryCode" class="form-control" AutoComplete="off" Placeholder="@LoginWithRecoveryCode_razor.RecoveryCodePlaceholder" Label="@LoginWithRecoveryCode_razor.RecoveryCodeLabel" Style="width: 100%;" />
+                <AppButton Type="submit" Variant="AppButtonVariant.Primary" Style="width: 100%;">@LoginWithRecoveryCode_razor.LoginButton</AppButton>
+            </EditForm>
+        </div>
+    </FormGrid>
+}
+else if (IsPost)
+{
+    @* A pending challenge can expire between rendering the form and posting it. *@
+    <form @formname="@SignInFormName" @onsubmit="RedirectToLogin" method="post" hidden>
+        <AntiforgeryToken />
+    </form>
+}
 </IdentityFlowPanel>
 
 @code {
+    private const string SignInFormName = "sign-in-with-recovery-code";
     private string? _message;
-    private TUser _user = null!;
+    private TUser? _user;
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private bool IsPost => HttpContext is not null && HttpMethods.IsPost(HttpContext.Request.Method);
 
     [SupplyParameterFromForm]
     private InputModel? Input { get; set; }
@@ -46,12 +57,23 @@
     protected override async Task OnInitializedAsync()
     {
         // Ensure the user has gone through the username & password screen first
-        _user = await SignInManager.GetTwoFactorAuthenticationUserAsync() ??
-            throw new InvalidOperationException("Unable to load two-factor authentication user.");
+        _user = await SignInManager.GetTwoFactorAuthenticationUserAsync();
+        if (_user is null && !IsPost)
+        {
+            RedirectToLogin();
+        }
     }
+
+    private void RedirectToLogin() =>
+        RedirectManager.RedirectTo("Account/Login", new() { ["ReturnUrl"] = ReturnUrl });
 
     private async Task OnValidSubmitAsync()
     {
+        if (_user is null)
+        {
+            return;
+        }
+
         var recoveryCode = Input!.RecoveryCode.Replace(" ", string.Empty);
 
         var result = await SignInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);

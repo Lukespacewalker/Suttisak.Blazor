@@ -1,11 +1,10 @@
-<div class="app-grid-selection-toolbar @Class" role="toolbar" aria-label="@AriaLabel"
+<div class="app-grid-selection-toolbar @Class" role="group" aria-label="@AriaLabel"
      aria-busy="@(Busy ? "true" : null)" @attributes="AdditionalAttributes">
     <span class="app-grid-selection-toolbar__summary" role="status">
         @if (SummaryTemplate is not null) { @SummaryTemplate(SelectedCount) }
         else { @($"{SelectedCount} {SelectedLabel}") }
     </span>
-    <fieldset class="app-grid-selection-toolbar__actions" disabled="@(Busy || SelectedCount == 0)"
-              aria-label="@AriaLabel">
+    <fieldset class="app-grid-selection-toolbar__actions" disabled="@(Busy || SelectedCount == 0)">
         @Actions
     </fieldset>
     <AppButton Variant="AppButtonVariant.Subtle" Size="AppButtonSize.Compact"

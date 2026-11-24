@@ -7,7 +7,7 @@
     <div class="app-radio-group app-radio-group--@Orientation.ToLowerInvariant()">
         @if (ChildContent is not null)
         {
-            <CascadingValue Value="@Context" IsFixed="true">
+            <CascadingValue Value="@Context">
                 @ChildContent
             </CascadingValue>
         }
@@ -21,7 +21,7 @@
                     <input id="@optionId" class="app-choice__native @CssClass" type="radio" name="@NameAttributeValue"
                            value="@FormatValueAsString(option.Value)" checked="@IsSelected(option.Value)"
                            required="@Required" disabled="@(Disabled || option.Disabled)"
-                           aria-invalid="@HasValidationError" aria-describedby="@DescribedBy" @onchange="HandleChange" />
+                           aria-invalid="@(HasValidationError ? "true" : null)" aria-describedby="@DescribedBy" @onchange="HandleChange" />
                     <span class="app-choice__control" aria-hidden="true"><i></i></span>
                     <span class="app-choice__content"><strong>@option.Label</strong></span>
                 </label>
